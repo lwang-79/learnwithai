@@ -92,8 +92,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="Learn with AI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
-        <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
       </Head>
 
       {isProcessing ? <SpinnerOverlay /> :

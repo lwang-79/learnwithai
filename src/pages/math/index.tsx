@@ -25,6 +25,7 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
+import Script from 'next/script';
 import { useContext, useState } from 'react'
 
 function MathExam() {
@@ -102,6 +103,9 @@ function MathExam() {
           minH='100vh'
           direction='column'
         >
+          <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
+          <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
+
           <Header />
 
           <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>

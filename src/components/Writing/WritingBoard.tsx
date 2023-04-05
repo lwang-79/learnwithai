@@ -93,7 +93,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
     const essay = new Essay({
       type: type,
       level: level,
-      topic: topic,
+      topic: type === EssayType.Persuasive ? topic : '',
       prompt: prompt.replace('Text: ', '').replace('Prompt: ', ''),
       text: '',
       DateTime: (new Date()).toISOString()
