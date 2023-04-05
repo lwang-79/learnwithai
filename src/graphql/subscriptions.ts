@@ -1,0 +1,445 @@
+/* tslint:disable */
+/* eslint-disable */
+// this is an auto generated file. This will be overwritten
+
+export const onCreateQuestionRun = /* GraphQL */ `
+  subscription OnCreateQuestionRun(
+    $filter: ModelSubscriptionQuestionRunFilterInput
+    $owner: String
+  ) {
+    onCreateQuestionRun(filter: $filter, owner: $owner) {
+      id
+      category
+      Date
+      total
+      wrong
+      correct
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateQuestionRun = /* GraphQL */ `
+  subscription OnUpdateQuestionRun(
+    $filter: ModelSubscriptionQuestionRunFilterInput
+    $owner: String
+  ) {
+    onUpdateQuestionRun(filter: $filter, owner: $owner) {
+      id
+      category
+      Date
+      total
+      wrong
+      correct
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteQuestionRun = /* GraphQL */ `
+  subscription OnDeleteQuestionRun(
+    $filter: ModelSubscriptionQuestionRunFilterInput
+    $owner: String
+  ) {
+    onDeleteQuestionRun(filter: $filter, owner: $owner) {
+      id
+      category
+      Date
+      total
+      wrong
+      correct
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateTest = /* GraphQL */ `
+  subscription OnCreateTest(
+    $filter: ModelSubscriptionTestFilterInput
+    $owner: String
+  ) {
+    onCreateTest(filter: $filter, owner: $owner) {
+      id
+      category
+      DateTime
+      total
+      wrong
+      correct
+      questionSets {
+        type
+        category
+        level
+        concept
+        question
+        options
+        answer
+        selected
+        workout
+        isBad
+        isTarget
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateTest = /* GraphQL */ `
+  subscription OnUpdateTest(
+    $filter: ModelSubscriptionTestFilterInput
+    $owner: String
+  ) {
+    onUpdateTest(filter: $filter, owner: $owner) {
+      id
+      category
+      DateTime
+      total
+      wrong
+      correct
+      questionSets {
+        type
+        category
+        level
+        concept
+        question
+        options
+        answer
+        selected
+        workout
+        isBad
+        isTarget
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteTest = /* GraphQL */ `
+  subscription OnDeleteTest(
+    $filter: ModelSubscriptionTestFilterInput
+    $owner: String
+  ) {
+    onDeleteTest(filter: $filter, owner: $owner) {
+      id
+      category
+      DateTime
+      total
+      wrong
+      correct
+      questionSets {
+        type
+        category
+        level
+        concept
+        question
+        options
+        answer
+        selected
+        workout
+        isBad
+        isTarget
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateEssay = /* GraphQL */ `
+  subscription OnCreateEssay(
+    $filter: ModelSubscriptionEssayFilterInput
+    $owner: String
+  ) {
+    onCreateEssay(filter: $filter, owner: $owner) {
+      id
+      type
+      level
+      topic
+      prompt
+      text
+      DateTime
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateEssay = /* GraphQL */ `
+  subscription OnUpdateEssay(
+    $filter: ModelSubscriptionEssayFilterInput
+    $owner: String
+  ) {
+    onUpdateEssay(filter: $filter, owner: $owner) {
+      id
+      type
+      level
+      topic
+      prompt
+      text
+      DateTime
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteEssay = /* GraphQL */ `
+  subscription OnDeleteEssay(
+    $filter: ModelSubscriptionEssayFilterInput
+    $owner: String
+  ) {
+    onDeleteEssay(filter: $filter, owner: $owner) {
+      id
+      type
+      level
+      topic
+      prompt
+      text
+      DateTime
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onCreateUser(filter: $filter, owner: $owner) {
+      id
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      wrongQuestions
+      statistic {
+        mathCorrect
+        mathWrong
+        mathExam
+        readingCorrect
+        readingWrong
+        writing
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onUpdateUser(filter: $filter, owner: $owner) {
+      id
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      wrongQuestions
+      statistic {
+        mathCorrect
+        mathWrong
+        mathExam
+        readingCorrect
+        readingWrong
+        writing
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onDeleteUser(filter: $filter, owner: $owner) {
+      id
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      wrongQuestions
+      statistic {
+        mathCorrect
+        mathWrong
+        mathExam
+        readingCorrect
+        readingWrong
+        writing
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onCreateQuestionSet = /* GraphQL */ `
+  subscription OnCreateQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onCreateQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateQuestionSet = /* GraphQL */ `
+  subscription OnUpdateQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onUpdateQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteQuestionSet = /* GraphQL */ `
+  subscription OnDeleteQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onDeleteQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

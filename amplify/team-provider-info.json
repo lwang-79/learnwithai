@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-learnwithai-dev-80734-authRole",
+      "UnauthRoleArn": "arn:aws:iam::173720363532:role/amplify-learnwithai-dev-80734-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::173720363532:role/amplify-learnwithai-dev-80734-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
+      "UnauthRoleName": "amplify-learnwithai-dev-80734-unauthRole",
+      "StackName": "amplify-learnwithai-dev-80734",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:173720363532:stack/amplify-learnwithai-dev-80734/9cb98d00-d0d9-11ed-bd3b-02b8fa1352ce",
+      "AmplifyAppId": "d3pwxvup88n55n"
+    },
+    "categories": {
+      "auth": {
+        "learnwithai6c436a2f": {}
+      },
+      "api": {
+        "learnwithai": {}
+      }
+    }
+  }
+}

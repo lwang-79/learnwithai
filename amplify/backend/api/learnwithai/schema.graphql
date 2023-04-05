@@ -1,0 +1,129 @@
+type User 
+  @model 
+  @auth(
+    rules: [
+      { allow: owner },
+      { allow: private, provider: iam }
+  ]) {
+  id: ID!
+  sub: ID! @index(name: "bySub", queryField: "userBySub")
+  username: String!
+  email: String!
+  picture: String!
+  quota: Quota
+    @auth(
+      rules: [
+        { allow: owner, operations: [create, read, delete] },
+        { allow: private, provider: iam }
+    ])
+  membership: Membership
+    @auth(
+      rules: [
+        { allow: owner, operations: [create, read, delete] },
+        { allow: private, provider: iam }
+    ])
+  # owner: String!
+  payerId: String 
+    @index(name: "byPayerId", queryField: "userByPayerId")
+    @auth(
+      rules: [
+        { allow: owner, operations: [create, read, delete] },
+        { allow: private, provider: iam }
+    ])
+  markedQuestions: [ID!]
+  wrongQuestions: [ID!]
+  statistic: Statistic
+}
+
+type Membership {
+  current: Int!   # 0: new, 1: free, 2: personal, 3: professional, 4: enterprise
+  previous: Int!
+  paypalSubscriptions: Subscriptions!
+}
+
+type Subscriptions {
+  personal: [String]!
+  professional: [String]!
+  enterprise: [String]!
+}
+
+type Quota {
+  mathPerDay: Int!
+  readingPerDay: Int!
+  writingPerDay: Int!
+}
+
+type Statistic {
+  mathCorrect: Int!
+  mathWrong: Int!
+  mathExam: Int!
+  readingCorrect: Int!
+  readingWrong: Int!
+  writing: Int!
+}
+
+type QuestionSet @model 
+  @auth(
+    rules: [
+      { allow: private, provider: userPools, operations: [create, read] },
+      { allow: private, provider: iam }
+  ]) {
+  id: ID!
+  question: String!
+  options: [String!]
+  answer: String!
+  workout: String
+  type: String!      # MultiChoice ...
+  category: String!  # Math, Reading ...
+  level: String!     # Year9, High ...
+  concept: String!   # Decimals, Algebra ...
+  correctCount: Int!
+  wrongCount: Int!
+  badCount: Int!
+}
+
+type QuestionRun @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  category: String!
+  Date: AWSDate!
+  total: Int!
+  wrong: Int!
+  correct: Int!
+}
+
+type Test @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  category: String!
+  DateTime: AWSDateTime!
+  total: Int!
+  wrong: Int!
+  correct: Int!
+  questionSets: [LocalQuestionSet!]!
+}
+
+type LocalQuestionSet {
+  type: String!
+  category: String!
+  level: String!
+  concept: String!
+  question: String!
+  options: [String!]!
+  answer: String!
+  selected: String!
+  workout: String!
+  isBad: Boolean!
+  isTarget: Boolean!
+}
+
+type Essay @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  type: String!
+  level: String!
+  topic: String!
+  prompt: String!
+  text: String!
+  DateTime: AWSDateTime!
+}
+
+
+
