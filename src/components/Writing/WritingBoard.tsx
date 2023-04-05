@@ -94,7 +94,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
       type: type,
       level: level,
       topic: type === EssayType.Persuasive ? topic : '',
-      prompt: prompt.replace('Text: ', '').replace('Prompt: ', ''),
+      prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
       text: '',
       DateTime: (new Date()).toISOString()
     })
@@ -126,7 +126,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
 
     console.log(data.result);
     const mark = data.result as string;
-    setMark(mark);
+    setMark(mark.trim());
     setIsMarking(false);
   }
 
@@ -152,7 +152,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
 
     console.log(data.result);
     const mark = data.result as string;
-    setMark(mark);
+    setMark(mark.trim());
     setIsMarking(false);
   }
 
