@@ -26,18 +26,18 @@ if (typeof window === 'undefined') {
   );
 
   const isDevelopment = Boolean(
-    window.location.hostname.includes("steps.jinpearl")
+    window.location.hostname.includes("learn.jinpearl")
   );
   
   const [
     localRedirectSignIn,
-    productionRedirectSignIn,
+    // productionRedirectSignIn,
     developmentRedirectSignIn
   ] = awsconfig.oauth.redirectSignIn.split(",");
   
   const [
     localRedirectSignOut,
-    productionRedirectSignOut,
+    // productionRedirectSignOut,
     developmentRedirectSignOut
   ] = awsconfig.oauth.redirectSignOut.split(",");
   
@@ -47,14 +47,14 @@ if (typeof window === 'undefined') {
       ...awsconfig.oauth,
       redirectSignIn: isLocalhost ? 
         localRedirectSignIn : 
-        isDevelopment ? 
-        developmentRedirectSignIn : 
-        productionRedirectSignIn,
+        // isDevelopment ? 
+        developmentRedirectSignIn,
+        // productionRedirectSignIn,
       redirectSignOut: isLocalhost ? 
         localRedirectSignOut : 
-        isDevelopment ?
-        developmentRedirectSignOut : 
-        productionRedirectSignOut,
+        // isDevelopment ?
+        developmentRedirectSignOut
+        // productionRedirectSignOut,
     }
   }
   

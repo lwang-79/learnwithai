@@ -18,7 +18,6 @@ import {
   useColorMode,
   Container,
   Text,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -37,15 +36,14 @@ import {
   MdOutlineSchool, 
   MdPerson, 
 } from 'react-icons/md';
-import { GiFootprint } from 'react-icons/gi';
 import { Auth, DataStore } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
 
-const Links = ['/intro', '/math', '/writing'];
-const LinkNames = ['Introduction', 'Math', 'Writing']
+const Links = ['/math', '/writing'];
+const LinkNames = ['Math', 'Writing']
 
 const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
   <Link
