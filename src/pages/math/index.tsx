@@ -4,7 +4,7 @@ import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
 import { Statistic, User } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/Statistic';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistics';
 import { getConcepts } from '@/types/math';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 

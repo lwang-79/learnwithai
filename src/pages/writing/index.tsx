@@ -5,7 +5,7 @@ import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
 import WritingBoard, { WritingMode } from '@/components/Writing/WritingBoard';
 import { Essay, Statistic, User } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/Statistic';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistics';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 

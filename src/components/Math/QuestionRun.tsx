@@ -42,7 +42,7 @@ import { SlTarget } from "react-icons/sl";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { Statistic } from "@/models";
-import { InitStatistic, addStatisticData } from "@/types/Statistic";
+import { InitStatistic, addStatisticData } from "@/types/statistics";
 import { addNewMathQuestions } from "@/types/questions";
 
 export enum QuestionRunMode {
@@ -308,7 +308,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    // await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
+    await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
     onClose();
     setIsProcessing(false);
   }

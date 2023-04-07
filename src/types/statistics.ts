@@ -15,7 +15,7 @@ export const InitStatistic: Statistic = {
 }
 
 export const getTodayStatistic = async (user: User) => {
-  const today = (new Date()).toISOString();
+  const today = (new Date()).toLocaleString('sv-SE');
   const currentDay = today.slice(0,10);
 
   if (user.daily) {
@@ -36,7 +36,7 @@ export const addStatisticData = async (
     if (!user) return;
   }
 
-  const today = (new Date()).toISOString();
+  const today = (new Date()).toLocaleString('sv-SE');
   const currentDay = today.slice(0,10);
   const currentMonth = today.slice(0,7);
   const currentYear = today.slice(0,4);
