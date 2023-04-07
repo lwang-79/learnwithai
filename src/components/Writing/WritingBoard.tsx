@@ -15,6 +15,12 @@ import {
   HStack,
   Icon,
   IconButton, 
+  Modal, 
+  ModalBody, 
+  ModalCloseButton, 
+  ModalContent, 
+  ModalFooter, 
+  ModalHeader, 
   SkeletonText, 
   Spacer, 
   Spinner, 
@@ -28,7 +34,6 @@ import {
 import ResizeTextarea from "react-textarea-autosize";
 import { Fragment, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
-import Footer from "../Common/Footer";
 import { DataStore } from "aws-amplify";
 
 export enum WritingMode {
@@ -41,15 +46,17 @@ interface WritingBoardProps {
   level: QuestionLevel
   topic: EssayTopic
   onClose: ()=>void
+  initEssay?: Essay
 }
 
-function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
-  const [ essay, setEssay ] = useState<Essay>();
-  const [ text, setText ] = useState('');
-  const [ count, setCount ] = useState(0);
+function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardProps) {
+  const [ essay, setEssay ] = useState<Essay|undefined>(initEssay);
+  const [ text, setText ] = useState(initEssay ? initEssay.text : '');
+  const [ count, setCount ] = useState(initEssay ? countWords(initEssay.text) : 0);
   const [ mark, setMark ] = useState('');
-  const [ isSubmitted, setIsSubmitted ] = useState(false);
-  const [ shouldShowMark, setShouldShowMark ] = useState(false);
+  const [ prompt, setPrompt ] = useState('');
+  const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
+  const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
   const [ isMarking, setIsMarking ] = useState(false);
   const cancelRef = useRef(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -60,8 +67,16 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
     onClose: onCloseAlert 
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenPromptModal, 
+    onOpen: onOpenPromptModal, 
+    onClose: onClosePromptModal
+  } = useDisclosure();
+
   
   useEffect(() => {
+    if (essay) return;
+
     generatePrompt();
   },[]);
 
@@ -156,22 +171,27 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
     setIsMarking(false);
   }
 
-  const countWords = (str: string) => {
-    const words = str.match(/\b\w+\b/g);
-    return words ? words.length : 0;
-  }
 
   const submitButtonClickedHandler = () => {
     if (!essay) return;
 
     setIsSubmitted(true);
 
-    DataStore.save(Essay.copyOf(
-      essay,
-      updated => {
-        updated.text = text
-      }
-    ));
+    if (initEssay) {
+      DataStore.save(Essay.copyOf(
+        initEssay,
+        updated => {
+          updated.text = text
+        }
+      ));
+    } else {
+      DataStore.save(Essay.copyOf(
+        essay,
+        updated => {
+          updated.text = text;
+        }
+      ));  
+    }
 
     markEssay();
     onCloseAlert();
@@ -197,11 +217,20 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
               align='flex-start'
               spacing={4}
             >
-              <HStack>
+              <HStack w='full'>
                 <Text>{level} {type} essay</Text>
                 {type == EssayType.Persuasive &&
                   <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
                 }
+                <Spacer />
+                <Button 
+                  size='sm'
+                  variant='ghost'
+                  isDisabled={isSubmitted}
+                  onClick={onOpenPromptModal}
+                >
+                  I have my own topic
+                </Button>
               </HStack>
               <Box>
                 {essay && essay.prompt.split("\n").map((line, index) => (
@@ -214,6 +243,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
               <Divider />
               <Textarea 
                 as={ResizeTextarea}
+                defaultValue={essay.text}
                 placeholder='Start to write here'
                 minRows={10}
                 isDisabled={isSubmitted}
@@ -316,8 +346,52 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+
+      <Modal
+        isOpen={isOpenPromptModal}
+        onClose={onClosePromptModal}
+        size='xl'
+      >
+        <ModalContent>
+          <ModalHeader textAlign='center'>
+            Bring your own writing topic
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Textarea 
+              as={ResizeTextarea}
+              placeholder='Paste your topic here'
+              minRows={5}
+              onChange={(e)=>setPrompt(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              onClick={
+                ()=>{
+                  setEssay(Essay.copyOf(
+                    essay!,
+                    updated => {
+                      updated.prompt = prompt
+                    }
+                  ));
+                  onClosePromptModal();
+                }
+              }
+            >
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
 
 export default WritingBoard
+
+const countWords = (str: string) => {
+  const words = str.match(/\b\w+\b/g);
+  return words ? words.length : 0;
+}
+

@@ -1,32 +1,45 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API, DataStore, graphqlOperation } from "aws-amplify";
 import { CreateUserMutation, UserBySubQuery } from "./API";
 import { userBySub } from "../graphql/queries";
-import { User } from "../models";
 import { GraphQLResult } from '@aws-amplify/api';
 import { Quota } from './quota';
 import { createUser } from "../graphql/mutations";
 
-
+// type Statistic = {
+//   date: string
+//   mathCorrect: number
+//   mathWrong: number
+//   mathExam: number
+//   readingCorrect: number
+//   readingWrong: number
+//   writing: number
+// }
 export type UserParams = {
-    id: string
-    username: string
-    email: string
-    picture: string
-    quota: {
-      mathPerDay: number
-      readingPerDay: number
-      writingPerDay: number
+  id: string
+  username: string
+  email: string
+  picture: string
+  quota: {
+    mathPerDay: number
+    readingPerDay: number
+    writingPerDay: number
+    savedQuestions: number
+    savedTests: number
+    savedEssays: number
+  },
+  membership: {
+    current: number
+    previous: number
+    paypalSubscriptions: {
+      personal: (string | null)[]
+      professional: (string | null)[]
+      enterprise: (string | null)[]
     },
-    membership: {
-      current: number
-      previous: number
-      paypalSubscriptions: {
-        personal: (string | null)[]
-        professional: (string | null)[]
-        enterprise: (string | null)[]
-      },
-    }
-  }
+  },
+  // daily: Statistic[]|undefined
+  // monthly: Statistic[]|undefined
+  // yearly: Statistic[]|undefined
+}
 
 export const createUserIfNotExist = async (userAttributes: any): Promise<UserParams> => {
   const queryResult = await API.graphql<UserBySubQuery>(
@@ -64,7 +77,8 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
   const user = mutationResult.data?.createUser as UserParams
   
   return(user);
-}  
+}
+
 
 export const isAuthenticated = () => {
   return window['localStorage']['isAuthenticated'] === 'true';

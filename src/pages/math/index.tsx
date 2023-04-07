@@ -3,6 +3,8 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
+import { Statistic, User } from '@/models';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/Statistic';
 import { getConcepts } from '@/types/math';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
@@ -21,10 +23,12 @@ import {
   RadioGroup, 
   Spacer, 
   useDisclosure, 
+  useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
+import { DataStore } from 'aws-amplify';
 import Script from 'next/script';
 import { useContext, useState } from 'react'
 
@@ -46,6 +50,7 @@ function MathExam() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const allLevelsChecked = levels.length === selectedLevels.length;
   const isLevelIndeterminate = selectedLevels.length > 0 && selectedLevels.length < levels.length;
+  const toast = useToast();
 
   const setCheckedConcepts = (value: MathConcept) => {
     let concepts = selectedConcepts;
@@ -94,6 +99,39 @@ function MathExam() {
     } else {
       setSelectedLevels([]);
     }
+  }
+
+  const startButtonClickedHandler = async () => {
+    if (!currentUser) return;
+
+    const user = await DataStore.query(User, currentUser.id);
+    if (!user) return;
+
+    const todayStatistic = await getTodayStatistic(user);
+
+    if (
+      todayStatistic &&
+      user.quota &&
+      user.quota.mathPerDay - todayStatistic.mathRequest < Number(num)
+    ) {
+      toast({
+        description: `The number of questions you generated today exceeded your current quota.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    onOpenExamModal();
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      mathRequest: Number(num)
+    }
+
+    await addStatisticData(statistic, undefined, user);
   }
 
   return (
@@ -213,7 +251,7 @@ function MathExam() {
 
             <HStack justify='flex-end' w='full'>
               <Button
-                onClick={onOpenExamModal}
+                onClick={startButtonClickedHandler}
                 isDisabled={!selectedConcepts.length || !selectedLevels.length}
               >
                 Start

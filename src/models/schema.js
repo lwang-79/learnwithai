@@ -71,22 +71,35 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "wrongQuestions": {
-                    "name": "wrongQuestions",
+                "daily": {
+                    "name": "daily",
                     "isArray": true,
-                    "type": "ID",
+                    "type": {
+                        "nonModel": "Statistic"
+                    },
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "statistic": {
-                    "name": "statistic",
-                    "isArray": false,
+                "monthly": {
+                    "name": "monthly",
+                    "isArray": true,
                     "type": {
                         "nonModel": "Statistic"
                     },
-                    "isRequired": false,
-                    "attributes": []
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "yearly": {
+                    "name": "yearly",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Statistic"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -290,96 +303,6 @@ export const schema = {
                             {
                                 "allow": "private",
                                 "provider": "iam",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "QuestionRun": {
-            "name": "QuestionRun",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "category": {
-                    "name": "category",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Date": {
-                    "name": "Date",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "total": {
-                    "name": "total",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "wrong": {
-                    "name": "wrong",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "correct": {
-                    "name": "correct",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "QuestionRuns",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
@@ -672,12 +595,40 @@ export const schema = {
                     "type": "Int",
                     "isRequired": true,
                     "attributes": []
+                },
+                "savedQuestions": {
+                    "name": "savedQuestions",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "savedTests": {
+                    "name": "savedTests",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "savedEssays": {
+                    "name": "savedEssays",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         },
         "Statistic": {
             "name": "Statistic",
             "fields": {
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "mathCorrect": {
                     "name": "mathCorrect",
                     "isArray": false,
@@ -699,6 +650,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "mathRequest": {
+                    "name": "mathRequest",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "readingCorrect": {
                     "name": "readingCorrect",
                     "isArray": false,
@@ -713,8 +671,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "readingRequest": {
+                    "name": "readingRequest",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "writing": {
                     "name": "writing",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "writingRequest": {
+                    "name": "writingRequest",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": true,
@@ -804,8 +776,27 @@ export const schema = {
                     "attributes": []
                 }
             }
+        },
+        "LambdaResponse": {
+            "name": "LambdaResponse",
+            "fields": {
+                "statusCode": {
+                    "name": "statusCode",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "body": {
+                    "name": "body",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "dde19166114b54afea877b79dcf3f088"
+    "version": "5b06e31f0a5feff817ea297208d20263"
 };

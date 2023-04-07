@@ -1,4 +1,4 @@
-import { LocalQuestionSet, QuestionRun, QuestionSet, Test, User } from "@/models";
+import { LocalQuestionSet, QuestionSet, Test, User } from "@/models";
 import { DataStore } from "aws-amplify";
 import { QuestionCategory } from "./types";
 
@@ -40,15 +40,15 @@ export const addNewMathQuestions = async (
 
   }
 
-  const run = new QuestionRun({
-    category: QuestionCategory.Math,
-    Date: (new Date()).toISOString().slice(0,10),
-    total: correct + wrong,
-    wrong: wrong,
-    correct: correct
-  });
+  // const run = new QuestionRun({
+  //   category: QuestionCategory.Math,
+  //   Date: (new Date()).toISOString().slice(0,10),
+  //   total: correct + wrong,
+  //   wrong: wrong,
+  //   correct: correct
+  // });
 
-  await DataStore.save(run);
+  // await DataStore.save(run);
 
   if (isTest) {
     const test = new Test({

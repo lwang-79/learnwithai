@@ -2,7 +2,10 @@ import Footer from '@/components/Common/Footer';
 import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
+import EssayList from '@/components/Writing/EssayList';
 import WritingBoard, { WritingMode } from '@/components/Writing/WritingBoard';
+import { Essay, Statistic, User } from '@/models';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/Statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 
@@ -17,11 +20,14 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
+  Text, 
   useDisclosure, 
+  useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
+import { DataStore } from 'aws-amplify';
 import { useContext, useState } from 'react'
 
 function Writing() {
@@ -37,8 +43,10 @@ function Writing() {
   const [ selectedType, setSelectedType ] = useState<string>(EssayType.Persuasive);
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
+  const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
   // const [ mode, setMode ] = useState<string>(WritingMode.Essay);
   const { currentUser } = useContext(SharedComponents);
+  const toast = useToast();
 
   // const setCheckedTopics = (value: MathConcept) => {
   //   let topics = selectedTopics;
@@ -51,6 +59,45 @@ function Writing() {
   //     setSelectedTopics([...topics, value]);
   //   }
   // }
+
+  const startButtonClickedHandler = async () => {
+    setSelectedEssay(undefined);
+    if (!currentUser) return;
+
+    const user = await DataStore.query(User, currentUser.id);
+    if (!user) return;
+
+    const todayStatistic = await getTodayStatistic(user);
+
+    if (
+      todayStatistic &&
+      user.quota &&
+      user.quota.writingPerDay - todayStatistic.writingRequest < 1
+    ) {
+      toast({
+        description: `The number of writing topic you generated today exceeded your current quota.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    setTimeout(()=>onOpenExamModal(), 100);
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      writingRequest: 1
+    }
+
+    await addStatisticData(statistic, undefined, user);
+  }
+
+  const openModalWithEssay = (essay: Essay) => {
+    setSelectedEssay(essay);
+    setTimeout(()=>onOpenExamModal(), 100);
+  }
 
   return (
     <WithAuth href='/login'>
@@ -115,22 +162,23 @@ function Writing() {
               </Wrap>
             </RadioGroup>
 
-
             <Divider />
-
-            <HStack w='full' align='flex-start'>
-              <Spacer />
               
-            </HStack>
-            <Spacer />
-
             <HStack justify='flex-end' w='full'>
               <Button
-                onClick={onOpenExamModal}
+                onClick={startButtonClickedHandler}
               >
                 Start
               </Button>
             </HStack>
+
+            <Divider />
+
+            <EssayList 
+              selectCallback={openModalWithEssay}
+              title='Recent Essays'
+              defaultPageStep={10}
+            />
 
             <Modal
               isOpen={isOpenExamModal} 
@@ -147,6 +195,7 @@ function Writing() {
                     topic={selectedTopic as EssayTopic}
                     type={selectedType as EssayType}
                     onClose={onCloseExamModal}
+                    initEssay={selectedEssay}
                   />
                 </ModalBody>
               </ModalContent>

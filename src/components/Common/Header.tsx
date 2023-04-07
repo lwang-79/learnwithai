@@ -160,7 +160,7 @@ export default function Header() {
                 <Button 
                   size='sm' 
                   mr={{base: 1, md: 2}}
-                  onClick={()=>router.push('/profile')}
+                  onClick={()=>router.push('/account')}
                   variant='unstyled'
                 >
                   {user.membership!.current < 2 ? (
@@ -188,14 +188,13 @@ export default function Header() {
                     showBorder
                     borderWidth='2px'
                     borderColor='gray.200'
-                    // src='/avatars/1.png'
                   />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => {router.push('/profile')}}>
+                  <MenuItem onClick={() => {router.push('/account')}}>
                     <HStack justifyContent={'center'}>
                       <Icon as={MdPerson} boxSize={6} color='gray.400' />
-                      <span>Profile</span>
+                      <span>Account</span>
                     </HStack>
                   </MenuItem>
                   <MenuItem onClick={toggleColorMode}>

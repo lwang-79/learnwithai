@@ -59,5 +59,72 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
     }
+  },
+  "function": {
+    "learnwithaiSubscribe": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "learnwithai"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_learnwithaiSubscribe_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiSubscribe_paypalApiEndpoint": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiSubscribe_paypalClientId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiSubscribe_paypalWebhookId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiSubscribe_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiSubscribe_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ]
+    }
   }
 }

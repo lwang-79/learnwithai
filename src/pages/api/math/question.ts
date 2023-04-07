@@ -46,8 +46,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         { role: 'system', content: 'You are a math teacher.' },
         { role: 'user', content: generatePrompt(category, type, level, concept) }
       ],
-      temperature: 0.5,
-      max_tokens:1000
+      temperature: 1,
+      max_tokens:600
     });
     res.status(200).json({ result: completion.data.choices[0].message?.content });
   } catch(error: any) {

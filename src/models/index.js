@@ -4,17 +4,17 @@ import { schema } from './schema';
 
 
 
-const { User, QuestionSet, QuestionRun, Test, Essay, Membership, Subscriptions, Quota, Statistic, LocalQuestionSet } = initSchema(schema);
+const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
   User,
   QuestionSet,
-  QuestionRun,
   Test,
   Essay,
   Membership,
   Subscriptions,
   Quota,
   Statistic,
-  LocalQuestionSet
+  LocalQuestionSet,
+  LambdaResponse
 };

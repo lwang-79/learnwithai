@@ -2,18 +2,88 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createQuestionRun = /* GraphQL */ `
-  mutation CreateQuestionRun(
-    $input: CreateQuestionRunInput!
-    $condition: ModelQuestionRunConditionInput
+export const learnwithaiSubscribe = /* GraphQL */ `
+  mutation LearnwithaiSubscribe(
+    $operation: String!
+    $userId: ID!
+    $subscriptionId: String!
   ) {
-    createQuestionRun(input: $input, condition: $condition) {
+    learnwithaiSubscribe(
+      operation: $operation
+      userId: $userId
+      subscriptionId: $subscriptionId
+    ) {
+      statusCode
+      body
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
       createdAt
       updatedAt
       _version
@@ -23,18 +93,72 @@ export const createQuestionRun = /* GraphQL */ `
     }
   }
 `;
-export const updateQuestionRun = /* GraphQL */ `
-  mutation UpdateQuestionRun(
-    $input: UpdateQuestionRunInput!
-    $condition: ModelQuestionRunConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateQuestionRun(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
       createdAt
       updatedAt
       _version
@@ -44,24 +168,156 @@ export const updateQuestionRun = /* GraphQL */ `
     }
   }
 `;
-export const deleteQuestionRun = /* GraphQL */ `
-  mutation DeleteQuestionRun(
-    $input: DeleteQuestionRunInput!
-    $condition: ModelQuestionRunConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteQuestionRun(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       owner
+    }
+  }
+`;
+export const createQuestionSet = /* GraphQL */ `
+  mutation CreateQuestionSet(
+    $input: CreateQuestionSetInput!
+    $condition: ModelQuestionSetConditionInput
+  ) {
+    createQuestionSet(input: $input, condition: $condition) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateQuestionSet = /* GraphQL */ `
+  mutation UpdateQuestionSet(
+    $input: UpdateQuestionSetInput!
+    $condition: ModelQuestionSetConditionInput
+  ) {
+    updateQuestionSet(input: $input, condition: $condition) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteQuestionSet = /* GraphQL */ `
+  mutation DeleteQuestionSet(
+    $input: DeleteQuestionSetInput!
+    $condition: ModelQuestionSetConditionInput
+  ) {
+    deleteQuestionSet(input: $input, condition: $condition) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -230,219 +486,6 @@ export const deleteEssay = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
-    }
-  }
-`;
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    updateUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const createQuestionSet = /* GraphQL */ `
-  mutation CreateQuestionSet(
-    $input: CreateQuestionSetInput!
-    $condition: ModelQuestionSetConditionInput
-  ) {
-    createQuestionSet(input: $input, condition: $condition) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateQuestionSet = /* GraphQL */ `
-  mutation UpdateQuestionSet(
-    $input: UpdateQuestionSetInput!
-    $condition: ModelQuestionSetConditionInput
-  ) {
-    updateQuestionSet(input: $input, condition: $condition) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteQuestionSet = /* GraphQL */ `
-  mutation DeleteQuestionSet(
-    $input: DeleteQuestionSetInput!
-    $condition: ModelQuestionSetConditionInput
-  ) {
-    deleteQuestionSet(input: $input, condition: $condition) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "api": {
+      "learnwithai": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "paypalApiEndpoint",
+      "environmentVariableName": "PAYPAL_API_ENDPOINT"
+    },
+    {
+      "cloudFormationParameterName": "paypalClientId",
+      "environmentVariableName": "PAYPAL_CLIENT_ID"
+    },
+    {
+      "cloudFormationParameterName": "paypalWebhookId",
+      "environmentVariableName": "PAYPAL_WEBHOOK_ID"
+    }
+  ],
+  "secretNames": [
+    "PAYPAL_SECRET"
+  ]
+}

@@ -1,5 +1,3 @@
-import { updateQuestionSet } from "@/graphql/mutations";
-import { addNewMathQuestions } from "@/types/questions";
 import { 
   MathConcept, 
   QuestionCategory, 
@@ -43,6 +41,9 @@ import { MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
+import { Statistic } from "@/models";
+import { InitStatistic, addStatisticData } from "@/types/Statistic";
+import { addNewMathQuestions } from "@/types/questions";
 
 export enum QuestionRunMode {
   Practice = 'practice',
@@ -252,7 +253,8 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     setCurrentQuestionSet(questionSetsRef.current[currentIndexRef.current]);
   }
 
-  const submit = async () => {
+  const submitButtonClickedHandler = async () => {
+    if (!currentUser) return;
 
     let correct = 0;
     for (let i = 0; i <= lastIndexRef.current; i++) {
@@ -260,6 +262,14 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
         correct += 1;
       }
     }
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      mathCorrect: correct,
+      mathWrong: lastIndexRef.current + 1 - correct
+    };
+
+    addStatisticData(statistic, currentUser.id);
 
     setResult({ total: lastIndexRef.current + 1, correct: correct });
     setIsSubmitted(true);
@@ -404,6 +414,13 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             align='flex-start'
             spacing={4}
           >
+            <HStack>
+              {levels.map((level, index)=> {
+                return <Text fontSize='sm' key={`${level}-${index}`}>{level}</Text>
+              })}
+              <Text fontSize='sm'>{mode}</Text>
+            </HStack>
+            
             <HStack 
               spacing={4} 
               minH='30vh'
@@ -550,7 +567,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   <Spacer />
                 </Wrap>
                 <Button
-                  onClick={submit}
+                  onClick={submitButtonClickedHandler}
                   isDisabled={
                     questionSets.length === 0 ||
                     isSubmitted

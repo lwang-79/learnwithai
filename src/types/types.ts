@@ -32,6 +32,15 @@ export enum MathConcept {
   Matrices = 'matrices',
   // DifferentialEquations = 'differential equations',
   // Calculus = 'calculus',
+
+  Geometry = 'geometry',
+  Equations = 'equations',
+  CoordinateGeometry = 'coordinate geometry',
+  Indices = 'indices',
+  MeasurementPerimeter = 'measurement perimeter',
+  MeasurementArea = 'measurement area',
+  
+
 }
 
 export enum QuestionCategory {

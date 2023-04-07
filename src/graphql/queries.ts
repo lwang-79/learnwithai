@@ -2,15 +2,69 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getQuestionRun = /* GraphQL */ `
-  query GetQuestionRun($id: ID!) {
-    getQuestionRun(id: $id) {
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
       createdAt
       updatedAt
       _version
@@ -20,20 +74,74 @@ export const getQuestionRun = /* GraphQL */ `
     }
   }
 `;
-export const listQuestionRuns = /* GraphQL */ `
-  query ListQuestionRuns(
-    $filter: ModelQuestionRunFilterInput
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listQuestionRuns(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        category
-        Date
-        total
-        wrong
-        correct
+        sub
+        username
+        email
+        picture
+        quota {
+          mathPerDay
+          readingPerDay
+          writingPerDay
+          savedQuestions
+          savedTests
+          savedEssays
+        }
+        membership {
+          current
+          previous
+          paypalSubscriptions {
+            personal
+            professional
+            enterprise
+          }
+        }
+        payerId
+        markedQuestions
+        daily {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        monthly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        yearly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
         createdAt
         updatedAt
         _version
@@ -46,14 +154,14 @@ export const listQuestionRuns = /* GraphQL */ `
     }
   }
 `;
-export const syncQuestionRuns = /* GraphQL */ `
-  query SyncQuestionRuns(
-    $filter: ModelQuestionRunFilterInput
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncQuestionRuns(
+    syncUsers(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -61,17 +169,338 @@ export const syncQuestionRuns = /* GraphQL */ `
     ) {
       items {
         id
-        category
-        Date
-        total
-        wrong
-        correct
+        sub
+        username
+        email
+        picture
+        quota {
+          mathPerDay
+          readingPerDay
+          writingPerDay
+          savedQuestions
+          savedTests
+          savedEssays
+        }
+        membership {
+          current
+          previous
+          paypalSubscriptions {
+            personal
+            professional
+            enterprise
+          }
+        }
+        payerId
+        markedQuestions
+        daily {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        monthly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        yearly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userBySub = /* GraphQL */ `
+  query UserBySub(
+    $sub: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userBySub(
+      sub: $sub
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        sub
+        username
+        email
+        picture
+        quota {
+          mathPerDay
+          readingPerDay
+          writingPerDay
+          savedQuestions
+          savedTests
+          savedEssays
+        }
+        membership {
+          current
+          previous
+          paypalSubscriptions {
+            personal
+            professional
+            enterprise
+          }
+        }
+        payerId
+        markedQuestions
+        daily {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        monthly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        yearly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const userByPayerId = /* GraphQL */ `
+  query UserByPayerId(
+    $payerId: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByPayerId(
+      payerId: $payerId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        sub
+        username
+        email
+        picture
+        quota {
+          mathPerDay
+          readingPerDay
+          writingPerDay
+          savedQuestions
+          savedTests
+          savedEssays
+        }
+        membership {
+          current
+          previous
+          paypalSubscriptions {
+            personal
+            professional
+            enterprise
+          }
+        }
+        payerId
+        markedQuestions
+        daily {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        monthly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        yearly {
+          date
+          mathCorrect
+          mathWrong
+          mathExam
+          mathRequest
+          readingCorrect
+          readingWrong
+          readingRequest
+          writing
+          writingRequest
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getQuestionSet = /* GraphQL */ `
+  query GetQuestionSet($id: ID!) {
+    getQuestionSet(id: $id) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listQuestionSets = /* GraphQL */ `
+  query ListQuestionSets(
+    $filter: ModelQuestionSetFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQuestionSets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        question
+        options
+        answer
+        workout
+        type
+        category
+        level
+        concept
+        correctCount
+        wrongCount
+        badCount
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncQuestionSets = /* GraphQL */ `
+  query SyncQuestionSets(
+    $filter: ModelQuestionSetFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncQuestionSets(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        question
+        options
+        answer
+        workout
+        type
+        category
+        level
+        concept
+        correctCount
+        wrongCount
+        badCount
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       nextToken
       startedAt
@@ -266,361 +695,6 @@ export const syncEssays = /* GraphQL */ `
         _deleted
         _lastChangedAt
         owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        sub
-        username
-        email
-        picture
-        quota {
-          mathPerDay
-          readingPerDay
-          writingPerDay
-        }
-        membership {
-          current
-          previous
-          paypalSubscriptions {
-            personal
-            professional
-            enterprise
-          }
-        }
-        payerId
-        markedQuestions
-        wrongQuestions
-        statistic {
-          mathCorrect
-          mathWrong
-          mathExam
-          readingCorrect
-          readingWrong
-          writing
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        sub
-        username
-        email
-        picture
-        quota {
-          mathPerDay
-          readingPerDay
-          writingPerDay
-        }
-        membership {
-          current
-          previous
-          paypalSubscriptions {
-            personal
-            professional
-            enterprise
-          }
-        }
-        payerId
-        markedQuestions
-        wrongQuestions
-        statistic {
-          mathCorrect
-          mathWrong
-          mathExam
-          readingCorrect
-          readingWrong
-          writing
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const userBySub = /* GraphQL */ `
-  query UserBySub(
-    $sub: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userBySub(
-      sub: $sub
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        sub
-        username
-        email
-        picture
-        quota {
-          mathPerDay
-          readingPerDay
-          writingPerDay
-        }
-        membership {
-          current
-          previous
-          paypalSubscriptions {
-            personal
-            professional
-            enterprise
-          }
-        }
-        payerId
-        markedQuestions
-        wrongQuestions
-        statistic {
-          mathCorrect
-          mathWrong
-          mathExam
-          readingCorrect
-          readingWrong
-          writing
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const userByPayerId = /* GraphQL */ `
-  query UserByPayerId(
-    $payerId: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userByPayerId(
-      payerId: $payerId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        sub
-        username
-        email
-        picture
-        quota {
-          mathPerDay
-          readingPerDay
-          writingPerDay
-        }
-        membership {
-          current
-          previous
-          paypalSubscriptions {
-            personal
-            professional
-            enterprise
-          }
-        }
-        payerId
-        markedQuestions
-        wrongQuestions
-        statistic {
-          mathCorrect
-          mathWrong
-          mathExam
-          readingCorrect
-          readingWrong
-          writing
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        owner
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getQuestionSet = /* GraphQL */ `
-  query GetQuestionSet($id: ID!) {
-    getQuestionSet(id: $id) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listQuestionSets = /* GraphQL */ `
-  query ListQuestionSets(
-    $filter: ModelQuestionSetFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listQuestionSets(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        question
-        options
-        answer
-        workout
-        type
-        category
-        level
-        concept
-        correctCount
-        wrongCount
-        badCount
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncQuestionSets = /* GraphQL */ `
-  query SyncQuestionSets(
-    $filter: ModelQuestionSetFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncQuestionSets(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        question
-        options
-        answer
-        workout
-        type
-        category
-        level
-        concept
-        correctCount
-        wrongCount
-        badCount
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
