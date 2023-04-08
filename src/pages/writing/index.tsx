@@ -5,7 +5,7 @@ import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
 import WritingBoard, { WritingMode } from '@/components/Writing/WritingBoard';
 import { Essay, Statistic, User } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistics';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 
@@ -44,21 +44,8 @@ function Writing() {
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
   const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
-  // const [ mode, setMode ] = useState<string>(WritingMode.Essay);
   const { currentUser } = useContext(SharedComponents);
   const toast = useToast();
-
-  // const setCheckedTopics = (value: MathConcept) => {
-  //   let topics = selectedTopics;
-  //   const index = topics.indexOf(value);
-
-  //   if (index > -1) {
-  //     topics.splice(index, 1);
-  //     setSelectedTopics([...topics]);
-  //   } else {
-  //     setSelectedTopics([...topics, value]);
-  //   }
-  // }
 
   const startButtonClickedHandler = async () => {
     setSelectedEssay(undefined);
@@ -108,7 +95,7 @@ function Writing() {
         >
           <Header />
 
-          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
+          <VStack maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setSelectedType} value={selectedType}>
               <Heading size='sm'>Type</Heading>
               <Wrap spacing={4} mt={2}>

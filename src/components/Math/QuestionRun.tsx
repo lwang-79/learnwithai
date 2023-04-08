@@ -27,6 +27,7 @@ import {
   Spacer, 
   Spinner, 
   Stack, 
+  Tag, 
   Text, 
   Tooltip, 
   useBoolean, 
@@ -41,13 +42,14 @@ import { MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { Statistic } from "@/models";
-import { InitStatistic, addStatisticData } from "@/types/statistics";
+import { Statistic, Test } from "@/models";
+import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addNewMathQuestions } from "@/types/questions";
 
 export enum QuestionRunMode {
   Practice = 'practice',
-  Test = 'test'
+  Test = 'test',
+  Review = 'review'
 }
 
 interface QuestionRunProps {
@@ -58,13 +60,15 @@ interface QuestionRunProps {
   maxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
+  test?: Test
 }
 
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultNumber, onClose }: QuestionRunProps) {
+function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
+  const isReview = mode === QuestionRunMode.Review;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
   const [ currentIndex, setCurrentIndex ] = useState(0);
@@ -98,6 +102,14 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
 
   useEffect(() => {
+    if (isReview && test) {
+      questionSetsRef.current = test.questionSets;
+      lastIndexRef.current = maxNum;
+      setQuestionSets(test.questionSets);
+      setCurrentQuestionSet(test.questionSets[0]);
+      setValue(test.questionSets[0].selected)
+      return;
+    }
     AddQuestionSets(cacheNumber);
   },[]);
 
@@ -279,9 +291,9 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   const getQuestionColor = (q: LocalQuestionSet, index: number) => {
     const isCurrent = index === currentIndexRef.current;
 
-    if (!isSubmitted && !isCurrent) return 'gray';
+    if (!(isSubmitted || isReview) && !isCurrent) return 'gray';
 
-    if (!isSubmitted && isCurrent) return 'teal';
+    if (!(isSubmitted || isReview) && isCurrent) return 'teal';
 
     if (q.answer === q.selected) return 'teal';
     
@@ -308,7 +320,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
+    if (!isReview) await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
     onClose();
     setIsProcessing(false);
   }
@@ -418,7 +430,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
               {levels.map((level, index)=> {
                 return <Text fontSize='sm' key={`${level}-${index}`}>{level}</Text>
               })}
-              <Text fontSize='sm'>{mode}</Text>
+              <Tag rounded='full' fontSize='sm'>{mode.charAt(0).toUpperCase() + mode.slice(1)}</Tag>
             </HStack>
             
             <HStack 
@@ -570,7 +582,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   onClick={submitButtonClickedHandler}
                   isDisabled={
                     questionSets.length === 0 ||
-                    isSubmitted
+                    isSubmitted || isReview
                   }
                 >
                   Submit

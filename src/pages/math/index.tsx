@@ -3,8 +3,8 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
-import { Statistic, User } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistics';
+import { Statistic, Test, User } from '@/models';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { getConcepts } from '@/types/math';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
@@ -31,6 +31,7 @@ import {
 import { DataStore } from 'aws-amplify';
 import Script from 'next/script';
 import { useContext, useState } from 'react'
+import TestList from '@/components/Math/TestList';
 
 function MathExam() {
   const { 
@@ -50,6 +51,7 @@ function MathExam() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const allLevelsChecked = levels.length === selectedLevels.length;
   const isLevelIndeterminate = selectedLevels.length > 0 && selectedLevels.length < levels.length;
+  const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
 
   const setCheckedConcepts = (value: MathConcept) => {
@@ -102,6 +104,7 @@ function MathExam() {
   }
 
   const startButtonClickedHandler = async () => {
+    setSelectedTest(undefined);
     if (!currentUser) return;
 
     const user = await DataStore.query(User, currentUser.id);
@@ -124,7 +127,7 @@ function MathExam() {
       return;
     }
 
-    onOpenExamModal();
+    setTimeout(()=>onOpenExamModal(), 100);
 
     const statistic: Statistic = {
       ...InitStatistic,
@@ -133,6 +136,15 @@ function MathExam() {
 
     await addStatisticData(statistic, undefined, user);
   }
+
+  const openModalWithTest = (test: Test) => {
+    setMode(QuestionRunMode.Practice);
+    setSelectedTest(test);
+    setNum(test.questionSets.length.toString());
+    setMode(QuestionRunMode.Review);
+    setTimeout(()=>onOpenExamModal(), 100);
+  }
+
 
   return (
     <WithAuth href='/login'>
@@ -258,6 +270,15 @@ function MathExam() {
               </Button>
             </HStack>
 
+            <Divider />
+            
+            <TestList 
+              selectCallback={openModalWithTest}
+              title='Recent tests'
+              defaultPageStep={10}
+            />
+
+
             <Modal
               isOpen={isOpenExamModal} 
               onClose={onCloseExamModal}
@@ -276,6 +297,7 @@ function MathExam() {
                     maxNum={Number(num)}
                     mode={mode as QuestionRunMode}
                     onClose={onCloseExamModal}
+                    test={selectedTest}
                   />
                 </ModalBody>
               </ModalContent>

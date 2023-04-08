@@ -40,16 +40,6 @@ export const addNewMathQuestions = async (
 
   }
 
-  // const run = new QuestionRun({
-  //   category: QuestionCategory.Math,
-  //   Date: (new Date()).toISOString().slice(0,10),
-  //   total: correct + wrong,
-  //   wrong: wrong,
-  //   correct: correct
-  // });
-
-  // await DataStore.save(run);
-
   if (isTest) {
     const test = new Test({
       category: QuestionCategory.Math,
