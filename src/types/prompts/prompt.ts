@@ -1,72 +1,72 @@
-import { MathConcept, QuestionCategory, QuestionLevel } from "./types"
+import { MathConcept, QuestionCategory, QuestionLevel } from "../types"
 
-export const getMessageByConcept = (
-  concept: MathConcept,
-  level: QuestionLevel,
-  category: QuestionCategory
-): string => {
-  const l = convertLevel(level);
-  const al = adjustLevel(l, concept);
-  const general = `
-  1. Give a ${al} level difficulty ${concept} ${category} question.
-  `;
+// export const getMessageByConcept = (
+//   concept: MathConcept,
+//   level: QuestionLevel,
+//   category: QuestionCategory
+// ): string => {
+//   const l = convertLevel(level);
+//   const al = adjustLevel(l, concept);
+//   const general = `
+//   1. Give a ${al} level difficulty ${concept} ${category} question.
+//   `;
 
-  const custom = `
-  Give a ${al} level difficulty ${concept} ${category} question.
-  `
+//   const custom = `
+//   Give a ${al} level difficulty ${concept} ${category} question.
+//   `
 
-  switch (concept) {
-    case MathConcept.TwoPartJourney:
-      return twoPartJourneyQuestion;
+//   switch (concept) {
+//     case MathConcept.TwoPartJourney:
+//       return twoPartJourneyQuestion;
 
-    case MathConcept.Addition:
-    case MathConcept.Subtraction:
-    case MathConcept.Multiplication:
-    case MathConcept.Division:
-    case MathConcept.Arithmetic:
-      return custom + arithmeticQuestion;
-    default:
-      return general + generalPrompt;
-  }
-}
+//     case MathConcept.Addition:
+//     case MathConcept.Subtraction:
+//     case MathConcept.Multiplication:
+//     case MathConcept.Division:
+//     case MathConcept.Arithmetic:
+//       return custom + arithmeticQuestion;
+//     default:
+//       return general + generalPrompt;
+//   }
+// }
 
-const convertLevel = (level: QuestionLevel) => {
-  switch (level) {
-    case QuestionLevel.Year1:
-    case QuestionLevel.Year2:
-    case QuestionLevel.Year3:
-      return 'low'
-    case QuestionLevel.Year4:
-    case QuestionLevel.Year5:
-    case QuestionLevel.Year6:
-      return 'lower-middle'
-    case QuestionLevel.Year7:
-    case QuestionLevel.Year8:
-      return 'middle'
-    case QuestionLevel.Year9:
-    case QuestionLevel.Year10:
-      return 'higher-middle'
-    case QuestionLevel.Year11:
-    case QuestionLevel.Year12:
-      return 'high'
-    default:
-      return level
-  }
-}
+// const convertLevel = (level: QuestionLevel) => {
+//   switch (level) {
+//     case QuestionLevel.Year1:
+//     case QuestionLevel.Year2:
+//     case QuestionLevel.Year3:
+//       return 'low'
+//     case QuestionLevel.Year4:
+//     case QuestionLevel.Year5:
+//     case QuestionLevel.Year6:
+//       return 'lower-middle'
+//     case QuestionLevel.Year7:
+//     case QuestionLevel.Year8:
+//       return 'middle'
+//     case QuestionLevel.Year9:
+//     case QuestionLevel.Year10:
+//       return 'higher-middle'
+//     case QuestionLevel.Year11:
+//     case QuestionLevel.Year12:
+//       return 'high'
+//     default:
+//       return level
+//   }
+// }
 
-const adjustLevel = (l: string, c: MathConcept) => {
-  if ([
-    MathConcept.Addition, 
-    MathConcept.Subtraction, 
-    MathConcept.Multiplication,
-    MathConcept.Division,
-    MathConcept.Arithmetic
-  ].includes(c) && l.includes('high')) {
-    return 'middle';
-  }
+// const adjustLevel = (l: string, c: MathConcept) => {
+//   if ([
+//     MathConcept.Addition, 
+//     MathConcept.Subtraction, 
+//     MathConcept.Multiplication,
+//     MathConcept.Division,
+//     MathConcept.Arithmetic
+//   ].includes(c) && l.includes('high')) {
+//     return 'middle';
+//   }
 
-  return l;
-}
+//   return l;
+// }
 
 const twoPartJourneyQuestion = `
 The formula is distance = speed x time

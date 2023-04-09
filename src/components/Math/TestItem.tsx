@@ -1,5 +1,5 @@
 import { Test } from "@/models"
-import { Card, CardBody, HStack, Text } from "@chakra-ui/react"
+import { Card, CardBody, Text } from "@chakra-ui/react"
 
 interface TestItemProps {
   test: Test
@@ -9,11 +9,8 @@ function TestItem({ test }: TestItemProps) {
     <>
       <Card shadow='xs'>
         <CardBody>
-          <Text whiteSpace='nowrap'>{test.DateTime.slice(0,10)}</Text>
-          <Text>Score: {test.correct} / {test.total}</Text>
-          {/* <Text whiteSpace='nowrap'>{test.total} Questions</Text>
-          <Text color='teal' whiteSpace='nowrap'>{test.correct} Correct</Text>
-          <Text color='red' whiteSpace='nowrap'>{test.wrong} Wrong</Text> */}
+          <Text fontSize='xs'>{(new Date(test.DateTime)).toLocaleString('sv-SE')}</Text>
+          <Text fontSize='sm'>Score: {test.correct} / {test.total}</Text>
         </CardBody>
       </Card>
     </>

@@ -38,7 +38,7 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
@@ -85,6 +85,9 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   // fetchingStatus is used to detect new set and resume from waiting status
   const [ fetchingStatus, setFetchingStatus ] = useBoolean(false);
 
+  // how many fetching is running, used to avoid querying too much.
+  const addingQuestionCountRef = useRef(0);
+
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
@@ -123,6 +126,8 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   },[fetchingStatus]);
 
   const AddQuestionSets = async (num: number) => {
+    addingQuestionCountRef.current += num;
+
     for (let i = 0; i < num; i++) {
       let questionSet: LocalQuestionSet | undefined;
       let tryCount = 0;
@@ -154,6 +159,8 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
+
+    addingQuestionCountRef.current -= num;
   }
 
   const generateQuestionSet = async (): Promise<LocalQuestionSet> => {
@@ -243,8 +250,9 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     );
 
     if (currentIndexRef.current > lastIndexRef.current) {
+      console.log(currentIndexRef.current, lastIndexRef.current, questionSetsRef.current.length)
       lastIndexRef.current += 1;
-      if(questionSetsRef.current.length < maxNum) AddQuestionSets(1);
+      if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) AddQuestionSets(1);
     }
 
     setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
@@ -291,9 +299,11 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   const getQuestionColor = (q: LocalQuestionSet, index: number) => {
     const isCurrent = index === currentIndexRef.current;
 
-    if (!(isSubmitted || isReview) && !isCurrent) return 'gray';
-
-    if (!(isSubmitted || isReview) && isCurrent) return 'teal';
+    if (!(isSubmitted || isReview)) {
+      if (q.isTarget) return 'yellow';
+      if (!isCurrent) return 'gray';
+      if (isCurrent) return 'teal';
+    }
 
     if (q.answer === q.selected) return 'teal';
     
@@ -370,11 +380,11 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             <Button 
               variant='solid'
               size='sm'
-              as='b'
+              // as='b'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
             >
-              {index + 1}
+              <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
           ) : (
             <Button 
@@ -384,7 +394,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
               colorScheme={getQuestionColor(questionSet, index)}
               w='35px' h='35px'
             >
-              {index + 1}
+              <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
           )}
         </WrapItem>
@@ -452,10 +462,24 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   </Text>
                   <Spacer />
 
+                  <Tooltip label='Add to my questions'>
+                    <IconButton
+                      rounded='full'
+                      variant='ghost'
+                      aria-label='Add to my questions'
+                      colorScheme='teal'
+                      size='sm'
+                      w='35px' h='35px'
+                      icon={<Icon as={SlTarget} boxSize={6} />}
+                      // onClick={targetButtonClickedHandler}
+                      // isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
+                    />
+                  </Tooltip>
+
                   <Tooltip
                     label={
                       currentQuestionSet && currentQuestionSet.isTarget ?
-                      'Remove from my questions' : 'Add to my questions'
+                      'Remove the mark' : 'Mark the question'
                     }
                   >
                     <IconButton
@@ -463,13 +487,13 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                       variant={
                         currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
                       }
-                      aria-label='Add to my questions'
-                      colorScheme='teal'
+                      aria-label='Mark the question'
+                      colorScheme='yellow'
                       size='sm'
                       w='35px' h='35px'
-                      icon={<Icon as={SlTarget} boxSize={6} />}
+                      icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
                       onClick={targetButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2}
+                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
                     />
                   </Tooltip>
 
@@ -490,7 +514,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                       w='35px' h='35px'
                       icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
                       onClick={badButtonClickedHandler}
-                      isDisabled={!currentQuestionSet}
+                      isDisabled={!currentQuestionSet || isReview}
                     />
                   </Tooltip>
                 </HStack>
@@ -510,7 +534,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                               <Radio 
                                 value={String.fromCharCode(65 + index)} 
                                 key={index}
-                                isDisabled={isSubmitted}
+                                isDisabled={isSubmitted || isReview}
                               >
                                 {`${String.fromCharCode(65 + index)}: ${option}`}
                               </Radio>
@@ -582,7 +606,8 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   onClick={submitButtonClickedHandler}
                   isDisabled={
                     questionSets.length === 0 ||
-                    isSubmitted || isReview
+                    isSubmitted || isReview ||
+                    addingQuestionCountRef.current !== 0
                   }
                 >
                   Submit

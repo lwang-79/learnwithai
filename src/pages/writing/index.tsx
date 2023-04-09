@@ -95,7 +95,7 @@ function Writing() {
         >
           <Header />
 
-          <VStack maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
+          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setSelectedType} value={selectedType}>
               <Heading size='sm'>Type</Heading>
               <Wrap spacing={4} mt={2}>

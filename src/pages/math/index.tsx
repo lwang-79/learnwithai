@@ -84,14 +84,14 @@ function MathExam() {
     } else {
       setSelectedLevels([...levels, level]);
 
-      const concepts = getConcepts(level);
-      let toAddConcepts: MathConcept[] = [];
-      for (const concept of concepts) {
-        if (!selectedConcepts.includes(concept)) {
-          toAddConcepts.push(concept);
-        }
-      }
-      setSelectedConcepts([...selectedConcepts, ...toAddConcepts]);
+      // const concepts = getConcepts(level);
+      // let toAddConcepts: MathConcept[] = [];
+      // for (const concept of concepts) {
+      //   if (!selectedConcepts.includes(concept)) {
+      //     toAddConcepts.push(concept);
+      //   }
+      // }
+      // setSelectedConcepts([...selectedConcepts, ...toAddConcepts]);
     }
   }
 
@@ -138,11 +138,19 @@ function MathExam() {
   }
 
   const openModalWithTest = (test: Test) => {
-    setMode(QuestionRunMode.Practice);
+    // setMode(QuestionRunMode.Practice);
     setSelectedTest(test);
     setNum(test.questionSets.length.toString());
     setMode(QuestionRunMode.Review);
-    setTimeout(()=>onOpenExamModal(), 100);
+    setTimeout(()=>{
+      onOpenExamModal();
+    }, 100);
+  }
+
+  const modalClosedHandler = () => {
+    onCloseExamModal();
+    setMode(QuestionRunMode.Practice);
+    setNum('10');
   }
 
 
@@ -281,7 +289,7 @@ function MathExam() {
 
             <Modal
               isOpen={isOpenExamModal} 
-              onClose={onCloseExamModal}
+              onClose={modalClosedHandler}
               scrollBehavior='inside'
               size='full'
               closeOnEsc={false}
@@ -296,7 +304,7 @@ function MathExam() {
                     concepts={selectedConcepts}
                     maxNum={Number(num)}
                     mode={mode as QuestionRunMode}
-                    onClose={onCloseExamModal}
+                    onClose={modalClosedHandler}
                     test={selectedTest}
                   />
                 </ModalBody>

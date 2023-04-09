@@ -36,7 +36,7 @@ export const addNewMathQuestions = async (
     correct += correctCount;
     wrong += wrongCount;
 
-    await DataStore.save(questionSet);
+    // await DataStore.save(questionSet);
 
   }
 
