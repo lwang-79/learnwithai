@@ -83,6 +83,9 @@ function Writing() {
 
   const openModalWithEssay = (essay: Essay) => {
     setSelectedEssay(essay);
+    setSelectedLevel(essay.level);
+    setSelectedTopic(essay.topic);
+    setSelectedType(essay.type);
     setTimeout(()=>onOpenExamModal(), 100);
   }
 

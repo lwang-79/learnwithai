@@ -8,7 +8,7 @@ function TestItem({ test }: TestItemProps) {
   return (
     <>
       <Card shadow='xs'>
-        <CardBody>
+        <CardBody p={4}>
           <Text fontSize='xs'>{(new Date(test.DateTime)).toLocaleString('sv-SE')}</Text>
           <Text fontSize='sm'>Score: {test.correct} / {test.total}</Text>
         </CardBody>

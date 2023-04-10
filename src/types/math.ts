@@ -14,15 +14,15 @@ export const getConcepts = (level: QuestionLevel): MathConcept[] => {
       return Year5Concepts;
     case QuestionLevel.Year6:
       return Year6Concepts
-    case QuestionLevel.Primary:
-    case QuestionLevel.Year7:
-    case QuestionLevel.Year8:
-    case QuestionLevel.Year9:
-    case QuestionLevel.Middle:
-    case QuestionLevel.Year10:
-    case QuestionLevel.Year11:
-    case QuestionLevel.Year12:
-    case QuestionLevel.High:
+    // case QuestionLevel.Primary:
+    // case QuestionLevel.Year7:
+    // case QuestionLevel.Year8:
+    // case QuestionLevel.Year9:
+    // case QuestionLevel.Middle:
+    // case QuestionLevel.Year10:
+    // case QuestionLevel.Year11:
+    // case QuestionLevel.Year12:
+    // case QuestionLevel.High:
     default:
       return []
   }

@@ -33,7 +33,7 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'integer', 1000, 100, 2
         );
-      } else if (random >= 0.2 && random < 0.5) {
+      } else if (random < 0.5) {
         prompt = middleMultiplicationPrompt();
       } else {
         prompt = generalArithmeticPrompt(
@@ -46,9 +46,9 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'integer', 1000, 100, 2
         );
-      } else if (random >= 0.2 && random < 0.7) {
+      } else if (random < 0.7) {
         prompt = middleMultiplicationPrompt();
-      } else if (random >= 0.7 && random < 0.8) {
+      } else if (random < 0.8) {
         prompt = highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(
@@ -61,9 +61,9 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'integer', 1000, 100, 2
         );
-      } else if (random >= 0.2 && random < 0.5) {
+      } else if (random < 0.5) {
         prompt = middleMultiplicationPrompt();
-      } else if (random >= 0.7 && random < 0.8) {
+      } else if (random < 0.8) {
         prompt = highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(
@@ -74,7 +74,7 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
     default:
       if (random < 0.3) {
         prompt = middleMultiplicationPrompt();
-      } else if (random >= 0.7 && random < 0.9) {
+      } else if (random < 0.9) {
         prompt = highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(

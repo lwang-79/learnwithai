@@ -42,15 +42,15 @@ function MathExam() {
 
   const concepts = Object.values(MathConcept);
   const levels = Object.values(QuestionLevel);
-  const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([]);
-  const [ selectedLevels, setSelectedLevels ] = useState<QuestionLevel[]>([]);
+  const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
+  const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
   const { currentUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
-  const allLevelsChecked = levels.length === selectedLevels.length;
-  const isLevelIndeterminate = selectedLevels.length > 0 && selectedLevels.length < levels.length;
+  // const allLevelsChecked = levels.length === selectedLevels.length;
+  // const isLevelIndeterminate = selectedLevels.length > 0 && selectedLevels.length < levels.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
 
@@ -74,34 +74,34 @@ function MathExam() {
     }
   }
 
-  const setCheckedLevels = (level: QuestionLevel) => {
-    let levels = selectedLevels;
-    const index = levels.indexOf(level);
+  // const setCheckedLevels = (level: QuestionLevel) => {
+  //   let levels = selectedLevels;
+  //   const index = levels.indexOf(level);
 
-    if (index > -1) {
-      levels.splice(index, 1);
-      setSelectedLevels([...levels]);
-    } else {
-      setSelectedLevels([...levels, level]);
+  //   if (index > -1) {
+  //     levels.splice(index, 1);
+  //     setSelectedLevels([...levels]);
+  //   } else {
+  //     setSelectedLevels([...levels, level]);
 
-      // const concepts = getConcepts(level);
-      // let toAddConcepts: MathConcept[] = [];
-      // for (const concept of concepts) {
-      //   if (!selectedConcepts.includes(concept)) {
-      //     toAddConcepts.push(concept);
-      //   }
-      // }
-      // setSelectedConcepts([...selectedConcepts, ...toAddConcepts]);
-    }
-  }
+  //     // const concepts = getConcepts(level);
+  //     // let toAddConcepts: MathConcept[] = [];
+  //     // for (const concept of concepts) {
+  //     //   if (!selectedConcepts.includes(concept)) {
+  //     //     toAddConcepts.push(concept);
+  //     //   }
+  //     // }
+  //     // setSelectedConcepts([...selectedConcepts, ...toAddConcepts]);
+  //   }
+  // }
 
-  const setAllCheckedLevels = () => {
-    if (selectedLevels.length === 0) {
-      setSelectedLevels(levels);
-    } else {
-      setSelectedLevels([]);
-    }
-  }
+  // const setAllCheckedLevels = () => {
+  //   if (selectedLevels.length === 0) {
+  //     setSelectedLevels(levels);
+  //   } else {
+  //     setSelectedLevels([]);
+  //   }
+  // }
 
   const startButtonClickedHandler = async () => {
     setSelectedTest(undefined);
@@ -201,42 +201,34 @@ function MathExam() {
 
             <Divider />
 
-            <CheckboxGroup
-              value={selectedLevels}
+            <RadioGroup
+              onChange={setSelectedLevel}
+              value={selectedLevel}
             >
               <VStack align='flex-start'>
-                <Checkbox
-                  isChecked={allLevelsChecked}
-                  isIndeterminate={isLevelIndeterminate}
-                  onChange={setAllCheckedLevels}
-                >
-                  <Heading size='sm'>Level</Heading>
-                </Checkbox>
+                <Heading size='sm'>Level</Heading>
                 <Wrap>
                   {levels.map((level, index) => {
                     return (
                       <WrapItem key={`${level}-${index}`} minW='150px'>
-                        <Checkbox
+                        <Radio
                           value={level}
-                          isDisabled={
-                            currentUser!.membership.current < 2 && 
-                            ((index > 8 && index < 12) || index === 14)
-                          }
-                          onChange={(e) => setCheckedLevels(e.target.value as QuestionLevel)}
+                          isDisabled={currentUser.membership.current < 2}
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
-                        </Checkbox>
+                        </Radio>
                       </WrapItem>
                     )
                   })}
                 </Wrap>
               </VStack>
-            </CheckboxGroup>
+            </RadioGroup>
 
             <Divider />
 
             <CheckboxGroup
               value={selectedConcepts}
+              isDisabled={!selectedLevel.includes('Year')}
             >
               <VStack align='flex-start'>
                 <Checkbox
@@ -252,7 +244,7 @@ function MathExam() {
                       <WrapItem key={`${concept}-${index}`} minW='180px'>
                         <Checkbox
                           value={concept}
-                          isDisabled={index > 17 && currentUser!.membership.current < 2}
+                          isDisabled={!selectedLevel.includes('Year')}
                           onChange={(e) => setCheckedConcepts(e.target.value as MathConcept)}
                         >
                           {concept.charAt(0).toUpperCase() + concept.slice(1)}
@@ -272,7 +264,7 @@ function MathExam() {
             <HStack justify='flex-end' w='full'>
               <Button
                 onClick={startButtonClickedHandler}
-                isDisabled={!selectedConcepts.length || !selectedLevels.length}
+                isDisabled={!selectedConcepts.length || !selectedLevel}
               >
                 Start
               </Button>
@@ -300,7 +292,7 @@ function MathExam() {
                   <QuestionRun 
                     category={QuestionCategory.Math} 
                     type={QuestionType.MultiChoice}
-                    levels={selectedLevels}
+                    level={selectedLevel as QuestionLevel}
                     concepts={selectedConcepts}
                     maxNum={Number(num)}
                     mode={mode as QuestionRunMode}

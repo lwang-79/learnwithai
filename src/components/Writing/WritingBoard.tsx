@@ -128,6 +128,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
         essay: text
@@ -218,7 +219,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
               spacing={4}
             >
               <HStack w='full'>
-                <Text>{level} {type} essay</Text>
+                <Text>{level} {type}</Text>
                 {type == EssayType.Persuasive &&
                   <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
                 }

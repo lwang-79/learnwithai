@@ -22,7 +22,8 @@ export function generateDecimalsPrompt(level: QuestionLevel) {
         prompt = lowDecimalsPrompt();
       }
       break;
-    case QuestionLevel.Year4:if (random < 0.3) {
+    case QuestionLevel.Year4:
+      if (random < 0.3) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'decimals', 1, 0, 2, 1
         );
@@ -148,17 +149,3 @@ Give a middle level difficulty decimals multi-choice question with the following
 7. ${template}
 `
 }
-
-
-
-
-function highDecimalsPrompt() {
-  return `
-Give a high level difficulty math multiplication multi-choice question with the following conditions.
-1. Make a short story with these numbers, such as "Bianca's mum just took roast lamb out of the oven and set it aside to rest. The core temperature right now is 170 Fahrenheit and will drop 10 Fahrenheit every 5 minutes. If it rests for 20 minutes, what will the final core temperature be?"
-2. There should be 4 options including the correct answer.
-3. Work out the question with at least 2 methods.
-4. ${template}
-`
-}
-

@@ -6,6 +6,12 @@ import {
   QuestionType 
 } from "@/types/types";
 import { 
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button, 
   Center, 
@@ -44,7 +50,7 @@ import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addNewMathQuestions } from "@/types/questions";
+import { addNewMathQuestions, getQuestionsFromDataset } from "@/types/questions";
 
 export enum QuestionRunMode {
   Practice = 'practice',
@@ -55,7 +61,7 @@ export enum QuestionRunMode {
 interface QuestionRunProps {
   category: QuestionCategory
   type: QuestionType
-  levels: QuestionLevel[]
+  level: QuestionLevel
   concepts: MathConcept[]
   maxNum?: number
   mode: QuestionRunMode
@@ -66,7 +72,7 @@ interface QuestionRunProps {
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
+function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
   const isReview = mode === QuestionRunMode.Review;
   const lastIndexRef = useRef(0);
@@ -93,7 +99,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   const [ isSubmitted, setIsSubmitted ] = useState(false);
   const { currentUser, setIsProcessing } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
-
+  const cancelRef = useRef(null);
   const toast = useToast();
 
   const { 
@@ -102,17 +108,29 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     onClose: onCloseResultModal
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenAlert, 
+    onOpen: onOpenAlert, 
+    onClose: onCloseAlert 
+  } = useDisclosure();
+
 
 
   useEffect(() => {
     if (isReview && test) {
       questionSetsRef.current = test.questionSets;
-      lastIndexRef.current = maxNum;
+      lastIndexRef.current = maxNum - 1;
       setQuestionSets(test.questionSets);
       setCurrentQuestionSet(test.questionSets[0]);
       setValue(test.questionSets[0].selected)
       return;
     }
+
+    if (!level.includes('Year')) {
+      getAndSetAQuAQuestions(maxNum);
+      return;
+    }
+
     AddQuestionSets(cacheNumber);
   },[]);
 
@@ -124,6 +142,14 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
       setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
     }
   },[fetchingStatus]);
+
+  const getAndSetAQuAQuestions = async (num: number) => {
+    const questionSets = await getQuestionsFromDataset(level, num);
+    questionSetsRef.current = questionSets;
+    lastIndexRef.current = maxNum - 1;
+    setQuestionSets(questionSets);
+    setCurrentQuestionSet(questionSets[0]);
+  }
 
   const AddQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
@@ -165,7 +191,6 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
   const generateQuestionSet = async (): Promise<LocalQuestionSet> => {
     let c = concepts[Math.floor(Math.random() * concepts.length)];
-    let l = levels[Math.floor(Math.random() * levels.length)];
 
     const response = await fetch('/api/math/question', {
       method: 'POST',
@@ -175,7 +200,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
       body: JSON.stringify({
         category: category,
         type: type,
-        level: l,
+        level: level,
         concept: c
       }),
     });
@@ -219,7 +244,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     const questionSet: LocalQuestionSet = {
       type: QuestionType.MultiChoice,
       category: QuestionCategory.Math,
-      level: l,
+      level: level,
       concept: c,
       question: question,
       options: options,
@@ -275,6 +300,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
   const submitButtonClickedHandler = async () => {
     if (!currentUser) return;
+    onCloseAlert();
 
     let correct = 0;
     for (let i = 0; i <= lastIndexRef.current; i++) {
@@ -303,11 +329,12 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
       if (q.isTarget) return 'yellow';
       if (!isCurrent) return 'gray';
       if (isCurrent) return 'teal';
+    } else {
+      if (q.answer !== q.selected) return 'red';
+      if (q.isTarget) return 'yellow';
     }
 
-    if (q.answer === q.selected) return 'teal';
-    
-    return 'red';
+    return 'teal';
   }
 
   const targetButtonClickedHandler = () => {
@@ -380,7 +407,6 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             <Button 
               variant='solid'
               size='sm'
-              // as='b'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
             >
@@ -405,7 +431,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     const container = wrapRef.current;
     if (container)
     container.scrollTop = container.scrollHeight;
-  }, [questionsWrap]);
+  }, [questionSets.length]);
   ////
 
   return (
@@ -437,10 +463,14 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             spacing={4}
           >
             <HStack>
-              {levels.map((level, index)=> {
-                return <Text fontSize='sm' key={`${level}-${index}`}>{level}</Text>
-              })}
-              <Tag rounded='full' fontSize='sm'>{mode.charAt(0).toUpperCase() + mode.slice(1)}</Tag>
+              <Text fontSize='sm'>{level}</Text>
+              <Tag 
+                rounded='full' 
+                fontSize='sm'
+                colorScheme={mode === QuestionRunMode.Test ? 'red' : 'teal'}
+              >
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </Tag>
             </HStack>
             
             <HStack 
@@ -603,7 +633,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   <Spacer />
                 </Wrap>
                 <Button
-                  onClick={submitButtonClickedHandler}
+                  onClick={onOpenAlert}
                   isDisabled={
                     questionSets.length === 0 ||
                     isSubmitted || isReview ||
@@ -666,6 +696,44 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             </Modal>
 
           </VStack>
+
+          <AlertDialog
+            isOpen={isOpenAlert}
+            leastDestructiveRef={cancelRef}
+            onClose={onCloseAlert}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Submit?
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  You will not be allowed to change the answer.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onCloseAlert}
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    colorScheme='red' 
+                    rounded={'full'}
+                    px={6}
+                    onClick={submitButtonClickedHandler} 
+                    ml={3}
+                  >
+                    Submit
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </>
       )}
 

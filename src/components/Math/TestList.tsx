@@ -104,25 +104,27 @@ function TestList({ selectCallback, title, defaultPageStep }: TestListProps) {
                 rounded='full'
                 variant='ghost'
               />
-              <MenuList >
-                <MenuGroup title='Items per page'>
-                {[5, 10, 20, 50].map((count, index) => {
-                  return (
-                    <MenuItem
-                      key={`menu-item-${index}`}
-                      onClick={()=>{
-                        setPageStep(count);
-                        refreshList(0, count);
-                        setCurrentPage(0);
-                        setIsLastPage(false);
-                      }}
-                    >
-                      {count}
-                    </MenuItem>
-                  )
-                })}
-                </MenuGroup>
-              </MenuList>
+              <Box>
+                <MenuList >
+                  <MenuGroup title='Items per page'>
+                  {[5, 10, 20, 50].map((count, index) => {
+                    return (
+                      <MenuItem
+                        key={`menu-item-${index}`}
+                        onClick={()=>{
+                          setPageStep(count);
+                          refreshList(0, count);
+                          setCurrentPage(0);
+                          setIsLastPage(false);
+                        }}
+                      >
+                        {count}
+                      </MenuItem>
+                    )
+                  })}
+                  </MenuGroup>
+                </MenuList>
+              </Box>
             </Menu>
           </HStack>
           <Wrap>
@@ -131,7 +133,7 @@ function TestList({ selectCallback, title, defaultPageStep }: TestListProps) {
                 return (
                   <WrapItem 
                     rounded='xl'
-                    p={2}
+                    p={1}
                     key={index}
                     cursor='pointer'
                     _hover={{bg: bgColor}}

@@ -9,6 +9,9 @@ export enum MathConcept {
   // Division = 'division',
   Arithmetic = 'arithmetic',
   Decimals = 'decimals',
+  Percentage = 'percentage',
+  Ratio = 'ratio',
+
   // Fractions = 'fractions',
   // Probability = 'probability',
   // Statistics = 'statistics',
@@ -55,15 +58,18 @@ export enum QuestionLevel {
   Year4 = 'Year-4',
   Year5 = 'Year-5',
   Year6 = 'Year-6',
-  Year7 = 'Year-7',
-  Year8 = 'Year-8',
-  Year9 = 'Year-9',
-  Year10 = 'Year-10',
-  Year11 = 'Year-11',
-  Year12 = 'Year-12',
-  Primary = 'primary school',
-  Middle = 'middle school',
-  High = 'high school'
+  // Year7 = 'Year-7',
+  // Year8 = 'Year-8',
+  // Year9 = 'Year-9',
+  // Year10 = 'Year-10',
+  // Year11 = 'Year-11',
+  // Year12 = 'Year-12',
+  AQuA = 'AQuA',
+  MathQA = 'MathQA',
+  GSM8K = 'GSM8K'
+  // Primary = 'primary school',
+  // Middle = 'middle school',
+  // High = 'high school'
 }
 
 export type QuestionSet = {
@@ -97,4 +103,24 @@ export enum EssayType {
   // Expository = 'expository',
   // Descriptive = 'descriptive',
   Narrative = 'narrative'
+}
+
+export type AQuAQuestion = {
+  question: string
+  rationale: string
+  options: string[]
+  correct: string
+}
+
+export type MathQAQuestion = {
+  Problem: string
+  Rationale: string
+  options: string
+  correct: string
+  category: string
+}
+
+export type GSM8KQuestion = {
+  question: string
+  answer: string
 }
