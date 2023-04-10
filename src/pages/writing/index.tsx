@@ -39,8 +39,8 @@ function Writing() {
 
   const types = Object.values(EssayType)
   const topics = Object.values(EssayTopic);
-  const levels = Object.values(QuestionLevel);
-  const [ selectedType, setSelectedType ] = useState<string>(EssayType.Persuasive);
+  const levels = Object.values(QuestionLevel).filter(l => l.includes('Year'));
+  const [ selectedType, setSelectedType ] = useState<string>(EssayType.Narrative);
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
   const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
@@ -136,20 +136,22 @@ function Writing() {
               </Wrap>
             </RadioGroup>
             <RadioGroup onChange={setSelectedLevel} value={selectedLevel}>
-              <Heading size='sm'>Level</Heading>
-              <Wrap spacing={4} mt={2}>
-                {
-                  levels.slice(0,12).map((level, index) => {
-                    return (
-                      <WrapItem key={`${level}-${index}`}>
-                        <Radio value={level} >
-                          {level.charAt(0).toUpperCase() + level.slice(1)}
-                        </Radio>
-                      </WrapItem>
-                    )
-                  })
-                }
-              </Wrap>
+              <VStack align='flex-start'>
+                <Heading size='sm'>Level</Heading>
+                <Wrap>
+                  {
+                    levels.slice(0,12).map((level, index) => {
+                      return (
+                        <WrapItem key={`${level}-${index}`}>
+                          <Radio value={level} >
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                          </Radio>
+                        </WrapItem>
+                      )
+                    })
+                  }
+                </Wrap>
+              </VStack>
             </RadioGroup>
 
             <Divider />

@@ -463,7 +463,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
             spacing={4}
           >
             <HStack>
-              <Text fontSize='sm'>{level}</Text>
+              <Text fontSize='sm'>{isReview ? questionSetsRef.current[0].level : level}</Text>
               <Tag 
                 rounded='full' 
                 fontSize='sm'
