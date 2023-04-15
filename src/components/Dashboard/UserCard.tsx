@@ -1,24 +1,69 @@
 import { Statistic, User } from "@/models"
-import { Button, Card, CardBody, HStack, Link, Spacer, Text, VStack } from "@chakra-ui/react"
+import { 
+  Card, 
+  CardBody, 
+  HStack, 
+  Icon,
+  Link, 
+  Spacer, 
+  Tag, 
+  Text, 
+  VStack 
+} from "@chakra-ui/react";
+import { BiMath } from "react-icons/bi";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
+import { TbWriting } from "react-icons/tb";
 
 interface UserCardProps {
   user: User 
 }
 function UserCard({user}: UserCardProps) {
   const today = new Date();
-  const [ currentDay, setCurrentDay ] = useState<string>(today.toLocaleString('sv-SE').slice(0, 10));
-  const [ currentMonth, setCurrentMonth ] = useState<string>(today.toLocaleString('sv-SE').slice(0, 7));
-  const [ currentYear, setCurrentYear ] = useState<string>(today.toLocaleString('sv-SE').slice(0, 4));
+  const currentDay = today.toLocaleString('sv-SE').slice(0, 10);
+  const currentMonth = today.toLocaleString('sv-SE').slice(0, 7);
+  const currentYear = today.toLocaleString('sv-SE').slice(0, 4);
   const [ daily, setDaily ] = useState<Statistic>();
   const [ monthly, setMonthly ] = useState<Statistic>();
   const [ yearly, setYearly ] = useState<Statistic>();
+  const [ mathLevel, setMathLevel ] = useState(0);
+  const [ writingLevel, setWritingLevel ] = useState(0);
 
   useEffect(() => {
     if (user.daily) {
       const daily = user.daily.find(stat => stat.date === currentDay);
       setDaily(daily);
+
+      const dateObj = new Date();
+      dateObj.setDate(dateObj.getDate() - 7);
+      const weeklyData = user.daily.filter(stat => stat.date >= dateObj.toLocaleString('sv-SE').slice(0, 10));
+
+      const mathTotal = weeklyData.reduce((acc, { mathCorrect }) => acc + mathCorrect, 0);
+      const writingTotal = weeklyData.reduce((acc, { writing }) => acc + writing, 0);
+    
+      if (mathTotal > 500) {
+        setMathLevel(4);
+      } else if (mathTotal > 250) {
+        setMathLevel(3);
+      } else if (mathTotal > 100) {
+        setMathLevel(2);
+      } else if (mathTotal > 50) {
+        setMathLevel(1);
+      } else {
+        setMathLevel(0);
+      }
+
+      if (writingTotal > 15) {
+        setWritingLevel(4);
+      } else if (writingTotal > 10) {
+        setWritingLevel(3);
+      } else if (writingTotal > 5) {
+        setWritingLevel(2);
+      } else if (writingTotal > 3) {
+        setWritingLevel(1);
+      } else {
+        setWritingLevel(0);
+      }
     }
 
     if (user.monthly) {
@@ -38,7 +83,12 @@ function UserCard({user}: UserCardProps) {
       <CardBody>
         <Text mb={4}>Welcome {user.username}</Text>
         <VStack align='flex-start'>
-          <Text>Math practiced questions:</Text>
+          <HStack w='full'>
+            <Icon as={BiMath} color='teal' />
+            <Text>Math:</Text>
+            <Spacer />
+            <Tag size='sm' colorScheme='teal' rounded='full'>Level-{mathLevel}</Tag>
+          </HStack>
           {daily && daily.mathCorrect + daily.mathWrong > 0 ? (
             <Text fontSize='sm'>Today: {daily.mathCorrect} / {daily.mathCorrect + daily.mathWrong} {(daily.mathCorrect / (daily.mathCorrect + daily.mathWrong) * 100).toFixed(0)}%</Text>
           ) : (
@@ -66,7 +116,12 @@ function UserCard({user}: UserCardProps) {
           }
 
           <Spacer />
-          <Text>Writing practiced essays:</Text>
+          <HStack w='full'>
+            <Icon as={TbWriting} color='teal' />
+            <Text>Writing:</Text>
+            <Spacer />
+            <Tag size='sm' colorScheme='teal' rounded='full'>Level-{writingLevel}</Tag>
+          </HStack>
 
           {daily && daily.writing > 0 ? (
             <Text fontSize='sm'>Today: {daily.writing}</Text>
