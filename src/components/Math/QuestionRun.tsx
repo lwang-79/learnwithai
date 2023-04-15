@@ -181,7 +181,6 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
         }
         return;
       }
-      // console.log(questionSet)
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }

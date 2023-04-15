@@ -1,10 +1,11 @@
 import { Box, Center, Flex, Spacer, Spinner, Stack, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { User } from '@/models';
-import Footer from './Common/Footer';
-import Header from './Common/Header';
+import Footer from '../Common/Footer';
+import Header from '../Common/Header';
 import { ZenObservable } from 'zen-observable-ts'
 import { Auth, DataStore } from 'aws-amplify';
+import Dashboard from '../Dashboard/Dashboard';
 
 function MyHome() {
   const [user, setUser] = useState<User>();
@@ -36,8 +37,16 @@ function MyHome() {
       {user ? (
         <>
           <Header/>
-          <Flex mt={16} mx='auto' minH={'50vh'} direction='column'>
-            <Box h='30px' />
+          <Flex 
+            mt={16} 
+            mx='auto' 
+            w='full' 
+            maxW='5xl' 
+            direction='column'
+            px={4}
+          >
+            <Dashboard user={user}/>
+            <Spacer />
           </Flex>
           <Spacer />
           <Footer/>

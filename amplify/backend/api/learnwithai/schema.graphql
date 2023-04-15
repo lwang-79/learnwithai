@@ -90,15 +90,6 @@ type QuestionSet @model
   badCount: Int!
 }
 
-# type QuestionRun @model @auth(rules: [{ allow: owner }]) {
-#   id: ID!
-#   category: String!
-#   Date: AWSDate!
-#   total: Int!
-#   wrong: Int!
-#   correct: Int!
-# }
-
 type Test @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   category: String!

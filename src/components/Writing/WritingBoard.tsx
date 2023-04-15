@@ -1,4 +1,4 @@
-import { Essay } from "@/models"
+import { Essay, Statistic } from "@/models"
 import { EssayTopic, EssayType, QuestionLevel } from "@/types/types"
 import { 
   AlertDialog,
@@ -32,9 +32,11 @@ import {
   VStack
 } from "@chakra-ui/react"
 import ResizeTextarea from "react-textarea-autosize";
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
 import { DataStore } from "aws-amplify";
+import { addStatisticData, InitStatistic } from "@/types/statistic";
+import SharedComponents from "../Common/SharedComponents";
 
 export enum WritingMode {
   Essay = 'essay',
@@ -58,8 +60,9 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
   const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
   const [ isMarking, setIsMarking ] = useState(false);
+  const { currentUser } = useContext(SharedComponents);
+
   const cancelRef = useRef(null);
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const { 
     isOpen: isOpenAlert, 
@@ -193,6 +196,13 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         }
       ));  
     }
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      writing: 1,
+    };
+
+    addStatisticData(statistic, currentUser!.id)
 
     markEssay();
     onCloseAlert();
