@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 
 
-const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, LocalQuestionSet, LambdaResponse } = initSchema(schema);
+const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, GameData, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
   User,
@@ -15,6 +15,7 @@ export {
   Subscriptions,
   Quota,
   Statistic,
+  GameData,
   LocalQuestionSet,
   LambdaResponse
 };

@@ -21,6 +21,7 @@ export type CreateUserInput = {
   daily?: Array< StatisticInput > | null,
   monthly?: Array< StatisticInput > | null,
   yearly?: Array< StatisticInput > | null,
+  gameData?: GameDataInput | null,
   _version?: number | null,
 };
 
@@ -56,6 +57,12 @@ export type StatisticInput = {
   readingRequest: number,
   writing: number,
   writingRequest: number,
+};
+
+export type GameDataInput = {
+  startDate: string,
+  level: number,
+  score: number,
 };
 
 export type ModelUserConditionInput = {
@@ -140,6 +147,7 @@ export type User = {
   daily?:  Array<Statistic > | null,
   monthly?:  Array<Statistic > | null,
   yearly?:  Array<Statistic > | null,
+  gameData?: GameData | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -186,6 +194,13 @@ export type Statistic = {
   writingRequest: number,
 };
 
+export type GameData = {
+  __typename: "GameData",
+  startDate: string,
+  level: number,
+  score: number,
+};
+
 export type UpdateUserInput = {
   id: string,
   sub?: string | null,
@@ -199,6 +214,7 @@ export type UpdateUserInput = {
   daily?: Array< StatisticInput > | null,
   monthly?: Array< StatisticInput > | null,
   yearly?: Array< StatisticInput > | null,
+  gameData?: GameDataInput | null,
   _version?: number | null,
 };
 
@@ -706,6 +722,12 @@ export type CreateUserMutation = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -789,6 +811,12 @@ export type UpdateUserMutation = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -872,6 +900,12 @@ export type DeleteUserMutation = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1221,6 +1255,12 @@ export type GetUserQuery = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1307,6 +1347,12 @@ export type ListUsersQuery = {
         writing: number,
         writingRequest: number,
       } > | null,
+      gameData?:  {
+        __typename: "GameData",
+        startDate: string,
+        level: number,
+        score: number,
+      } | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1397,6 +1443,12 @@ export type SyncUsersQuery = {
         writing: number,
         writingRequest: number,
       } > | null,
+      gameData?:  {
+        __typename: "GameData",
+        startDate: string,
+        level: number,
+        score: number,
+      } | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1488,6 +1540,12 @@ export type UserBySubQuery = {
         writing: number,
         writingRequest: number,
       } > | null,
+      gameData?:  {
+        __typename: "GameData",
+        startDate: string,
+        level: number,
+        score: number,
+      } | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1579,6 +1637,12 @@ export type UserByPayerIdQuery = {
         writing: number,
         writingRequest: number,
       } > | null,
+      gameData?:  {
+        __typename: "GameData",
+        startDate: string,
+        level: number,
+        score: number,
+      } | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1968,6 +2032,12 @@ export type OnCreateUserSubscription = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2051,6 +2121,12 @@ export type OnUpdateUserSubscription = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2134,6 +2210,12 @@ export type OnDeleteUserSubscription = {
       writing: number,
       writingRequest: number,
     } > | null,
+    gameData?:  {
+      __typename: "GameData",
+      startDate: string,
+      level: number,
+      score: number,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

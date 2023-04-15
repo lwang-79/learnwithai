@@ -68,6 +68,11 @@ export const onCreateUser = /* GraphQL */ `
         writing
         writingRequest
       }
+      gameData {
+        startDate
+        level
+        score
+      }
       createdAt
       updatedAt
       _version
@@ -143,6 +148,11 @@ export const onUpdateUser = /* GraphQL */ `
         writing
         writingRequest
       }
+      gameData {
+        startDate
+        level
+        score
+      }
       createdAt
       updatedAt
       _version
@@ -217,6 +227,11 @@ export const onDeleteUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+      }
+      gameData {
+        startDate
+        level
+        score
       }
       createdAt
       updatedAt

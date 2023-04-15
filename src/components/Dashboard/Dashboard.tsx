@@ -3,6 +3,7 @@ import { HStack, useColorMode, VStack } from "@chakra-ui/react"
 import Highcharts from "highcharts/highstock";
 import { useMemo } from "react";
 import ColumnChart from "./ColumnChart"
+import GameCard from "./GameCard";
 import UserCard from "./UserCard";
 
 interface DashboardProps {
@@ -11,7 +12,7 @@ interface DashboardProps {
 function Dashboard({ user }: DashboardProps) {
   const { colorMode } = useColorMode();
 
-    // set highcharts color mode
+  // set highcharts color mode
   useMemo(() => {
     Highcharts.theme = colorMode == 'dark' ? {
       chart: {
@@ -34,15 +35,16 @@ function Dashboard({ user }: DashboardProps) {
     }
 
     Highcharts.setOptions(Highcharts.theme);
-  }, []);
+  }, [colorMode]);
   
   return (
     <>
-      <HStack py={2} w='full' spacing={4} align='flex-start'>
-        <VStack w='full' maxW='xs'>
+      <HStack py={4} w='full' spacing={4} align='flex-start'>
+        <VStack w='full' maxW='xs' spacing={4} >
           <UserCard user={user} />
+          <GameCard user={user} />
         </VStack>
-        <VStack w='full' maxW='2xl'>
+        <VStack w='full' maxW='2xl' spacing={4} >
           {user.daily &&<ColumnChart daily={user.daily} />}
         </VStack>
       </HStack>

@@ -41,3 +41,9 @@ iframe {
 		background-position: 1000px;
 	}
 }
+
+.watering-progress {
+	position: absolute;
+	transform-origin: bottom;
+	transform: rotate(-90deg);
+}

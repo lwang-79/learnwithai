@@ -65,6 +65,11 @@ export const getUser = /* GraphQL */ `
         writing
         writingRequest
       }
+      gameData {
+        startDate
+        level
+        score
+      }
       createdAt
       updatedAt
       _version
@@ -141,6 +146,11 @@ export const listUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+        }
+        gameData {
+          startDate
+          level
+          score
         }
         createdAt
         updatedAt
@@ -227,6 +237,11 @@ export const syncUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+        }
+        gameData {
+          startDate
+          level
+          score
         }
         createdAt
         updatedAt
@@ -316,6 +331,11 @@ export const userBySub = /* GraphQL */ `
           writing
           writingRequest
         }
+        gameData {
+          startDate
+          level
+          score
+        }
         createdAt
         updatedAt
         _version
@@ -403,6 +423,11 @@ export const userByPayerId = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+        }
+        gameData {
+          startDate
+          level
+          score
         }
         createdAt
         updatedAt

@@ -1,19 +1,10 @@
-import { API, DataStore, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import { CreateUserMutation, UserBySubQuery } from "./API";
 import { userBySub } from "../graphql/queries";
 import { GraphQLResult } from '@aws-amplify/api';
 import { Quota } from './quota';
 import { createUser } from "../graphql/mutations";
 
-// type Statistic = {
-//   date: string
-//   mathCorrect: number
-//   mathWrong: number
-//   mathExam: number
-//   readingCorrect: number
-//   readingWrong: number
-//   writing: number
-// }
 export type UserParams = {
   id: string
   username: string
@@ -36,9 +27,6 @@ export type UserParams = {
       enterprise: (string | null)[]
     },
   },
-  // daily: Statistic[]|undefined
-  // monthly: Statistic[]|undefined
-  // yearly: Statistic[]|undefined
 }
 
 export const createUserIfNotExist = async (userAttributes: any): Promise<UserParams> => {

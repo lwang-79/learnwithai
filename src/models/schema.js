@@ -101,6 +101,15 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "gameData": {
+                    "name": "gameData",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "GameData"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -694,6 +703,32 @@ export const schema = {
                 }
             }
         },
+        "GameData": {
+            "name": "GameData",
+            "fields": {
+                "startDate": {
+                    "name": "startDate",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "level": {
+                    "name": "level",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "score": {
+                    "name": "score",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "LocalQuestionSet": {
             "name": "LocalQuestionSet",
             "fields": {
@@ -798,5 +833,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "5b06e31f0a5feff817ea297208d20263"
+    "version": "1b8563edbe9f03f36792836f3a9e9864"
 };

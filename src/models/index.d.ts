@@ -88,6 +88,22 @@ export declare type Statistic = LazyLoading extends LazyLoadingDisabled ? EagerS
 
 export declare const Statistic: (new (init: ModelInit<Statistic>) => Statistic)
 
+type EagerGameData = {
+  readonly startDate: string;
+  readonly level: number;
+  readonly score: number;
+}
+
+type LazyGameData = {
+  readonly startDate: string;
+  readonly level: number;
+  readonly score: number;
+}
+
+export declare type GameData = LazyLoading extends LazyLoadingDisabled ? EagerGameData : LazyGameData
+
+export declare const GameData: (new (init: ModelInit<GameData>) => GameData)
+
 type EagerLocalQuestionSet = {
   readonly type: string;
   readonly category: string;
@@ -151,6 +167,7 @@ type EagerUser = {
   readonly daily?: Statistic[] | null;
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
+  readonly gameData?: GameData | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -172,6 +189,7 @@ type LazyUser = {
   readonly daily?: Statistic[] | null;
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
+  readonly gameData?: GameData | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

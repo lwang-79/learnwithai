@@ -62,6 +62,14 @@ export const addStatisticData = async (
       updated.daily = daily;
       updated.monthly = monthly;
       updated.yearly = yearly;
+      updated.gameData = updated.gameData ? {
+        ...updated.gameData,
+        score: updated.gameData.score + statistic.writing * 20 + statistic.mathCorrect
+      } : {
+        startDate: new Date().toLocaleString('sv-SE').slice(0,10),
+        score: statistic.writing * 20 + statistic.mathCorrect,
+        level: 0
+      }
     }
   ));
 
