@@ -181,7 +181,7 @@ function AvatarForm({ user, avatar, setAvatar }: AvatarFormProps) {
             }}
           />
 
-          {Array.from(Array(7).keys()).map(index => (
+          {Array.from(Array(21).keys()).map(index => (
             <Avatar 
               key={`/avatars/${index}.png`}
               src={`/avatars/${index}.png`} 

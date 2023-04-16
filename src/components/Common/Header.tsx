@@ -119,7 +119,7 @@ export default function Header() {
         as='header'
         zIndex={100}
         hidden={!show}
-        shadow='lg'
+        shadow='md'
       >
         <Container maxW="5xl">
           <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
