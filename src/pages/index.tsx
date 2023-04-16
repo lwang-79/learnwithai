@@ -2,7 +2,7 @@ import { Auth } from 'aws-amplify';
 import { useContext, useEffect, useState } from 'react';
 import WithAuth from '@/components/Common/WithAuth';
 import useStorage from '@/hooks/useStorage';
-import MyHome from '@/components/MyHome';
+import MyHome from '@/components/Home/MyHome';
 import { Center, Spacer, Spinner, Stack } from '@chakra-ui/react';
 import { createUserIfNotExist } from '@/types/user';
 import SharedComponents from '@/components/Common/SharedComponents';

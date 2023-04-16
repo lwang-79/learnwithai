@@ -31,8 +31,10 @@ type User
         { allow: private, provider: iam }
     ])
   markedQuestions: [ID!]
-  wrongQuestions: [ID!]
-  statistic: Statistic
+  daily: [Statistic!]
+  monthly: [Statistic!]
+  yearly: [Statistic!]
+  gameData: GameData
 }
 
 type Membership {
@@ -51,15 +53,30 @@ type Quota {
   mathPerDay: Int!
   readingPerDay: Int!
   writingPerDay: Int!
+  savedQuestions: Int!
+  savedTests: Int!
+  savedEssays: Int!
 }
 
 type Statistic {
+  date: String!
   mathCorrect: Int!
   mathWrong: Int!
   mathExam: Int!
+  mathRequest: Int!
   readingCorrect: Int!
   readingWrong: Int!
+  readingRequest: Int!
   writing: Int!
+  writingRequest: Int!
+}
+
+type GameData {
+  startDate: String!
+  level: Int!
+  score: Int!
+  seed: String!
+  collections: String! #[{tree: 1},{sunflower: 1}]
 }
 
 type QuestionSet @model 
@@ -80,15 +97,6 @@ type QuestionSet @model
   correctCount: Int!
   wrongCount: Int!
   badCount: Int!
-}
-
-type QuestionRun @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  category: String!
-  Date: AWSDate!
-  total: Int!
-  wrong: Int!
-  correct: Int!
 }
 
 type Test @model @auth(rules: [{ allow: owner }]) {
@@ -125,5 +133,17 @@ type Essay @model @auth(rules: [{ allow: owner }]) {
   DateTime: AWSDateTime!
 }
 
+type Mutation {
+  learnwithaiSubscribe(
+    operation: String!
+    userId: ID!,
+    subscriptionId: String!
+  ): LambdaResponse @function(name: "learnwithaiSubscribe-${env}")
+}
+
+type LambdaResponse {
+  statusCode: Int!
+  body: String!
+}
 
 

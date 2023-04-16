@@ -1,5 +1,3 @@
-import { updateQuestionSet } from "@/graphql/mutations";
-import { addNewMathQuestions } from "@/types/questions";
 import { 
   MathConcept, 
   QuestionCategory, 
@@ -8,6 +6,12 @@ import {
   QuestionType 
 } from "@/types/types";
 import { 
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button, 
   Center, 
@@ -29,6 +33,7 @@ import {
   Spacer, 
   Spinner, 
   Stack, 
+  Tag, 
   Text, 
   Tooltip, 
   useBoolean, 
@@ -39,31 +44,37 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
+import { Statistic, Test } from "@/models";
+import { InitStatistic, addStatisticData } from "@/types/statistic";
+import { addNewMathQuestions, getQuestionsFromDataset } from "@/types/questions";
 
 export enum QuestionRunMode {
   Practice = 'practice',
-  Test = 'test'
+  Test = 'test',
+  Review = 'review'
 }
 
 interface QuestionRunProps {
   category: QuestionCategory
   type: QuestionType
-  levels: QuestionLevel[]
+  level: QuestionLevel
   concepts: MathConcept[]
   maxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
+  test?: Test
 }
 
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultNumber, onClose }: QuestionRunProps) {
+function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
+  const isReview = mode === QuestionRunMode.Review;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
   const [ currentIndex, setCurrentIndex ] = useState(0);
@@ -80,12 +91,15 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   // fetchingStatus is used to detect new set and resume from waiting status
   const [ fetchingStatus, setFetchingStatus ] = useBoolean(false);
 
+  // how many fetching is running, used to avoid querying too much.
+  const addingQuestionCountRef = useRef(0);
+
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
   const { currentUser, setIsProcessing } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
-
+  const cancelRef = useRef(null);
   const toast = useToast();
 
   const { 
@@ -94,9 +108,29 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     onClose: onCloseResultModal
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenAlert, 
+    onOpen: onOpenAlert, 
+    onClose: onCloseAlert 
+  } = useDisclosure();
+
 
 
   useEffect(() => {
+    if (isReview && test) {
+      questionSetsRef.current = test.questionSets;
+      lastIndexRef.current = maxNum - 1;
+      setQuestionSets(test.questionSets);
+      setCurrentQuestionSet(test.questionSets[0]);
+      setValue(test.questionSets[0].selected)
+      return;
+    }
+
+    if (!level.includes('Year')) {
+      getAndSetAQuAQuestions(maxNum);
+      return;
+    }
+
     AddQuestionSets(cacheNumber);
   },[]);
 
@@ -109,7 +143,17 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     }
   },[fetchingStatus]);
 
+  const getAndSetAQuAQuestions = async (num: number) => {
+    const questionSets = await getQuestionsFromDataset(level, num);
+    questionSetsRef.current = questionSets;
+    lastIndexRef.current = maxNum - 1;
+    setQuestionSets(questionSets);
+    setCurrentQuestionSet(questionSets[0]);
+  }
+
   const AddQuestionSets = async (num: number) => {
+    addingQuestionCountRef.current += num;
+
     for (let i = 0; i < num; i++) {
       let questionSet: LocalQuestionSet | undefined;
       let tryCount = 0;
@@ -137,15 +181,15 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
         }
         return;
       }
-      // console.log(questionSet)
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
+
+    addingQuestionCountRef.current -= num;
   }
 
   const generateQuestionSet = async (): Promise<LocalQuestionSet> => {
     let c = concepts[Math.floor(Math.random() * concepts.length)];
-    let l = levels[Math.floor(Math.random() * levels.length)];
 
     const response = await fetch('/api/math/question', {
       method: 'POST',
@@ -155,7 +199,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
       body: JSON.stringify({
         category: category,
         type: type,
-        level: l,
+        level: level,
         concept: c
       }),
     });
@@ -199,7 +243,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     const questionSet: LocalQuestionSet = {
       type: QuestionType.MultiChoice,
       category: QuestionCategory.Math,
-      level: l,
+      level: level,
       concept: c,
       question: question,
       options: options,
@@ -230,8 +274,9 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     );
 
     if (currentIndexRef.current > lastIndexRef.current) {
+      console.log(currentIndexRef.current, lastIndexRef.current, questionSetsRef.current.length)
       lastIndexRef.current += 1;
-      if(questionSetsRef.current.length < maxNum) AddQuestionSets(1);
+      if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) AddQuestionSets(1);
     }
 
     setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
@@ -252,7 +297,9 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     setCurrentQuestionSet(questionSetsRef.current[currentIndexRef.current]);
   }
 
-  const submit = async () => {
+  const submitButtonClickedHandler = async () => {
+    if (!currentUser) return;
+    onCloseAlert();
 
     let correct = 0;
     for (let i = 0; i <= lastIndexRef.current; i++) {
@@ -260,6 +307,14 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
         correct += 1;
       }
     }
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      mathCorrect: correct,
+      mathWrong: lastIndexRef.current + 1 - correct
+    };
+
+    addStatisticData(statistic, currentUser.id);
 
     setResult({ total: lastIndexRef.current + 1, correct: correct });
     setIsSubmitted(true);
@@ -269,13 +324,16 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
   const getQuestionColor = (q: LocalQuestionSet, index: number) => {
     const isCurrent = index === currentIndexRef.current;
 
-    if (!isSubmitted && !isCurrent) return 'gray';
+    if (!(isSubmitted || isReview)) {
+      if (q.isTarget) return 'yellow';
+      if (!isCurrent) return 'gray';
+      if (isCurrent) return 'teal';
+    } else {
+      if (q.answer !== q.selected) return 'red';
+      if (q.isTarget) return 'yellow';
+    }
 
-    if (!isSubmitted && isCurrent) return 'teal';
-
-    if (q.answer === q.selected) return 'teal';
-    
-    return 'red';
+    return 'teal';
   }
 
   const targetButtonClickedHandler = () => {
@@ -298,7 +356,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    // await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
+    if (!isReview) await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
     onClose();
     setIsProcessing(false);
   }
@@ -348,11 +406,10 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             <Button 
               variant='solid'
               size='sm'
-              as='b'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
             >
-              {index + 1}
+              <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
           ) : (
             <Button 
@@ -362,7 +419,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
               colorScheme={getQuestionColor(questionSet, index)}
               w='35px' h='35px'
             >
-              {index + 1}
+              <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
           )}
         </WrapItem>
@@ -373,7 +430,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
     const container = wrapRef.current;
     if (container)
     container.scrollTop = container.scrollHeight;
-  }, [questionsWrap]);
+  }, [questionSets.length]);
   ////
 
   return (
@@ -404,6 +461,17 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             align='flex-start'
             spacing={4}
           >
+            <HStack>
+              <Text fontSize='sm'>{isReview ? questionSetsRef.current[0].level : level}</Text>
+              <Tag 
+                rounded='full' 
+                fontSize='sm'
+                colorScheme={mode === QuestionRunMode.Test ? 'red' : 'teal'}
+              >
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </Tag>
+            </HStack>
+            
             <HStack 
               spacing={4} 
               minH='30vh'
@@ -423,10 +491,24 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   </Text>
                   <Spacer />
 
+                  <Tooltip label='Add to my questions'>
+                    <IconButton
+                      rounded='full'
+                      variant='ghost'
+                      aria-label='Add to my questions'
+                      colorScheme='teal'
+                      size='sm'
+                      w='35px' h='35px'
+                      icon={<Icon as={SlTarget} boxSize={6} />}
+                      // onClick={targetButtonClickedHandler}
+                      // isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
+                    />
+                  </Tooltip>
+
                   <Tooltip
                     label={
                       currentQuestionSet && currentQuestionSet.isTarget ?
-                      'Remove from my questions' : 'Add to my questions'
+                      'Remove the mark' : 'Mark the question'
                     }
                   >
                     <IconButton
@@ -434,13 +516,13 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                       variant={
                         currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
                       }
-                      aria-label='Add to my questions'
-                      colorScheme='teal'
+                      aria-label='Mark the question'
+                      colorScheme='yellow'
                       size='sm'
                       w='35px' h='35px'
-                      icon={<Icon as={SlTarget} boxSize={6} />}
+                      icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
                       onClick={targetButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2}
+                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
                     />
                   </Tooltip>
 
@@ -461,7 +543,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                       w='35px' h='35px'
                       icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
                       onClick={badButtonClickedHandler}
-                      isDisabled={!currentQuestionSet}
+                      isDisabled={!currentQuestionSet || isReview}
                     />
                   </Tooltip>
                 </HStack>
@@ -481,7 +563,7 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                               <Radio 
                                 value={String.fromCharCode(65 + index)} 
                                 key={index}
-                                isDisabled={isSubmitted}
+                                isDisabled={isSubmitted || isReview}
                               >
                                 {`${String.fromCharCode(65 + index)}: ${option}`}
                               </Radio>
@@ -550,10 +632,11 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
                   <Spacer />
                 </Wrap>
                 <Button
-                  onClick={submit}
+                  onClick={onOpenAlert}
                   isDisabled={
                     questionSets.length === 0 ||
-                    isSubmitted
+                    isSubmitted || isReview ||
+                    addingQuestionCountRef.current !== 0
                   }
                 >
                   Submit
@@ -612,6 +695,44 @@ function QuestionRun({ category, type, levels, concepts, mode, maxNum = defaultN
             </Modal>
 
           </VStack>
+
+          <AlertDialog
+            isOpen={isOpenAlert}
+            leastDestructiveRef={cancelRef}
+            onClose={onCloseAlert}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Submit?
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  You will not be allowed to change the answer.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onCloseAlert}
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    colorScheme='red' 
+                    rounded={'full'}
+                    px={6}
+                    onClick={submitButtonClickedHandler} 
+                    ml={3}
+                  >
+                    Submit
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </>
       )}
 

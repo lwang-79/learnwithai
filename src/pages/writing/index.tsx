@@ -2,7 +2,10 @@ import Footer from '@/components/Common/Footer';
 import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
+import EssayList from '@/components/Writing/EssayList';
 import WritingBoard, { WritingMode } from '@/components/Writing/WritingBoard';
+import { Essay, Statistic, User } from '@/models';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 
@@ -17,11 +20,14 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
+  Text, 
   useDisclosure, 
+  useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
+import { DataStore } from 'aws-amplify';
 import { useContext, useState } from 'react'
 
 function Writing() {
@@ -33,24 +39,55 @@ function Writing() {
 
   const types = Object.values(EssayType)
   const topics = Object.values(EssayTopic);
-  const levels = Object.values(QuestionLevel);
-  const [ selectedType, setSelectedType ] = useState<string>(EssayType.Persuasive);
+  const levels = Object.values(QuestionLevel).filter(l => l.includes('Year'));
+  const [ selectedType, setSelectedType ] = useState<string>(EssayType.Narrative);
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
-  // const [ mode, setMode ] = useState<string>(WritingMode.Essay);
+  const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
   const { currentUser } = useContext(SharedComponents);
+  const toast = useToast();
 
-  // const setCheckedTopics = (value: MathConcept) => {
-  //   let topics = selectedTopics;
-  //   const index = topics.indexOf(value);
+  const startButtonClickedHandler = async () => {
+    setSelectedEssay(undefined);
+    if (!currentUser) return;
 
-  //   if (index > -1) {
-  //     topics.splice(index, 1);
-  //     setSelectedTopics([...topics]);
-  //   } else {
-  //     setSelectedTopics([...topics, value]);
-  //   }
-  // }
+    const user = await DataStore.query(User, currentUser.id);
+    if (!user) return;
+
+    const todayStatistic = await getTodayStatistic(user);
+
+    if (
+      todayStatistic &&
+      user.quota &&
+      user.quota.writingPerDay - todayStatistic.writingRequest < 1
+    ) {
+      toast({
+        description: `The number of writing topic you generated today exceeded your current quota.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    setTimeout(()=>onOpenExamModal(), 100);
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      writingRequest: 1
+    }
+
+    await addStatisticData(statistic, undefined, user);
+  }
+
+  const openModalWithEssay = (essay: Essay) => {
+    setSelectedEssay(essay);
+    setSelectedLevel(essay.level);
+    setSelectedTopic(essay.topic);
+    setSelectedType(essay.type);
+    setTimeout(()=>onOpenExamModal(), 100);
+  }
 
   return (
     <WithAuth href='/login'>
@@ -99,38 +136,41 @@ function Writing() {
               </Wrap>
             </RadioGroup>
             <RadioGroup onChange={setSelectedLevel} value={selectedLevel}>
-              <Heading size='sm'>Level</Heading>
-              <Wrap spacing={4} mt={2}>
-                {
-                  levels.slice(0,12).map((level, index) => {
-                    return (
-                      <WrapItem key={`${level}-${index}`}>
-                        <Radio value={level} >
-                          {level.charAt(0).toUpperCase() + level.slice(1)}
-                        </Radio>
-                      </WrapItem>
-                    )
-                  })
-                }
-              </Wrap>
+              <VStack align='flex-start'>
+                <Heading size='sm'>Level</Heading>
+                <Wrap>
+                  {
+                    levels.slice(0,12).map((level, index) => {
+                      return (
+                        <WrapItem key={`${level}-${index}`}>
+                          <Radio value={level} >
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                          </Radio>
+                        </WrapItem>
+                      )
+                    })
+                  }
+                </Wrap>
+              </VStack>
             </RadioGroup>
 
-
             <Divider />
-
-            <HStack w='full' align='flex-start'>
-              <Spacer />
               
-            </HStack>
-            <Spacer />
-
             <HStack justify='flex-end' w='full'>
               <Button
-                onClick={onOpenExamModal}
+                onClick={startButtonClickedHandler}
               >
                 Start
               </Button>
             </HStack>
+
+            <Divider />
+
+            <EssayList 
+              selectCallback={openModalWithEssay}
+              title='Recent Essays'
+              defaultPageStep={10}
+            />
 
             <Modal
               isOpen={isOpenExamModal} 
@@ -147,6 +187,7 @@ function Writing() {
                     topic={selectedTopic as EssayTopic}
                     type={selectedType as EssayType}
                     onClose={onCloseExamModal}
+                    initEssay={selectedEssay}
                   />
                 </ModalBody>
               </ModalContent>

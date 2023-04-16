@@ -26,18 +26,18 @@ if (typeof window === 'undefined') {
   );
 
   const isDevelopment = Boolean(
-    window.location.hostname.includes("steps.jinpearl")
+    window.location.hostname.includes("learn.jinpearl")
   );
   
   const [
     localRedirectSignIn,
-    productionRedirectSignIn,
+    // productionRedirectSignIn,
     developmentRedirectSignIn
   ] = awsconfig.oauth.redirectSignIn.split(",");
   
   const [
     localRedirectSignOut,
-    productionRedirectSignOut,
+    // productionRedirectSignOut,
     developmentRedirectSignOut
   ] = awsconfig.oauth.redirectSignOut.split(",");
   
@@ -47,14 +47,14 @@ if (typeof window === 'undefined') {
       ...awsconfig.oauth,
       redirectSignIn: isLocalhost ? 
         localRedirectSignIn : 
-        isDevelopment ? 
-        developmentRedirectSignIn : 
-        productionRedirectSignIn,
+        // isDevelopment ? 
+        developmentRedirectSignIn,
+        // productionRedirectSignIn,
       redirectSignOut: isLocalhost ? 
         localRedirectSignOut : 
-        isDevelopment ?
-        developmentRedirectSignOut : 
-        productionRedirectSignOut,
+        // isDevelopment ?
+        developmentRedirectSignOut
+        // productionRedirectSignOut,
     }
   }
   
@@ -92,8 +92,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content="Learn with AI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
-        <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
       </Head>
 
       {isProcessing ? <SpinnerOverlay /> :

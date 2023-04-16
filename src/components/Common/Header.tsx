@@ -18,7 +18,6 @@ import {
   useColorMode,
   Container,
   Text,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -37,15 +36,14 @@ import {
   MdOutlineSchool, 
   MdPerson, 
 } from 'react-icons/md';
-import { GiFootprint } from 'react-icons/gi';
 import { Auth, DataStore } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
 
-const Links = ['/intro', '/math', '/writing'];
-const LinkNames = ['Introduction', 'Math', 'Writing']
+const Links = ['/math', '/writing'];
+const LinkNames = ['Math', 'Writing']
 
 const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
   <Link
@@ -102,7 +100,6 @@ export default function Header() {
 
   const signOut = async () => {
     try {
-      console.log('tst')
       setItem('isAuthenticated', 'false', 'local');
       DataStore.clear();        // must before signOut
       await Auth.signOut();     // for Social SignIn signOut will not return
@@ -162,7 +159,7 @@ export default function Header() {
                 <Button 
                   size='sm' 
                   mr={{base: 1, md: 2}}
-                  onClick={()=>router.push('/profile')}
+                  onClick={()=>router.push('/account')}
                   variant='unstyled'
                 >
                   {user.membership!.current < 2 ? (
@@ -190,14 +187,13 @@ export default function Header() {
                     showBorder
                     borderWidth='2px'
                     borderColor='gray.200'
-                    // src='/avatars/1.png'
                   />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => {router.push('/profile')}}>
+                  <MenuItem onClick={() => {router.push('/account')}}>
                     <HStack justifyContent={'center'}>
                       <Icon as={MdPerson} boxSize={6} color='gray.400' />
-                      <span>Profile</span>
+                      <span>Account</span>
                     </HStack>
                   </MenuItem>
                   <MenuItem onClick={toggleColorMode}>

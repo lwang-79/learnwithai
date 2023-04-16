@@ -3,35 +3,47 @@ export enum QuestionType {
 }
 
 export enum MathConcept {
-  Addition = 'addition',
-  Subtraction = 'subtraction',
-  Multiplication = 'multiplication',
-  Division = 'division',
+  // Addition = 'addition',
+  // Subtraction = 'subtraction',
+  // Multiplication = 'multiplication',
+  // Division = 'division',
   Arithmetic = 'arithmetic',
   Decimals = 'decimals',
-  Fractions = 'fractions',
-  Probability = 'probability',
-  Statistics = 'statistics',
-  Algebra = 'algebra',
-  Measurement = 'measurement',
-  Time = 'time',
-  Shopping = 'shopping',
-  Production = 'production',
-  Profit = 'profit',
-  // ProblemSolving = 'problem solving',
-  TwoPartJourney = 'two-part journey',
-  Banking = 'banking',
-  Polynomials = 'polynomials',
+  Percentage = 'percentage',
+  Ratio = 'ratio',
+
+  // Fractions = 'fractions',
+  // Probability = 'probability',
+  // Statistics = 'statistics',
+  // Algebra = 'algebra',
+  // Measurement = 'measurement',
+  // Time = 'time',
+  // Shopping = 'shopping',
+  // Production = 'production',
+  // Profit = 'profit',
+  // // ProblemSolving = 'problem solving',
+  // TwoPartJourney = 'two-part journey',
+  // Banking = 'banking',
+  // Polynomials = 'polynomials',
+  // // Geometry = 'geometry',
+  // Trigonometry = 'trigonometry',
+  // Functions = 'functions',
+  // ComplexNumbers = 'complex numbers',
+  // Sequences = 'sequences',
+  // Series = 'series',
+  // Vectors = 'vectors',
+  // Matrices = 'matrices',
+  // // DifferentialEquations = 'differential equations',
+  // // Calculus = 'calculus',
+
   // Geometry = 'geometry',
-  Trigonometry = 'trigonometry',
-  Functions = 'functions',
-  ComplexNumbers = 'complex numbers',
-  Sequences = 'sequences',
-  Series = 'series',
-  Vectors = 'vectors',
-  Matrices = 'matrices',
-  // DifferentialEquations = 'differential equations',
-  // Calculus = 'calculus',
+  // Equations = 'equations',
+  // CoordinateGeometry = 'coordinate geometry',
+  // Indices = 'indices',
+  // MeasurementPerimeter = 'measurement perimeter',
+  // MeasurementArea = 'measurement area',
+  
+
 }
 
 export enum QuestionCategory {
@@ -52,9 +64,13 @@ export enum QuestionLevel {
   Year10 = 'Year-10',
   Year11 = 'Year-11',
   Year12 = 'Year-12',
-  Primary = 'primary school',
-  Middle = 'middle school',
-  High = 'high school'
+  GSM8K = 'GSM8K',
+  MathQA = 'MathQA',
+  AQuA = 'AQuA',
+  
+  // Primary = 'primary school',
+  // Middle = 'middle school',
+  // High = 'high school'
 }
 
 export type QuestionSet = {
@@ -88,4 +104,24 @@ export enum EssayType {
   // Expository = 'expository',
   // Descriptive = 'descriptive',
   Narrative = 'narrative'
+}
+
+export type AQuAQuestion = {
+  question: string
+  rationale: string
+  options: string[]
+  correct: string
+}
+
+export type MathQAQuestion = {
+  Problem: string
+  Rationale: string
+  options: string
+  correct: string
+  category: string
+}
+
+export type GSM8KQuestion = {
+  question: string
+  answer: string
 }

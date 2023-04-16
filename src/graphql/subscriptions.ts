@@ -2,18 +2,79 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateQuestionRun = /* GraphQL */ `
-  subscription OnCreateQuestionRun(
-    $filter: ModelSubscriptionQuestionRunFilterInput
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
     $owner: String
   ) {
-    onCreateQuestionRun(filter: $filter, owner: $owner) {
+    onCreateUser(filter: $filter, owner: $owner) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      gameData {
+        startDate
+        level
+        score
+        seed
+        collections
+      }
       createdAt
       updatedAt
       _version
@@ -23,18 +84,79 @@ export const onCreateQuestionRun = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateQuestionRun = /* GraphQL */ `
-  subscription OnUpdateQuestionRun(
-    $filter: ModelSubscriptionQuestionRunFilterInput
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
     $owner: String
   ) {
-    onUpdateQuestionRun(filter: $filter, owner: $owner) {
+    onUpdateUser(filter: $filter, owner: $owner) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      gameData {
+        startDate
+        level
+        score
+        seed
+        collections
+      }
       createdAt
       updatedAt
       _version
@@ -44,24 +166,160 @@ export const onUpdateQuestionRun = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteQuestionRun = /* GraphQL */ `
-  subscription OnDeleteQuestionRun(
-    $filter: ModelSubscriptionQuestionRunFilterInput
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
     $owner: String
   ) {
-    onDeleteQuestionRun(filter: $filter, owner: $owner) {
+    onDeleteUser(filter: $filter, owner: $owner) {
       id
-      category
-      Date
-      total
-      wrong
-      correct
+      sub
+      username
+      email
+      picture
+      quota {
+        mathPerDay
+        readingPerDay
+        writingPerDay
+        savedQuestions
+        savedTests
+        savedEssays
+      }
+      membership {
+        current
+        previous
+        paypalSubscriptions {
+          personal
+          professional
+          enterprise
+        }
+      }
+      payerId
+      markedQuestions
+      daily {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      monthly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      yearly {
+        date
+        mathCorrect
+        mathWrong
+        mathExam
+        mathRequest
+        readingCorrect
+        readingWrong
+        readingRequest
+        writing
+        writingRequest
+      }
+      gameData {
+        startDate
+        level
+        score
+        seed
+        collections
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       owner
+    }
+  }
+`;
+export const onCreateQuestionSet = /* GraphQL */ `
+  subscription OnCreateQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onCreateQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateQuestionSet = /* GraphQL */ `
+  subscription OnUpdateQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onUpdateQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteQuestionSet = /* GraphQL */ `
+  subscription OnDeleteQuestionSet(
+    $filter: ModelSubscriptionQuestionSetFilterInput
+  ) {
+    onDeleteQuestionSet(filter: $filter) {
+      id
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      correctCount
+      wrongCount
+      badCount
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -230,216 +488,6 @@ export const onDeleteEssay = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
-    }
-  }
-`;
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onCreateUser(filter: $filter, owner: $owner) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onUpdateUser(filter: $filter, owner: $owner) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser(
-    $filter: ModelSubscriptionUserFilterInput
-    $owner: String
-  ) {
-    onDeleteUser(filter: $filter, owner: $owner) {
-      id
-      sub
-      username
-      email
-      picture
-      quota {
-        mathPerDay
-        readingPerDay
-        writingPerDay
-      }
-      membership {
-        current
-        previous
-        paypalSubscriptions {
-          personal
-          professional
-          enterprise
-        }
-      }
-      payerId
-      markedQuestions
-      wrongQuestions
-      statistic {
-        mathCorrect
-        mathWrong
-        mathExam
-        readingCorrect
-        readingWrong
-        writing
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      owner
-    }
-  }
-`;
-export const onCreateQuestionSet = /* GraphQL */ `
-  subscription OnCreateQuestionSet(
-    $filter: ModelSubscriptionQuestionSetFilterInput
-  ) {
-    onCreateQuestionSet(filter: $filter) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateQuestionSet = /* GraphQL */ `
-  subscription OnUpdateQuestionSet(
-    $filter: ModelSubscriptionQuestionSetFilterInput
-  ) {
-    onUpdateQuestionSet(filter: $filter) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteQuestionSet = /* GraphQL */ `
-  subscription OnDeleteQuestionSet(
-    $filter: ModelSubscriptionQuestionSetFilterInput
-  ) {
-    onDeleteQuestionSet(filter: $filter) {
-      id
-      question
-      options
-      answer
-      workout
-      type
-      category
-      level
-      concept
-      correctCount
-      wrongCount
-      badCount
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

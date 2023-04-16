@@ -1,4 +1,4 @@
-import { Essay } from "@/models"
+import { Essay, Statistic } from "@/models"
 import { EssayTopic, EssayType, QuestionLevel } from "@/types/types"
 import { 
   AlertDialog,
@@ -15,6 +15,12 @@ import {
   HStack,
   Icon,
   IconButton, 
+  Modal, 
+  ModalBody, 
+  ModalCloseButton, 
+  ModalContent, 
+  ModalFooter, 
+  ModalHeader, 
   SkeletonText, 
   Spacer, 
   Spinner, 
@@ -26,10 +32,11 @@ import {
   VStack
 } from "@chakra-ui/react"
 import ResizeTextarea from "react-textarea-autosize";
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
-import Footer from "../Common/Footer";
 import { DataStore } from "aws-amplify";
+import { addStatisticData, InitStatistic } from "@/types/statistic";
+import SharedComponents from "../Common/SharedComponents";
 
 export enum WritingMode {
   Essay = 'essay',
@@ -41,18 +48,21 @@ interface WritingBoardProps {
   level: QuestionLevel
   topic: EssayTopic
   onClose: ()=>void
+  initEssay?: Essay
 }
 
-function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
-  const [ essay, setEssay ] = useState<Essay>();
-  const [ text, setText ] = useState('');
-  const [ count, setCount ] = useState(0);
+function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardProps) {
+  const [ essay, setEssay ] = useState<Essay|undefined>(initEssay);
+  const [ text, setText ] = useState(initEssay ? initEssay.text : '');
+  const [ count, setCount ] = useState(initEssay ? countWords(initEssay.text) : 0);
   const [ mark, setMark ] = useState('');
-  const [ isSubmitted, setIsSubmitted ] = useState(false);
-  const [ shouldShowMark, setShouldShowMark ] = useState(false);
+  const [ prompt, setPrompt ] = useState('');
+  const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
+  const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
   const [ isMarking, setIsMarking ] = useState(false);
+  const { currentUser } = useContext(SharedComponents);
+
   const cancelRef = useRef(null);
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const { 
     isOpen: isOpenAlert, 
@@ -60,8 +70,16 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
     onClose: onCloseAlert 
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenPromptModal, 
+    onOpen: onOpenPromptModal, 
+    onClose: onClosePromptModal
+  } = useDisclosure();
+
   
   useEffect(() => {
+    if (essay) return;
+
     generatePrompt();
   },[]);
 
@@ -93,8 +111,8 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
     const essay = new Essay({
       type: type,
       level: level,
-      topic: topic,
-      prompt: prompt.replace('Text: ', '').replace('Prompt: ', ''),
+      topic: type === EssayType.Persuasive ? topic : '',
+      prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
       text: '',
       DateTime: (new Date()).toISOString()
     })
@@ -113,6 +131,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
         essay: text
@@ -126,7 +145,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
 
     console.log(data.result);
     const mark = data.result as string;
-    setMark(mark);
+    setMark(mark.trim());
     setIsMarking(false);
   }
 
@@ -152,26 +171,38 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
 
     console.log(data.result);
     const mark = data.result as string;
-    setMark(mark);
+    setMark(mark.trim());
     setIsMarking(false);
   }
 
-  const countWords = (str: string) => {
-    const words = str.match(/\b\w+\b/g);
-    return words ? words.length : 0;
-  }
 
   const submitButtonClickedHandler = () => {
     if (!essay) return;
 
     setIsSubmitted(true);
 
-    DataStore.save(Essay.copyOf(
-      essay,
-      updated => {
-        updated.text = text
-      }
-    ));
+    if (initEssay) {
+      DataStore.save(Essay.copyOf(
+        initEssay,
+        updated => {
+          updated.text = text
+        }
+      ));
+    } else {
+      DataStore.save(Essay.copyOf(
+        essay,
+        updated => {
+          updated.text = text;
+        }
+      ));  
+    }
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      writing: 1,
+    };
+
+    addStatisticData(statistic, currentUser!.id)
 
     markEssay();
     onCloseAlert();
@@ -197,11 +228,20 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
               align='flex-start'
               spacing={4}
             >
-              <HStack>
-                <Text>{level} {type} essay</Text>
+              <HStack w='full'>
+                <Text>{level} {type}</Text>
                 {type == EssayType.Persuasive &&
                   <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
                 }
+                <Spacer />
+                <Button 
+                  size='sm'
+                  variant='ghost'
+                  isDisabled={isSubmitted}
+                  onClick={onOpenPromptModal}
+                >
+                  I have my own topic
+                </Button>
               </HStack>
               <Box>
                 {essay && essay.prompt.split("\n").map((line, index) => (
@@ -214,6 +254,7 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
               <Divider />
               <Textarea 
                 as={ResizeTextarea}
+                defaultValue={essay.text}
                 placeholder='Start to write here'
                 minRows={10}
                 isDisabled={isSubmitted}
@@ -316,8 +357,52 @@ function WritingBoard({ type, level, topic, onClose}: WritingBoardProps) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+
+      <Modal
+        isOpen={isOpenPromptModal}
+        onClose={onClosePromptModal}
+        size='xl'
+      >
+        <ModalContent>
+          <ModalHeader textAlign='center'>
+            Bring your own writing topic
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Textarea 
+              as={ResizeTextarea}
+              placeholder='Paste your topic here'
+              minRows={5}
+              onChange={(e)=>setPrompt(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              onClick={
+                ()=>{
+                  setEssay(Essay.copyOf(
+                    essay!,
+                    updated => {
+                      updated.prompt = prompt
+                    }
+                  ));
+                  onClosePromptModal();
+                }
+              }
+            >
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
 
 export default WritingBoard
+
+const countWords = (str: string) => {
+  const words = str.match(/\b\w+\b/g);
+  return words ? words.length : 0;
+}
+

@@ -17,12 +17,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  const level = req.body.level || '';
   const type = req.body.type || '';
   const prompt = req.body.prompt || '';
   const essay = req.body.essay || '';
   if (
     prompt.trim().length === 0 ||
-    essay.trim().length === 0
+    essay.trim().length === 0 ||
+    level.trim().length === 0 ||
+    type.trim().length === 0
   ) {
     res.status(400).json({
       error: {
@@ -39,7 +42,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         { role: 'system', content: 'You are an English writing teacher.' },
         { role: 'user', 
           content: generatePrompt(
-            type == EssayType.Persuasive ? 'essay' : 'creative writing',
+            level,
+            type == EssayType.Persuasive ? 'essay' : 'narrative writing',
             prompt, 
             essay
           ) 
@@ -66,16 +70,17 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 }
 
 function generatePrompt(
+  level: string,
   type: string,
   prompt: string,
   essay: string, 
 ) {
 
   const p = `
-  Evaluate a student's ${type}
+  Evaluate a student's ${type} based on the student's level which is ${level}.
   1. Consider the following facts "Knowledge, understanding and control", "Response to prompt", "Use of evidence", "Structure of response" and "Spelling and Punctuation".
   2. Give a score from 0 to 100 according to your evaluation.
-  3. Mark some good sentences and bad sentences.
+  3. Mark the good sentences which increased the score and not good sentences which decreased the score.
   4. Give comments on the thing doing well and things that need to improve.
   
   Essay prompt:

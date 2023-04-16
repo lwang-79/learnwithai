@@ -14,85 +14,68 @@ export const getConcepts = (level: QuestionLevel): MathConcept[] => {
       return Year5Concepts;
     case QuestionLevel.Year6:
       return Year6Concepts
-    case QuestionLevel.Primary:
-      return PrimarySchool;
-    case QuestionLevel.Year7:
-    case QuestionLevel.Year8:
-    case QuestionLevel.Year9:
-    case QuestionLevel.Middle:
-      return MiddleSchool;
-    case QuestionLevel.Year10:
-    case QuestionLevel.Year11:
-    case QuestionLevel.Year12:
-    case QuestionLevel.High:
-      return HighSchool;
+    // case QuestionLevel.Primary:
+    // case QuestionLevel.Year7:
+    // case QuestionLevel.Year8:
+    // case QuestionLevel.Year9:
+    // case QuestionLevel.Middle:
+    // case QuestionLevel.Year10:
+    // case QuestionLevel.Year11:
+    // case QuestionLevel.Year12:
+    // case QuestionLevel.High:
     default:
       return []
   }
 }
 
 const Year1Concepts = [
-  MathConcept.Addition,
-  MathConcept.Subtraction
+  MathConcept.Arithmetic,
 ]
 
 const Year2Concepts = [
   ...Year1Concepts,
-  MathConcept.Time
 ]
 
 const Year3Concepts = [
   ...Year2Concepts,
-  MathConcept.Arithmetic,
-  MathConcept.Shopping
 ]
 
 const Year4Concepts = [
   MathConcept.Decimals,
   MathConcept.Arithmetic,
-  MathConcept.Shopping,
-  MathConcept.Time,
-  MathConcept.Measurement
 ]
 
 const Year5Concepts = [
   ...Year4Concepts,
-  MathConcept.Fractions,
-  MathConcept.Production,
 ]
 
 const Year6Concepts = [
-  MathConcept.Algebra,
-  MathConcept.Fractions,
-  MathConcept.Probability,
-  MathConcept.Statistics,
-  MathConcept.Profit,
-  MathConcept.TwoPartJourney
+  ...Year4Concepts
 ]
 
-const PrimarySchool = [
-  ...Year6Concepts,
-  MathConcept.Arithmetic,
-  MathConcept.Decimals,
-  MathConcept.Measurement,
-  MathConcept.Time,
-  MathConcept.Shopping,
-  MathConcept.Production
-]
+// const PrimarySchool = [
+//   ...Year6Concepts,
+//   MathConcept.Arithmetic,
+//   MathConcept.Decimals,
+//   MathConcept.Measurement,
+//   MathConcept.Time,
+//   MathConcept.Shopping,
+//   MathConcept.Production
+// ]
 
-const MiddleSchool = [
-  ...Year6Concepts,
-  MathConcept.Banking,
-  MathConcept.Polynomials
-]
+// const MiddleSchool = [
+//   ...Year6Concepts,
+//   MathConcept.Banking,
+//   MathConcept.Polynomials
+// ]
 
-const HighSchool = [
-  ...MiddleSchool,
-  MathConcept.ComplexNumbers,
-  MathConcept.Sequences,
-  MathConcept.Trigonometry,
-  MathConcept.Functions,
-  MathConcept.Series,
-  MathConcept.Vectors,
-  MathConcept.Matrices
-]
+// const HighSchool = [
+//   ...MiddleSchool,
+//   MathConcept.ComplexNumbers,
+//   MathConcept.Sequences,
+//   MathConcept.Trigonometry,
+//   MathConcept.Functions,
+//   MathConcept.Series,
+//   MathConcept.Vectors,
+//   MathConcept.Matrices
+// ]

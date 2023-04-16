@@ -15,3 +15,35 @@ div {
 div::-webkit-scrollbar {
 	display: none; /* Hide scrollbars */
 }
+
+/* Fix the iframe white background issue in dark mode */
+iframe {
+	color-scheme: normal
+}
+
+.shine {
+	background: #222 -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff)) 0 0 no-repeat;
+	background-size: 200px;
+	background-clip: text;
+	animation-name: shine;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	text-shadow: 0 0px 0px rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0);
+}
+
+@keyframes shine {
+	0% {
+		background-position: -1000px;
+	}
+	100% {
+		background-position: 1000px;
+	}
+}
+
+.watering-progress {
+	position: absolute;
+	transform-origin: bottom;
+	transform: rotate(-90deg);
+}

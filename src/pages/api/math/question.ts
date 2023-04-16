@@ -1,7 +1,7 @@
-import { Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from "@/types/types";
-import { getMessageByConcept } from "@/types/prompt";
+import { generateChatMessages } from "@/types/prompts/math";
+// import { getMessageByConcept } from "@/types/prompt";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -42,12 +42,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [
-        { role: 'system', content: 'You are a math teacher.' },
-        { role: 'user', content: generatePrompt(category, type, level, concept) }
-      ],
-      temperature: 0.5,
-      max_tokens:1000
+      messages: generateChatMessages(level, concept) as ChatCompletionRequestMessage[],
+      temperature: 0.8,
+      max_tokens:600
     });
     res.status(200).json({ result: completion.data.choices[0].message?.content });
   } catch(error: any) {
@@ -66,17 +63,21 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-function generatePrompt(
-  category: QuestionCategory, 
-  type: QuestionType,
-  level: QuestionLevel,
-  concept: MathConcept
-) {
-  const prompt = getMessageByConcept(concept, level, category);
 
-  console.log(prompt);
-  return prompt;
-}
+
+
+
+// function generatePrompt(
+//   category: QuestionCategory, 
+//   type: QuestionType,
+//   level: QuestionLevel,
+//   concept: MathConcept
+// ) {
+//   const prompt = getMessageByConcept(concept, level, category);
+
+//   console.log(prompt);
+//   return prompt;
+// }
 
 const mockData = `
 Question: A cyclist travels a distance of 200 km at an average speed of 20 km/h. After taking a 2-hour break, the cyclist rides another 300 km at an average speed of 25 km/h. What is the total time taken for the entire trip in hours?

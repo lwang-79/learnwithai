@@ -21,16 +21,16 @@ import { API, Auth, DataStore, graphqlOperation } from 'aws-amplify'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Common/Header'
 import WithAuth from '@/components/Common/WithAuth'
-import { GetUserQuery, StepsSubscribeMutation } from '@/types/API'
-import { stepsSubscribe } from '@/graphql/mutations'
+import { GetUserQuery, LearnwithaiSubscribeMutation } from '@/types/API'
+import { learnwithaiSubscribe } from '@/graphql/mutations'
 import { GraphQLResult } from "@aws-amplify/api-graphql"
-import ProfileCard from '../../components/Profile/ProfileCard'
-import { User } from '../../src/models'
+import ProfileCard from '@/components/Account/ProfileCard'
+import { User } from '@/models'
 import { ZenObservable } from 'zen-observable-ts'
-import PlanSubList from '../../components/Profile/PlanSubList'
-import { PlanSub } from '../../components/Profile/PlanSubItem'
-import Subscription from '../../components/Profile/Subscription'
-import { getUser } from '../../src/graphql/queries'
+import PlanSubList from '@/components/Account/PlanSubList'
+import { PlanSub } from '@/components/Account/PlanSubItem'
+import Subscription from '@/components/Account/Subscription'
+import { getUser } from '@/graphql/queries'
 
 export interface SubStatus {
   personal: PlanSub,
@@ -40,6 +40,7 @@ export interface SubStatus {
 
 function Profile() {
   const [ user, setUser ] = useState<User>();
+  
   const [ subStatus, setSubStatus ] = useState<SubStatus>();
   const [ shouldRefresh, setShouldRefresh ] = useBoolean();
 
@@ -98,24 +99,33 @@ function Profile() {
   }
 
   const getAndSetSubStatus = async (userId: string) => {
+    console.log(userId)
+    const test = await API.graphql(graphqlOperation(
+      getUser, {
+        id: userId
+      }
+    )) as GraphQLResult<GetUserQuery>;
+    console.log(test)
     const response = await API.graphql(graphqlOperation(
-      stepsSubscribe, {
+      learnwithaiSubscribe, {
         operation: 'getPlanSubscriptions', 
         subscriptionId: '',
         userId: userId, 
       }
-    )) as GraphQLResult<StepsSubscribeMutation>;
+    )) as GraphQLResult<LearnwithaiSubscribeMutation>;
+
+
 
     if (
       !response.data || 
-      !response.data.stepsSubscribe ||
-      response.data.stepsSubscribe.statusCode != 200
+      !response.data.learnwithaiSubscribe ||
+      response.data.learnwithaiSubscribe.statusCode != 200
     ) {
-      console.error(`Failed to get subscription status. ${response.data?.stepsSubscribe?.body}`);
+      console.error(`Failed to get subscription status. ${response.data?.learnwithaiSubscribe?.body}`);
       return;
     }
 
-    const subscriptions = JSON.parse(response.data.stepsSubscribe.body!);
+    const subscriptions = JSON.parse(response.data.learnwithaiSubscribe.body!);
 
     setSubStatus(subscriptions);
   }
@@ -130,7 +140,7 @@ function Profile() {
       <Flex direction='column' bg={useColorModeValue('gray.50', 'gray.800')} minH='100vh'>
         {user ? (
           <>
-            <Header user={user} />
+            <Header />
             <Stack
               justify={'center'}
               mt={24}
@@ -158,11 +168,6 @@ function Profile() {
               </Box>
 
               <Button 
-                rounded={'full'}
-                px={6}
-                colorScheme={'orange'}
-                bg={'orange.400'}
-                _hover={{ bg: 'orange.500' }}
                 boxShadow='lg'
                 onClick={onOpenSubModal}
               >

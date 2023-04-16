@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { EssayTopic, EssayType, QuestionLevel } from "@/types/types";
+import { generateNarrativePrompt } from "@/types/prompts/narrative";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -70,14 +71,8 @@ function generatePrompt(
 ) {
 
   let prompt = '';
-  if (
-    type == EssayType.Narrative
-    // &&
-    // [QuestionLevel.Year1, QuestionLevel.Year2, QuestionLevel.Year3].includes(level)
-  ) {
-    prompt = `
-    Give a creative writing prompt for a ${level} level student.
-    `;
+  if (type == EssayType.Narrative) {
+    prompt = generateNarrativePrompt(level);
   } else {
     prompt = `
     Give a famous word or story or some facts less than 100 words about ${topic}, 

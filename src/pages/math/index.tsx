@@ -3,6 +3,8 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
+import { Statistic, Test, User } from '@/models';
+import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { getConcepts } from '@/types/math';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
@@ -20,12 +22,17 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
+  Text, 
   useDisclosure, 
+  useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
+import { DataStore } from 'aws-amplify';
+import Script from 'next/script';
 import { useContext, useState } from 'react'
+import TestList from '@/components/Math/TestList';
 
 function MathExam() {
   const { 
@@ -35,16 +42,19 @@ function MathExam() {
   } = useDisclosure();
 
   const concepts = Object.values(MathConcept);
-  const levels = Object.values(QuestionLevel);
-  const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([]);
-  const [ selectedLevels, setSelectedLevels ] = useState<QuestionLevel[]>([]);
+  const levels = [
+    ...Object.values(QuestionLevel).slice(0,6), 
+    ...Object.values(QuestionLevel).slice(12,15)
+  ];
+  const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
+  const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
   const { currentUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
-  const allLevelsChecked = levels.length === selectedLevels.length;
-  const isLevelIndeterminate = selectedLevels.length > 0 && selectedLevels.length < levels.length;
+  const [ selectedTest, setSelectedTest ] = useState<Test>();
+  const toast = useToast();
 
   const setCheckedConcepts = (value: MathConcept) => {
     let concepts = selectedConcepts;
@@ -66,34 +76,55 @@ function MathExam() {
     }
   }
 
-  const setCheckedLevels = (level: QuestionLevel) => {
-    let levels = selectedLevels;
-    const index = levels.indexOf(level);
+  const startButtonClickedHandler = async () => {
+    setSelectedTest(undefined);
+    if (!currentUser) return;
 
-    if (index > -1) {
-      levels.splice(index, 1);
-      setSelectedLevels([...levels]);
-    } else {
-      setSelectedLevels([...levels, level]);
+    const user = await DataStore.query(User, currentUser.id);
+    if (!user) return;
 
-      const concepts = getConcepts(level);
-      let toAddConcepts: MathConcept[] = [];
-      for (const concept of concepts) {
-        if (!selectedConcepts.includes(concept)) {
-          toAddConcepts.push(concept);
-        }
-      }
-      setSelectedConcepts([...selectedConcepts, ...toAddConcepts]);
+    const todayStatistic = await getTodayStatistic(user);
+
+    if (
+      todayStatistic &&
+      user.quota &&
+      user.quota.mathPerDay - todayStatistic.mathRequest < Number(num)
+    ) {
+      toast({
+        description: `The number of questions you generated today exceeded your current quota.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
     }
+
+    setTimeout(()=>onOpenExamModal(), 100);
+
+    const statistic: Statistic = {
+      ...InitStatistic,
+      mathRequest: Number(num)
+    }
+
+    await addStatisticData(statistic, undefined, user);
   }
 
-  const setAllCheckedLevels = () => {
-    if (selectedLevels.length === 0) {
-      setSelectedLevels(levels);
-    } else {
-      setSelectedLevels([]);
-    }
+  const openModalWithTest = (test: Test) => {
+    setSelectedTest(test);
+    setNum(test.questionSets.length.toString());
+    setMode(QuestionRunMode.Review);
+    setTimeout(()=>{
+      onOpenExamModal();
+    }, 100);
   }
+
+  const modalClosedHandler = () => {
+    onCloseExamModal();
+    setMode(QuestionRunMode.Practice);
+    setNum('10');
+  }
+
 
   return (
     <WithAuth href='/login'>
@@ -102,6 +133,9 @@ function MathExam() {
           minH='100vh'
           direction='column'
         >
+          <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
+          <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
+
           <Header />
 
           <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
@@ -139,42 +173,37 @@ function MathExam() {
 
             <Divider />
 
-            <CheckboxGroup
-              value={selectedLevels}
+            <RadioGroup
+              onChange={setSelectedLevel}
+              value={selectedLevel}
             >
               <VStack align='flex-start'>
-                <Checkbox
-                  isChecked={allLevelsChecked}
-                  isIndeterminate={isLevelIndeterminate}
-                  onChange={setAllCheckedLevels}
-                >
-                  <Heading size='sm'>Level</Heading>
-                </Checkbox>
+                <Heading size='sm'>Level</Heading>
+                <Text fontSize='xs' color='red'>
+                  {`Year level questions are generated by AI. Due to the limitation of AI's capability questions generated by AI maybe not accurate. Others are public dataset for AI training which can also be used to practice. The difficulty level is GSM8K < MathQA = AQuA.`}
+                </Text>
                 <Wrap>
                   {levels.map((level, index) => {
                     return (
                       <WrapItem key={`${level}-${index}`} minW='150px'>
-                        <Checkbox
+                        <Radio
                           value={level}
-                          isDisabled={
-                            currentUser!.membership.current < 2 && 
-                            ((index > 8 && index < 12) || index === 14)
-                          }
-                          onChange={(e) => setCheckedLevels(e.target.value as QuestionLevel)}
+                          isDisabled={currentUser.membership.current < 2}
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
-                        </Checkbox>
+                        </Radio>
                       </WrapItem>
                     )
                   })}
                 </Wrap>
               </VStack>
-            </CheckboxGroup>
+            </RadioGroup>
 
             <Divider />
 
             <CheckboxGroup
               value={selectedConcepts}
+              isDisabled={!selectedLevel.includes('Year')}
             >
               <VStack align='flex-start'>
                 <Checkbox
@@ -190,7 +219,7 @@ function MathExam() {
                       <WrapItem key={`${concept}-${index}`} minW='180px'>
                         <Checkbox
                           value={concept}
-                          isDisabled={index > 17 && currentUser!.membership.current < 2}
+                          isDisabled={!selectedLevel.includes('Year')}
                           onChange={(e) => setCheckedConcepts(e.target.value as MathConcept)}
                         >
                           {concept.charAt(0).toUpperCase() + concept.slice(1)}
@@ -209,16 +238,25 @@ function MathExam() {
 
             <HStack justify='flex-end' w='full'>
               <Button
-                onClick={onOpenExamModal}
-                isDisabled={!selectedConcepts.length || !selectedLevels.length}
+                onClick={startButtonClickedHandler}
+                isDisabled={!selectedConcepts.length || !selectedLevel}
               >
                 Start
               </Button>
             </HStack>
 
+            <Divider />
+            
+            <TestList 
+              selectCallback={openModalWithTest}
+              title='Recent tests'
+              defaultPageStep={10}
+            />
+
+
             <Modal
               isOpen={isOpenExamModal} 
-              onClose={onCloseExamModal}
+              onClose={modalClosedHandler}
               scrollBehavior='inside'
               size='full'
               closeOnEsc={false}
@@ -229,11 +267,12 @@ function MathExam() {
                   <QuestionRun 
                     category={QuestionCategory.Math} 
                     type={QuestionType.MultiChoice}
-                    levels={selectedLevels}
+                    level={selectedLevel as QuestionLevel}
                     concepts={selectedConcepts}
                     maxNum={Number(num)}
                     mode={mode as QuestionRunMode}
-                    onClose={onCloseExamModal}
+                    onClose={modalClosedHandler}
+                    test={selectedTest}
                   />
                 </ModalBody>
               </ModalContent>
