@@ -100,7 +100,6 @@ export default function Header() {
 
   const signOut = async () => {
     try {
-      console.log('tst')
       setItem('isAuthenticated', 'false', 'local');
       DataStore.clear();        // must before signOut
       await Auth.signOut();     // for Social SignIn signOut will not return

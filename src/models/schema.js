@@ -726,6 +726,20 @@ export const schema = {
                     "type": "Int",
                     "isRequired": true,
                     "attributes": []
+                },
+                "seed": {
+                    "name": "seed",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "collections": {
+                    "name": "collections",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         },
@@ -833,5 +847,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "1b8563edbe9f03f36792836f3a9e9864"
+    "version": "a4a4f09a4cc7d0e83633a5d130d71034"
 };

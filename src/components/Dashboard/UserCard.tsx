@@ -14,6 +14,7 @@ import { BiMath } from "react-icons/bi";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { TbWriting } from "react-icons/tb";
+import { getLevel } from "@/types/user";
 
 interface UserCardProps {
   user: User 
@@ -34,36 +35,9 @@ function UserCard({user}: UserCardProps) {
       const daily = user.daily.find(stat => stat.date === currentDay);
       setDaily(daily);
 
-      const dateObj = new Date();
-      dateObj.setDate(dateObj.getDate() - 7);
-      const weeklyData = user.daily.filter(stat => stat.date >= dateObj.toLocaleString('sv-SE').slice(0, 10));
-
-      const mathTotal = weeklyData.reduce((acc, { mathCorrect }) => acc + mathCorrect, 0);
-      const writingTotal = weeklyData.reduce((acc, { writing }) => acc + writing, 0);
-    
-      if (mathTotal > 500) {
-        setMathLevel(4);
-      } else if (mathTotal > 250) {
-        setMathLevel(3);
-      } else if (mathTotal > 100) {
-        setMathLevel(2);
-      } else if (mathTotal > 50) {
-        setMathLevel(1);
-      } else {
-        setMathLevel(0);
-      }
-
-      if (writingTotal > 15) {
-        setWritingLevel(4);
-      } else if (writingTotal > 10) {
-        setWritingLevel(3);
-      } else if (writingTotal > 5) {
-        setWritingLevel(2);
-      } else if (writingTotal > 3) {
-        setWritingLevel(1);
-      } else {
-        setWritingLevel(0);
-      }
+      const { mathLevel, writingLevel } = getLevel(user.daily);
+      setMathLevel(mathLevel);
+      setWritingLevel(writingLevel);
     }
 
     if (user.monthly) {

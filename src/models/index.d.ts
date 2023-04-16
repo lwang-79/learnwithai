@@ -92,12 +92,16 @@ type EagerGameData = {
   readonly startDate: string;
   readonly level: number;
   readonly score: number;
+  readonly seed: string;
+  readonly collections: string;
 }
 
 type LazyGameData = {
   readonly startDate: string;
   readonly level: number;
   readonly score: number;
+  readonly seed: string;
+  readonly collections: string;
 }
 
 export declare type GameData = LazyLoading extends LazyLoadingDisabled ? EagerGameData : LazyGameData

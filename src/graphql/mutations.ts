@@ -88,6 +88,8 @@ export const createUser = /* GraphQL */ `
         startDate
         level
         score
+        seed
+        collections
       }
       createdAt
       updatedAt
@@ -168,6 +170,8 @@ export const updateUser = /* GraphQL */ `
         startDate
         level
         score
+        seed
+        collections
       }
       createdAt
       updatedAt
@@ -248,6 +252,8 @@ export const deleteUser = /* GraphQL */ `
         startDate
         level
         score
+        seed
+        collections
       }
       createdAt
       updatedAt

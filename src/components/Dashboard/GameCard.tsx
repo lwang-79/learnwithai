@@ -9,12 +9,13 @@ import {
   IconButton, 
   Image, 
   Progress, 
-  Spacer, 
-  Text
+  Spacer,
+  Text, 
 } from "@chakra-ui/react"
 import { GiPlantWatering } from "react-icons/gi";
 import { DataStore } from "aws-amplify"
 import { useEffect, useState } from "react";
+import { convertCollectionsToString, getCollections, getSeed } from "@/types/game";
 
 interface GameCardProps {
   user: User
@@ -22,6 +23,8 @@ interface GameCardProps {
 function GameCard({user}: GameCardProps) {
   const upgradeScore = 100;
   const [ currentScore, setCurrentScore ] = useState<number>(0);
+  const [ imageWidth, setImageWidth ] = useState(0);
+  const [ collections, setCollections ] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
     if (!user.gameData) return;
@@ -38,14 +41,20 @@ function GameCard({user}: GameCardProps) {
       return;
     }
     setCurrentScore(currentScore);
-  }, []);
+
+    const collections = getCollections(user.gameData.collections);
+    setCollections(collections);
+  }, [currentScore]);
 
   const plantButtonClickedHandler = async () => {
+    const seed = getSeed(user);
     await DataStore.save(User.copyOf(user, (updated) => {
       updated.gameData = {
         startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
         level: 0,
-        score: 0
+        score: 0,
+        seed: seed,
+        collections: '[]'
       }
     }));
   }
@@ -59,57 +68,97 @@ function GameCard({user}: GameCardProps) {
       if (!updated.gameData) {
         return;
       }
-      
-      updated.gameData = {
-        startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
-        level: updated.gameData.level + 1,
-        score: updated.gameData.score - upgradeScore
+
+      if (updated.gameData.level === 4) {
+        const map = getCollections(updated.gameData.collections);
+
+        if (map.has(updated.gameData.seed)) {
+          map.set(updated.gameData.seed, map.get(updated.gameData.seed) + 1);
+        } else {
+          map.set(updated.gameData.seed, 1);
+        }
+
+        const collectionsString = convertCollectionsToString(map);
+
+        updated.gameData = {
+          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
+          level: 0,
+          score: updated.gameData.score - upgradeScore,
+          seed: getSeed(updated),
+          collections: collectionsString
+        }
+
+      } else {
+        updated.gameData = {
+          ...updated.gameData,
+          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
+          level: updated.gameData.level + 1,
+          score: updated.gameData.score - upgradeScore
+        }
       }
-    }));
+    }));      
   }
 
+  const imageLoadHandler = (event: any) => {
+    setImageWidth(event.target.width);
+  }
 
   return (
     <Card w='full'>
       <CardBody>
-        <HStack>
-          {!user.gameData && 
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={plantButtonClickedHandler}
-            >
-              Plant
-            </Button>
-          }
-          <Spacer />
-          <IconButton
-              variant='ghost'
-              size='sm'
-              aria-label='Previous Month'
-              isDisabled={currentScore < upgradeScore}
-              icon={<Icon as={GiPlantWatering} boxSize={6} />}
-              onClick={upgradeButtonClickedHandler}
-            />
-        </HStack>
-        {user.gameData &&
-        <HStack px={3} h='150px' w='full' position='relative'>
-          <Image
-            src={`game/tree-${user.gameData.level}.png`}
-            h='150px'
-            position='absolute'
-            left='50px'
-          />
-          <Box className='watering-progress' right='-47px'>
-            <Progress
-              value={currentScore}
-              width='120px'
-              height='8px'
-              max={upgradeScore}
-              colorScheme='teal'
-            />
-          </Box>
-        </HStack>}
+        {!user.gameData ? (
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={plantButtonClickedHandler}
+          >
+            Plant
+          </Button>
+        ) : (
+          <>
+            <HStack>
+              <HStack spacing={4}>
+                {[...collections.entries()].map(([key, value]) => (
+                  <HStack key={`${key}-${value}`} align='flex-end'>
+                    <Image
+                      src={`game/${key}-4.png`}
+                      h='30px'
+                    />
+                    <Text fontSize='xs'>{value}</Text>
+                  </HStack>
+                ))}
+              </HStack>
+              <Spacer />
+              <IconButton
+                variant='ghost'
+                size='sm'
+                aria-label='Previous Month'
+                isDisabled={currentScore < upgradeScore}
+                icon={<Icon as={GiPlantWatering} boxSize={6} />}
+                onClick={upgradeButtonClickedHandler}
+              />
+            </HStack>
+            <HStack px={3} h='150px' w='full' position='relative'>
+              <Image
+                src={`game/${user.gameData.seed}-${user.gameData.level}.png`}
+                h='150px'
+                position='absolute'
+                left={`${120 - imageWidth / 2}px`}
+                onLoad={imageLoadHandler}
+              />
+              <Box className='watering-progress' right='-47px'>
+                <Progress
+                  value={currentScore}
+                  width='120px'
+                  height='8px'
+                  max={upgradeScore}
+                  colorScheme='teal'
+                />
+              </Box>
+            </HStack>
+          </>
+        )}
+        
       </CardBody>
       
     </Card>

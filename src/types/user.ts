@@ -4,6 +4,7 @@ import { userBySub } from "../graphql/queries";
 import { GraphQLResult } from '@aws-amplify/api';
 import { Quota } from './quota';
 import { createUser } from "../graphql/mutations";
+import { Statistic } from "@/models";
 
 export type UserParams = {
   id: string
@@ -70,4 +71,42 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
 
 export const isAuthenticated = () => {
   return window['localStorage']['isAuthenticated'] === 'true';
+}
+
+export const getLevel = (daily: Statistic[]): {mathLevel: number, writingLevel: number} => {
+  let mathLevel = 0;
+  let writingLevel = 0;
+
+  const dateObj = new Date();
+  dateObj.setDate(dateObj.getDate() - 7);
+  const weeklyData = daily.filter(stat => stat.date >= dateObj.toLocaleString('sv-SE').slice(0, 10));
+
+  const mathTotal = weeklyData.reduce((acc, { mathCorrect }) => acc + mathCorrect, 0);
+  const writingTotal = weeklyData.reduce((acc, { writing }) => acc + writing, 0);
+
+  if (mathTotal > 500) {
+    mathLevel = 4;
+  } else if (mathTotal > 250) {
+    mathLevel = 3;
+  } else if (mathTotal > 100) {
+    mathLevel = 2;
+  } else if (mathTotal > 50) {
+    mathLevel = 1;
+  } else {
+    mathLevel = 0;
+  }
+
+  if (writingTotal > 15) {
+    writingLevel = 4;
+  } else if (writingTotal > 10) {
+    writingLevel = 3;
+  } else if (writingTotal > 5) {
+    writingLevel = 2;
+  } else if (writingTotal > 3) {
+    writingLevel = 1;
+  } else {
+    writingLevel = 0;
+  }
+
+  return {mathLevel: mathLevel, writingLevel: writingLevel};
 }

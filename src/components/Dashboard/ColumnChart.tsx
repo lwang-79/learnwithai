@@ -42,8 +42,6 @@ function ColumnChart({ daily }: ColumnChartProps) {
       d => d.date.includes(currentMonth.toLocaleString('sv-SE').slice(0,7))
     ).sort((a, b) => a.date > b.date ? 1 : -1);
 
-    console.log(statisticData);
-
     let data: Record<string, number> = {};
 
     if (category === 'Math') {

@@ -75,6 +75,8 @@ type GameData {
   startDate: String!
   level: Int!
   score: Int!
+  seed: String!
+  collections: String! #[{tree: 1},{sunflower: 1}]
 }
 
 type QuestionSet @model 

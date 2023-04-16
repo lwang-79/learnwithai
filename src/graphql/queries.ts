@@ -69,6 +69,8 @@ export const getUser = /* GraphQL */ `
         startDate
         level
         score
+        seed
+        collections
       }
       createdAt
       updatedAt
@@ -151,6 +153,8 @@ export const listUsers = /* GraphQL */ `
           startDate
           level
           score
+          seed
+          collections
         }
         createdAt
         updatedAt
@@ -242,6 +246,8 @@ export const syncUsers = /* GraphQL */ `
           startDate
           level
           score
+          seed
+          collections
         }
         createdAt
         updatedAt
@@ -335,6 +341,8 @@ export const userBySub = /* GraphQL */ `
           startDate
           level
           score
+          seed
+          collections
         }
         createdAt
         updatedAt
@@ -428,6 +436,8 @@ export const userByPayerId = /* GraphQL */ `
           startDate
           level
           score
+          seed
+          collections
         }
         createdAt
         updatedAt
