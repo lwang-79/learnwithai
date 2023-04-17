@@ -63,7 +63,8 @@ function MathExam() {
       setNum('50');
     } else {
       setSelectedLevel(QuestionLevel.GSM8K);
-      setNum('10');
+      if (mode === QuestionRunMode.Test) setNum('20');
+      else setNum('10');
     }
 
   }, [mode]);
@@ -146,6 +147,10 @@ function MathExam() {
           direction='column'
         >
           <Header />
+          {/* <Script async 
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8667628388061043"
+            crossOrigin="anonymous">
+          </Script> */}
 
           <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setMode} value={mode}>

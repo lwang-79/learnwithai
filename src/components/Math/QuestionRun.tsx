@@ -52,6 +52,7 @@ import Result from "./Result";
 import { Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset } from "@/types/questions";
+import Timer from "../Common/Timer";
 
 export enum QuestionRunMode {
   Practice = 'practice',
@@ -483,7 +484,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
             align='flex-start'
             spacing={4}
           >
-            <HStack>
+            <HStack w='full'>
               <Text fontSize='sm'>{isReview ? questionSetsRef.current[0].level : level}</Text>
               <Tag 
                 rounded='full' 
@@ -492,6 +493,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
+              <Spacer />
+              {isTest && <Timer />}
             </HStack>
             
             <HStack 
