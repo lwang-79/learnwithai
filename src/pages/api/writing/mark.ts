@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { EssayTopic, EssayType } from "@/types/types";
+import { EssayType } from "@/types/types";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -54,7 +54,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     });
     res.status(200).json({ result: completion.data.choices[0].message?.content });
   } catch(error: any) {
-    // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -78,14 +77,16 @@ function generatePrompt(
 
   const p = `
   Evaluate a student's ${type} based on the student's level which is ${level}.
-  1. Consider the following facts "Knowledge, understanding and control", "Response to prompt", "Use of evidence", "Structure of response" and "Spelling and Punctuation".
-  2. Give a score from 0 to 100 according to your evaluation.
-  3. Mark the good sentences which increased the score and not good sentences which decreased the score.
-  4. Give comments on the thing doing well and things that need to improve.
+  1. Make sure to carefully read the prompt and student's writing in full before evaluating.
+  2. The student must write an original narrative and cannot copy the prompt directly. Otherwise the score should be 0 and stop evaluating.
+  3. Consider the following facts "Knowledge, understanding and control", "Response to prompt(copy prompt is not acceptable)", "Use of evidence", "Structure of response" and "Spelling and Punctuation".
+  4. Give a score from 0 to 100 according to your evaluation.
+  5. Mark the good sentences which increased the score and not good sentences which decreased the score.
+  6. Give comments on the thing doing well and things that need to improve.
   
-  Essay prompt:
+  ${type} prompt:
   [${prompt}]
-  Student's Essay:
+  Student's ${type}:
   [${essay}]
   `;
 

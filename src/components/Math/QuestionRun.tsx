@@ -46,15 +46,17 @@ import {
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { MdBookmarkBorder, MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
+import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addNewMathQuestions, getQuestionsFromDataset } from "@/types/questions";
+import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset } from "@/types/questions";
 
 export enum QuestionRunMode {
   Practice = 'practice',
   Test = 'test',
+  Competition = 'competition',
   Review = 'review'
 }
 
@@ -74,6 +76,7 @@ const defaultNumber = 10
 
 function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
+  const isCompetition = mode === QuestionRunMode.Competition;
   const isReview = mode === QuestionRunMode.Review;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
@@ -126,12 +129,17 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
       return;
     }
 
-    if (!level.includes('Year')) {
-      getAndSetAQuAQuestions(maxNum);
+    if (mode === QuestionRunMode.Competition) {
+      addCompetitionQuestionSets(1, level);
       return;
     }
 
-    AddQuestionSets(cacheNumber);
+    if ([QuestionLevel.GSM8K, QuestionLevel.AQuA, QuestionLevel.MathQA].includes(level)) {
+      getAndSetDatasetQuestions(maxNum);
+      return;
+    }
+
+    addQuestionSets(cacheNumber);
   },[]);
 
   useEffect(() => {
@@ -143,7 +151,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     }
   },[fetchingStatus]);
 
-  const getAndSetAQuAQuestions = async (num: number) => {
+  const getAndSetDatasetQuestions = async (num: number) => {
     const questionSets = await getQuestionsFromDataset(level, num);
     questionSetsRef.current = questionSets;
     lastIndexRef.current = maxNum - 1;
@@ -151,7 +159,15 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     setCurrentQuestionSet(questionSets[0]);
   }
 
-  const AddQuestionSets = async (num: number) => {
+  const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
+    const competitionQuestionSets = await getQuestionsFromCompetition(num, level);
+    questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
+    // lastIndexRef.current += 1;
+    // setQuestionSets(questionSetsRef.current);
+    setFetchingStatus.toggle();
+  }
+
+  const addQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
 
     for (let i = 0; i < num; i++) {
@@ -276,7 +292,11 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     if (currentIndexRef.current > lastIndexRef.current) {
       console.log(currentIndexRef.current, lastIndexRef.current, questionSetsRef.current.length)
       lastIndexRef.current += 1;
-      if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) AddQuestionSets(1);
+      if (isCompetition) {
+        addCompetitionQuestionSets(1, level);
+      } else if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
+        addQuestionSets(1);
+      }
     }
 
     setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
@@ -408,6 +428,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               size='sm'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
+              isDisabled={isCompetition && !isSubmitted}
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
@@ -417,6 +438,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               size='sm'
               onClick={()=>questionSetClickedHandler(index)}
               colorScheme={getQuestionColor(questionSet, index)}
+              isDisabled={isCompetition && !isSubmitted}
               w='35px' h='35px'
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
@@ -550,6 +572,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                 {currentQuestionSet ? (
                   <>
                     <Text 
+                      as={Latex}
                       textAlign='justify'
                       overflow='auto'
                     >
@@ -565,7 +588,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                                 key={index}
                                 isDisabled={isSubmitted || isReview}
                               >
-                                {`${String.fromCharCode(65 + index)}: ${option}`}
+                                <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
                               </Radio>
                             )
                           })
@@ -618,6 +641,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                   onClick={()=>setShouldShowWorkout.toggle()}
                   isDisabled={
                     (isTest && !isSubmitted) ||
+                    (isCompetition && !isSubmitted) ||
                     !currentQuestionSet
                   }
                 />
@@ -667,7 +691,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                 <>
                   {currentQuestionSet && currentQuestionSet.workout.split("\n").map((line, index) => (
                     <Fragment key={index}>
-                      {line}
+                      <Latex>{line}</Latex>
                       {index !== currentQuestionSet.workout.split("\n").length - 1 && <br />}
                     </Fragment>
                   ))}

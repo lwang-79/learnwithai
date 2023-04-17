@@ -67,6 +67,11 @@ export enum QuestionLevel {
   GSM8K = 'GSM8K',
   MathQA = 'MathQA',
   AQuA = 'AQuA',
+  Level1 = 'Level 1',
+  Level2 = 'Level 2',
+  Level3 = 'Level 3',
+  Level4  = 'Level 4',
+  Level5  = 'Level 5',
   
   // Primary = 'primary school',
   // Middle = 'middle school',
@@ -124,4 +129,11 @@ export type MathQAQuestion = {
 export type GSM8KQuestion = {
   question: string
   answer: string
+}
+
+export type CompetitionQuestion = {
+  problem: string
+  level: string
+  type: string
+  solution: string
 }

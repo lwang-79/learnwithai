@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react'
 import { DataStore } from 'aws-amplify';
 import Script from 'next/script';
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import TestList from '@/components/Math/TestList';
 
 function MathExam() {
@@ -46,6 +46,7 @@ function MathExam() {
     ...Object.values(QuestionLevel).slice(0,6), 
     ...Object.values(QuestionLevel).slice(12,15)
   ];
+  const competitionLevels = [ ...Object.values(QuestionLevel).slice(15, 20) ];
   const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
@@ -55,6 +56,17 @@ function MathExam() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
+
+  useEffect(() => {
+    if (mode === QuestionRunMode.Competition) {
+      setSelectedLevel(QuestionLevel.Level1);
+      setNum('50');
+    } else {
+      setSelectedLevel(QuestionLevel.GSM8K);
+      setNum('10');
+    }
+
+  }, [mode]);
 
   const setCheckedConcepts = (value: MathConcept) => {
     let concepts = selectedConcepts;
@@ -133,9 +145,6 @@ function MathExam() {
           minH='100vh'
           direction='column'
         >
-          <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
-          <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
-
           <Header />
 
           <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
@@ -149,9 +158,22 @@ function MathExam() {
                 >
                   Test
                 </Radio>
+                <Radio 
+                  value={QuestionRunMode.Competition}
+                  isDisabled={currentUser!.membership.current < 2}
+                >
+                  Competition
+                </Radio>
               </HStack>
             </RadioGroup>
-            <RadioGroup onChange={setNum} value={num}>
+            <RadioGroup 
+              onChange={setNum} 
+              value={num} 
+              isDisabled={
+                currentUser!.membership.current < 2 ||
+                mode === QuestionRunMode.Competition
+              }
+            >
               <HStack spacing={4}>
                 <Heading size='sm'>Question Number</Heading>
                 <Radio value='10'>10</Radio>
@@ -161,7 +183,6 @@ function MathExam() {
                       <Radio 
                         value={num.toString()} 
                         key={`${num}-${index}`}
-                        isDisabled={currentUser!.membership.current < 2}
                       >
                         {num}
                       </Radio>
@@ -188,9 +209,24 @@ function MathExam() {
                       <WrapItem key={`${level}-${index}`} minW='150px'>
                         <Radio
                           value={level}
-                          isDisabled={currentUser.membership.current < 2}
+                          isDisabled={
+                            currentUser.membership.current < 2 ||
+                            mode === QuestionRunMode.Competition
+                          }
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </Radio>
+                      </WrapItem>
+                    )
+                  })}
+                  {competitionLevels.map((level, index) => {
+                    return (
+                      <WrapItem key={`${level}-${index}`} minW='150px'>
+                        <Radio
+                          value={level}
+                          isDisabled={mode !== QuestionRunMode.Competition}
+                        >
+                          {level}
                         </Radio>
                       </WrapItem>
                     )

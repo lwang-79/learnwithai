@@ -7,6 +7,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet"></link>
+        <link
+            href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css"
+            rel="stylesheet"
+        />
       </Head>
       <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />

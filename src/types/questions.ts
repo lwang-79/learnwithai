@@ -1,8 +1,8 @@
 import { QuestionSet, Test, User } from "@/models";
-import answer from "@/pages/api/math/answer";
 import { DataStore } from "aws-amplify";
 import { 
   AQuAQuestion, 
+  CompetitionQuestion, 
   GSM8KQuestion, 
   MathQAQuestion, 
   QuestionCategory, 
@@ -149,32 +149,49 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
       const randomIndex = Math.floor(Math.random() * 5);
       const answerIndex = String.fromCharCode(randomIndex + 65);
       let options: string[] = [];
+
       for (let i = 0; i < 5; i++) {
         if (i === randomIndex) {
           options.push(answer);
         } else {
-          const a = Number(answer);
-          let answerValue = 0;
-          if (a < 10) {
-            do {
-              const random = Math.random() * 2 * a - a;
-              if (a < 2) {
-                answerValue = Number((a + random).toFixed(2));
-              } {
-                const l = getDecimalDigitLength(a);
-                answerValue = Number((a + random).toFixed(l));
-              }
-            } while (answerValue === a)
-          } else {
-            do {
-              const random = Math.floor(Math.random() * 2 * a) - a;
-              answerValue = a + random;
-            } while (answerValue === a)          
-          }
+          let option = '';
           
-          options.push(answerValue.toString());
+          if (/\d/.test(answer)) {
+            do {
+              option = replaceDigitsWithRandomOneByOne(answer);
+            } while(options.includes(option));
+          }
+    
+          options.push(option);
         }
       }
+  
+      // for (let i = 0; i < 5; i++) {
+      //   if (i === randomIndex) {
+      //     options.push(answer);
+      //   } else {
+      //     const a = Number(answer);
+      //     let answerValue = 0;
+      //     if (a < 10) {
+      //       do {
+      //         const random = Math.random() * 2 * a - a;
+      //         if (a < 2) {
+      //           answerValue = Number((a + random).toFixed(2));
+      //         } {
+      //           const l = getDecimalDigitLength(a);
+      //           answerValue = Number((a + random).toFixed(l));
+      //         }
+      //       } while (answerValue === a)
+      //     } else {
+      //       do {
+      //         const random = Math.floor(Math.random() * 2 * a) - a;
+      //         answerValue = a + random;
+      //       } while (answerValue === a)          
+      //     }
+          
+      //     options.push(answerValue.toString());
+      //   }
+      // }
 
       questionSets.push({
         type: QuestionType.MultiChoice,
@@ -190,6 +207,72 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
         isTarget: false
       })
     }
+  }
+
+  return questionSets;
+}
+
+export const getQuestionsFromCompetition = async (num: number, level: QuestionLevel) => {
+  const response = await fetch(`/api/math/competition`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      number: num,
+      level: level
+    }),
+  });
+
+  const data = await response.json();
+  if (response.status !== 200) {
+    throw data.error || new Error(`Request failed with status ${response.status}`);
+  }
+
+  let questionSets: LocalQuestionSet[] = [];
+  const questions = data.result as CompetitionQuestion[];
+
+  for (const q of questions) {
+    let regex = /boxed\{((?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*)\}/;
+    let match = q.solution.match(regex);
+
+    if (!match) throw Error(`Failed to parse the solution: ${q.solution}`);
+
+    const answer = `$${match[1]}$`;
+
+    const randomIndex = Math.floor(Math.random() * 4);
+    const answerIndex = String.fromCharCode(randomIndex + 65);
+    let options: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      if (i === randomIndex) {
+        options.push(answer);
+      } else {
+        let option = '';
+
+        if (/\d/.test(answer)) {
+          do {
+            option = replaceDigitsWithRandomOneByOne(answer);
+          } while(options.includes(option));
+        }
+
+        options.push(option);
+      }
+    }
+
+
+    questionSets.push({
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Math,
+      level: level,
+      concept: q.type,
+      question: q.problem,
+      options: options,
+      answer: answerIndex,
+      selected: '',
+      workout: q.solution,
+      isBad: false,
+      isTarget: false
+    })
   }
 
   return questionSets;
@@ -213,4 +296,11 @@ const getDecimalDigitLength = (num: number) => {
     return 0; // Number ends with decimal point
   }
   return str.split('.')[1].length;
+}
+
+const replaceDigitsWithRandomOneByOne = (str: string) => {
+  return str
+    .split('')
+    .map((char) => (/\d/.test(char) ? Math.floor(Math.random() * 9) + 1 : char))
+    .join('');
 }
