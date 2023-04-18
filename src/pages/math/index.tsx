@@ -64,7 +64,7 @@ function MathExam() {
     } else {
       setSelectedLevel(QuestionLevel.GSM8K);
       if (mode === QuestionRunMode.Test) setNum('20');
-      else setNum('10');
+      else if (mode === QuestionRunMode.Practice) setNum('10');
     }
 
   }, [mode]);

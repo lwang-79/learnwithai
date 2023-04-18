@@ -575,7 +575,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                 {currentQuestionSet ? (
                   <>
                     <Text 
-                      as={Latex}
+                      as={isCompetition ? Latex : Text}
                       textAlign='justify'
                       overflow='auto'
                     >
