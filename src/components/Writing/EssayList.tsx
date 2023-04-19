@@ -135,9 +135,8 @@ function EssayList({ selectCallback, title, defaultPageStep }: EssayListProps) {
                   key={index}
                   cursor='pointer'
                   _hover={{bg: bgColor}}
-                  onClick={()=>selectCallback(essay)}
                 >
-                  <EssayItem essay={essay}/>
+                  <EssayItem essay={essay} refreshList={refreshList} selectCallback={selectCallback}/>
                 </Box>
               )
             })

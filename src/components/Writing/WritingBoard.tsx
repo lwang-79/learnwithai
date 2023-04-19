@@ -29,6 +29,7 @@ import {
   Text, 
   Textarea, 
   useDisclosure, 
+  useToast, 
   VStack
 } from "@chakra-ui/react"
 import ResizeTextarea from "react-textarea-autosize";
@@ -63,6 +64,8 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const { currentUser } = useContext(SharedComponents);
 
   const cancelRef = useRef(null);
+
+  const toast = useToast();
 
   const { 
     isOpen: isOpenAlert, 
@@ -102,10 +105,17 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
 
     const data = await response.json();
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+      console.error(`Request failed with status ${response.status}: ${data.error}`);
+      toast({
+        description: `Failed to generate prompt, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+      onClose();
+      return;
     }
 
-    console.log(data.result);
     const prompt = data.result as string;
 
     const essay = new Essay({
@@ -139,11 +149,19 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     });
 
     const data = await response.json();
+
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+      console.error(`Request failed with status ${response.status}: ${data.error}`);
+      setIsMarking(false);
+      toast({
+        description: `Failed to mark the essay, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+      return;
     }
 
-    console.log(data.result);
     const mark = data.result as string;
     setMark(mark.trim());
     setIsMarking(false);
@@ -166,10 +184,17 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
 
     const data = await response.json();
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+      console.error(`Request failed with status ${response.status}: ${data.error}`);
+      setIsMarking(false);
+      toast({
+        description: `Failed to generate a sample, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+      return;
     }
 
-    console.log(data.result);
     const mark = data.result as string;
     setMark(mark.trim());
     setIsMarking(false);
