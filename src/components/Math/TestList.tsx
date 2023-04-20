@@ -137,7 +137,6 @@ function TestList({ selectCallback, title, defaultPageStep }: TestListProps) {
                     key={index}
                     cursor='pointer'
                     _hover={{bg: bgColor}}
-                    // onClick={()=>selectCallback(test)}
                   >
                     <TestItem test={test} refreshList={refreshList} selectCallback={selectCallback}/>
                   </WrapItem>

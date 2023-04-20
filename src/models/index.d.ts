@@ -2,7 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
-
+export enum NotificationType {
+  MONTHLY = "Monthly",
+  WEEKLY = "Weekly",
+  DAILY = "Daily",
+  INSTANT = "Instant"
+}
 
 type EagerMembership = {
   readonly current: number;
@@ -108,6 +113,20 @@ export declare type GameData = LazyLoading extends LazyLoadingDisabled ? EagerGa
 
 export declare const GameData: (new (init: ModelInit<GameData>) => GameData)
 
+type EagerNotification = {
+  readonly emails: (string | null)[];
+  readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
+}
+
+type LazyNotification = {
+  readonly emails: (string | null)[];
+  readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
+}
+
+export declare type Notification = LazyLoading extends LazyLoadingDisabled ? EagerNotification : LazyNotification
+
+export declare const Notification: (new (init: ModelInit<Notification>) => Notification)
+
 type EagerLocalQuestionSet = {
   readonly type: string;
   readonly category: string;
@@ -172,6 +191,7 @@ type EagerUser = {
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
+  readonly notification?: Notification | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -194,6 +214,7 @@ type LazyUser = {
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
+  readonly notification?: Notification | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

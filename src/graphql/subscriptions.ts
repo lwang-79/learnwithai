@@ -75,6 +75,10 @@ export const onCreateUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -157,6 +161,10 @@ export const onUpdateUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -238,6 +246,10 @@ export const onDeleteUser = /* GraphQL */ `
         score
         seed
         collections
+      }
+      notification {
+        emails
+        types
       }
       createdAt
       updatedAt

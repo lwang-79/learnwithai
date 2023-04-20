@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.Quota = void 0;
 exports.Quota = {
     free: {
-        mathPerDay: 100,
+        mathPerDay: 40,
         readingPerDay: 3,
         writingPerDay: 1,
         savedQuestions: 0,

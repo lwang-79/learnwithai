@@ -22,6 +22,7 @@ export type CreateUserInput = {
   monthly?: Array< StatisticInput > | null,
   yearly?: Array< StatisticInput > | null,
   gameData?: GameDataInput | null,
+  notification?: NotificationInput | null,
   _version?: number | null,
 };
 
@@ -66,6 +67,19 @@ export type GameDataInput = {
   seed: string,
   collections: string,
 };
+
+export type NotificationInput = {
+  emails: Array< string | null >,
+  types: Array< NotificationType | null >,
+};
+
+export enum NotificationType {
+  Monthly = "Monthly",
+  Weekly = "Weekly",
+  Daily = "Daily",
+  Instant = "Instant",
+}
+
 
 export type ModelUserConditionInput = {
   sub?: ModelIDInput | null,
@@ -150,6 +164,7 @@ export type User = {
   monthly?:  Array<Statistic > | null,
   yearly?:  Array<Statistic > | null,
   gameData?: GameData | null,
+  notification?: Notification | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -205,6 +220,12 @@ export type GameData = {
   collections: string,
 };
 
+export type Notification = {
+  __typename: "Notification",
+  emails: Array< string | null >,
+  types: Array< NotificationType | null >,
+};
+
 export type UpdateUserInput = {
   id: string,
   sub?: string | null,
@@ -219,6 +240,7 @@ export type UpdateUserInput = {
   monthly?: Array< StatisticInput > | null,
   yearly?: Array< StatisticInput > | null,
   gameData?: GameDataInput | null,
+  notification?: NotificationInput | null,
   _version?: number | null,
 };
 
@@ -734,6 +756,11 @@ export type CreateUserMutation = {
       seed: string,
       collections: string,
     } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -825,6 +852,11 @@ export type UpdateUserMutation = {
       seed: string,
       collections: string,
     } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -915,6 +947,11 @@ export type DeleteUserMutation = {
       score: number,
       seed: string,
       collections: string,
+    } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -1273,6 +1310,11 @@ export type GetUserQuery = {
       seed: string,
       collections: string,
     } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1366,6 +1408,11 @@ export type ListUsersQuery = {
         score: number,
         seed: string,
         collections: string,
+      } | null,
+      notification?:  {
+        __typename: "Notification",
+        emails: Array< string | null >,
+        types: Array< NotificationType | null >,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1464,6 +1511,11 @@ export type SyncUsersQuery = {
         score: number,
         seed: string,
         collections: string,
+      } | null,
+      notification?:  {
+        __typename: "Notification",
+        emails: Array< string | null >,
+        types: Array< NotificationType | null >,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -1564,6 +1616,11 @@ export type UserBySubQuery = {
         seed: string,
         collections: string,
       } | null,
+      notification?:  {
+        __typename: "Notification",
+        emails: Array< string | null >,
+        types: Array< NotificationType | null >,
+      } | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1662,6 +1719,11 @@ export type UserByPayerIdQuery = {
         score: number,
         seed: string,
         collections: string,
+      } | null,
+      notification?:  {
+        __typename: "Notification",
+        emails: Array< string | null >,
+        types: Array< NotificationType | null >,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -2060,6 +2122,11 @@ export type OnCreateUserSubscription = {
       seed: string,
       collections: string,
     } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2151,6 +2218,11 @@ export type OnUpdateUserSubscription = {
       seed: string,
       collections: string,
     } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2241,6 +2313,11 @@ export type OnDeleteUserSubscription = {
       score: number,
       seed: string,
       collections: string,
+    } | null,
+    notification?:  {
+      __typename: "Notification",
+      emails: Array< string | null >,
+      types: Array< NotificationType | null >,
     } | null,
     createdAt: string,
     updatedAt: string,

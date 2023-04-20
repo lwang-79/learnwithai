@@ -35,6 +35,7 @@ type User
   monthly: [Statistic!]
   yearly: [Statistic!]
   gameData: GameData
+  notification: Notification
 }
 
 type Membership {
@@ -77,6 +78,18 @@ type GameData {
   score: Int!
   seed: String!
   collections: String! #[{tree: 1},{sunflower: 1}]
+}
+
+type Notification {
+  emails: [String]!
+  types: [NotificationType]!
+}
+
+enum NotificationType {
+  Monthly
+  Weekly
+  Daily
+  Instant
 }
 
 type QuestionSet @model 

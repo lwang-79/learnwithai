@@ -32,7 +32,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: 'system', content: 'You are an English writing teacher.' },
+        { role: 'system', content: 'You are a useful assistant' },
         { role: 'user', content: prompt }
       ],
       temperature: 1,

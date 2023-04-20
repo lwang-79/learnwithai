@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import { useState } from "react";
 import { MdOutlineEmail, MdPerson } from "react-icons/md";
-import { sesSendEmail } from "@/types/utils";
+import { isValidEmail, sesSendEmail } from "@/types/utils";
 
 function Support({ onClose }: {onClose: ()=>void}) {
   const [ formState, setFormState ] = useState({
@@ -30,11 +30,6 @@ function Support({ onClose }: {onClose: ()=>void}) {
   const setInput = (key: string) => (event: React.SyntheticEvent) => {
     const target = event.target as HTMLInputElement;
     setFormState({ ...formState, [key]: target.value });
-  }
-
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   }
 
   const sendEmail = async () => {

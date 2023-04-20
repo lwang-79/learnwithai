@@ -1,0 +1,195 @@
+import { NotificationType, User } from "@/models";
+import { isValidEmail } from "@/types/utils";
+import { 
+  Box, 
+  Button, 
+  Checkbox, 
+  CheckboxGroup, 
+  HStack, 
+  Input, 
+  Tag, 
+  TagCloseButton, 
+  TagLabel, 
+  Text, 
+  useColorModeValue, 
+  useToast, 
+  VStack, 
+  Wrap,
+  WrapItem
+} from "@chakra-ui/react";
+import { DataStore } from "aws-amplify";
+import { useState } from "react"
+
+interface NotificationProps {
+  user: User
+}
+
+function Notification({ user }: NotificationProps) {
+  const [ email, setEmail ] = useState('');
+  const [ types, setTypes ] = useState<(NotificationType | null)[]>(
+    user.notification ? 
+    user.notification.types as (NotificationType | null)[] : 
+    [NotificationType.MONTHLY]
+  );
+
+  const toast = useToast();
+
+  const setSelectedTypes = (type: NotificationType) => {
+    let updatedTypes = [...types];
+    const index = types.indexOf(type);
+
+    if (index > -1) {
+      updatedTypes.splice(index, 1);
+    } else {
+      updatedTypes = [...updatedTypes, type];
+    }
+
+    setTypes([...updatedTypes]);
+
+    DataStore.save(User.copyOf(user, updated=>{
+      updated.notification = updated.notification ? {
+        ...updated.notification,
+        types: updatedTypes
+      } : {
+        emails: [user.email],
+        types: updatedTypes
+      }
+    }))
+  }
+
+  const addEmail = () => {
+    console.log(email)
+    if (!isValidEmail(email)) {
+      toast({
+        description: `Invalid email address!`,
+        position: 'top',
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    DataStore.save(User.copyOf(user, updated => {
+      if (user.notification && !user.notification.emails.includes(email)) {
+        updated.notification = {
+          emails: [...user.notification.emails, email],
+          types: types
+        }
+      } else if (!user.notification) {
+        updated.notification = {
+          emails: [email],
+          types: types
+        }
+      } else {
+        toast({
+          description: `Duplicated email address!`,
+          position: 'top',
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+
+        return;
+      }
+
+      setEmail('');
+    }));
+  }
+
+  const removeEmail = (index: number) => {
+    if (!user.notification) return;
+
+    let updatedEmails = [...user.notification.emails];
+
+    updatedEmails.splice(index, 1);
+
+    DataStore.save(User.copyOf(user, updated=>{
+      updated.notification = {
+        ...user.notification!,
+        emails: updatedEmails,
+      }
+    }));
+  }
+
+  return (
+    <Box
+      rounded={'lg'}
+      bg={useColorModeValue('white', 'gray.700')}
+      boxShadow={'md'}
+      p={8}
+      w='full'
+    >
+      <VStack align='flex-start' spacing={4}>
+        <Text>Notification</Text>
+        {user.membership && user.membership.current > 2 ? (
+          <>
+            <HStack>
+              <Text fontSize='sm'>Emails:</Text>
+              <Wrap>
+                {user.notification && user.notification.emails.map((email, index) => {
+                  return (
+                    <WrapItem key={`${email}-${index}`}>
+                      <Tag rounded='full' size='sm'>
+                        <TagLabel>{email}</TagLabel>
+                        <TagCloseButton onClick={()=>removeEmail(index)} />
+                      </Tag>
+                    </WrapItem>
+                )})}
+              </Wrap>
+            </HStack>
+            <HStack w='full'>
+              <Input
+                value={email}
+                size='sm'
+                rounded='lg'
+                w='full'
+                onChange={(e)=> setEmail(e.target.value)}
+                placeholder='Add an email address to receive notification'
+              />
+              <Button
+                size='sm'
+                variant='ghost'
+                onClick={addEmail}
+              >
+                Add
+              </Button>
+            </HStack>
+
+            <CheckboxGroup
+              value={types as string[]}
+            >
+              <HStack>
+                <Text fontSize='sm'>Types:</Text>
+                <>
+                  {[NotificationType.MONTHLY, 
+                    NotificationType.WEEKLY, 
+                    NotificationType.DAILY, 
+                    NotificationType.INSTANT
+                  ].map((type, index)=>{
+                    return (
+                      <Checkbox
+                        value={type}
+                        onChange={()=>setSelectedTypes(type)}
+                        key={`${type}-${index}`}
+                        size='sm'
+                      >
+                        {type}
+                      </Checkbox>
+                  )})} 
+                </>
+              </HStack>
+            </CheckboxGroup>
+          </>
+        ):(
+          <Text fontSize='sm' color='red'>
+            Upgrade to professional plan to enable notification.
+          </Text>
+        )}
+      </VStack>
+    </Box>
+  )
+}
+
+export default Notification

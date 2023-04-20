@@ -1,6 +1,6 @@
 async function sesSendEmail(to:string[], subject:string, message:string) {
 	const body = {
-		'from': 'leon.wang79@gmail.com',
+		'from': 'support@jinpearl.com',
 		'to': to,
 		'subject': subject,
 		'message': message
@@ -16,7 +16,12 @@ async function sesSendEmail(to:string[], subject:string, message:string) {
 	);
 }
 
+const isValidEmail = (email: string) => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+}
 
 export {
+	isValidEmail,
   sesSendEmail
 }

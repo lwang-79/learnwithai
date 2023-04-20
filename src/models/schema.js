@@ -110,6 +110,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "notification": {
+                    "name": "notification",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Notification"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -522,7 +531,17 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "NotificationType": {
+            "name": "NotificationType",
+            "values": [
+                "Monthly",
+                "Weekly",
+                "Daily",
+                "Instant"
+            ]
+        }
+    },
     "nonModels": {
         "Membership": {
             "name": "Membership",
@@ -743,6 +762,29 @@ export const schema = {
                 }
             }
         },
+        "Notification": {
+            "name": "Notification",
+            "fields": {
+                "emails": {
+                    "name": "emails",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "types": {
+                    "name": "types",
+                    "isArray": true,
+                    "type": {
+                        "enum": "NotificationType"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                }
+            }
+        },
         "LocalQuestionSet": {
             "name": "LocalQuestionSet",
             "fields": {
@@ -847,5 +889,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "a4a4f09a4cc7d0e83633a5d130d71034"
+    "version": "3078a543911e1718ff3c646b7490f194"
 };

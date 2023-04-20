@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext } from 'react';
 import {
   Box,
   Flex,
@@ -59,8 +59,6 @@ const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
 export default function Header() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [ lastScrollY, setLastScrollY ] = useState(0);
-  const [ show, setShow ] = useState(true);
 
   const router = useRouter();
   const { setItem } = useStorage();
@@ -73,30 +71,6 @@ export default function Header() {
     onOpen: onOpenSupportModal, 
     onClose: onCloseSupportModal
   } = useDisclosure();
-
-  const controlNavbar = () => {
-    if (typeof window !== 'undefined') { 
-      if (window.scrollY > lastScrollY) { // if scroll down hide the navbar
-        setShow(false); 
-      } else { // if scroll up show the navbar
-        setShow(true);  
-      }
-
-      // remember current page location to use in the next move
-      setLastScrollY(window.scrollY); 
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', controlNavbar);
-
-      // cleanup function
-      return () => {
-        window.removeEventListener('scroll', controlNavbar);
-      };
-    }
-  }, [lastScrollY]);
 
   const signOut = async () => {
     try {
@@ -118,7 +92,6 @@ export default function Header() {
         position='fixed'
         as='header'
         zIndex={100}
-        hidden={!show}
         shadow='md'
       >
         <Container maxW="5xl">

@@ -31,6 +31,7 @@ import PlanSubList from '@/components/Account/PlanSubList'
 import { PlanSub } from '@/components/Account/PlanSubItem'
 import Subscription from '@/components/Account/Subscription'
 import { getUser } from '@/graphql/queries'
+import Notification from '@/components/Account/Notification'
 
 export interface SubStatus {
   personal: PlanSub,
@@ -99,13 +100,6 @@ function Profile() {
   }
 
   const getAndSetSubStatus = async (userId: string) => {
-    console.log(userId)
-    const test = await API.graphql(graphqlOperation(
-      getUser, {
-        id: userId
-      }
-    )) as GraphQLResult<GetUserQuery>;
-    console.log(test)
     const response = await API.graphql(graphqlOperation(
       learnwithaiSubscribe, {
         operation: 'getPlanSubscriptions', 
@@ -145,10 +139,13 @@ function Profile() {
               justify={'center'}
               mt={24}
               mx='auto'
+              pb={4}
               w={{base: 'xs', sm: 'sm', md: 'lg'}}
               spacing={4}
             >
               <ProfileCard user={user} />
+
+              <Notification user={user} />
                   
               <Box cursor='pointer' onClick={onOpenSubModal} minH={100}>
                 {subStatus ? (
@@ -168,7 +165,7 @@ function Profile() {
               </Box>
 
               <Button 
-                boxShadow='lg'
+                boxShadow='md'
                 onClick={onOpenSubModal}
               >
                 Upgrade plan or unsubscribe

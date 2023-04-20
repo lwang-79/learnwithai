@@ -16,16 +16,17 @@
         "learnwithai6c436a2f": {}
       },
       "api": {
-        "learnwithai": {}
+        "learnwithai": {},
+        "learnwithaipaypalwebhook": {}
       },
       "function": {
         "learnwithaiSubscribe": {
-          "paypalApiEndpoint": "https://api-m.sandbox.paypal.com",
-          "paypalClientId": "Ad9m5rn53n5uqK_7Oc6WtzMSoB4e6ip2OMQ_jlyglF0TVKfYJMbSOkiW2CH2x3gKRTvURai5TZobOH2j",
-          "paypalWebhookId": "8D892675M8837834W",
           "secretsPathAmplifyAppId": "d3pwxvup88n55n",
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiSubscribe-786a74764d2f744f3977-build.zip"
+          "s3Key": "amplify-builds/learnwithaiSubscribe-55426b63454e69477a57-build.zip",
+          "paypalApiEndpoint": "https://api-m.sandbox.paypal.com",
+          "paypalClientId": "Ad9m5rn53n5uqK_7Oc6WtzMSoB4e6ip2OMQ_jlyglF0TVKfYJMbSOkiW2CH2x3gKRTvURai5TZobOH2j",
+          "paypalWebhookId": "53Y44870C7408454U"
         }
       }
     }

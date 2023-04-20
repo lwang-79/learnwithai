@@ -1,12 +1,15 @@
-import { Box, Divider, HStack, Spacer, Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Divider, HStack, Spacer, Stack, Tag, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { SubStatus } from "@/pages/account"
 import PlanSubItem from "./PlanSubItem"
+import { useContext } from "react";
+import SharedComponents from "../Common/SharedComponents";
 
 interface PlanSubListProps {
   subStatus: SubStatus
 }
 
 function PlanSubList({ subStatus }: PlanSubListProps) {
+  const { currentUser } = useContext(SharedComponents);
 
   let planSubs = [];
 
@@ -29,7 +32,7 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
     <Box
       rounded={'lg'}
       bg={useColorModeValue('white', 'gray.700')}
-      // boxShadow={'lg'}
+      boxShadow={'md'}
       p={8}
       w='full'
     >
@@ -40,6 +43,19 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
           <Tag borderRadius='full' colorScheme='green'>ACTIVE</Tag>
         </HStack>
         {planSubs}
+        {currentUser && 
+          <>
+            <Divider />
+            <VStack align='flex-start' spacing={0}>
+              <Text>Current Quota</Text>
+              <Text fontSize='sm'>Math questions per day: {currentUser.quota.mathPerDay}</Text>
+              <Text fontSize='sm'>Writing per day: {currentUser.quota.writingPerDay}</Text>
+              <Text fontSize='sm'>Max saved tests: {currentUser.quota.savedTests}</Text>
+              <Text fontSize='sm'>Max saved essays: {currentUser.quota.savedEssays}</Text>
+            </VStack>
+          </>
+        }
+
       </Stack>
     </Box>
   )

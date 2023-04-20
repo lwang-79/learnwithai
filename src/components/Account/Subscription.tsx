@@ -187,11 +187,11 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     Basic reports
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaTimesCircle} color="gray.500" />
+                    <ListIcon as={FaCheckCircle} color="green.500" />
                     Test mode
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaTimesCircle} color="gray.500" />
+                    <ListIcon as={FaCheckCircle} color="green.500" />
                     Save questions and test result
                   </ListItem>
                   <ListItem>

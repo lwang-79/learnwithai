@@ -147,11 +147,11 @@ function ProfileCard({ user }: ProfileCardProps) {
     <Box
       rounded={'lg'}
       bg={useColorModeValue('white', 'gray.700')}
-      boxShadow={'lg'}
+      boxShadow={'md'}
       p={8}
       w='full'
     >
-      <Stack align='center' spacing={4} >
+      <Stack align='center' >
         <Avatar 
           name={username} 
           src={picture} 

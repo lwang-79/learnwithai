@@ -72,6 +72,10 @@ export const getUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -155,6 +159,10 @@ export const listUsers = /* GraphQL */ `
           score
           seed
           collections
+        }
+        notification {
+          emails
+          types
         }
         createdAt
         updatedAt
@@ -248,6 +256,10 @@ export const syncUsers = /* GraphQL */ `
           score
           seed
           collections
+        }
+        notification {
+          emails
+          types
         }
         createdAt
         updatedAt
@@ -344,6 +356,10 @@ export const userBySub = /* GraphQL */ `
           seed
           collections
         }
+        notification {
+          emails
+          types
+        }
         createdAt
         updatedAt
         _version
@@ -438,6 +454,10 @@ export const userByPayerId = /* GraphQL */ `
           score
           seed
           collections
+        }
+        notification {
+          emails
+          types
         }
         createdAt
         updatedAt
