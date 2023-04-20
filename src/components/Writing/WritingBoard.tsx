@@ -38,6 +38,8 @@ import { MdClose } from "react-icons/md"
 import { DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
+import { NotificationType } from "@/types/API";
+import { sesSendEmail } from "@/types/utils";
 
 export enum WritingMode {
   Essay = 'essay',
@@ -231,6 +233,16 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
 
     markEssay();
     onCloseAlert();
+
+    if (currentUser && currentUser.notification && currentUser.notification.types.includes(NotificationType.Instant)) {
+      const message = `${currentUser.username} just finished a writing.
+Type: ${type}
+Level: ${level}
+Prompt: ${essay.prompt}
+Total words: ${count}
+      `
+      sesSendEmail(currentUser.notification.emails, 'Learn with AI instant notification', message, 'notification@jinpearl.com');
+    }
   }
 
   return (

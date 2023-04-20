@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from "aws-amplify";
-import { CreateUserMutation, UserBySubQuery } from "./API";
+import { CreateUserMutation, NotificationType, UserBySubQuery } from "./API";
 import { userBySub } from "../graphql/queries";
 import { GraphQLResult } from '@aws-amplify/api';
 import { Quota } from './quota';
@@ -28,6 +28,10 @@ export type UserParams = {
       enterprise: (string | null)[]
     },
   },
+  notification: {
+    emails: string[]
+    types: NotificationType[]
+  }
 }
 
 export const createUserIfNotExist = async (userAttributes: any): Promise<UserParams> => {

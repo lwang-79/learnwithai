@@ -15,7 +15,6 @@ import {
   Box,
   Button, 
   Center, 
-  CloseButton, 
   Collapse, 
   Divider, 
   HStack, 
@@ -53,6 +52,8 @@ import { Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset } from "@/types/questions";
 import Timer from "../Common/Timer";
+import { sesSendEmail } from "@/types/utils";
+import { NotificationType } from "@/types/API";
 
 export enum QuestionRunMode {
   Practice = 'practice',
@@ -332,7 +333,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     const statistic: Statistic = {
       ...InitStatistic,
       mathCorrect: correct,
-      mathWrong: lastIndexRef.current + 1 - correct
+      mathWrong: lastIndexRef.current + 1 - correct,
+      mathExam: isTest ? 1 : 0
     };
 
     addStatisticData(statistic, currentUser.id);
@@ -340,6 +342,15 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     setResult({ total: lastIndexRef.current + 1, correct: correct });
     setIsSubmitted(true);
     onOpenResultModal();
+
+    if (isTest && currentUser.notification && currentUser.notification.types.includes(NotificationType.Instant)) {
+      const message = `${currentUser.username} just finished a math test.
+Level: ${level}
+Total questions: ${lastIndexRef.current + 1}
+Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) + '%'})
+      `
+      sesSendEmail(currentUser.notification.emails, 'Learn with AI instant notification', message, 'notification@jinpearl.com');
+    }
   }
 
   const getQuestionColor = (q: LocalQuestionSet, index: number) => {

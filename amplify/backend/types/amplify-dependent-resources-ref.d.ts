@@ -24,6 +24,14 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "learnwithaiBackend": {
+      "Arn": "string",
+      "CloudWatchEventRule": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "learnwithaiSubscribe": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

@@ -27,6 +27,10 @@
           "paypalApiEndpoint": "https://api-m.sandbox.paypal.com",
           "paypalClientId": "Ad9m5rn53n5uqK_7Oc6WtzMSoB4e6ip2OMQ_jlyglF0TVKfYJMbSOkiW2CH2x3gKRTvURai5TZobOH2j",
           "paypalWebhookId": "53Y44870C7408454U"
+        },
+        "learnwithaiBackend": {
+          "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
+          "s3Key": "amplify-builds/learnwithaiBackend-4e47497479414277495a-build.zip"
         }
       }
     }

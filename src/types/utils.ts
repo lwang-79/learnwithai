@@ -1,6 +1,11 @@
-async function sesSendEmail(to:string[], subject:string, message:string) {
+async function sesSendEmail(
+	to:string[], 
+	subject:string, 
+	message:string, 
+	from:string = 'notification@jinpearl.com'
+) {
 	const body = {
-		'from': 'support@jinpearl.com',
+		'from': from,
 		'to': to,
 		'subject': subject,
 		'message': message
