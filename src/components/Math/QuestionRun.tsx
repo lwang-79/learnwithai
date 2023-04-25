@@ -50,7 +50,7 @@ import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset } from "@/types/questions";
+import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { NotificationType } from "@/types/API";
@@ -104,6 +104,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
   const [ isSubmitted, setIsSubmitted ] = useState(false);
   const { currentUser, setIsProcessing } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
+  const [ timerStopped, setTimeStopped ] = useState(false);
+  const [ duration, setDuration ] = useState(test?.duration || 0);
   const cancelRef = useRef(null);
   const toast = useToast();
 
@@ -127,7 +129,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
       lastIndexRef.current = maxNum - 1;
       setQuestionSets(test.questionSets);
       setCurrentQuestionSet(test.questionSets[0]);
-      setValue(test.questionSets[0].selected)
+      setValue(test.questionSets[0].selected);
+      setTimeStopped(true);
       return;
     }
 
@@ -322,6 +325,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
   const submitButtonClickedHandler = async () => {
     if (!currentUser) return;
     onCloseAlert();
+    setTimeStopped(true);
 
     let correct = 0;
     for (let i = 0; i <= lastIndexRef.current; i++) {
@@ -388,7 +392,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    if (!isReview) await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
+    if (isTest) await saveTest(currentUser!.id, duration, questionSetsRef.current);
     onClose();
     setIsProcessing(false);
   }
@@ -505,7 +509,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
               <Spacer />
-              {isTest && <Timer />}
+              {(isTest || isReview) && <Timer isStopped={timerStopped} duration={duration} setDuration={setDuration} />}
             </HStack>
             
             <HStack 

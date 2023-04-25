@@ -280,7 +280,8 @@ type EagerTest = {
   };
   readonly id: string;
   readonly category: string;
-  readonly DateTime: string;
+  readonly dateTime: string;
+  readonly duration?: number | null;
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
@@ -296,7 +297,8 @@ type LazyTest = {
   };
   readonly id: string;
   readonly category: string;
-  readonly DateTime: string;
+  readonly dateTime: string;
+  readonly duration?: number | null;
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;

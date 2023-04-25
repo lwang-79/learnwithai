@@ -1,6 +1,7 @@
 import { MathConcept, QuestionLevel } from "../types";
 import { generateArithmeticPrompt } from "./arithmetic";
 import { generateDecimalsPrompt } from "./decimals";
+import { generateFractionsPrompt } from "./fractions";
 import { generatePercentagePrompt } from "./percentage";
 import { generateRatioPrompt } from "./ratio";
 
@@ -18,6 +19,8 @@ export function generateChatMessages(
       return generatePercentagePrompt(level);
     case MathConcept.Ratio:
       return generateRatioPrompt(level);
+    case MathConcept.Fractions:
+      return generateFractionsPrompt(level);
     default:
       return [{role: 'system', content: 'You are a math teacher.'},]
   }

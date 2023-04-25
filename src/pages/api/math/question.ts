@@ -48,7 +48,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     });
     res.status(200).json({ result: completion.data.choices[0].message?.content });
   } catch(error: any) {
-    // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -63,21 +62,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-
-
-
-
-// function generatePrompt(
-//   category: QuestionCategory, 
-//   type: QuestionType,
-//   level: QuestionLevel,
-//   concept: MathConcept
-// ) {
-//   const prompt = getMessageByConcept(concept, level, category);
-
-//   console.log(prompt);
-//   return prompt;
-// }
 
 const mockData = `
 Question: A cyclist travels a distance of 200 km at an average speed of 20 km/h. After taking a 2-hour break, the cyclist rides another 300 km at an average speed of 25 km/h. What is the total time taken for the entire trip in hours?

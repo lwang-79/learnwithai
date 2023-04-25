@@ -37,7 +37,7 @@ function TestItem({ test, refreshList, selectCallback }: TestItemProps) {
     <>
       <Card shadow='xs' position='relative'>
         <CardBody p={4} onClick={()=>selectCallback(test)}>
-          <Text fontSize='xs'>{(new Date(test.DateTime)).toLocaleString('sv-SE')}</Text>
+          <Text fontSize='xs'>{(new Date(test.dateTime)).toLocaleString('sv-SE')}</Text>
           <Text fontSize='sm'>Score: {test.correct} / {test.total}</Text>
         </CardBody>
         <IconButton

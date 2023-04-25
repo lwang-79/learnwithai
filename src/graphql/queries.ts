@@ -567,7 +567,8 @@ export const getTest = /* GraphQL */ `
     getTest(id: $id) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -603,7 +604,8 @@ export const listTests = /* GraphQL */ `
       items {
         id
         category
-        DateTime
+        dateTime
+        duration
         total
         wrong
         correct
@@ -648,7 +650,8 @@ export const syncTests = /* GraphQL */ `
       items {
         id
         category
-        DateTime
+        dateTime
+        duration
         total
         wrong
         correct

@@ -56,7 +56,7 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
         );
       }
       break;
-    case QuestionLevel.Year5:
+    case QuestionLevel.Year6:
       if (random < 0.1) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'integer', 1000, 100, 2

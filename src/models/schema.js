@@ -350,11 +350,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "DateTime": {
-                    "name": "DateTime",
+                "dateTime": {
+                    "name": "dateTime",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "duration": {
+                    "name": "duration",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "total": {
@@ -889,5 +896,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "3078a543911e1718ff3c646b7490f194"
+    "version": "c067b551877021303a16a46aa4bb5a35"
 };

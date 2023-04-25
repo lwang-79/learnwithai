@@ -41,8 +41,8 @@ function MathExam() {
 
   const concepts = Object.values(MathConcept);
   const levels = [
-    ...Object.values(QuestionLevel).slice(0,6), 
-    ...Object.values(QuestionLevel).slice(12,15)
+    ...Object.values(QuestionLevel).slice(0,15), 
+    // ...Object.values(QuestionLevel).slice(12,15)
   ];
   const competitionLevels = [ ...Object.values(QuestionLevel).slice(15, 20) ];
   const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);

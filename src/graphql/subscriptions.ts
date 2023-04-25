@@ -343,7 +343,8 @@ export const onCreateTest = /* GraphQL */ `
     onCreateTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -377,7 +378,8 @@ export const onUpdateTest = /* GraphQL */ `
     onUpdateTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -411,7 +413,8 @@ export const onDeleteTest = /* GraphQL */ `
     onDeleteTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct

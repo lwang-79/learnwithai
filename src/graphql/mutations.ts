@@ -362,7 +362,8 @@ export const createTest = /* GraphQL */ `
     createTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -396,7 +397,8 @@ export const updateTest = /* GraphQL */ `
     updateTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -430,7 +432,8 @@ export const deleteTest = /* GraphQL */ `
     deleteTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct

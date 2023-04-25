@@ -115,7 +115,8 @@ type QuestionSet @model
 type Test @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   category: String!
-  DateTime: AWSDateTime!
+  dateTime: AWSDateTime!
+  duration: Int    #in seconds
   total: Int!
   wrong: Int!
   correct: Int!

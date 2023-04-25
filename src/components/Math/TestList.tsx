@@ -43,7 +43,7 @@ function TestList({ selectCallback, title, defaultPageStep }: TestListProps) {
     const tests = await DataStore.query(
       Test, 
       Predicates.ALL, {
-        sort: e => e.DateTime(SortDirection.DESCENDING),
+        sort: e => e.dateTime(SortDirection.DESCENDING),
         page: page,
         limit: pageStep
       }
@@ -60,7 +60,7 @@ function TestList({ selectCallback, title, defaultPageStep }: TestListProps) {
 
   const refreshList = (page: number = currentPage, limit: number = pageStep) => {
     DataStore.query(Test, Predicates.ALL, {
-      sort: e => e.DateTime(SortDirection.DESCENDING),
+      sort: e => e.dateTime(SortDirection.DESCENDING),
       page: page,
       limit: limit
     }).then(tests => setTests(tests));

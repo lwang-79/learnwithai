@@ -3,21 +3,29 @@ import {
   Icon,
   Text
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MdAvTimer } from "react-icons/md";
 
-function Timer() {
-  const [seconds, setSeconds] = useState(0);
+interface TimerProps {
+  isStopped: boolean
+  duration: number
+  setDuration: Dispatch<SetStateAction<number>>
+}
+
+function Timer({ isStopped, duration, setDuration }: TimerProps) {
+  const [seconds, setSeconds] = useState(duration);
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if (isStopped) return;
       setSeconds(prevSeconds => prevSeconds + 1);
+      setDuration(prevSeconds => prevSeconds + 1);
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [isStopped]);
 
   const formatTime = (time: number) => {
     const hours = Math.floor(time/3600);

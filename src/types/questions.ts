@@ -11,6 +11,40 @@ import {
   QuestionType 
 } from "./types";
 
+export const saveTest = async (
+  userId: string,
+  duration: number,
+  questionSets: LocalQuestionSet[]
+) => {
+  const user = await DataStore.query(User, userId);
+
+  if (!user) throw new Error('User is not found');
+
+  let correct = 0;
+  let wrong = 0;
+
+  for (const qs of questionSets) {
+    const correctCount = qs.answer === qs.selected ? 1 : 0;
+    const wrongCount = qs.answer === qs.selected ? 0 : 1;
+
+    correct += correctCount;
+    wrong += wrongCount;
+  }
+
+  const test = new Test({
+    category: QuestionCategory.Math,
+    dateTime: (new Date()).toISOString(),
+    duration: duration,
+    total: correct + wrong,
+    wrong: wrong,
+    correct: correct,
+    questionSets: questionSets
+  });
+
+  await DataStore.save(test);
+
+}
+
 export const addNewMathQuestions = async (
   userId: string,
   isTest: boolean,
@@ -45,14 +79,14 @@ export const addNewMathQuestions = async (
     correct += correctCount;
     wrong += wrongCount;
 
-    // await DataStore.save(questionSet);
+    await DataStore.save(questionSet);
 
   }
 
   if (isTest) {
     const test = new Test({
       category: QuestionCategory.Math,
-      DateTime: (new Date()).toISOString(),
+      dateTime: (new Date()).toISOString(),
       total: correct + wrong,
       wrong: wrong,
       correct: correct,
