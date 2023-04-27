@@ -139,6 +139,7 @@ type EagerLocalQuestionSet = {
   readonly workout: string;
   readonly isBad: boolean;
   readonly isTarget: boolean;
+  readonly isMarked?: boolean | null;
 }
 
 type LazyLocalQuestionSet = {
@@ -153,6 +154,7 @@ type LazyLocalQuestionSet = {
   readonly workout: string;
   readonly isBad: boolean;
   readonly isTarget: boolean;
+  readonly isMarked?: boolean | null;
 }
 
 export declare type LocalQuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerLocalQuestionSet : LazyLocalQuestionSet
@@ -239,9 +241,8 @@ type EagerQuestionSet = {
   readonly category: string;
   readonly level: string;
   readonly concept: string;
-  readonly correctCount: number;
-  readonly wrongCount: number;
-  readonly badCount: number;
+  readonly testId?: string | null;
+  readonly indexInTest?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -260,9 +261,8 @@ type LazyQuestionSet = {
   readonly category: string;
   readonly level: string;
   readonly concept: string;
-  readonly correctCount: number;
-  readonly wrongCount: number;
-  readonly badCount: number;
+  readonly testId?: string | null;
+  readonly indexInTest?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

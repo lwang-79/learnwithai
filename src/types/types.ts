@@ -89,6 +89,7 @@ export type QuestionSet = {
   workout: string,
   isBad: boolean,
   isTarget: boolean,
+  isMarked?: boolean | null
 }
 
 export enum EssayTopic {

@@ -483,14 +483,14 @@ export const getQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -511,14 +511,14 @@ export const listQuestionSets = /* GraphQL */ `
         category
         level
         concept
-        correctCount
-        wrongCount
-        badCount
+        testId
+        indexInTest
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -548,14 +548,14 @@ export const syncQuestionSets = /* GraphQL */ `
         category
         level
         concept
-        correctCount
-        wrongCount
-        badCount
+        testId
+        indexInTest
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -584,6 +584,7 @@ export const getTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -621,6 +622,7 @@ export const listTests = /* GraphQL */ `
           workout
           isBad
           isTarget
+          isMarked
         }
         createdAt
         updatedAt
@@ -667,6 +669,7 @@ export const syncTests = /* GraphQL */ `
           workout
           isBad
           isTarget
+          isMarked
         }
         createdAt
         updatedAt

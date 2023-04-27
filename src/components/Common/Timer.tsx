@@ -16,11 +16,18 @@ function Timer({ isStopped, duration, setDuration }: TimerProps) {
   const [seconds, setSeconds] = useState(duration);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isStopped) return;
-      setSeconds(prevSeconds => prevSeconds + 1);
-      setDuration(prevSeconds => prevSeconds + 1);
-    }, 1000);
+    let interval: NodeJS.Timer;
+
+    if (isStopped) {
+      interval = setInterval(() => {
+      }, 1000);
+    } else {
+      interval = setInterval(() => {
+        if (isStopped) return;
+        setSeconds(prevSeconds => prevSeconds + 1);
+        setDuration(prevSeconds => prevSeconds + 1);
+      }, 1000);
+    }
 
     return () => {
       clearInterval(interval);

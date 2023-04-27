@@ -22,6 +22,7 @@ import {
   RadioGroup, 
   Spacer, 
   Text, 
+  useBoolean, 
   useDisclosure, 
   useToast, 
   VStack, 
@@ -54,6 +55,7 @@ function MathExam() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
+  const [ refreshTestList, setRefreshTestList ] = useBoolean(false);
 
   useEffect(() => {
     if (mode === QuestionRunMode.Competition) {
@@ -134,6 +136,7 @@ function MathExam() {
     onCloseExamModal();
     setMode(QuestionRunMode.Practice);
     setNum('10');
+    setRefreshTestList.toggle();
   }
 
 
@@ -167,6 +170,12 @@ function MathExam() {
                 >
                   Competition
                 </Radio>
+                <Radio 
+                  value={QuestionRunMode.SavedQuestions}
+                  isDisabled={currentUser!.membership.current < 2}
+                >
+                  Saved Questions
+                </Radio>
               </HStack>
             </RadioGroup>
             <RadioGroup 
@@ -174,7 +183,8 @@ function MathExam() {
               value={num} 
               isDisabled={
                 currentUser!.membership.current < 2 ||
-                mode === QuestionRunMode.Competition
+                mode === QuestionRunMode.Competition ||
+                mode === QuestionRunMode.SavedQuestions
               }
             >
               <HStack spacing={4}>
@@ -200,6 +210,7 @@ function MathExam() {
             <RadioGroup
               onChange={setSelectedLevel}
               value={selectedLevel}
+              isDisabled={mode === QuestionRunMode.SavedQuestions}
             >
               <VStack align='flex-start'>
                 <Heading size='sm'>Level</Heading>
@@ -214,7 +225,8 @@ function MathExam() {
                           value={level}
                           isDisabled={
                             // currentUser.membership.current < 2 ||
-                            mode === QuestionRunMode.Competition
+                            mode === QuestionRunMode.Competition ||
+                            mode === QuestionRunMode.SavedQuestions
                           }
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -283,13 +295,12 @@ function MathExam() {
                 Start
               </Button>
             </HStack>
-
-            <Divider />
             
             <TestList 
               selectCallback={openModalWithTest}
               title='Recent tests'
               defaultPageStep={10}
+              refreshTrigger={refreshTestList}
             />
 
 
@@ -311,7 +322,7 @@ function MathExam() {
                     maxNum={Number(num)}
                     mode={mode as QuestionRunMode}
                     onClose={modalClosedHandler}
-                    test={selectedTest}
+                    initialTest={selectedTest}
                   />
                 </ModalBody>
               </ModalContent>

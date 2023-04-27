@@ -261,25 +261,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "correctCount": {
-                    "name": "correctCount",
+                "testId": {
+                    "name": "testId",
                     "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 },
-                "wrongCount": {
-                    "name": "wrongCount",
+                "indexInTest": {
+                    "name": "indexInTest",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "badCount": {
-                    "name": "badCount",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -311,16 +304,10 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
                                 "provider": "userPools",
-                                "operations": [
-                                    "create",
-                                    "read"
-                                ]
-                            },
-                            {
-                                "allow": "private",
-                                "provider": "iam",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
@@ -872,6 +859,13 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
+                },
+                "isMarked": {
+                    "name": "isMarked",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
@@ -896,5 +890,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "c067b551877021303a16a46aa4bb5a35"
+    "version": "89e16f53ad83377d6186ffb605a8c5f0"
 };

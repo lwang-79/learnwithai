@@ -78,6 +78,7 @@ function GameCard({user}: GameCardProps) {
           map.set(updated.gameData.seed, 1);
         }
 
+        setCollections(map);
         const collectionsString = convertCollectionsToString(map);
 
         updated.gameData = {
@@ -96,7 +97,7 @@ function GameCard({user}: GameCardProps) {
           score: updated.gameData.score - upgradeScore
         }
       }
-    }));      
+    }));  
   }
 
   const imageLoadHandler = (event: any) => {

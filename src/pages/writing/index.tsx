@@ -153,8 +153,6 @@ function Writing() {
                 </Wrap>
               </VStack>
             </RadioGroup>
-
-            <Divider />
               
             <HStack justify='flex-end' w='full'>
               <Button
@@ -163,8 +161,6 @@ function Writing() {
                 Start
               </Button>
             </HStack>
-
-            <Divider />
 
             <EssayList 
               selectCallback={openModalWithEssay}

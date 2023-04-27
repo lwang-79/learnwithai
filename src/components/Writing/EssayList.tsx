@@ -15,7 +15,8 @@ import {
   MenuList, 
   Spacer, 
   VStack, 
-  useColorModeValue 
+  useColorModeValue, 
+  Divider
 } from "@chakra-ui/react";
 import { MdMenu, MdNavigateBefore, MdNavigateNext, MdRefresh } from "react-icons/md";
 
@@ -67,82 +68,85 @@ function EssayList({ selectCallback, title, defaultPageStep }: EssayListProps) {
   return (
     <>
       {essays && essays.length > 0 &&
-        <VStack w='full'>
-          <HStack w='full'>
-            <Heading size='sm'>{title}</Heading>
-            <Spacer />
-            <IconButton
-              rounded='full'
-              variant='ghost'
-              aria-label='Refresh'
-              icon={<Icon as={MdRefresh} boxSize={6} />}
-              onClick={()=>refreshList()}
-            />
-            <IconButton
-              rounded='full'
-              variant='ghost'
-              aria-label='Before'
-              icon={<Icon as={MdNavigateBefore} boxSize={6} />}
-              isDisabled={currentPage === 0}
-              onClick={()=>changePageButtonClickedHandler(-1)}
-            />
-            <IconButton
-              rounded='full'
-              variant='ghost'
-              aria-label='Before'
-              icon={<Icon as={MdNavigateNext} boxSize={6} />}
-              isDisabled={isLastPage}
-              onClick={()=>changePageButtonClickedHandler(1)}
-            />
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label='Options'
-                icon={<MdMenu />}
+        <>
+          <Divider />
+          <VStack w='full'>
+            <HStack w='full'>
+              <Heading size='sm'>{title}</Heading>
+              <Spacer />
+              <IconButton
                 rounded='full'
                 variant='ghost'
+                aria-label='Refresh'
+                icon={<Icon as={MdRefresh} boxSize={6} />}
+                onClick={()=>refreshList()}
               />
-              <Box>
-                <MenuList >
-                  <MenuGroup title='Items per page'>
-                  {[5, 10, 20, 50].map((count, index) => {
-                    return (
-                      <MenuItem
-                        key={`menu-item-${index}`}
-                        onClick={()=>{
-                          setPageStep(count);
-                          refreshList(0, count);
-                          setCurrentPage(0);
-                          setIsLastPage(false);
-                        }}
-                      >
-                        {count}
-                      </MenuItem>
-                    )
-                  })}
-                  </MenuGroup>
-                </MenuList>
-              </Box>
-            </Menu>
-          </HStack>
-          {essays &&
-            essays.map((essay, index) => {
-              return (
-                <Box 
-                  rounded='xl'
-                  p={2}
-                  w='full' 
-                  key={index}
-                  cursor='pointer'
-                  _hover={{bg: bgColor}}
-                >
-                  <EssayItem essay={essay} refreshList={refreshList} selectCallback={selectCallback}/>
+              <IconButton
+                rounded='full'
+                variant='ghost'
+                aria-label='Before'
+                icon={<Icon as={MdNavigateBefore} boxSize={6} />}
+                isDisabled={currentPage === 0}
+                onClick={()=>changePageButtonClickedHandler(-1)}
+              />
+              <IconButton
+                rounded='full'
+                variant='ghost'
+                aria-label='Before'
+                icon={<Icon as={MdNavigateNext} boxSize={6} />}
+                isDisabled={isLastPage}
+                onClick={()=>changePageButtonClickedHandler(1)}
+              />
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  aria-label='Options'
+                  icon={<MdMenu />}
+                  rounded='full'
+                  variant='ghost'
+                />
+                <Box>
+                  <MenuList >
+                    <MenuGroup title='Items per page'>
+                    {[5, 10, 20, 50].map((count, index) => {
+                      return (
+                        <MenuItem
+                          key={`menu-item-${index}`}
+                          onClick={()=>{
+                            setPageStep(count);
+                            refreshList(0, count);
+                            setCurrentPage(0);
+                            setIsLastPage(false);
+                          }}
+                        >
+                          {count}
+                        </MenuItem>
+                      )
+                    })}
+                    </MenuGroup>
+                  </MenuList>
                 </Box>
-              )
-            })
-          }
-          
-        </VStack>
+              </Menu>
+            </HStack>
+            {essays &&
+              essays.map((essay, index) => {
+                return (
+                  <Box 
+                    rounded='xl'
+                    p={2}
+                    w='full' 
+                    key={index}
+                    cursor='pointer'
+                    _hover={{bg: bgColor}}
+                  >
+                    <EssayItem essay={essay} refreshList={refreshList} selectCallback={selectCallback}/>
+                  </Box>
+                )
+              })
+            }
+            
+          </VStack>
+        </>
       }
     </>
   )

@@ -1,4 +1,4 @@
-import { QuestionSet, Test, User } from "@/models";
+import { QuestionSet, Test } from "@/models";
 import { DataStore } from "aws-amplify";
 import { 
   AQuAQuestion, 
@@ -12,14 +12,10 @@ import {
 } from "./types";
 
 export const saveTest = async (
-  userId: string,
+  test: Test,
   duration: number,
   questionSets: LocalQuestionSet[]
 ) => {
-  const user = await DataStore.query(User, userId);
-
-  if (!user) throw new Error('User is not found');
-
   let correct = 0;
   let wrong = 0;
 
@@ -31,70 +27,55 @@ export const saveTest = async (
     wrong += wrongCount;
   }
 
-  const test = new Test({
-    category: QuestionCategory.Math,
-    dateTime: (new Date()).toISOString(),
-    duration: duration,
-    total: correct + wrong,
-    wrong: wrong,
-    correct: correct,
-    questionSets: questionSets
+  // if test exists grab the latest version
+  const latestTest = await DataStore.query(Test, test.id);
+  
+  const origin = latestTest?? test;
+
+  const updatedTest = Test.copyOf(origin, updated => {
+    updated.duration = duration;
+    updated.total = correct + wrong;
+    updated.wrong = wrong;
+    updated.correct = correct;
+    updated.questionSets = questionSets;
   });
 
-  await DataStore.save(test);
+  await DataStore.save(updatedTest);
 
 }
 
-export const addNewMathQuestions = async (
-  userId: string,
-  isTest: boolean,
-  questionSets: LocalQuestionSet[]
+export const addMyMathQuestion = async (
+  questionSet: LocalQuestionSet,
+  testId?: string,
+  indexInTest?: number
 ) => {
 
-  const user = await DataStore.query(User, userId);
+  if (testId && indexInTest) {
+    const questionSets = await DataStore.query(QuestionSet);
 
-  if (!user) throw new Error('User is not found');
-
-  let correct = 0;
-  let wrong = 0;
-
-  for (const qs of questionSets) {
-    const correctCount = qs.answer === qs.selected ? 1 : 0;
-    const wrongCount = qs.answer === qs.selected ? 0 : 1;
-
-    const questionSet = new QuestionSet({
-      question: qs.question,
-      options: qs.options,
-      answer: qs.answer,
-      workout: qs.workout,
-      type: qs.type,
-      category: qs.category,
-      level: qs.level,
-      concept: qs.concept,
-      correctCount: correctCount,
-      wrongCount: wrongCount,
-      badCount: qs.isBad ? 1 : 0
-    });
-
-    correct += correctCount;
-    wrong += wrongCount;
-
-    await DataStore.save(questionSet);
-
+    if (
+      questionSets.length > 0 &&
+      questionSets.filter(q => q.testId === testId && q.indexInTest === indexInTest).length > 0
+    ) {
+      throw new Error('You have already saved this question.')
+    }
   }
 
-  if (isTest) {
-    const test = new Test({
-      category: QuestionCategory.Math,
-      dateTime: (new Date()).toISOString(),
-      total: correct + wrong,
-      wrong: wrong,
-      correct: correct,
-      questionSets: questionSets
-    });
 
-    await DataStore.save(test);
-  }
+  const newQuestionSet = new QuestionSet({
+    question: questionSet.question,
+    options: questionSet.options,
+    answer: questionSet.answer,
+    workout: questionSet.workout,
+    type: questionSet.type,
+    category: questionSet.category,
+    level: questionSet.level,
+    concept: questionSet.concept,
+    testId: testId,
+    indexInTest: indexInTest
+  });
+
+  await DataStore.save(newQuestionSet);
 
 }
 
@@ -137,7 +118,8 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
         selected: '',
         workout: q.rationale,
         isBad: false,
-        isTarget: false
+        isTarget: false,
+        isMarked: false
       })
     }
   } else if (dataset === QuestionLevel.MathQA) {
@@ -172,7 +154,8 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
         selected: '',
         workout: q.Rationale,
         isBad: false,
-        isTarget: false
+        isTarget: false,
+        isMarked: false
       })
     } 
   } else if (dataset === QuestionLevel.GSM8K) {
@@ -238,7 +221,8 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
         selected: '',
         workout: q.answer,
         isBad: false,
-        isTarget: false
+        isTarget: false,
+        isMarked: false
       })
     }
   }
@@ -305,7 +289,8 @@ export const getQuestionsFromCompetition = async (num: number, level: QuestionLe
       selected: '',
       workout: q.solution,
       isBad: false,
-      isTarget: false
+      isTarget: false,
+      isMarked: false
     })
   }
 

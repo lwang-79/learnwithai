@@ -43,23 +43,25 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdBookmarkBorder, MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdDelete, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { Statistic, Test } from "@/models";
+import { QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addNewMathQuestions, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
+import { addMyMathQuestion, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { NotificationType } from "@/types/API";
+import { DataStore } from "aws-amplify";
 
 export enum QuestionRunMode {
   Practice = 'practice',
   Test = 'test',
   Competition = 'competition',
-  Review = 'review'
+  Review = 'review',
+  SavedQuestions = 'saved questions'
 }
 
 interface QuestionRunProps {
@@ -70,16 +72,17 @@ interface QuestionRunProps {
   maxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
-  test?: Test
+  initialTest?: Test
 }
 
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
+function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
   const isCompetition = mode === QuestionRunMode.Competition;
   const isReview = mode === QuestionRunMode.Review;
+  const isSavedQuestions = mode === QuestionRunMode.SavedQuestions;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
   const [ currentIndex, setCurrentIndex ] = useState(0);
@@ -99,13 +102,17 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
   // how many fetching is running, used to avoid querying too much.
   const addingQuestionCountRef = useRef(0);
 
+  // store the saved question sets state
+  const savedQuestionSetsRef = useRef<QuestionSet[]>(); 
+
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
   const { currentUser, setIsProcessing } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
   const [ timerStopped, setTimeStopped ] = useState(false);
-  const [ duration, setDuration ] = useState(test?.duration || 0);
+  const [ duration, setDuration ] = useState(initialTest?.duration || 0);
+  const testRef = useRef(initialTest);
   const cancelRef = useRef(null);
   const toast = useToast();
 
@@ -121,22 +128,42 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     onClose: onCloseAlert 
   } = useDisclosure();
 
-
+  const { 
+    isOpen: isOpenDeleteAlert, 
+    onOpen: onOpenDeleteAlert, 
+    onClose: onCloseDeleteAlert 
+  } = useDisclosure();
 
   useEffect(() => {
-    if (isReview && test) {
-      questionSetsRef.current = test.questionSets;
+    if (isReview && initialTest) {
+      questionSetsRef.current = [...initialTest.questionSets] as LocalQuestionSet[];
       lastIndexRef.current = maxNum - 1;
-      setQuestionSets(test.questionSets);
-      setCurrentQuestionSet(test.questionSets[0]);
-      setValue(test.questionSets[0].selected);
+      setQuestionSets([...initialTest.questionSets]);
+      setCurrentQuestionSet({...initialTest.questionSets[0]});
+      setValue(initialTest.questionSets[0].selected);
       setTimeStopped(true);
       return;
     }
 
-    if (mode === QuestionRunMode.Competition) {
+    if (isSavedQuestions) {
+      addSavedQuestionSets();
+      return;
+    }
+
+    if (isCompetition) {
       addCompetitionQuestionSets(1, level);
       return;
+    }
+
+    if (isTest) {
+      testRef.current = new Test({
+        category: QuestionCategory.Math,
+        dateTime: (new Date()).toISOString(),
+        total: 0,
+        wrong: 0,
+        correct: 0,
+        questionSets: []
+      });
     }
 
     if ([QuestionLevel.GSM8K, QuestionLevel.AQuA, QuestionLevel.MathQA].includes(level)) {
@@ -155,6 +182,44 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
       setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
     }
   },[fetchingStatus]);
+
+  const addSavedQuestionSets = async () => {
+    const allSavedQuestionSets = await DataStore.query(QuestionSet);
+    
+    if (allSavedQuestionSets.length === 0) {
+      onClose();
+      toast({
+        description: `No questions, please add some questions`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+    }
+
+    savedQuestionSetsRef.current = allSavedQuestionSets.sort((a, b) => a.createdAt! < b.createdAt! ? 1 : -1);
+    
+    for (const qs of savedQuestionSetsRef.current) {
+      const localQS: LocalQuestionSet = {
+        ...qs,
+        selected: '',
+        isBad: false,
+        isTarget: false,
+        isMarked: false,
+        options: qs.options!,
+        workout: qs.workout?? ''
+      }
+
+      questionSetsRef.current = [
+        ...questionSetsRef.current,
+        localQS
+      ];
+    }
+
+    lastIndexRef.current = savedQuestionSetsRef.current.length - 1;
+    setQuestionSets(questionSetsRef.current);
+    setCurrentQuestionSet(questionSetsRef.current[0]);
+  }
 
   const getAndSetDatasetQuestions = async (num: number) => {
     const questionSets = await getQuestionsFromDataset(level, num);
@@ -272,7 +337,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
       selected: '',
       workout: workout,
       isBad: false,
-      isTarget: false
+      isTarget: false,
+      isMarked: false
     };
 
     return questionSet;
@@ -361,23 +427,54 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     const isCurrent = index === currentIndexRef.current;
 
     if (!(isSubmitted || isReview)) {
-      if (q.isTarget) return 'yellow';
+      if (q.isMarked) return 'yellow';
       if (!isCurrent) return 'gray';
       if (isCurrent) return 'teal';
     } else {
       if (q.answer !== q.selected) return 'red';
-      if (q.isTarget) return 'yellow';
+      if (q.isMarked) return 'yellow';
     }
 
     return 'teal';
   }
 
-  const targetButtonClickedHandler = () => {
+  const targetButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;
-    questionSetsRef.current[currentIndexRef.current].isTarget = !questionSetsRef.current[currentIndexRef.current].isTarget;
+    try {
+      await addMyMathQuestion(currentQuestionSet, testRef.current?.id, currentIndexRef.current);
+      questionSetsRef.current[currentIndexRef.current] = {
+        ...questionSetsRef.current[currentIndexRef.current],
+        isTarget: !questionSetsRef.current[currentIndexRef.current].isTarget
+      }
+      setCurrentQuestionSet({
+        ...currentQuestionSet,
+        isTarget: questionSetsRef.current[currentIndexRef.current].isTarget
+      });
+      
+      toast({
+        description: `Question is added successfully`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true
+      });   
+    } catch (error) {
+      console.error(error);
+      toast({
+        description: `Failed to add the question: ${error}`,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top'
+      });   
+    }
+  }
+
+  const markQuestionButtonClickedHandler = () => {
+    if (!currentQuestionSet) return;
+    questionSetsRef.current[currentIndexRef.current].isMarked = !questionSetsRef.current[currentIndexRef.current].isMarked;
     setCurrentQuestionSet({
       ...currentQuestionSet,
-      isTarget: questionSetsRef.current[currentIndexRef.current].isTarget
+      isMarked: questionSetsRef.current[currentIndexRef.current].isMarked
     });
   }
 
@@ -392,7 +489,9 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    if (isTest) await saveTest(currentUser!.id, duration, questionSetsRef.current);
+    if (isTest || isReview) {
+      await saveTest(testRef.current!, duration, questionSetsRef.current);
+    }
     onClose();
     setIsProcessing(false);
   }
@@ -429,6 +528,66 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     console.log(data.result);
 
     setIsChallenging(false);
+  }
+
+  const deleteButtonClickedHandler = async () => {
+    if (!savedQuestionSetsRef.current || savedQuestionSetsRef.current.length === 0) {
+      return;
+    }
+
+    try {
+      const {testId, indexInTest} = savedQuestionSetsRef.current[currentIndexRef.current];
+      
+      await DataStore.delete(savedQuestionSetsRef.current[currentIndexRef.current]);
+
+      if (testId && indexInTest) {
+        const test = await DataStore.query(Test, testId);
+        if (test) {
+          let qs = [...test.questionSets];
+          qs[indexInTest] = {
+            ...qs[indexInTest],
+            isTarget: false
+          };
+
+          DataStore.save(Test.copyOf(test, updated => {
+            updated.questionSets = qs;
+          }));
+        }
+      }
+      
+      savedQuestionSetsRef.current.splice(currentIndexRef.current, 1);
+      questionSetsRef.current.splice(currentIndexRef.current, 1);
+
+      lastIndexRef.current -= 1;
+      if (lastIndexRef.current < 0) {
+        onClose();
+        toast({
+          description: `No questions`,
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
+      }
+
+      if (currentIndexRef.current > lastIndexRef.current) {
+        currentIndexRef.current = lastIndexRef.current;
+      }
+
+      setQuestionSets(questionSetsRef.current);
+      setCurrentQuestionSet(questionSetsRef.current[currentIndexRef.current]);
+
+      onCloseDeleteAlert();
+    } catch (error) {
+      console.error(`Failed to delete the question: ${error}`);
+      toast({
+        description: `Failed to delete the question, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });  
+    }
   }
   
   // For wrap auto scroll 
@@ -500,7 +659,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
             spacing={4}
           >
             <HStack w='full'>
-              <Text fontSize='sm'>{isReview ? questionSetsRef.current[0].level : level}</Text>
+              <Text fontSize='sm'>{currentQuestionSet ? currentQuestionSet.level : level}</Text>
               <Tag 
                 rounded='full' 
                 fontSize='sm'
@@ -530,62 +689,95 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                     Question {currentIndex + 1}
                   </Text>
                   <Spacer />
+                  {isSavedQuestions ? (
+                    <>
+                      <Tooltip label='Delete from my questions'>
+                        <IconButton
+                          rounded='full'
+                          variant='ghost'
+                          aria-label='Delete from my questions'
+                          colorScheme='red'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdOutlineDelete} boxSize={6} />}
+                          onClick={onOpenDeleteAlert}
+                        />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label={
+                          currentUser!.membership.current < 2 ?
+                          'The feature is not available' : 'Save the question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
+                          }
+                          aria-label='Add to my questions'
+                          colorScheme='teal'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={SlTarget} boxSize={6} />}
+                          onClick={targetButtonClickedHandler}
+                          isDisabled={
+                            !currentQuestionSet || 
+                            currentUser!.membership.current < 2 || 
+                            currentQuestionSet.isTarget
+                          }
+                        />
+                      </Tooltip>
 
-                  <Tooltip label='Add to my questions'>
-                    <IconButton
-                      rounded='full'
-                      variant='ghost'
-                      aria-label='Add to my questions'
-                      colorScheme='teal'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={SlTarget} boxSize={6} />}
-                      // onClick={targetButtonClickedHandler}
-                      // isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
-                    />
-                  </Tooltip>
+                      <Tooltip
+                        label={
+                          currentQuestionSet && currentQuestionSet.isMarked ?
+                          'Remove the mark' : 'Mark the question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isMarked ? 'solid' : 'ghost'
+                          }
+                          aria-label='Mark the question'
+                          colorScheme='yellow'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
+                          onClick={markQuestionButtonClickedHandler}
+                          isDisabled={
+                            !currentQuestionSet || 
+                            currentUser!.membership.current < 2 || 
+                            isReview
+                          }
+                        />
+                      </Tooltip>
 
-                  <Tooltip
-                    label={
-                      currentQuestionSet && currentQuestionSet.isTarget ?
-                      'Remove the mark' : 'Mark the question'
-                    }
-                  >
-                    <IconButton
-                      rounded='full'
-                      variant={
-                        currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
-                      }
-                      aria-label='Mark the question'
-                      colorScheme='yellow'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
-                      onClick={targetButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
-                    />
-                  </Tooltip>
-
-                  <Tooltip
-                    label={
-                      currentQuestionSet && currentQuestionSet.isBad ?
-                      'Not bad' : 'Bad question'
-                    }
-                  >
-                    <IconButton
-                      rounded='full'
-                      variant={
-                        currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
-                      }
-                      aria-label='Bac question'
-                      colorScheme='yellow'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
-                      onClick={badButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || isReview}
-                    />
-                  </Tooltip>
+                      <Tooltip
+                        label={
+                          currentQuestionSet && currentQuestionSet.isBad ?
+                          'Not bad' : 'Bad question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
+                          }
+                          aria-label='Bac question'
+                          colorScheme='yellow'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
+                          onClick={badButtonClickedHandler}
+                          isDisabled={!currentQuestionSet || isReview}
+                        />
+                      </Tooltip>
+                    </>
+                  )}
+                  
                 </HStack>
                 {currentQuestionSet ? (
                   <>
@@ -677,8 +869,8 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                   onClick={onOpenAlert}
                   isDisabled={
                     questionSets.length === 0 ||
-                    isSubmitted || isReview ||
-                    addingQuestionCountRef.current !== 0
+                    isSubmitted || isReview
+                    // addingQuestionCountRef.current !== 0
                   }
                 >
                   Submit
@@ -775,12 +967,47 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>
+
+          <AlertDialog
+            isOpen={isOpenDeleteAlert}
+            leastDestructiveRef={cancelRef}
+            onClose={onCloseDeleteAlert}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Delete question
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure? You can not undo this action afterwards.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onCloseDeleteAlert}
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    colorScheme='red' 
+                    rounded={'full'}
+                    px={6}
+                    onClick={deleteButtonClickedHandler} 
+                    ml={3}
+                  >
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </>
       )}
-
-     
     </>
-    
   )
 }
 

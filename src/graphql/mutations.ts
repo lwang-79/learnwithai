@@ -291,14 +291,14 @@ export const createQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -317,14 +317,14 @@ export const updateQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -343,14 +343,14 @@ export const deleteQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -379,6 +379,7 @@ export const createTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -414,6 +415,7 @@ export const updateTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -449,6 +451,7 @@ export const deleteTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
