@@ -10,8 +10,10 @@ exports.handler = async (event) => {
 
   if (today.getDate() === 1) {
     ({ statusCode, body } = await sendMonthlyNotification());
+    ({ statusCode, body } = await sendDailyNotification());
   } else if (today.getDay() === 0) {
     ({ statusCode, body } = await sendWeeklyNotification());
+    ({ statusCode, body } = await sendDailyNotification());
   } else {
     ({ statusCode, body } = await sendDailyNotification());
   }

@@ -12,6 +12,7 @@ export enum MathConcept {
   Percentage = 'percentage',
   Ratio = 'ratio',
   Fractions = 'fractions',
+  TimeJourney = 'time or journey'
   // Probability = 'probability',
   // Statistics = 'statistics',
   // Algebra = 'algebra',

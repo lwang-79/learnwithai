@@ -69,7 +69,7 @@ interface QuestionRunProps {
   type: QuestionType
   level: QuestionLevel
   concepts: MathConcept[]
-  maxNum?: number
+  initMaxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
   initialTest?: Test
@@ -78,13 +78,14 @@ interface QuestionRunProps {
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
+function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
   const isCompetition = mode === QuestionRunMode.Competition;
   const isReview = mode === QuestionRunMode.Review;
   const isSavedQuestions = mode === QuestionRunMode.SavedQuestions;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
+  const [ maxNum, setMaxNum ] = useState(initMaxNum);
   const [ currentIndex, setCurrentIndex ] = useState(0);
   const questionSetsRef = useRef<LocalQuestionSet[]>([]);
 
@@ -219,6 +220,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     lastIndexRef.current = savedQuestionSetsRef.current.length - 1;
     setQuestionSets(questionSetsRef.current);
     setCurrentQuestionSet(questionSetsRef.current[0]);
+    setMaxNum(savedQuestionSetsRef.current.length);
   }
 
   const getAndSetDatasetQuestions = async (num: number) => {
@@ -361,10 +363,11 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     );
 
     if (currentIndexRef.current > lastIndexRef.current) {
-      console.log(currentIndexRef.current, lastIndexRef.current, questionSetsRef.current.length)
       lastIndexRef.current += 1;
       if (isCompetition) {
         addCompetitionQuestionSets(1, level);
+      } else if (isSavedQuestions) {
+
       } else if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
         addQuestionSets(1);
       }
@@ -822,7 +825,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 <Button
                   onClick={nextButtonClickedHandler}
                   isDisabled={
-                    !value || !currentQuestionSet || 
+                    (!value && !isSavedQuestions) || !currentQuestionSet || 
                     currentIndexRef.current + 1 >= maxNum ||
                     isSubmitted
                   }

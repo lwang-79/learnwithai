@@ -44,16 +44,25 @@ export const addStatisticData = async (
   let daily = [{...statistic, date: currentDay}];
   if (user.daily) {
     daily = addAndGetStatic(user.daily, statistic, currentDay);
+    if (daily.length > 365) {
+      daily.pop();
+    }
   }
 
   let monthly = [{...statistic, date: currentMonth}];
   if (user.monthly) {
     monthly = addAndGetStatic(user.monthly, statistic, currentMonth);
+    if (monthly.length > 60) {
+      monthly.pop();
+    }
   } 
 
   let yearly = [{...statistic, date: currentYear}];
   if (user.yearly) {
     yearly = addAndGetStatic(user.yearly, statistic, currentYear);
+    if (yearly.length > 10) {
+      yearly.pop();
+    }
   } 
 
   const updatedUser = await DataStore.save(User.copyOf(

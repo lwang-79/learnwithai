@@ -66,7 +66,6 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
       page: page,
       limit: limit
     }).then(tests => {
-      console.log(tests)
       setTests(tests);
     });
   }

@@ -24,9 +24,10 @@ interface EssayListProps {
   selectCallback: (essay: Essay) => void
   title: string
   defaultPageStep: number
+  refreshTrigger: boolean
 }
 
-function EssayList({ selectCallback, title, defaultPageStep }: EssayListProps) {
+function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: EssayListProps) {
   const [ pageStep, setPageStep ] = useState(defaultPageStep);
   const [ essays, setEssays ] = useState<Essay[]>();
   const [ currentPage, setCurrentPage ] = useState(0);
@@ -35,7 +36,7 @@ function EssayList({ selectCallback, title, defaultPageStep }: EssayListProps) {
 
   useEffect(() => {
     refreshList();
-  }, []);
+  }, [refreshTrigger]);
 
   const changePageButtonClickedHandler = async (count: number) => {
     const page = currentPage + count;

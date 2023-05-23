@@ -216,12 +216,14 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         }
       ));
     } else {
-      DataStore.save(Essay.copyOf(
-        essay,
-        updated => {
-          updated.text = text;
-        }
-      ));  
+      if (currentUser!.membership.current >= 2) {
+        DataStore.save(Essay.copyOf(
+          essay,
+          updated => {
+            updated.text = text;
+          }
+        ));  
+      }
     }
 
     const statistic: Statistic = {

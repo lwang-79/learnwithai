@@ -29,18 +29,20 @@ function GameCard({user}: GameCardProps) {
   useEffect(() => {
     if (!user.gameData) return;
 
-    const date1 = new Date();
-    const data2 = new Date(user.gameData.startDate);
-    const diffTime = Math.abs(date1.getTime() - data2.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    // const date1 = new Date();
+    // const data2 = new Date(user.gameData.startDate);
+    // const diffTime = Math.abs(date1.getTime() - data2.getTime());
+    // const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    const currentScore = user.gameData.score - diffDays * 20;
+    // const currentScore = user.gameData.score - diffDays * 20;
 
-    if (currentScore < 0) {
-      setCurrentScore(0);
-      return;
-    }
-    setCurrentScore(currentScore);
+    // if (currentScore < 0) {
+    //   setCurrentScore(0);
+    //   return;
+    // }
+    // setCurrentScore(currentScore);
+
+    setCurrentScore(user.gameData.score);
 
     const collections = getCollections(user.gameData.collections);
     setCollections(collections);

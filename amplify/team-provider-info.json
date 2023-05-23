@@ -30,7 +30,7 @@
         },
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-4e47497479414277495a-build.zip"
+          "s3Key": "amplify-builds/learnwithaiBackend-62514c7468654979756b-build.zip"
         }
       }
     }

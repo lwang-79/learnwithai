@@ -48,10 +48,26 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
             <Divider />
             <VStack align='flex-start' spacing={0}>
               <Text>Current Quota</Text>
-              <Text fontSize='sm'>Math questions per day: {currentUser.quota.mathPerDay}</Text>
-              <Text fontSize='sm'>Writing per day: {currentUser.quota.writingPerDay}</Text>
-              <Text fontSize='sm'>Max saved tests: {currentUser.quota.savedTests}</Text>
-              <Text fontSize='sm'>Max saved essays: {currentUser.quota.savedEssays}</Text>
+              <HStack w='full'>
+                <Text fontSize='sm'>Math questions per day</Text>
+                <Spacer />
+                <Text fontSize='sm'>{currentUser.quota.mathPerDay}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Writing per day</Text>
+                <Spacer />
+                <Text fontSize='sm'>{currentUser.quota.writingPerDay}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Max saved tests</Text>
+                <Spacer />
+                <Text fontSize='sm'>{currentUser.quota.savedTests}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Max saved essays</Text>
+                <Spacer />
+                <Text fontSize='sm'>{currentUser.quota.savedEssays}</Text>
+              </HStack>
             </VStack>
           </>
         }

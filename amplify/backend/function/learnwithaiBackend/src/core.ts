@@ -68,7 +68,7 @@ async function sendWeeklyNotification() {
     const data = user.daily.filter(d => d.date >= startDate && d.date <= endDate);
 
     let message = `
-Monthly report for ${user.username}
+Weekly report for ${user.username}
 Date: from ${startDate} to ${endDate}
     `
     

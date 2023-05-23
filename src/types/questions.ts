@@ -183,33 +183,6 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
         }
       }
   
-      // for (let i = 0; i < 5; i++) {
-      //   if (i === randomIndex) {
-      //     options.push(answer);
-      //   } else {
-      //     const a = Number(answer);
-      //     let answerValue = 0;
-      //     if (a < 10) {
-      //       do {
-      //         const random = Math.random() * 2 * a - a;
-      //         if (a < 2) {
-      //           answerValue = Number((a + random).toFixed(2));
-      //         } {
-      //           const l = getDecimalDigitLength(a);
-      //           answerValue = Number((a + random).toFixed(l));
-      //         }
-      //       } while (answerValue === a)
-      //     } else {
-      //       do {
-      //         const random = Math.floor(Math.random() * 2 * a) - a;
-      //         answerValue = a + random;
-      //       } while (answerValue === a)          
-      //     }
-          
-      //     options.push(answerValue.toString());
-      //   }
-      // }
-
       questionSets.push({
         type: QuestionType.MultiChoice,
         category: QuestionCategory.Math,

@@ -4,6 +4,7 @@ import { generateDecimalsPrompt } from "./decimals";
 import { generateFractionsPrompt } from "./fractions";
 import { generatePercentagePrompt } from "./percentage";
 import { generateRatioPrompt } from "./ratio";
+import { generateTimeJourneyPrompt } from "./time_journey";
 
 export function generateChatMessages(
   level: QuestionLevel,
@@ -21,6 +22,8 @@ export function generateChatMessages(
       return generateRatioPrompt(level);
     case MathConcept.Fractions:
       return generateFractionsPrompt(level);
+    case MathConcept.TimeJourney:
+      return generateTimeJourneyPrompt(level);
     default:
       return [{role: 'system', content: 'You are a math teacher.'},]
   }

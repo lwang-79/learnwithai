@@ -21,6 +21,7 @@ import {
   RadioGroup, 
   Spacer, 
   Text, 
+  useBoolean, 
   useDisclosure, 
   useToast, 
   VStack, 
@@ -46,6 +47,7 @@ function Writing() {
   const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
   const { currentUser } = useContext(SharedComponents);
   const toast = useToast();
+  const [ refreshEssayList, setRefreshEssayList ] = useBoolean(false);
 
   const startButtonClickedHandler = async () => {
     setSelectedEssay(undefined);
@@ -87,6 +89,11 @@ function Writing() {
     setSelectedTopic(essay.topic);
     setSelectedType(essay.type);
     setTimeout(()=>onOpenExamModal(), 100);
+  }
+
+  const onCloseHandler = () => {
+    onCloseExamModal();
+    setRefreshEssayList.toggle();
   }
 
   return (
@@ -166,6 +173,7 @@ function Writing() {
               selectCallback={openModalWithEssay}
               title='Recent Essays'
               defaultPageStep={10}
+              refreshTrigger={refreshEssayList}
             />
 
             <Modal
@@ -182,7 +190,7 @@ function Writing() {
                     level={selectedLevel as QuestionLevel}
                     topic={selectedTopic as EssayTopic}
                     type={selectedType as EssayType}
-                    onClose={onCloseExamModal}
+                    onClose={onCloseHandler}
                     initEssay={selectedEssay}
                   />
                 </ModalBody>

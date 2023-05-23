@@ -122,7 +122,7 @@ function sendWeeklyNotification() {
                                     date.setDate(date.getDate() - 7);
                                     startDate = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
                                     data = user.daily.filter(function (d) { return d.date >= startDate && d.date <= endDate; });
-                                    message = "\nMonthly report for ".concat(user.username, "\nDate: from ").concat(startDate, " to ").concat(endDate, "\n    ");
+                                    message = "\nWeekly report for ".concat(user.username, "\nDate: from ").concat(startDate, " to ").concat(endDate, "\n    ");
                                     if (data.length === 0) {
                                         message += "\nYou didn't have any practices last month!\n";
                                     }
