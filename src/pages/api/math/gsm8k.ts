@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const questions = gsm8k as GSM8KQuestion[];
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function gsm8kHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const num = req.body.number as number;
   if (!num) {

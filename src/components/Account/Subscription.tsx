@@ -196,7 +196,7 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaTimesCircle} color="gray.500" />
-                    Weekly report notification
+                    Report notification
                   </ListItem>
                 </List>
                 <Flex w='full' justify='center'>
@@ -273,7 +273,7 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
-                    Weekly report notification
+                    Report notification
                   </ListItem>
                 </List>
                 <Flex w='full' justify='center' >

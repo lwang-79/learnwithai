@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const questions = mathqa as MathQAQuestion[];
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function mathqaHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const num = req.body.number as number;
   if (!num) {

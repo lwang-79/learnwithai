@@ -85,52 +85,53 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   useEffect(() => {
     if (essay) return;
 
+    const generatePrompt = async () => {
+      const response = await fetch('/api/writing/prompt', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: type,
+          level: level,
+          topic: topic
+        }),
+      });
+  
+      const data = await response.json();
+      if (response.status !== 200) {
+        console.error(`Request failed with status ${response.status}: ${data.error}`);
+        toast({
+          description: `Failed to generate prompt, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+        onClose();
+        return;
+      }
+  
+      const prompt = data.result as string;
+  
+      const essay = new Essay({
+        type: type,
+        level: level,
+        topic: type === EssayType.Persuasive ? topic : '',
+        prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
+        text: '',
+        DateTime: (new Date()).toISOString()
+      })
+  
+      setEssay(essay);
+    }  
+
     generatePrompt();
-  },[]);
+  },[essay, level, onClose, toast, topic, type]);
 
   useEffect(() => {
     setCount(countWords(text));
   },[text]);
 
-  const generatePrompt = async () => {
-    const response = await fetch('/api/writing/prompt', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: type,
-        level: level,
-        topic: topic
-      }),
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${data.error}`);
-      toast({
-        description: `Failed to generate prompt, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true
-      });
-      onClose();
-      return;
-    }
-
-    const prompt = data.result as string;
-
-    const essay = new Essay({
-      type: type,
-      level: level,
-      topic: type === EssayType.Persuasive ? topic : '',
-      prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
-      text: '',
-      DateTime: (new Date()).toISOString()
-    })
-
-    setEssay(essay);
-  }
 
   const markEssay = async () => {
     if (!essay) return;
@@ -249,111 +250,116 @@ Total words: ${count}
 
   return (
     <>
+      <IconButton
+        rounded='full'
+        variant='ghost'
+        aria-label='Close'
+        icon={<Icon as={MdClose} boxSize={6} />}
+        onClick={onClose}
+        zIndex={100}
+        position='fixed'
+        top={2} right={2}
+      />
+
       {essay ? (
         <>
-          <IconButton
-            rounded='full'
-            variant='ghost'
-            aria-label='Close'
-            icon={<Icon as={MdClose} boxSize={6} />}
-            onClick={onClose}
-            zIndex={100}
-            position='fixed'
-            top={2} right={2}
-          />
-            <VStack
-              maxW='5xl'
-              mt={20} mx='auto'
-              align='flex-start'
-              spacing={4}
-            >
-              <HStack w='full'>
-                <Text>{level} {type}</Text>
-                {type == EssayType.Persuasive &&
-                  <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
-                }
-                <Spacer />
-                <Button 
-                  size='sm'
-                  variant='ghost'
-                  isDisabled={isSubmitted}
-                  onClick={onOpenPromptModal}
-                >
-                  I have my own topic
-                </Button>
-              </HStack>
-              <Box>
-                {essay && essay.prompt.split("\n").map((line, index) => (
-                  <Fragment key={index}>
-                    {line}
-                    {index !== essay.prompt.split("\n").length - 1 && <br />}
-                  </Fragment>
-                ))}
-              </Box>
-              <Divider />
-              <Textarea 
-                as={ResizeTextarea}
-                defaultValue={essay.text}
-                placeholder='Start to write here'
-                minRows={10}
+          <VStack
+            maxW='5xl'
+            mt={20} mx='auto'
+            align='flex-start'
+            spacing={4}
+          >
+            <HStack w='full'>
+              <Text>{level} {type}</Text>
+              {type == EssayType.Persuasive &&
+                <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
+              }
+              <Spacer />
+              <Button 
+                size='sm'
+                variant='ghost'
                 isDisabled={isSubmitted}
-                onChange={(e)=>setText(e.target.value)}
-              />
-              <HStack w='full' align='flex-start'>
-                <Text fontSize='sm'>Words: {count}</Text>
-                <Spacer />
-                <Button
-                  isDisabled={isSubmitted}
-                  onClick={onOpenAlert}
-                >
-                  Submit
-                </Button>
-              </HStack>
+                onClick={onOpenPromptModal}
+              >
+                I have my own topic
+              </Button>
+            </HStack>
+            <Box>
+              {essay && essay.prompt.split("\n").map((line, index) => (
+                <Fragment key={index}>
+                  {line}
+                  {index !== essay.prompt.split("\n").length - 1 && <br />}
+                </Fragment>
+              ))}
+            </Box>
+            <Divider />
+            <Textarea 
+              as={ResizeTextarea}
+              defaultValue={essay.text}
+              placeholder='Start to write here'
+              minRows={10}
+              isDisabled={isSubmitted}
+              onChange={(e)=>setText(e.target.value)}
+            />
+            <HStack w='full' align='flex-start'>
+              <Text fontSize='sm'>Words: {count}</Text>
+              <Spacer />
+              <Button
+                isDisabled={isSubmitted}
+                onClick={onOpenAlert}
+              >
+                Submit
+              </Button>
+            </HStack>
 
-              <Box as={Collapse} in={shouldShowMark} w='full' >
-                <Divider />
+            <Box as={Collapse} in={shouldShowMark} w='full' >
+              <Divider />
 
-                {isMarking ? (
-                  <>
-                    <Text>AI is working, please wait for a while...</Text>
-                    <SkeletonText mt='4' noOfLines={8} spacing='4' skeletonHeight='2' />
-                  </>
-                ) : (
-                  <>
-                    <HStack alignItems='center' mt={4} w='full'>
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        onClick={generateSample}
-                      >
-                        Ask the AI to generate a sample
-                      </Button>
-                      <Spacer />
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        onClick={markEssay}
-                      >
-                        Need more suggestion? Remark the essay
-                      </Button>
-                    </HStack>
-                    {mark && mark.split("\n").map((line, index) => (
-                      <Fragment key={index}>
-                        {line}
-                        {index !== mark.split("\n").length - 1 && <br />}
-                      </Fragment>
-                    ))}
-                  </>
-                )}
-              </Box>
-              <Box h={20} />
-            </VStack>
-          </>
+              {isMarking ? (
+                <>
+                  <Text>AI is working, please wait for a while...</Text>
+                  <SkeletonText mt='4' noOfLines={8} spacing='4' skeletonHeight='2' />
+                </>
+              ) : (
+                <>
+                  <HStack alignItems='center' mt={4} w='full'>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={generateSample}
+                    >
+                      Ask the AI to generate a sample
+                    </Button>
+                    <Spacer />
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={markEssay}
+                    >
+                      Need more suggestion? Remark the essay
+                    </Button>
+                  </HStack>
+                  {mark && mark.split("\n").map((line, index) => (
+                    <Fragment key={index}>
+                      {line}
+                      {index !== mark.split("\n").length - 1 && <br />}
+                    </Fragment>
+                  ))}
+                </>
+              )}
+            </Box>
+            <Box h={20} />
+          </VStack>
+        </>
         ) : (
         <Stack h='70vh'>
           <Spacer />
           <Center>
-            <Spinner size='xl'/>
+            <VStack>
+              <Spinner size='xl'/>
+              <Text fontSize='lg'>AI is generating writing topic for you</Text>
+              <Text fontSize='lg'>It may take a while, please wait...</Text>
+            </VStack>
           </Center>
           <Spacer />
         </Stack>

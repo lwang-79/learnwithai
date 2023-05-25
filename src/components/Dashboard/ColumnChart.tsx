@@ -30,144 +30,148 @@ function ColumnChart({ daily }: ColumnChartProps) {
   const [ options, setOptions ] = useState<any>();
   const [ category, setCategory ] = useState<string>('Math');
   const [ type, setType ] = useState<string>('Daily');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const today = new Date();
   const [ currentMonth, setCurrentMonth ] = useState<Date>(new Date(today.getFullYear(), today.getMonth(), 1));
 
   useEffect(() => {
-    setData();
-  }, [category, currentMonth, type]);
-
-  const setData = async () => {
-    const statisticData = daily.filter(
-      d => d.date.includes(currentMonth.toLocaleString('sv-SE').slice(0,7))
-    ).sort((a, b) => a.date > b.date ? 1 : -1);
-
-    let data: Record<string, number> = {};
-
-    if (category === 'Math') {
-      data = statisticData.reduce((acc: { [key: string]: number }, { date, mathCorrect, mathWrong }) => {
-        acc[date] = (Number(mathCorrect) + Number(mathWrong));
-        return acc;
-      }, {});
-    } else {
-      data = statisticData.reduce((acc: { [key: string]: number }, { date, writing }) => {
-        acc[date] = Number(writing);
-        return acc;
-      }, {});
-    }
-
-    const lineData: [number, number][] = [];
-    const columnData: [number, number][] = [];
-
-    let totalDays = 0;
-
-    if (currentMonth.toLocaleString('sv-SE').slice(0,7) === today.toLocaleString('sv-SE').slice(0,7)) {
-      totalDays = today.getDate();
-    } else {
-      const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
-      dateObj.setDate(dateObj.getDate() - 1);
-      totalDays = dateObj.getDate();
-    }
-
-    let previousCount = 0;
-    for (let i = 0; i < totalDays; i++) {
-      const currentDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i+1);
-
-      const dateInMs = currentDay.getTime();
-      const dateString = currentDay.toLocaleDateString('sv-SE');
-
-      const currentCount = data[dateString]?? 0;
-
-      lineData.push([dateInMs, currentCount + previousCount]);
-      columnData.push([dateInMs, currentCount]);
-      previousCount += currentCount;
-    }
-
-    setOptions({
-      accessibility: {
-        enabled: false
-      },
-      credits: {
-        enabled: false
-      },
-      title: {
-        text: '',
-      },
-      chart: {
-        height: '33%',
-      },
-      xAxis: {
-        type: 'datetime',
-        title: {
-          text: null
+    const setData = async () => {
+      const statisticData = daily.filter(
+        d => d.date.includes(currentMonth.toLocaleString('sv-SE').slice(0,7))
+      ).sort((a, b) => a.date > b.date ? 1 : -1);
+  
+      let data: Record<string, number> = {};
+  
+      if (category === 'Math') {
+        data = statisticData.reduce((acc: { [key: string]: number }, { date, mathCorrect, mathWrong }) => {
+          acc[date] = (Number(mathCorrect) + Number(mathWrong));
+          return acc;
+        }, {});
+      } else {
+        data = statisticData.reduce((acc: { [key: string]: number }, { date, writing }) => {
+          acc[date] = Number(writing);
+          return acc;
+        }, {});
+      }
+  
+      const lineData: [number, number][] = [];
+      const columnData: [number, number][] = [];
+  
+      let totalDays = 0;
+  
+      if (currentMonth.toLocaleString('sv-SE').slice(0,7) === today.toLocaleString('sv-SE').slice(0,7)) {
+        totalDays = today.getDate();
+      } else {
+        const dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+        dateObj.setDate(dateObj.getDate() - 1);
+        totalDays = dateObj.getDate();
+      }
+  
+      let previousCount = 0;
+      for (let i = 0; i < totalDays; i++) {
+        const currentDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i+1);
+  
+        const dateInMs = currentDay.getTime();
+        const dateString = currentDay.toLocaleDateString('sv-SE');
+  
+        const currentCount = data[dateString]?? 0;
+  
+        lineData.push([dateInMs, currentCount + previousCount]);
+        columnData.push([dateInMs, currentCount]);
+        previousCount += currentCount;
+      }
+  
+      setOptions({
+        accessibility: {
+          enabled: false
         },
-        labels: {
-          align: 'right',
-          style: {
-            color: '#718096'
-          }
-        }
-
-      },
-      time:{
-        useUTC: false,
-      },
-      yAxis: {
-        gridLineColor: '#718096',
-        gridLineDashStyle: 'Dot',
+        credits: {
+          enabled: false
+        },
         title: {
           text: '',
         },
-        labels: {
-          style: {
-            color: '#718096'
+        chart: {
+          height: '33%',
+        },
+        xAxis: {
+          type: 'datetime',
+          title: {
+            text: null
+          },
+          labels: {
+            align: 'right',
+            style: {
+              color: '#718096'
+            }
           }
-        }
-      },
-      tooltip: {
-        xDateFormat: '%Y-%m-%d',
-      },
-      plotOptions: {
-        column: {
-          dataLabels: {
-            enabled: false,
-          },
-          borderRadius: 4
+  
         },
-        series: {
-          borderWidth: 0,
+        time:{
+          useUTC: false,
         },
-        area: {
-          dataLabels: {
-            enabled: false,
+        yAxis: {
+          gridLineColor: '#718096',
+          gridLineDashStyle: 'Dot',
+          title: {
+            text: '',
           },
-          marker: {
-            enabled: false,
-            symbol: 'circle',
-            radius: 2,
-            states: {
-              hover: {
-                  enabled: true
+          labels: {
+            style: {
+              color: '#718096'
+            }
+          }
+        },
+        tooltip: {
+          xDateFormat: '%Y-%m-%d',
+        },
+        plotOptions: {
+          column: {
+            dataLabels: {
+              enabled: false,
+            },
+            borderRadius: 4
+          },
+          series: {
+            borderWidth: 0,
+          },
+          area: {
+            dataLabels: {
+              enabled: false,
+            },
+            marker: {
+              enabled: false,
+              symbol: 'circle',
+              radius: 2,
+              states: {
+                hover: {
+                    enabled: true
+                }
               }
             }
           }
-        }
-      },
-      series: type === 'Daily' ? [{
-        type: 'column',
-        name: category === 'Math' ? 'Questions' : 'Essays',
-        color: ChartColors[0],
-        data: columnData
-      }] : [{
-        type:'area',
-        name: 'Accumulated',
-        color: ChartColors[0],
-        data: lineData
-      }],
-      legend: false,
-    });
+        },
+        series: type === 'Daily' ? [{
+          type: 'column',
+          name: category === 'Math' ? 'Questions' : 'Essays',
+          color: ChartColors[0],
+          data: columnData
+        }] : [{
+          type:'area',
+          name: 'Accumulated',
+          color: ChartColors[0],
+          data: lineData
+        }],
+        legend: false,
+      });
+  
+    }
 
-  }
+    setData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, currentMonth, daily, type]);
+
+  
 
 
   return (

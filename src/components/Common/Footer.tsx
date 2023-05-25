@@ -26,6 +26,8 @@ import {
         w='full'
         p={4}
         bg={useColorModeValue('gray.100', 'gray.900')} 
+        position='fixed'
+        bottom={0}
       >
         <Text fontSize='sm'>Need help or have suggestions?</Text>
         <Text 

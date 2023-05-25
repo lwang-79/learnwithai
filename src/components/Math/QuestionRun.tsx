@@ -173,6 +173,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     }
 
     addQuestionSets(cacheNumber);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   useEffect(() => {
@@ -182,6 +183,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     if (questionSets.length < lastIndexRef.current + 1) {
       setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[fetchingStatus]);
 
   const addSavedQuestionSets = async () => {
@@ -635,26 +637,31 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   return (
     <>
+      <IconButton
+        rounded='full'
+        variant='ghost'
+        aria-label='Close'
+        icon={<Icon as={MdClose} boxSize={6} />}
+        onClick={closeButtonClickedHandler}
+        zIndex={100}
+        position='fixed'
+        top={2} right={2}
+      />
+
       {questionSetsRef.current.length < 1 ? (
         <Stack h='70vh'>
           <Spacer />
           <Center>
-            <Spinner size='xl'/>
+            <VStack>
+              <Spinner size='xl'/>
+              <Text fontSize='lg'>AI is generating questions</Text>
+              <Text fontSize='lg'>It may take a while, please wait...</Text>
+            </VStack>
           </Center>
           <Spacer />
         </Stack>
       ) : (
         <>
-          <IconButton
-            rounded='full'
-            variant='ghost'
-            aria-label='Close'
-            icon={<Icon as={MdClose} boxSize={6} />}
-            onClick={closeButtonClickedHandler}
-            zIndex={100}
-            position='fixed'
-            top={2} right={2}
-          />
            <VStack 
             maxW='2xl'
             mt={20} mx='auto'

@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const questions = competition as CompetitionQuestion[];
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function competitionHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const num = req.body.number as number;
   const level = req.body.level as string;

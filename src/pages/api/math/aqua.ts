@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const questions = aqua as AQuAQuestion[];
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function aquaHandler(req: NextApiRequest, res: NextApiResponse) {
 
   const num = req.body.number as number;
   if (!num) {

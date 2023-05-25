@@ -57,7 +57,6 @@ if (typeof window === 'undefined') {
         // productionRedirectSignOut,
     }
   }
-  
   Amplify.configure(updatedAwsConfig);
 }
 

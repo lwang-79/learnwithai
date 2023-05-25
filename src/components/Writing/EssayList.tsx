@@ -1,6 +1,6 @@
 import { Essay } from "@/models"
 import { DataStore, Predicates, SortDirection } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import EssayItem from "./EssayItem";
 import { 
   Box, 
@@ -34,10 +34,6 @@ function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: E
   const [ isLastPage, setIsLastPage ] = useState(false);
   const bgColor = useColorModeValue('teal.100', 'teal.800');
 
-  useEffect(() => {
-    refreshList();
-  }, [refreshTrigger]);
-
   const changePageButtonClickedHandler = async (count: number) => {
     const page = currentPage + count;
     const essays = await DataStore.query(
@@ -58,13 +54,18 @@ function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: E
     }    
   }
 
-  const refreshList = (page: number = currentPage, limit: number = pageStep) => {
+  const refreshList = useCallback((page: number = currentPage, limit: number = pageStep) => {
     DataStore.query(Essay, Predicates.ALL, {
       sort: e => e.DateTime(SortDirection.DESCENDING),
       page: page,
       limit: limit
     }).then(essays => setEssays(essays));
-  }
+  },[currentPage, pageStep])
+
+  useEffect(() => {
+    refreshList();
+  }, [refreshList, refreshTrigger]);
+
 
   return (
     <>

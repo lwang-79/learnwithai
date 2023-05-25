@@ -6,11 +6,13 @@ import {
   Checkbox, 
   CheckboxGroup, 
   HStack, 
+  Icon,
   Input, 
   Tag, 
   TagCloseButton, 
   TagLabel, 
   Text, 
+  Tooltip, 
   useColorModeValue, 
   useToast, 
   VStack, 
@@ -19,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { DataStore } from "aws-amplify";
 import { useState } from "react"
+import { MdHelpOutline } from "react-icons/md";
 
 interface NotificationProps {
   user: User
@@ -122,7 +125,17 @@ function Notification({ user }: NotificationProps) {
       w='full'
     >
       <VStack align='flex-start' spacing={4}>
-        <Text>Notification</Text>
+        <HStack align='flex-start'>
+          <Text>Notification</Text>
+          <Tooltip
+            hasArrow
+            bg='teal'
+            placement='right'
+            label={`Send practicing report by email.`}
+          >
+            <span><Icon as={MdHelpOutline} boxSize={5} /></span>
+          </Tooltip>
+        </HStack>
         {user.membership && user.membership.current > 2 ? (
           <>
             <HStack>
@@ -183,7 +196,7 @@ function Notification({ user }: NotificationProps) {
             </CheckboxGroup>
           </>
         ):(
-          <Text fontSize='sm' color='red'>
+          <Text fontSize='sm' color='teal'>
             Upgrade to professional plan to enable notification.
           </Text>
         )}

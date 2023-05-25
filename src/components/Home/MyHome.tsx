@@ -1,32 +1,28 @@
-import { Box, Center, Flex, Spacer, Spinner, Stack, useColorModeValue } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Flex, Spacer, useColorModeValue } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { User } from '@/models';
 import Footer from '../Common/Footer';
 import Header from '../Common/Header';
-import { ZenObservable } from 'zen-observable-ts'
-import { Auth, DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import Dashboard from '../Dashboard/Dashboard';
+import SharedComponents from '../Common/SharedComponents';
+import SpinnerOverlay from '../Common/SpinnerOverlay';
 
 function MyHome() {
   const [user, setUser] = useState<User>();
-  let userSub: ZenObservable.Subscription;
+  const { currentUser } = useContext(SharedComponents)
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-    .then( currentUser => {
-      userSub = DataStore.observeQuery(
+    if (!currentUser) return;
+    const userSub = DataStore.observeQuery(
         User,
-        u => u.sub.eq(currentUser.attributes.sub)
+        u => u.id.eq(currentUser!.id)
       ).subscribe(({ items }) => {
         if (items.length > 0) setUser(items[0]);
       });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
 
     return () => userSub.unsubscribe();
-  }, []);
+  }, [currentUser]);
 
   return (
     <Flex 
@@ -52,13 +48,7 @@ function MyHome() {
           <Footer/>
         </>
       ) : (
-        <Stack  h='70vh'>
-          <Spacer />
-          <Center>
-            <Spinner size='xl'/>
-          </Center>
-          <Spacer />
-        </Stack>
+        <SpinnerOverlay />
       )}
     </Flex>
   )

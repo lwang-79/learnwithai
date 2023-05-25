@@ -17,8 +17,8 @@ import {
   useColorModeValue, 
   useDisclosure 
 } from '@chakra-ui/react'
-import { API, Auth, DataStore, graphqlOperation } from 'aws-amplify'
-import { useEffect, useState } from 'react'
+import { API, DataStore, graphqlOperation } from 'aws-amplify'
+import { useContext, useEffect, useState } from 'react'
 import Header from '@/components/Common/Header'
 import WithAuth from '@/components/Common/WithAuth'
 import { GetUserQuery, LearnwithaiSubscribeMutation } from '@/types/API'
@@ -26,12 +26,12 @@ import { learnwithaiSubscribe } from '@/graphql/mutations'
 import { GraphQLResult } from "@aws-amplify/api-graphql"
 import ProfileCard from '@/components/Account/ProfileCard'
 import { User } from '@/models'
-import { ZenObservable } from 'zen-observable-ts'
 import PlanSubList from '@/components/Account/PlanSubList'
 import { PlanSub } from '@/components/Account/PlanSubItem'
 import Subscription from '@/components/Account/Subscription'
 import { getUser } from '@/graphql/queries'
 import Notification from '@/components/Account/Notification'
+import SharedComponents from '@/components/Common/SharedComponents'
 
 export interface SubStatus {
   personal: PlanSub,
@@ -44,6 +44,7 @@ function Profile() {
   
   const [ subStatus, setSubStatus ] = useState<SubStatus>();
   const [ shouldRefresh, setShouldRefresh ] = useBoolean();
+  const { currentUser } = useContext(SharedComponents);
 
   const { 
     isOpen: isOpenSubModal, 
@@ -51,53 +52,55 @@ function Profile() {
     onClose: onCloseSubModal
   } = useDisclosure();
 
-  let userSub: ZenObservable.Subscription;
-
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-    .then( currentUser => {
-      userSub = DataStore.observeQuery(
+    if (!currentUser) return;
+
+    const userSub = DataStore.observeQuery(
         User,
-        u => u.sub.eq(currentUser.attributes.sub)
+        u => u.id.eq(currentUser!.id)
       ).subscribe(({ items }) => {
         if (items.length > 0) {
           setUser(items[0]);
-          getAndSetSubStatus(items[0].id)
+          getAndSetSubStatus(items[0].id);
         }
       });
-    });
 
-    return () => userSub?.unsubscribe();
-  }, []);
+    return () => userSub.unsubscribe();
+
+  }, [currentUser]);
 
   useEffect(() => {
+    const refreshUserStatus = async () => {
+      if (!user) return;
+  
+      getAndSetSubStatus(user.id);
+  
+      try {
+        const response = await API.graphql(graphqlOperation(
+          getUser,
+          {id: user.id}
+        )) as GraphQLResult<GetUserQuery>;
+  
+        const remoteUser = response.data?.getUser;
+  
+        if (!remoteUser) return;
+  
+        const clonedUser = User.copyOf(user, updated => {
+          updated.membership = remoteUser.membership
+        });
+  
+        setUser(clonedUser);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     refreshUserStatus();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldRefresh]);
 
-  const refreshUserStatus = async () => {
-    if (!user) return;
-
-    getAndSetSubStatus(user.id);
-
-    try {
-      const response = await API.graphql(graphqlOperation(
-        getUser,
-        {id: user.id}
-      )) as GraphQLResult<GetUserQuery>;
-
-      const remoteUser = response.data?.getUser;
-
-      if (!remoteUser) return;
-
-      const clonedUser = User.copyOf(user, updated => {
-        updated.membership = remoteUser.membership
-      });
-
-      setUser(clonedUser);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  
 
   const getAndSetSubStatus = async (userId: string) => {
     const response = await API.graphql(graphqlOperation(
@@ -107,8 +110,6 @@ function Profile() {
         userId: userId, 
       }
     )) as GraphQLResult<LearnwithaiSubscribeMutation>;
-
-
 
     if (
       !response.data || 

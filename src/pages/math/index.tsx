@@ -158,7 +158,7 @@ function MathExam() {
             crossOrigin="anonymous">
           </Script> */}
 
-          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
+          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' pb={24} px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setMode} value={mode}>
               <HStack spacing={4}>
                 <Heading size='sm'>Mode</Heading>

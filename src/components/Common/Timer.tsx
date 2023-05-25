@@ -32,7 +32,7 @@ function Timer({ isStopped, duration, setDuration }: TimerProps) {
     return () => {
       clearInterval(interval);
     };
-  }, [isStopped]);
+  }, [isStopped, setDuration]);
 
   const formatTime = (time: number) => {
     const hours = Math.floor(time/3600);

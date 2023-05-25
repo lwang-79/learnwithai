@@ -50,7 +50,7 @@ function UserCard({user}: UserCardProps) {
       setYearly(yearly);
     }
 
-    }, []);
+  }, [currentDay, currentMonth, currentYear, user.daily, user.monthly, user.yearly]);
 
   return (
     <Card w='full'>

@@ -1,6 +1,6 @@
 import { Test } from "@/models"
 import { DataStore, Predicates, SortDirection } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TestItem from "./TestItem";
 import { 
   Box, 
@@ -36,10 +36,6 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
   const [ isLastPage, setIsLastPage ] = useState(false);
   const bgColor = useColorModeValue('teal.100', 'teal.800');
 
-  useEffect(() => {
-    refreshList();
-  }, [refreshTrigger]);
-
   const changePageButtonClickedHandler = async (count: number) => {
     const page = currentPage + count;
     const tests = await DataStore.query(
@@ -60,7 +56,7 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
     }    
   }
 
-  const refreshList = (page: number = currentPage, limit: number = pageStep) => {
+  const refreshList = useCallback((page: number = currentPage, limit: number = pageStep) => {
     DataStore.query(Test, Predicates.ALL, {
       sort: e => e.dateTime(SortDirection.DESCENDING),
       page: page,
@@ -68,7 +64,11 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
     }).then(tests => {
       setTests(tests);
     });
-  }
+  },[currentPage, pageStep])
+
+  useEffect(() => {
+    refreshList();
+  }, [refreshList, refreshTrigger]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/react'
+import { Box, Spinner, Text } from '@chakra-ui/react'
 
 function SpinnerOverlay() {
   return (
@@ -15,6 +15,7 @@ function SpinnerOverlay() {
       zIndex="99999"
     >
       <Spinner color="white" size="xl" />
+      {/* <Text>Loading...</Text> */}
     </Box>
   )
 }

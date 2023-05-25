@@ -46,7 +46,7 @@ function GameCard({user}: GameCardProps) {
 
     const collections = getCollections(user.gameData.collections);
     setCollections(collections);
-  }, [currentScore]);
+  }, [currentScore, user.gameData]);
 
   const plantButtonClickedHandler = async () => {
     const seed = getSeed(user);
@@ -126,6 +126,7 @@ function GameCard({user}: GameCardProps) {
                     <Image
                       src={`game/${key}-4.png`}
                       h='30px'
+                      alt='plant'
                     />
                     <Text fontSize='xs'>{value}</Text>
                   </HStack>
@@ -145,6 +146,7 @@ function GameCard({user}: GameCardProps) {
               <Image
                 src={`game/${user.gameData.seed}-${user.gameData.level}.png`}
                 h='150px'
+                alt='plant'
                 position='absolute'
                 left={`${120 - imageWidth / 2}px`}
                 onLoad={imageLoadHandler}

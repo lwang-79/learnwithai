@@ -46,7 +46,7 @@ export default function ThreeTierPricing() {
       '/login';
 
     setHref(href);
-  }), [];
+  },[isAuthenticated]);
 
   return (
     <Box py={12}>
