@@ -20,8 +20,9 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { DataStore } from "aws-amplify";
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { MdHelpOutline } from "react-icons/md";
+import SharedComponents from "../Common/SharedComponents";
 
 interface NotificationProps {
   user: User
@@ -35,9 +36,11 @@ function Notification({ user }: NotificationProps) {
     [NotificationType.MONTHLY]
   );
 
+  const { setDataStoreUser } = useContext(SharedComponents);
+
   const toast = useToast();
 
-  const setSelectedTypes = (type: NotificationType) => {
+  const setSelectedTypes = async (type: NotificationType) => {
     let updatedTypes = [...types];
     const index = types.indexOf(type);
 
@@ -49,7 +52,9 @@ function Notification({ user }: NotificationProps) {
 
     setTypes([...updatedTypes]);
 
-    DataStore.save(User.copyOf(user, updated=>{
+    const currentUser = await DataStore.query(User, user.id);
+    if (!currentUser) return;
+    const updatedUser = await DataStore.save(User.copyOf(currentUser, updated=>{
       updated.notification = updated.notification ? {
         ...updated.notification,
         types: updatedTypes
@@ -57,10 +62,11 @@ function Notification({ user }: NotificationProps) {
         emails: [user.email],
         types: updatedTypes
       }
-    }))
+    }));
+    setDataStoreUser(updatedUser);
   }
 
-  const addEmail = () => {
+  const addEmail = async () => {
     console.log(email)
     if (!isValidEmail(email)) {
       toast({
@@ -74,13 +80,15 @@ function Notification({ user }: NotificationProps) {
       return;
     }
 
-    DataStore.save(User.copyOf(user, updated => {
-      if (user.notification && !user.notification.emails.includes(email)) {
+    const currentUser = await DataStore.query(User, user.id);
+    if (!currentUser) return;
+    const updatedUser = await DataStore.save(User.copyOf(currentUser, updated => {
+      if (currentUser.notification && !currentUser.notification.emails.includes(email)) {
         updated.notification = {
-          emails: [...user.notification.emails, email],
+          emails: [...currentUser.notification.emails, email],
           types: types
         }
-      } else if (!user.notification) {
+      } else if (!currentUser.notification) {
         updated.notification = {
           emails: [email],
           types: types
@@ -99,6 +107,7 @@ function Notification({ user }: NotificationProps) {
 
       setEmail('');
     }));
+    setDataStoreUser(updatedUser);
   }
 
   const removeEmail = (index: number) => {
@@ -130,7 +139,6 @@ function Notification({ user }: NotificationProps) {
           <Tooltip
             hasArrow
             bg='teal'
-            placement='right'
             label={`Send practicing report by email.`}
           >
             <span><Icon as={MdHelpOutline} boxSize={5} /></span>

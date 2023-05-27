@@ -29,7 +29,13 @@ import {
         position='fixed'
         bottom={0}
       >
-        <Text fontSize='sm'>Need help or have suggestions?</Text>
+        <Text 
+          fontSize='sm'
+          cursor='pointer'
+          onClick={onOpenSupportModal}
+        >
+          Need help or have suggestions?
+        </Text>
         <Text 
           fontSize='sm'
           cursor='pointer'

@@ -1,4 +1,3 @@
-import { User } from "@/models";
 import { HStack, useColorMode, VStack } from "@chakra-ui/react"
 import Highcharts from "highcharts/highstock";
 import { useMemo } from "react";
@@ -6,10 +5,7 @@ import ColumnChart from "./ColumnChart"
 import GameCard from "./GameCard";
 import UserCard from "./UserCard";
 
-interface DashboardProps {
-  user: User
-}
-function Dashboard({ user }: DashboardProps) {
+function Dashboard() {
   const { colorMode } = useColorMode();
 
   // set highcharts color mode
@@ -41,11 +37,11 @@ function Dashboard({ user }: DashboardProps) {
     <>
       <HStack py={4} w='full' spacing={4} align='flex-start'>
         <VStack w='full' maxW='xs' spacing={4} >
-          <UserCard user={user} />
-          <GameCard user={user} />
+          <UserCard />
+          <GameCard />
         </VStack>
         <VStack w='full' maxW='2xl' spacing={4} >
-          {user.daily &&<ColumnChart daily={user.daily} />}
+          <ColumnChart />
         </VStack>
       </HStack>
     </>

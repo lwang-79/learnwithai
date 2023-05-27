@@ -1,37 +1,66 @@
-import { Auth } from 'aws-amplify';
-import { useContext, useEffect, useState } from 'react';
+import { Auth, DataStore } from 'aws-amplify';
+import { useContext, useEffect } from 'react';
 import WithAuth from '@/components/Common/WithAuth';
 import useStorage from '@/hooks/useStorage';
 import MyHome from '@/components/Home/MyHome';
 import { createUserIfNotExist } from '@/types/user';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
+import { User } from '@/models';
+import { useRouter } from 'next/router';
 
 
 export default function Home() {
   const { setItem } = useStorage();
-  const [isLoading, setIsLoading] = useState(true);
-  const { setCurrentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const router = useRouter();
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-    .then( currentUser => {
+    console.log('index')
+    if (dataStoreUser) {
       setItem('isAuthenticated', 'true', 'local');
-      createUserIfNotExist(currentUser.attributes)
-      .then(user=>setCurrentUser(user));
-      setIsLoading(false);
+      return;
+    }
+
+    const getAndSetDataStoreUser = async (userId: string) => {
+      let retryCount = 0;
+      let user: User | undefined;
+
+      while (retryCount < 50) {
+        user = await DataStore.query(User, userId);
+
+        if (user !== undefined) {
+          setDataStoreUser(user);
+          return;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        retryCount++;
+      }
+
+      console.error('User is not in DataStore');
+      router.push('/intro');    
+    }
+
+    Auth.currentAuthenticatedUser()
+    .then( authUser => {
+      setItem('isAuthenticated', 'true', 'local');
+      console.log('create?')
+      createUserIfNotExist(authUser.attributes)
+      .then(user=>getAndSetDataStoreUser(user.id))
+      .catch(err => console.error(err));
     })
     .catch((err) => {
       console.error(err);
       setItem('isAuthenticated', 'false', 'local');
-      setIsLoading(false);
+      router.push('/intro');
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dataStoreUser]);
 
   return (
     <>
-      { isLoading ? (
+      { !dataStoreUser ? (
         <SpinnerOverlay />
       ) : (
         <WithAuth>

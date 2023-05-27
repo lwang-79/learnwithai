@@ -12,29 +12,29 @@ import {
 } from "@chakra-ui/react";
 import Highcharts from "highcharts/highstock";
 import { HighchartsReact } from "highcharts-react-official";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Statistic } from "@/models";
 import { ChartColors } from "@/types/color";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
+import SharedComponents from "../Common/SharedComponents";
 
 const monthNames = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-interface ColumnChartProps {
-  daily: Statistic[];
-}
-
-function ColumnChart({ daily }: ColumnChartProps) {
+function ColumnChart() {
   const [ options, setOptions ] = useState<any>();
   const [ category, setCategory ] = useState<string>('Math');
   const [ type, setType ] = useState<string>('Daily');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const today = new Date();
   const [ currentMonth, setCurrentMonth ] = useState<Date>(new Date(today.getFullYear(), today.getMonth(), 1));
+  const { dataStoreUser } = useContext(SharedComponents);
+  const daily = dataStoreUser!.daily;
 
   useEffect(() => {
+    if (!daily) return;
     const setData = async () => {
       const statisticData = daily.filter(
         d => d.date.includes(currentMonth.toLocaleString('sv-SE').slice(0,7))

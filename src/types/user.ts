@@ -61,6 +61,9 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
       },
     },
     payerId: 'NA',
+    daily: [],
+    monthly: [],
+    yearly: [],
   };
 
   const mutationResult = await API.graphql<CreateUserMutation>(

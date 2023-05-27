@@ -14,17 +14,17 @@ import {
 } from "@chakra-ui/react"
 import { GiPlantWatering } from "react-icons/gi";
 import { DataStore } from "aws-amplify"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { convertCollectionsToString, getCollections, getSeed } from "@/types/game";
+import SharedComponents from "../Common/SharedComponents";
 
-interface GameCardProps {
-  user: User
-}
-function GameCard({user}: GameCardProps) {
+function GameCard() {
   const upgradeScore = 100;
   const [ currentScore, setCurrentScore ] = useState<number>(0);
   const [ imageWidth, setImageWidth ] = useState(0);
   const [ collections, setCollections ] = useState<Map<string, number>>(new Map());
+  const { dataStoreUser } = useContext(SharedComponents);
+  const user = dataStoreUser!;
 
   useEffect(() => {
     if (!user.gameData) return;

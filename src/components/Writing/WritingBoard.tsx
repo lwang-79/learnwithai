@@ -1,4 +1,4 @@
-import { Essay, Statistic } from "@/models"
+import { Essay, NotificationType, Statistic } from "@/models"
 import { EssayTopic, EssayType, QuestionLevel } from "@/types/types"
 import { 
   AlertDialog,
@@ -38,7 +38,6 @@ import { MdClose } from "react-icons/md"
 import { DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
-import { NotificationType } from "@/types/API";
 import { sesSendEmail } from "@/types/utils";
 
 export enum WritingMode {
@@ -63,7 +62,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
   const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
   const [ isMarking, setIsMarking ] = useState(false);
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
 
   const cancelRef = useRef(null);
 
@@ -204,7 +203,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   }
 
 
-  const submitButtonClickedHandler = () => {
+  const submitButtonClickedHandler = async () => {
     if (!essay) return;
 
     setIsSubmitted(true);
@@ -217,7 +216,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         }
       ));
     } else {
-      if (currentUser!.membership.current >= 2) {
+      if (dataStoreUser!.membership!.current >= 2) {
         DataStore.save(Essay.copyOf(
           essay,
           updated => {
@@ -232,19 +231,26 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       writing: 1,
     };
 
-    addStatisticData(statistic, currentUser!.id)
+    setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
 
     markEssay();
     onCloseAlert();
 
-    if (currentUser && currentUser.notification && currentUser.notification.types.includes(NotificationType.Instant)) {
-      const message = `${currentUser.username} just finished a writing.
+    if (
+      dataStoreUser && 
+      dataStoreUser.membership!.current > 2 &&
+      dataStoreUser.notification && 
+      dataStoreUser.notification.types.includes(NotificationType.INSTANT) &&
+      dataStoreUser.notification.emails.length > 0
+    ) {
+      const message = `${dataStoreUser.username} just finished a writing.
 Type: ${type}
 Level: ${level}
 Prompt: ${essay.prompt}
 Total words: ${count}
-      `
-      sesSendEmail(currentUser.notification.emails, 'Learn with AI instant notification', message, 'notification@jinpearl.com');
+      `;
+
+      sesSendEmail(dataStoreUser.notification.emails as string[], 'Learn with AI instant notification', message, 'notification@jinpearl.com');
     }
   }
 

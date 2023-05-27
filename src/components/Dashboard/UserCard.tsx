@@ -1,4 +1,4 @@
-import { Statistic, User } from "@/models"
+import { Statistic } from "@/models"
 import { 
   Card, 
   CardBody, 
@@ -12,14 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { BiMath } from "react-icons/bi";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TbWriting } from "react-icons/tb";
 import { getLevel } from "@/types/user";
+import SharedComponents from "../Common/SharedComponents";
 
-interface UserCardProps {
-  user: User 
-}
-function UserCard({user}: UserCardProps) {
+function UserCard() {
   const today = new Date();
   const currentDay = today.toLocaleString('sv-SE').slice(0, 10);
   const currentMonth = today.toLocaleString('sv-SE').slice(0, 7);
@@ -29,6 +27,8 @@ function UserCard({user}: UserCardProps) {
   const [ yearly, setYearly ] = useState<Statistic>();
   const [ mathLevel, setMathLevel ] = useState(0);
   const [ writingLevel, setWritingLevel ] = useState(0);
+  const { dataStoreUser } = useContext(SharedComponents);
+  const user = dataStoreUser!;
 
   useEffect(() => {
     if (user.daily) {

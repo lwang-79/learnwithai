@@ -3,7 +3,7 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
-import { Statistic, Test, User } from '@/models';
+import { Statistic, Test } from '@/models';
 import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
@@ -22,7 +22,6 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
-  Text, 
   Tooltip, 
   useBoolean, 
   useDisclosure, 
@@ -31,7 +30,6 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { DataStore } from 'aws-amplify';
 import { useContext, useEffect, useState } from 'react'
 import TestList from '@/components/Math/TestList';
 import { MdHelpOutline } from 'react-icons/md';
@@ -46,14 +44,13 @@ function MathExam() {
   const concepts = Object.values(MathConcept);
   const levels = [
     ...Object.values(QuestionLevel).slice(0,15), 
-    // ...Object.values(QuestionLevel).slice(12,15)
   ];
   const competitionLevels = [ ...Object.values(QuestionLevel).slice(15, 20) ];
   const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
@@ -94,9 +91,7 @@ function MathExam() {
 
   const startButtonClickedHandler = async () => {
     setSelectedTest(undefined);
-    if (!currentUser) return;
-
-    const user = await DataStore.query(User, currentUser.id);
+    const user = dataStoreUser;
     if (!user) return;
 
     const todayStatistic = await getTodayStatistic(user);
@@ -125,7 +120,7 @@ function MathExam() {
       mathRequest: Number(num)
     }
 
-    await addStatisticData(statistic, undefined, user);
+    setDataStoreUser(await addStatisticData(statistic, user.id));
   }
 
   const openModalWithTest = (test: Test) => {
@@ -147,7 +142,7 @@ function MathExam() {
 
   return (
     <WithAuth href='/login'>
-      {currentUser &&
+      {dataStoreUser &&
         <Flex
           minH='100vh'
           direction='column'
@@ -165,19 +160,19 @@ function MathExam() {
                 <Radio value={QuestionRunMode.Practice}>Practice</Radio>
                 <Radio 
                   value={QuestionRunMode.Test}
-                  isDisabled={currentUser!.membership.current < 2}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
                 >
                   Test
                 </Radio>
                 <Radio 
                   value={QuestionRunMode.Competition}
-                  isDisabled={currentUser!.membership.current < 2}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
                 >
                   Competition
                 </Radio>
                 <Radio 
                   value={QuestionRunMode.SavedQuestions}
-                  isDisabled={currentUser!.membership.current < 2}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
                 >
                   Saved Questions
                 </Radio>
@@ -187,7 +182,7 @@ function MathExam() {
               onChange={setNum} 
               value={num} 
               isDisabled={
-                currentUser!.membership.current < 2 ||
+                dataStoreUser!.membership!.current < 2 ||
                 mode === QuestionRunMode.Competition ||
                 mode === QuestionRunMode.SavedQuestions
               }

@@ -17,7 +17,7 @@ import {
   useColorModeValue, 
   useDisclosure 
 } from '@chakra-ui/react'
-import { API, DataStore, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify'
 import { useContext, useEffect, useState } from 'react'
 import Header from '@/components/Common/Header'
 import WithAuth from '@/components/Common/WithAuth'
@@ -40,11 +40,9 @@ export interface SubStatus {
 }
 
 function Profile() {
-  const [ user, setUser ] = useState<User>();
-  
   const [ subStatus, setSubStatus ] = useState<SubStatus>();
   const [ shouldRefresh, setShouldRefresh ] = useBoolean();
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
 
   const { 
     isOpen: isOpenSubModal, 
@@ -53,43 +51,26 @@ function Profile() {
   } = useDisclosure();
 
   useEffect(() => {
-    if (!currentUser) return;
-
-    const userSub = DataStore.observeQuery(
-        User,
-        u => u.id.eq(currentUser!.id)
-      ).subscribe(({ items }) => {
-        if (items.length > 0) {
-          setUser(items[0]);
-          getAndSetSubStatus(items[0].id);
-        }
-      });
-
-    return () => userSub.unsubscribe();
-
-  }, [currentUser]);
-
-  useEffect(() => {
     const refreshUserStatus = async () => {
-      if (!user) return;
+      if (!dataStoreUser) return;
   
-      getAndSetSubStatus(user.id);
+      getAndSetSubStatus(dataStoreUser.id);
   
       try {
         const response = await API.graphql(graphqlOperation(
           getUser,
-          {id: user.id}
+          {id: dataStoreUser.id}
         )) as GraphQLResult<GetUserQuery>;
   
         const remoteUser = response.data?.getUser;
   
         if (!remoteUser) return;
   
-        const clonedUser = User.copyOf(user, updated => {
+        const clonedUser = User.copyOf(dataStoreUser, updated => {
           updated.membership = remoteUser.membership
         });
   
-        setUser(clonedUser);
+        setDataStoreUser(clonedUser);
       } catch (error) {
         console.error(error);
       }
@@ -133,7 +114,7 @@ function Profile() {
   return (
     <WithAuth>
       <Flex direction='column' bg={useColorModeValue('gray.50', 'gray.800')} minH='100vh'>
-        {user ? (
+        {dataStoreUser ? (
           <>
             <Header />
             <Stack
@@ -144,9 +125,9 @@ function Profile() {
               w={{base: 'xs', sm: 'sm', md: 'lg'}}
               spacing={4}
             >
-              <ProfileCard user={user} />
+              <ProfileCard user={dataStoreUser} />
 
-              <Notification user={user} />
+              <Notification user={dataStoreUser} />
                   
               <Box cursor='pointer' onClick={onOpenSubModal} minH={100}>
                 {subStatus ? (
@@ -193,7 +174,7 @@ function Profile() {
           <ModalContent>
             <ModalCloseButton />
             <ModalBody mt={-6}>
-              {user && subStatus ? (<Subscription subStatus={subStatus} user={user} onClose={refreshAndCloseModal} />) : null}
+              {dataStoreUser && subStatus ? (<Subscription subStatus={subStatus} user={dataStoreUser} onClose={refreshAndCloseModal} />) : null}
             </ModalBody>
             <ModalFooter>
               <Button onClick={onCloseSubModal}>Close</Button>

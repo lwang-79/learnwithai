@@ -36,6 +36,7 @@ import {
   MdOutlineSchool, 
   MdPerson, 
 } from 'react-icons/md';
+import NextLink from 'next/link';
 import { Auth, DataStore } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import useStorage from '@/hooks/useStorage';
@@ -47,11 +48,13 @@ const LinkNames = ['Math', 'Writing']
 
 const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
   <Link
+    as={NextLink}
     _hover={{
       textDecoration: 'none',
       color: 'gray.500',
     }}
-    href={href}>
+    href={href}
+  >
     {children}
   </Link>
 );
@@ -63,8 +66,8 @@ export default function Header() {
   const router = useRouter();
   const { setItem } = useStorage();
   const width = 'full';
-  const { currentUser } = useContext(SharedComponents);
-  const user = currentUser!;
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const user = dataStoreUser!;
 
   const { 
     isOpen: isOpenSupportModal, 
@@ -77,7 +80,7 @@ export default function Header() {
       setItem('isAuthenticated', 'false', 'local');
       DataStore.clear();        // must before signOut
       await Auth.signOut();     // for Social SignIn signOut will not return
-      router.push('/intro');
+      setDataStoreUser(undefined);
     } catch (error) {
       console.log('error signing out: ', error);
     }
@@ -92,7 +95,7 @@ export default function Header() {
         position='fixed'
         as='header'
         zIndex={100}
-        shadow='md'
+        shadow='sm'
       >
         <Container maxW="5xl">
           <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -104,7 +107,7 @@ export default function Header() {
               onClick={isOpen ? onClose : onOpen}
             />
             <HStack spacing={8} alignItems={'flex-end'}>
-              <Link href='/' style={{ textDecoration: 'none' }}>
+              <Link as={NextLink} href='/' style={{ textDecoration: 'none' }}>
                 <Box color={'teal.400'}>
                   <Icon as={MdOutlineSchool}  boxSize={8}/> 
                   <Text as='b'>

@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { MdOutlineSchool } from 'react-icons/md';
-import Support from '@/components/Common/Support';
 
 export default function Introduction() {
   return (

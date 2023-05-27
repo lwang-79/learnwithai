@@ -9,7 +9,7 @@ interface PlanSubListProps {
 }
 
 function PlanSubList({ subStatus }: PlanSubListProps) {
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser } = useContext(SharedComponents);
 
   let planSubs = [];
 
@@ -43,7 +43,7 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
           <Tag borderRadius='full' colorScheme='green'>ACTIVE</Tag>
         </HStack>
         {planSubs}
-        {currentUser && 
+        {dataStoreUser && 
           <>
             <Divider />
             <VStack align='flex-start' spacing={0}>
@@ -51,22 +51,22 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
               <HStack w='full'>
                 <Text fontSize='sm'>Math questions per day</Text>
                 <Spacer />
-                <Text fontSize='sm'>{currentUser.quota.mathPerDay}</Text>
+                <Text fontSize='sm'>{dataStoreUser.quota!.mathPerDay}</Text>
               </HStack>
               <HStack w='full'>
                 <Text fontSize='sm'>Writing per day</Text>
                 <Spacer />
-                <Text fontSize='sm'>{currentUser.quota.writingPerDay}</Text>
+                <Text fontSize='sm'>{dataStoreUser.quota!.writingPerDay}</Text>
               </HStack>
               <HStack w='full'>
                 <Text fontSize='sm'>Max saved tests</Text>
                 <Spacer />
-                <Text fontSize='sm'>{currentUser.quota.savedTests}</Text>
+                <Text fontSize='sm'>{dataStoreUser.quota!.savedTests}</Text>
               </HStack>
               <HStack w='full'>
                 <Text fontSize='sm'>Max saved essays</Text>
                 <Spacer />
-                <Text fontSize='sm'>{currentUser.quota.savedEssays}</Text>
+                <Text fontSize='sm'>{dataStoreUser.quota!.savedEssays}</Text>
               </HStack>
             </VStack>
           </>

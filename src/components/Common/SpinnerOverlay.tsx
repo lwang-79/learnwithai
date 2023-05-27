@@ -1,8 +1,8 @@
-import { Box, Spinner, Text } from '@chakra-ui/react'
+import { Spinner, Text, VStack } from '@chakra-ui/react'
 
 function SpinnerOverlay() {
   return (
-    <Box
+    <VStack
       position="fixed"
       top={0}
       left={0}
@@ -15,8 +15,8 @@ function SpinnerOverlay() {
       zIndex="99999"
     >
       <Spinner color="white" size="xl" />
-      {/* <Text>Loading...</Text> */}
-    </Box>
+      <Text color="white">Loading please waite...</Text>
+    </VStack>
   )
 }
 

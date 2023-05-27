@@ -106,7 +106,7 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
       toast({
         description: `${response.data.learnwithaiSubscribe.body} You can manage your subscription from the profile or Paypal console.`,
         status: 'success',
-        duration: 30000,
+        duration: 10000,
         isClosable: true
       });
 

@@ -3,13 +3,12 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import Script from 'next/script';
-import { Amplify, Auth, DataStore } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import awsconfig from '../aws-exports';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
-import { createUserIfNotExist, isAuthenticated, UserParams } from '@/types/user';
+import { User } from '@/models';
 
 
 if (typeof window === 'undefined') {
@@ -40,7 +39,7 @@ if (typeof window === 'undefined') {
     // productionRedirectSignOut,
     developmentRedirectSignOut
   ] = awsconfig.oauth.redirectSignOut.split(",");
-  
+
   const updatedAwsConfig = {
     ...awsconfig,
     oauth: {
@@ -61,28 +60,9 @@ if (typeof window === 'undefined') {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [ isProcessing, setIsProcessing ] = useState(true);
-  const [ currentUser, setCurrentUser ] = useState<UserParams>();
-
-  useEffect(() => {
-    if(!isAuthenticated()) {
-      setIsProcessing(false);
-      return;
-    }
-
-    Auth.currentAuthenticatedUser()
-    .then( currentUser => {
-      createUserIfNotExist(currentUser.attributes)
-      .then( userParams => {
-        setCurrentUser(userParams);
-        setIsProcessing(false);
-      });
-    })
-    .catch((err) => {
-      setIsProcessing(false);
-      console.error(err);
-    });
-  },[]);
+  const [ isProcessing, setIsProcessing ] = useState(false);
+  const [ dataStoreUser, setDataStoreUser ] = useState<User>();
+  console.log('app')
 
   return (
     <ChakraProvider theme={theme}>
@@ -96,8 +76,8 @@ export default function App({ Component, pageProps }: AppProps) {
       {isProcessing ? <SpinnerOverlay /> :
         <SharedComponents.Provider value={{ 
           setIsProcessing: setIsProcessing,
-          currentUser: currentUser,
-          setCurrentUser: setCurrentUser
+          dataStoreUser: dataStoreUser,
+          setDataStoreUser: setDataStoreUser
         }} >
           <Component {...pageProps} />
         </SharedComponents.Provider>

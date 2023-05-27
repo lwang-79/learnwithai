@@ -48,12 +48,11 @@ import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { QuestionSet, Statistic, Test } from "@/models";
+import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addMyMathQuestion, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
-import { NotificationType } from "@/types/API";
 import { DataStore } from "aws-amplify";
 
 export enum QuestionRunMode {
@@ -109,7 +108,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
-  const { currentUser, setIsProcessing } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, setIsProcessing } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
   const [ timerStopped, setTimeStopped ] = useState(false);
   const [ duration, setDuration ] = useState(initialTest?.duration || 0);
@@ -394,7 +393,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   }
 
   const submitButtonClickedHandler = async () => {
-    if (!currentUser) return;
+    if (!dataStoreUser) return;
     onCloseAlert();
     setTimeStopped(true);
 
@@ -412,19 +411,27 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       mathExam: isTest ? 1 : 0
     };
 
-    addStatisticData(statistic, currentUser.id);
+    setDataStoreUser(await addStatisticData(statistic, dataStoreUser.id));
 
     setResult({ total: lastIndexRef.current + 1, correct: correct });
     setIsSubmitted(true);
     onOpenResultModal();
 
-    if (isTest && currentUser.notification && currentUser.notification.types.includes(NotificationType.Instant)) {
-      const message = `${currentUser.username} just finished a math test.
+    if (
+      isTest && 
+      dataStoreUser.notification && 
+      dataStoreUser.notification.types.includes(NotificationType.INSTANT) &&
+      dataStoreUser.notification.emails.length > 0
+    ) {
+      const message = `${dataStoreUser.username} just finished a math test.
 Level: ${level}
 Total questions: ${lastIndexRef.current + 1}
 Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) + '%'})
       `
-      sesSendEmail(currentUser.notification.emails, 'Learn with AI instant notification', message, 'notification@jinpearl.com');
+      sesSendEmail(
+        dataStoreUser.notification.emails as string[], 
+        'Learn with AI instant notification', message, 'notification@jinpearl.com'
+      );
     }
   }
 
@@ -717,7 +724,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                   ) : (
                     <>
                       <Tooltip label={
-                          currentUser!.membership.current < 2 ?
+                          dataStoreUser!.membership!.current < 2 ?
                           'The feature is not available' : 'Save the question'
                         }
                       >
@@ -734,7 +741,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           onClick={targetButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 
-                            currentUser!.membership.current < 2 || 
+                            dataStoreUser!.membership!.current < 2 || 
                             currentQuestionSet.isTarget
                           }
                         />
@@ -759,7 +766,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           onClick={markQuestionButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 
-                            currentUser!.membership.current < 2 || 
+                            dataStoreUser!.membership!.current < 2 || 
                             isReview
                           }
                         />
