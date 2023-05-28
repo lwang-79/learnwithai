@@ -23,7 +23,7 @@ function GameCard() {
   const [ currentScore, setCurrentScore ] = useState<number>(0);
   const [ imageWidth, setImageWidth ] = useState(0);
   const [ collections, setCollections ] = useState<Map<string, number>>(new Map());
-  const { dataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
   const user = dataStoreUser!;
 
   useEffect(() => {
@@ -50,23 +50,28 @@ function GameCard() {
 
   const plantButtonClickedHandler = async () => {
     const seed = getSeed(user);
-    await DataStore.save(User.copyOf(user, (updated) => {
-      updated.gameData = {
-        startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
-        level: 0,
-        score: 0,
-        seed: seed,
-        collections: '[]'
-      }
-    }));
+    setDataStoreUser(
+      await DataStore.save(User.copyOf(user, (updated) => {
+        updated.gameData = {
+          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
+          level: 0,
+          score: 0,
+          seed: seed,
+          collections: '[]'
+        }
+      }))
+    );
   }
 
   const upgradeButtonClickedHandler = async () => {
     if (!user.gameData) return;
 
     setCurrentScore(currentScore - upgradeScore);
+
+    const currentUser = await DataStore.query(User, user.id);
+    if (!currentUser) return;
     
-    await DataStore.save(User.copyOf(user, (updated) => {
+    const updatedUser = await DataStore.save(User.copyOf(currentUser, (updated) => {
       if (!updated.gameData) {
         return;
       }
@@ -99,7 +104,8 @@ function GameCard() {
           score: updated.gameData.score - upgradeScore
         }
       }
-    }));  
+    }));
+    setDataStoreUser(updatedUser);
   }
 
   const imageLoadHandler = (event: any) => {

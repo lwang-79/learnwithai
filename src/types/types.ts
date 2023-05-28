@@ -1,3 +1,21 @@
+export enum APIOperation {
+  WritingPrompt = 'writing-prompt',
+  WritingMark = 'writing-mark',
+  MathAnswer = 'math-answer',
+  MathQuestion = 'math-question',
+  MathAQUA = 'math-aqua',
+  MathCompetition = 'math-competition',
+  MathGSM8K = 'math-gsm8k',
+  MathQA = 'math-qa',
+  AskAnything = 'ask-anything',
+}
+
+export type APIResponse = {
+  statusCode: number;
+  data?: any;
+  error?: string
+};
+
 export enum QuestionType {
   MultiChoice = 'multi-choice',
 }

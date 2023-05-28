@@ -94,7 +94,10 @@
         },
         "Runtime": "nodejs16.x",
         "Layers": [],
-        "Timeout": 25
+        "Timeout": 60,
+        "Architectures": [
+          "arm64"
+        ]
       }
     },
     "LambdaExecutionRole": {

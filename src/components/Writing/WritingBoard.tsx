@@ -1,5 +1,5 @@
 import { Essay, NotificationType, Statistic } from "@/models"
-import { EssayTopic, EssayType, QuestionLevel } from "@/types/types"
+import { APIOperation, EssayTopic, EssayType, QuestionLevel } from "@/types/types"
 import { 
   AlertDialog,
   AlertDialogBody,
@@ -85,21 +85,22 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     if (essay) return;
 
     const generatePrompt = async () => {
-      const response = await fetch('/api/writing/prompt', {
+      const response = await fetch('/api/openai', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          operation: APIOperation.WritingPrompt,
           type: type,
           level: level,
           topic: topic
         }),
       });
   
-      const data = await response.json();
+      const body = await response.json();
       if (response.status !== 200) {
-        console.error(`Request failed with status ${response.status}: ${data.error}`);
+        console.error(`Request failed with status ${response.status}: ${body.error}`);
         toast({
           description: `Failed to generate prompt, please try again later.`,
           status: 'error',
@@ -110,7 +111,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         return;
       }
   
-      const prompt = data.result as string;
+      const prompt = body.data as string;
   
       const essay = new Essay({
         type: type,
@@ -137,12 +138,13 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    const response = await fetch('/api/writing/mark', {
+    const response = await fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        operation: APIOperation.WritingMark,
         level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
@@ -150,10 +152,10 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }),
     });
 
-    const data = await response.json();
+    const body = await response.json();
 
     if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${data.error}`);
+      console.error(`Request failed with status ${response.status}: ${body.error}`);
       setIsMarking(false);
       toast({
         description: `Failed to mark the essay, please try again later.`,
@@ -164,7 +166,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       return;
     }
 
-    const mark = data.result as string;
+    const mark = body.data as string;
     setMark(mark.trim());
     setIsMarking(false);
   }
@@ -174,19 +176,20 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    const response = await fetch('/api/anything', {
+    const response = await fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        operation: APIOperation.AskAnything,
         prompt: essay.prompt
       }),
     });
 
-    const data = await response.json();
+    const body = await response.json();
     if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${data.error}`);
+      console.error(`Request failed with status ${response.status}: ${body.error}`);
       setIsMarking(false);
       toast({
         description: `Failed to generate a sample, please try again later.`,
@@ -197,7 +200,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       return;
     }
 
-    const mark = data.result as string;
+    const mark = body.data as string;
     setMark(mark.trim());
     setIsMarking(false);
   }
