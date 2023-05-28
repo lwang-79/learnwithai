@@ -84,7 +84,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   useEffect(() => {
     if (essay) return;
 
-    fetch('/api/openai', {
+    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -133,7 +133,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch('/api/openai', {
+    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -169,7 +169,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch('/api/openai', {
+    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -205,7 +205,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch('/api/openai', {
+    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

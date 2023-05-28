@@ -90,6 +90,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "learnwithaiOpenaiAPI": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "learnwithaiSubscribe": {
       "build": true,
       "dependsOn": [
@@ -120,6 +126,30 @@
         {
           "category": "function",
           "resourceName": "learnwithaiBackend"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_openaiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
         }
       ]
     },

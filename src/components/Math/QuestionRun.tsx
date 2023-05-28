@@ -474,7 +474,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     }
 
-    const response = await fetch('/api/openai', {
+    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -483,28 +483,27 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
         operation: APIOperation.MathAnswer,
         question: questionString,
       }),
-    });
-
-    const body = await response.json();
-    if (response.status !== 200) {
-      console.error(body.error || `Request failed with status ${response.status}`);
-
+    })
+    .then(response => response.json())
+    .then(body => {
+      setCurrentQuestionSet({
+        ...currentQuestionSet,
+        workout: body.data
+      });
+      console.log(body.data);
+      setIsChallenging(false);
+    })
+    .catch(error => {
+      console.error(`Request failed with error ${error}`);
       toast({
         description: `Failed to generate answer, please try again later.`,
         status: 'error',
         duration: 5000,
         isClosable: true,
         position: 'top'
-      });  
-    } else {
-      setCurrentQuestionSet({
-        ...currentQuestionSet,
-        workout: body.data
       });
-      console.log(body.data);
-    }
-
-    setIsChallenging(false);
+      setIsChallenging(false);
+    });
   }
 
   const deleteButtonClickedHandler = async () => {

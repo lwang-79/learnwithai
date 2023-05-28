@@ -32,6 +32,11 @@
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
           "s3Key": "amplify-builds/learnwithaiBackend-496775425a723659445a-build.zip"
+        },
+        "learnwithaiOpenaiAPI": {
+          "openaiApiKey": "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",
+          "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-2f474a6831476b363035-build.zip"
         }
       }
     }

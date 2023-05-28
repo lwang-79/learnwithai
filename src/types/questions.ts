@@ -81,7 +81,7 @@ export const addMyMathQuestion = async (
 }
 
 export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: number): Promise<LocalQuestionSet[]> => {
-  const response = await fetch(`/api/openai`, {
+  const response = await fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
@@ -208,7 +208,7 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
 }
 
 export const getQuestionsFromCompetition = async (num: number, level: QuestionLevel) => {
-  const response = await fetch(`/api/openai`, {
+  const response = await fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
@@ -284,7 +284,7 @@ export const generateQuestionSet = async (
 ): Promise<LocalQuestionSet> => {
   // let c = concepts[Math.floor(Math.random() * concepts.length)];
 
-  const response = await fetch('/api/openai', {
+  const response = await fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
