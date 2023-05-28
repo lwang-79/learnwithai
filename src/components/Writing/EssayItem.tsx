@@ -62,7 +62,7 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
           textOverflow='ellipsis'
           onClick={()=>selectCallback(essay)}
         >
-          {essay.text.slice(0,70)}
+          {essay.text.slice(0,150)}
         </Text>
         <Spacer />
         <IconButton
