@@ -1,7 +1,10 @@
 import { QuestionLevel } from "@/types/types";
+import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
-export function generateFractionsPrompt(level: QuestionLevel) {
+export function generateFractionsPrompt(
+  level: QuestionLevel
+): ChatCompletionRequestMessage[] {
   const lowOperations = ['addition', 'subtraction'];
   const highOperations = ['multiplication', 'division'];
 

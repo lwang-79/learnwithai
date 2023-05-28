@@ -1,3 +1,4 @@
+import { ChatCompletionRequestMessage } from "openai";
 import { MathConcept, QuestionLevel } from "../types";
 import { generateArithmeticPrompt } from "./arithmetic";
 import { generateDecimalsPrompt } from "./decimals";
@@ -9,7 +10,7 @@ import { generateTimeJourneyPrompt } from "./time_journey";
 export function generateChatMessages(
   level: QuestionLevel,
   concept: MathConcept
-) {
+):ChatCompletionRequestMessage[] {
 
   switch (concept) {
     case MathConcept.Arithmetic:

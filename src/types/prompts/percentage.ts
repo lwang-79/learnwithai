@@ -1,8 +1,11 @@
 import { QuestionLevel } from "@/types/types";
+import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
 
-export function generatePercentagePrompt(level: QuestionLevel) {
+export function generatePercentagePrompt(
+  level: QuestionLevel
+): ChatCompletionRequestMessage[] {
   const random = Math.random();
 
   let prompt = '';

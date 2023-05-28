@@ -1,10 +1,13 @@
 import { QuestionLevel } from "@/types/types";
+import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
-export function generateTimeJourneyPrompt(level: QuestionLevel) {
+export function generateTimeJourneyPrompt(
+  level: QuestionLevel
+): ChatCompletionRequestMessage[] {
   const random = Math.random();
 
-  let prompt:{role: string, content: string}[] = [];
+  let prompt: ChatCompletionRequestMessage[] = [];
 
   switch (level) {
     case QuestionLevel.Year1:
@@ -58,7 +61,7 @@ export function generateTimeJourneyPrompt(level: QuestionLevel) {
   ]
 }
 
-function lowTimePrompt() {
+function lowTimePrompt(): ChatCompletionRequestMessage[] {
   return [{role: 'user', content: `
   Give a low level difficulty math multi-choice question related to time with the following conditions.
   1. Example question: "If it is currently 2:30 PM and a meeting is scheduled to start in 1 hour and 45 minutes, what time will the meeting start?".
@@ -68,7 +71,7 @@ function lowTimePrompt() {
   `}]
 }
 
-function middleTimePrompt() {
+function middleTimePrompt(): ChatCompletionRequestMessage[] {
   return [
   //   {role: 'user', content: `
   // Give a middle level difficulty math multi-choice question related to time with the following conditions.
@@ -129,7 +132,7 @@ Answer: C`
   ]
 }
 
-function lowJourneyPrompt() {
+function lowJourneyPrompt(): ChatCompletionRequestMessage[] {
   return [{role: 'user', content: `
   Give a low level difficulty math journey multi-choice question with the following conditions.
   1. To solve the question should use the formula "time = distance / speed" for example: "If a person drives 60 km in 1 hour and 45 minutes, what is their average speed in km per hour?".
@@ -139,7 +142,7 @@ function lowJourneyPrompt() {
   `}]
 }
 
-function middleJourneyPrompt() {
+function middleJourneyPrompt(): ChatCompletionRequestMessage[] {
   return [{role: 'user', content: `
   Give a middle level difficulty math journey multi-choice question with the following conditions.
   1. To solve the question should use the formula "time = distance / speed" for example: "A train leaves station A traveling at a speed of 60 km per hour towards station B. Two hours later, a second train leaves station B traveling at 70 km per hour towards station A. If the distance between the two stations is 420 km, at what time will the two trains meet?".
@@ -149,7 +152,7 @@ function middleJourneyPrompt() {
   `}]
 }
 
-function towJourneyPrompt() {
+function towJourneyPrompt(): ChatCompletionRequestMessage[] {
   return [{role: 'user', content: `
   Give a high level difficulty math tow-part journey multi-choice question with the following conditions.
   1. To solve the question should use the formula "time = distance / speed" for example: "A person drives from City A to City B at an average speed of 60 km/h. After staying in City B for 5 hours, he returns to City A at an average speed of 96 km/h. If the round trip took a total of 12 hours, what is the distance between City A and City B?".
@@ -159,7 +162,7 @@ function towJourneyPrompt() {
   `}]
 }
 
-function highJourneyPrompt() {
+function highJourneyPrompt(): ChatCompletionRequestMessage[] {
   return [{role: 'user', content: `
   Give a high level difficulty math journey multi-choice question with the following conditions.
   1. Involve the flow speed, example: "A person swims across a river that flows at 2 km/h. If the person can swim at 3 km/h in still water and the river is 5 km wide, at what angle to the river flow should they swim to reach the opposite bank in the shortest time?".

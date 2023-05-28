@@ -1,4 +1,5 @@
 import { 
+  APIOperation,
   MathConcept, 
   QuestionCategory, 
   QuestionLevel, 
@@ -43,14 +44,14 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdBookmarkBorder, MdClose, MdDelete, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addMyMathQuestion, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
+import { addMyMathQuestion, generateQuestionSet, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
@@ -166,7 +167,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       });
     }
 
-    if ([QuestionLevel.GSM8K, QuestionLevel.AQuA, QuestionLevel.MathQA].includes(level)) {
+    if ([QuestionLevel.GSM8K, QuestionLevel.MathQA].includes(level)) {
       getAndSetDatasetQuestions(maxNum);
       return;
     }
@@ -225,16 +226,32 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   }
 
   const getAndSetDatasetQuestions = async (num: number) => {
-    const questionSets = await getQuestionsFromDataset(level, num);
-    questionSetsRef.current = questionSets;
-    lastIndexRef.current = maxNum - 1;
-    setQuestionSets(questionSets);
-    setCurrentQuestionSet(questionSets[0]);
+    try {
+      const questionSets = await getQuestionsFromDataset(level, num);
+      questionSetsRef.current = questionSets;
+      lastIndexRef.current = maxNum - 1;
+      setQuestionSets(questionSets);
+      setCurrentQuestionSet(questionSets[0]);
+    } catch (error) {
+      console.error(error);
+      onClose();
+      toast({
+        description: `Failed to generate questions, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });   
+    }
   }
 
   const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
-    const competitionQuestionSets = await getQuestionsFromCompetition(num, level);
-    questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
+    try {
+      const competitionQuestionSets = await getQuestionsFromCompetition(num, level);
+      questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
+    } catch (error) {
+      console.error(error);
+    }
     // lastIndexRef.current += 1;
     // setQuestionSets(questionSetsRef.current);
     setFetchingStatus.toggle();
@@ -250,7 +267,8 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       do {
         try {
           tryCount++;
-          questionSet = await generateQuestionSet();
+          const c = concepts[Math.floor(Math.random() * concepts.length)];
+          questionSet = await generateQuestionSet(c, category, type, level);
         } catch (error: any) {
           err = error;
           console.error(`${tryCount} try failed: ${error.message}`);
@@ -267,6 +285,14 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
             isClosable: true,
             position: 'top'
           });    
+        } else {
+          toast({
+            description: `Failed to generate questions, please try again later.`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top'
+          });   
         }
         return;
       }
@@ -275,76 +301,6 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     }
 
     addingQuestionCountRef.current -= num;
-  }
-
-  const generateQuestionSet = async (): Promise<LocalQuestionSet> => {
-    let c = concepts[Math.floor(Math.random() * concepts.length)];
-
-    const response = await fetch('/api/math/question', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        category: category,
-        type: type,
-        level: level,
-        concept: c
-      }),
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    console.log(data.result);
-    const questionString = data.result as string;
-    if (
-      !questionString.includes('Question:') ||
-      !questionString.includes('Workout:') ||
-      !questionString.includes('Options:') ||
-      !questionString.includes('Answer:')
-    ) throw new Error('Bad return.');
-
-    // get question
-    const question = questionString.split('Workout:')[0].replace('Question:','').trim();
-
-    // get workout
-    let regex = /(?<=Workout:).*?(?=Options:)/s;
-    let matches = questionString.match(regex);
-
-    if (!matches) throw new Error('No workout.');
-    const workout = matches[0];
-
-    // get answer
-    const answer = questionString.split("Answer:")[1].trim()[0].toUpperCase();
-    if (!['A', 'B', 'C', 'D'].includes(answer)) throw new Error('Answer in wrong format');
-
-    // get options
-    regex = /^[A-D]:\s(.+)$/gm;
-    matches = questionString.match(regex);
-
-    if (!matches) throw new Error('No options.');
-
-    const options = matches.map(match => match.slice(3));
-
-    const questionSet: LocalQuestionSet = {
-      type: QuestionType.MultiChoice,
-      category: QuestionCategory.Math,
-      level: level,
-      concept: c,
-      question: question,
-      options: options,
-      answer: answer,
-      selected: '',
-      workout: workout,
-      isBad: false,
-      isTarget: false,
-      isMarked: false
-    };
-
-    return questionSet;
   }
 
   const setSelectedValue = (value: string) => {
@@ -518,26 +474,35 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     }
 
-    const response = await fetch('/api/math/answer', {
+    const response = await fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        operation: APIOperation.MathAnswer,
         question: questionString,
       }),
     });
 
-    const data = await response.json();
+    const body = await response.json();
     if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
+      console.error(body.error || `Request failed with status ${response.status}`);
 
-    setCurrentQuestionSet({
-      ...currentQuestionSet,
-      workout: data.result
-    });
-    console.log(data.result);
+      toast({
+        description: `Failed to generate answer, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });  
+    } else {
+      setCurrentQuestionSet({
+        ...currentQuestionSet,
+        workout: body.data
+      });
+      console.log(body.data);
+    }
 
     setIsChallenging(false);
   }

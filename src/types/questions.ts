@@ -1,9 +1,10 @@
 import { QuestionSet, Test } from "@/models";
 import { DataStore } from "aws-amplify";
 import { 
-  AQuAQuestion, 
+  APIOperation,
   CompetitionQuestion, 
   GSM8KQuestion, 
+  MathConcept, 
   MathQAQuestion, 
   QuestionCategory, 
   QuestionLevel, 
@@ -80,50 +81,53 @@ export const addMyMathQuestion = async (
 }
 
 export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: number): Promise<LocalQuestionSet[]> => {
-  const response = await fetch(`/api/math/${dataset.toLowerCase()}`, {
+  const response = await fetch(`/api/openai`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      number: num,
+      operation: APIOperation.MathDataset,
+      dataset: dataset,
+      questionCount: num,
     }),
   });
 
-  const data = await response.json();
+  const body = await response.json();
   if (response.status !== 200) {
-    throw data.error || new Error(`Request failed with status ${response.status}`);
+    throw body.error || new Error(`Request failed with status ${response.status}`);
   }
 
   let questionSets: LocalQuestionSet[] = [];
 
-  if (dataset === QuestionLevel.AQuA) {
-    const questions = data.result as AQuAQuestion[];
+  // if (dataset === QuestionLevel.AQuA) {
+  //   const questions = body.data as AQuAQuestion[];
 
-    for (const q of questions) {
-      const options = [];
+  //   for (const q of questions) {
+  //     const options = [];
   
-      for (const option of q.options) {
-        options.push(option.split(')')[1].trim());
-      }
+  //     for (const option of q.options) {
+  //       options.push(option.split(')')[1].trim());
+  //     }
   
-      questionSets.push({
-        type: QuestionType.MultiChoice,
-        category: QuestionCategory.Math,
-        level: QuestionLevel.AQuA,
-        concept: '',
-        question: q.question,
-        options: options,
-        answer: q.correct,
-        selected: '',
-        workout: q.rationale,
-        isBad: false,
-        isTarget: false,
-        isMarked: false
-      })
-    }
-  } else if (dataset === QuestionLevel.MathQA) {
-    const questions = data.result as MathQAQuestion[];
+  //     questionSets.push({
+  //       type: QuestionType.MultiChoice,
+  //       category: QuestionCategory.Math,
+  //       level: QuestionLevel.AQuA,
+  //       concept: '',
+  //       question: q.question,
+  //       options: options,
+  //       answer: q.correct,
+  //       selected: '',
+  //       workout: q.rationale,
+  //       isBad: false,
+  //       isTarget: false,
+  //       isMarked: false
+  //     })
+  //   }
+  // } else 
+  if (dataset === QuestionLevel.MathQA) {
+    const questions = body.data as MathQAQuestion[];
 
     for (const q of questions) {
 
@@ -159,7 +163,7 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
       })
     } 
   } else if (dataset === QuestionLevel.GSM8K) {
-    const questions = data.result as GSM8KQuestion[];
+    const questions = body.data as GSM8KQuestion[];
 
     for (const q of questions) {
       const answer = q.answer.split('####')[1].trim()
@@ -204,24 +208,25 @@ export const getQuestionsFromDataset = async (dataset: QuestionLevel, num: numbe
 }
 
 export const getQuestionsFromCompetition = async (num: number, level: QuestionLevel) => {
-  const response = await fetch(`/api/math/competition`, {
+  const response = await fetch(`/api/openai`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      number: num,
-      level: level
+      operation: APIOperation.MathDataset,
+      dataset: level,
+      questionCount: num,
     }),
   });
 
-  const data = await response.json();
+  const body = await response.json();
   if (response.status !== 200) {
-    throw data.error || new Error(`Request failed with status ${response.status}`);
+    throw body.error || new Error(`Request failed with status ${response.status}`);
   }
 
   let questionSets: LocalQuestionSet[] = [];
-  const questions = data.result as CompetitionQuestion[];
+  const questions = body.data as CompetitionQuestion[];
 
   for (const q of questions) {
     let regex = /boxed\{((?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*)\}/;
@@ -268,6 +273,83 @@ export const getQuestionsFromCompetition = async (num: number, level: QuestionLe
   }
 
   return questionSets;
+}
+
+
+export const generateQuestionSet = async (
+  concept: MathConcept,
+  category: QuestionCategory,
+  type: QuestionType,
+  level: QuestionLevel
+): Promise<LocalQuestionSet> => {
+  // let c = concepts[Math.floor(Math.random() * concepts.length)];
+
+  const response = await fetch('/api/openai', {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      operation: APIOperation.MathQuestion,
+      category: category,
+      type: type,
+      level: level,
+      concept: concept
+    }),
+  });
+
+  const body = await response.json();
+  if (response.status !== 200) {
+    throw body.error || new Error(`Request failed with status ${response.status}`);
+  }
+
+  console.log(body.data);
+  const questionString = body.data as string;
+  if (
+    !questionString.includes('Question:') ||
+    !questionString.includes('Workout:') ||
+    !questionString.includes('Options:') ||
+    !questionString.includes('Answer:')
+  ) throw new Error('Bad return.');
+
+  // get question
+  const question = questionString.split('Workout:')[0].replace('Question:','').trim();
+
+  // get workout
+  let regex = /(?<=Workout:).*?(?=Options:)/s;
+  let matches = questionString.match(regex);
+
+  if (!matches) throw new Error('No workout.');
+  const workout = matches[0];
+
+  // get answer
+  const answer = questionString.split("Answer:")[1].trim()[0].toUpperCase();
+  if (!['A', 'B', 'C', 'D'].includes(answer)) throw new Error('Answer in wrong format');
+
+  // get options
+  regex = /^[A-D]:\s(.+)$/gm;
+  matches = questionString.match(regex);
+
+  if (!matches) throw new Error('No options.');
+
+  const options = matches.map(match => match.slice(3));
+
+  const questionSet: LocalQuestionSet = {
+    type: QuestionType.MultiChoice,
+    category: QuestionCategory.Math,
+    level: level,
+    concept: concept,
+    question: question,
+    options: options,
+    answer: answer,
+    selected: '',
+    workout: workout,
+    isBad: false,
+    isTarget: false,
+    isMarked: false
+  };
+
+  return questionSet;
 }
 
 const getThresholdValue = (num: number) => {

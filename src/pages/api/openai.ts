@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { APIOperation, APIResponse } from "@/types/types";
 import { askAnything } from '@/types/openai/anything';
 import { generateWritingMark, generateWritingPrompt } from '@/types/openai/writing';
+import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from '@/types/openai/math';
 
 export default async function openaiAPI(req: NextApiRequest, res: NextApiResponse) {
 
@@ -41,7 +42,29 @@ export default async function openaiAPI(req: NextApiRequest, res: NextApiRespons
         req.body.essay || ''
       );
       break;
-  
+        
+    case APIOperation.MathDataset:
+      body = await getDatasetQuestions(
+        req.body.dataset || '',
+        req.body.questionCount || ''
+      );
+      break;
+
+    case APIOperation.MathQuestion:
+      body = await generateMathQuestion(
+        req.body.category || '',
+        req.body.type || '',
+        req.body.level || '',
+        req.body.concept || ''
+      );
+      break;
+
+    case APIOperation.MathAnswer:
+      body = await generateMathAnswer(
+        req.body.question || ''
+      );
+      break;
+
     default:
       body = { 
         statusCode: 400,

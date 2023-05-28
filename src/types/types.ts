@@ -3,10 +3,8 @@ export enum APIOperation {
   WritingMark = 'writing-mark',
   MathAnswer = 'math-answer',
   MathQuestion = 'math-question',
-  MathAQUA = 'math-aqua',
+  MathDataset = 'math-dataset',
   MathCompetition = 'math-competition',
-  MathGSM8K = 'math-gsm8k',
-  MathQA = 'math-qa',
   AskAnything = 'ask-anything',
 }
 
@@ -84,13 +82,12 @@ export enum QuestionLevel {
   Year12 = 'Year-12',
   GSM8K = 'GSM8K',
   MathQA = 'MathQA',
-  AQuA = 'AQuA',
+  // AQuA = 'AQuA',
   Level1 = 'Level 1',
   Level2 = 'Level 2',
   Level3 = 'Level 3',
   Level4 = 'Level 4',
   Level5 = 'Level 5',
-  
   // Primary = 'primary school',
   // Middle = 'middle school',
   // High = 'high school'
