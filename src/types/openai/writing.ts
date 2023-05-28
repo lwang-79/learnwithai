@@ -84,29 +84,37 @@ export const generateWritingMark = async (
   return await chatCompletion(message);
 }
 
-// const generatePrompt = (
-//   type: EssayType,
-//   topic: EssayTopic, 
-//   level: QuestionLevel,
-// ) => {
+export const polishWriting = async (
+  level: any,
+  type: any,
+  prompt: any,
+  essay: any,
+): Promise<APIResponse> => {
+  if (
+    prompt.trim().length === 0 ||
+    essay.trim().length === 0 ||
+    level.trim().length === 0 ||
+    type.trim().length === 0
+  ) {
+    return {
+      statusCode: 400,
+      error: 'Please enter a valid value'
+    }
+  }
 
-//   let prompt = '';
-//   if (type == EssayType.Narrative) {
-//     prompt = generateNarrativePrompt(level);
-//   } else {
-//     prompt = `
-//     Give a famous word or story or some facts less than 100 words about ${topic}, 
-//     and then give a ${level} level ${type} essay prompt based on the material. 
-//     The student should be able to write an essay to this prompt with 400 words.
-//     `
-//   }
+  const content = `
+  Here is a student's ${type}. Please polish the ${type} based on the student's level which is ${level}.
+  
+  ${type} prompt:
+  [${prompt}]
+  Student's ${type}:
+  [${essay}]
+  `;
 
-//   prompt += `
-//   Desired format:
-//   Text: <>
-//   Prompt: <>
-//   `;
+  const message: ChatCompletionRequestMessage[] = [
+    { role: 'system', content: 'You are an English writing teacher.' },
+    { role: 'user', content: content }
+  ];
 
-//   console.log(prompt);
-//   return prompt;
-// }
+  return await chatCompletion(message);
+}

@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { APIOperation, APIResponse } from "@/types/types";
 import { askAnything } from '@/types/openai/anything';
-import { generateWritingMark, generateWritingPrompt } from '@/types/openai/writing';
+import { generateWritingMark, generateWritingPrompt, polishWriting } from '@/types/openai/writing';
 import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from '@/types/openai/math';
+import { API } from 'aws-amplify';
 
 export default async function openaiAPI(req: NextApiRequest, res: NextApiResponse) {
 
@@ -36,6 +37,15 @@ export default async function openaiAPI(req: NextApiRequest, res: NextApiRespons
     
     case APIOperation.WritingMark:
       body = await generateWritingMark(
+        req.body.level || '',
+        req.body.type || '',
+        req.body.prompt || '',
+        req.body.essay || ''
+      );
+      break;
+
+    case APIOperation.WritingPolish:
+      body = await polishWriting(
         req.body.level || '',
         req.body.type || '',
         req.body.prompt || '',

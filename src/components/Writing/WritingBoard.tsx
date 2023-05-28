@@ -171,6 +171,44 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setIsMarking(false);
   }
 
+  const polishWriting = async () => {
+    if (!essay) return;
+    setShouldShowMark(true);
+    setIsMarking(true);
+
+    const response = await fetch('/api/openai', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        operation: APIOperation.WritingPolish,
+        level: essay.level,
+        type: essay.type,
+        prompt: essay.prompt,
+        essay: text
+      }),
+    });
+
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      console.error(`Request failed with status ${response.status}: ${body.error}`);
+      setIsMarking(false);
+      toast({
+        description: `Failed to polish the writing, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+      return;
+    }
+
+    const mark = body.data as string;
+    setMark(mark.trim());
+    setIsMarking(false);
+  }
+
   const generateSample = async () => {
     if (!essay) return;
     setShouldShowMark(true);
@@ -326,18 +364,25 @@ Total words: ${count}
 
               {isMarking ? (
                 <>
-                  <Text>AI is working, please wait for a while...</Text>
+                  <Text mt={4}>AI is working, please wait for a while...</Text>
                   <SkeletonText mt='4' noOfLines={8} spacing='4' skeletonHeight='2' />
                 </>
               ) : (
                 <>
-                  <HStack alignItems='center' mt={4} w='full'>
+                  <HStack alignItems='center' my={4} w='full'>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={polishWriting}
+                    >
+                      Polish my writing
+                    </Button>
                     <Button
                       variant='ghost'
                       size='sm'
                       onClick={generateSample}
                     >
-                      Ask the AI to generate a sample
+                      Generate a sample
                     </Button>
                     <Spacer />
                     <Button

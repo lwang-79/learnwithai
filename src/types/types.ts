@@ -1,10 +1,10 @@
 export enum APIOperation {
   WritingPrompt = 'writing-prompt',
   WritingMark = 'writing-mark',
+  WritingPolish = 'writing-polish',
   MathAnswer = 'math-answer',
   MathQuestion = 'math-question',
   MathDataset = 'math-dataset',
-  MathCompetition = 'math-competition',
   AskAnything = 'ask-anything',
 }
 
