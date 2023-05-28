@@ -80,39 +80,26 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     onClose: onClosePromptModal
   } = useDisclosure();
 
-  
+  // generate writing topic
   useEffect(() => {
     if (essay) return;
 
-    const generatePrompt = async () => {
-      const response = await fetch('/api/openai', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          operation: APIOperation.WritingPrompt,
-          type: type,
-          level: level,
-          topic: topic
-        }),
-      });
-  
-      const body = await response.json();
-      if (response.status !== 200) {
-        console.error(`Request failed with status ${response.status}: ${body.error}`);
-        toast({
-          description: `Failed to generate prompt, please try again later.`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true
-        });
-        onClose();
-        return;
-      }
-  
+    fetch('/api/openai', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        operation: APIOperation.WritingPrompt,
+        type: type,
+        level: level,
+        topic: topic
+      }),
+    })
+    .then(response => response.json())
+    .then(body => {
       const prompt = body.data as string;
-  
+
       const essay = new Essay({
         type: type,
         level: level,
@@ -123,9 +110,17 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       })
   
       setEssay(essay);
-    }  
-
-    generatePrompt();
+    })
+    .catch(error => {
+      console.error(`Request failed with error: ${error}`);
+      toast({
+        description: `Failed to generate prompt, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      });
+      onClose();
+    });
   },[essay, level, onClose, toast, topic, type]);
 
   useEffect(() => {
@@ -133,12 +128,12 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   },[text]);
 
 
-  const markEssay = async () => {
+  const markEssay = () => {
     if (!essay) return;
     setShouldShowMark(true);
     setIsMarking(true);
 
-    const response = await fetch('/api/openai', {
+    fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -150,12 +145,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         prompt: essay.prompt,
         essay: text
       }),
-    });
-
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${body.error}`);
+    })
+    .then(response => response.json())
+    .then(body => {
+      const mark = body.data as string;
+      setMark(mark.trim());
+      setIsMarking(false);
+    })
+    .catch(error => {
+      console.error(`Request failed with error: ${error}`);
       setIsMarking(false);
       toast({
         description: `Failed to mark the essay, please try again later.`,
@@ -163,20 +161,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         duration: 5000,
         isClosable: true
       });
-      return;
-    }
-
-    const mark = body.data as string;
-    setMark(mark.trim());
-    setIsMarking(false);
+    });    
   }
 
-  const polishWriting = async () => {
+  const polishWriting = () => {
     if (!essay) return;
     setShouldShowMark(true);
     setIsMarking(true);
 
-    const response = await fetch('/api/openai', {
+    fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -188,12 +181,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         prompt: essay.prompt,
         essay: text
       }),
-    });
-
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${body.error}`);
+    })
+    .then(response => response.json())
+    .then(body => {
+      const mark = body.data as string;
+      setMark(mark.trim());
+      setIsMarking(false);
+    })
+    .catch(error => {
+      console.error(`Request failed with error: ${error}`);
       setIsMarking(false);
       toast({
         description: `Failed to polish the writing, please try again later.`,
@@ -201,20 +197,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         duration: 5000,
         isClosable: true
       });
-      return;
-    }
-
-    const mark = body.data as string;
-    setMark(mark.trim());
-    setIsMarking(false);
+    });
   }
 
-  const generateSample = async () => {
+  const generateSample = () => {
     if (!essay) return;
     setShouldShowMark(true);
     setIsMarking(true);
 
-    const response = await fetch('/api/openai', {
+    fetch('/api/openai', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -223,11 +214,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         operation: APIOperation.AskAnything,
         prompt: essay.prompt
       }),
-    });
-
-    const body = await response.json();
-    if (response.status !== 200) {
-      console.error(`Request failed with status ${response.status}: ${body.error}`);
+    })
+    .then(response => response.json())
+    .then(body => {
+      const mark = body.data as string;
+      setMark(mark.trim());
+      setIsMarking(false);
+    })
+    .catch(error => {
+      console.error(`Request failed with error: ${error}`);
       setIsMarking(false);
       toast({
         description: `Failed to generate a sample, please try again later.`,
@@ -235,12 +230,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         duration: 5000,
         isClosable: true
       });
-      return;
-    }
-
-    const mark = body.data as string;
-    setMark(mark.trim());
-    setIsMarking(false);
+    });
   }
 
 

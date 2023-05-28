@@ -3,7 +3,6 @@ import { APIOperation, APIResponse } from "@/types/types";
 import { askAnything } from '@/types/openai/anything';
 import { generateWritingMark, generateWritingPrompt, polishWriting } from '@/types/openai/writing';
 import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from '@/types/openai/math';
-import { API } from 'aws-amplify';
 
 export default async function openaiAPI(req: NextApiRequest, res: NextApiResponse) {
 
@@ -80,6 +79,10 @@ export default async function openaiAPI(req: NextApiRequest, res: NextApiRespons
         statusCode: 400,
         error: "Invalid operation"
       }
+  }
+
+  if (body.statusCode !== 200) {
+    console.error(body.error);
   }
 
   res.status(body.statusCode).json(body);
