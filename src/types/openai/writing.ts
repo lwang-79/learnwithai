@@ -1,6 +1,6 @@
 import { ChatCompletionRequestMessage } from "openai";
 import { generateNarrativePrompt } from "../prompts/narrative";
-import { APIResponse, EssayTopic, EssayType, QuestionLevel } from "../types";
+import { APIResponse, EssayType } from "../types";
 import { chatCompletion } from "./chat";
 
 export const generateWritingPrompt = async (

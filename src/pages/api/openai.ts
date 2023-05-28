@@ -2,37 +2,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { APIOperation, APIResponse } from "@/types/types";
 import { askAnything } from '@/types/openai/anything';
 import { generateWritingMark, generateWritingPrompt } from '@/types/openai/writing';
-import Cors from 'cors';
-
-const cors = Cors({
-  origin: 'https://learn.jinpearl.com',
-  methods: ['POST'],
-});
-
-function runMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  fn: Function
-) {
-  console.log('cors')
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      console.log(result)
-      if (result instanceof Error) {
-        return reject(result)
-      }
-
-      return resolve(result)
-    })
-  })
-}
-
 
 export default async function openaiAPI(req: NextApiRequest, res: NextApiResponse) {
-  // await runMiddleware(req, res, cors);
 
   const operation = req.body.operation || '';
-  if (operation.trim().length === 0) {
+  if (Object.values(APIOperation).indexOf(operation) < 0) {
     res.status(400).json({
       statusCode: 400,
       error: "Please enter a valid value",
