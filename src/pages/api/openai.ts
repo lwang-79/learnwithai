@@ -5,6 +5,7 @@ import { generateWritingMark, generateWritingPrompt } from '@/types/openai/writi
 import Cors from 'cors';
 
 const cors = Cors({
+  origin: 'https://learn.jinpearl.com',
   methods: ['POST'],
 });
 
@@ -13,8 +14,10 @@ function runMiddleware(
   res: NextApiResponse,
   fn: Function
 ) {
+  console.log('cors')
   return new Promise((resolve, reject) => {
     fn(req, res, (result: any) => {
+      console.log(result)
       if (result instanceof Error) {
         return reject(result)
       }
@@ -26,8 +29,8 @@ function runMiddleware(
 
 
 export default async function openaiAPI(req: NextApiRequest, res: NextApiResponse) {
-  await runMiddleware(req, res, cors);
-  
+  // await runMiddleware(req, res, cors);
+
   const operation = req.body.operation || '';
   if (operation.trim().length === 0) {
     res.status(400).json({
@@ -36,6 +39,10 @@ export default async function openaiAPI(req: NextApiRequest, res: NextApiRespons
     });
     return;
   }
+
+  res.setHeader("Access-Control-Allow-Origin", "https://learn.jinpearl.com");
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   let body: APIResponse;
 
