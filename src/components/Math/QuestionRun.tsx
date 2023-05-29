@@ -225,32 +225,28 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   }
 
   const getAndSetDatasetQuestions = async (num: number) => {
-    try {
       const questionSets = await getQuestionsFromDataset(apiName, level, num);
+      
+      if (questionSets.length === 0) {
+        onClose();
+        toast({
+          description: `Failed to generate questions, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        }); 
+      }
+
       questionSetsRef.current = questionSets;
       lastIndexRef.current = maxNum - 1;
       setQuestionSets(questionSets);
       setCurrentQuestionSet(questionSets[0]);
-    } catch (error) {
-      console.error(error);
-      onClose();
-      toast({
-        description: `Failed to generate questions, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top'
-      });   
-    }
   }
 
   const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
-    try {
-      const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
-      questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
-    } catch (error) {
-      console.error(error);
-    }
+    const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
+    questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
     // lastIndexRef.current += 1;
     // setQuestionSets(questionSetsRef.current);
     setFetchingStatus.toggle();
@@ -261,40 +257,28 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
 
     for (let i = 0; i < num; i++) {
       let questionSet: LocalQuestionSet | undefined;
+      const c = concepts[Math.floor(Math.random() * concepts.length)];
       let tryCount = 0;
-      let err: any;
       do {
         try {
           tryCount++;
-          const c = concepts[Math.floor(Math.random() * concepts.length)];
           questionSet = await generateQuestionSet(apiName, c, category, type, level);
         } catch (error) {
-          err = error;
           console.error(`${tryCount} try failed: ${error}`);
         }
       } while (!questionSet && tryCount < 3)
 
       if (!questionSet) {
-        if ( err && err.type && err.type === 'insufficient_quota' ) {
-          toast({
-            title: 'Insufficient quota',
-            description: `You OpenAI API key exceeded your current quota, please check your OpenAI plan and billing details. You can also join our membership.`,
-            status: 'error',
-            duration: 20000,
-            isClosable: true,
-            position: 'top'
-          });    
-        } else {
-          toast({
-            description: `Failed to generate questions, please try again later.`,
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-            position: 'top'
-          });   
-        }
+        toast({
+          description: `Failed to generate questions, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });   
         return;
       }
+
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
@@ -473,25 +457,23 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     }
 
-    try {
       const newAnswer = await getQuestionAnswer(apiName, questionString);
-      setCurrentQuestionSet({
-        ...currentQuestionSet,
-        workout: newAnswer
-      });
-      console.log(newAnswer);
+      if (!newAnswer) {
+        toast({
+          description: `Failed to generate answer, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
+      } else {
+        setCurrentQuestionSet({
+          ...currentQuestionSet,
+          workout: newAnswer
+        });
+        console.log(newAnswer);
+      }
       setIsChallenging(false);
-    } catch (error) {
-      console.error(`Request failed with error ${error}`);
-      toast({
-        description: `Failed to generate answer, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top'
-      });
-      setIsChallenging(false);
-    }
   }
 
   const deleteButtonClickedHandler = async () => {

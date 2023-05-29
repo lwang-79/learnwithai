@@ -38,7 +38,7 @@ import { MdClose } from "react-icons/md"
 import { API, DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
-import { sesSendEmail } from "@/types/utils";
+import { APIPost, sesSendEmail } from "@/types/utils";
 
 export enum WritingMode {
   Essay = 'essay',
@@ -93,33 +93,33 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
     };
 
-    API.post(apiName, '/', request)
-    .then(response => {
-      const body = JSON.parse(response.body);
-      const prompt = body.data as string;
+    APIPost(apiName, '/', request)
+    .then(body => {
+      if (!body.data) {
+        toast({
+          description: `Failed to generate prompt, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          position: 'top',
+          isClosable: true
+        });
+        onClose();
+      } else {
+        const prompt = body.data as string;
 
-      const essay = new Essay({
-        type: type,
-        level: level,
-        topic: type === EssayType.Persuasive ? topic : '',
-        prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
-        text: '',
-        DateTime: (new Date()).toISOString()
-      })
-  
-      setEssay(essay);
-    })
-    .catch(error => {
-      console.error(`Request failed with error: ${error}`);
-      toast({
-        description: `Failed to generate prompt, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true
-      });
-      onClose();
+        const essay = new Essay({
+          type: type,
+          level: level,
+          topic: type === EssayType.Persuasive ? topic : '',
+          prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
+          text: '',
+          DateTime: (new Date()).toISOString()
+        })
+    
+        setEssay(essay);
+      }
     });
-  },[essay, level, onClose, toast, topic, type]);
+  },[apiName, essay, level, onClose, toast, topic, type]);
 
   useEffect(() => {
     setCount(countWords(text));
@@ -141,23 +141,22 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
     };
 
-    API.post(apiName, '/', request)
-    .then(response => {
-      const body = JSON.parse(response.body);
-      const mark = body.data as string;
-      setMark(mark.trim());
+    APIPost(apiName, '/', request)
+    .then(body => {
+      if (!body.data) {
+        toast({
+          description: `Failed to mark the essay, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          position: 'top',
+          isClosable: true
+        });
+      } else {
+        const mark = body.data as string;
+        setMark(mark.trim());
+      }
       setIsMarking(false);
-    })
-    .catch(error => {
-      console.error(`Request failed with error: ${error}`);
-      setIsMarking(false);
-      toast({
-        description: `Failed to mark the essay, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true
-      });
-    });    
+    });
   }
 
   const polishWriting = () => {
@@ -175,22 +174,21 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
     };
 
-    API.post(apiName, '/', request)
-    .then(response => {
-      const body = JSON.parse(response.body);
-      const mark = body.data as string;
-      setMark(mark.trim());
+    APIPost(apiName, '/', request)
+    .then(body => {
+      if (!body.data){
+        toast({
+          description: `Failed to polish the writing, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          position: 'top',
+          isClosable: true
+        });
+      } else {
+        const mark = body.data as string;
+        setMark(mark.trim());
+      }
       setIsMarking(false);
-    })
-    .catch(error => {
-      console.error(`Request failed with error: ${error}`);
-      setIsMarking(false);
-      toast({
-        description: `Failed to polish the writing, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true
-      });
     });
   }
 
@@ -206,22 +204,21 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
     };
 
-    API.post(apiName, '/', request)
-    .then(response => {
-      const body = JSON.parse(response.body);
-      const mark = body.data as string;
-      setMark(mark.trim());
+    APIPost(apiName, '/', request)
+    .then(body => {
+      if (!body.data) {
+        toast({
+          description: `Failed to generate a sample, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          position: 'top',
+          isClosable: true
+        });
+      } else {
+        const mark = body.data as string;
+        setMark(mark.trim());
+      }
       setIsMarking(false);
-    })
-    .catch(error => {
-      console.error(`Request failed with error: ${error}`);
-      setIsMarking(false);
-      toast({
-        description: `Failed to generate a sample, please try again later.`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true
-      });
     });
   }
 

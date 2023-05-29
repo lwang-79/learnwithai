@@ -157,3 +157,8 @@ export type CompetitionQuestion = {
 export enum APIName {
   OpenAI = 'openai',
 }
+
+export enum APIError {
+  Timeout = 'request is timed out',
+  TooBusy = 'the server is too busy',
+}

@@ -1,5 +1,5 @@
 import { QuestionSet, Test } from "@/models";
-import { API, DataStore } from "aws-amplify";
+import { DataStore } from "aws-amplify";
 import { 
   APIName,
   APIOperation,
@@ -12,6 +12,7 @@ import {
   QuestionSet as LocalQuestionSet,
   QuestionType 
 } from "./types";
+import { APIPost } from "./utils";
 
 export const saveTest = async (
   test: Test,
@@ -94,11 +95,10 @@ export const getQuestionsFromDataset = async (
     }
   };
 
-  const response = await API.post(apiName, '/', request);
+  const body = await APIPost(apiName, '/', request);
 
-  const body = JSON.parse(response.body);
-  if (response.statusCode !== 200) {
-    throw JSON.stringify(body.error) || new Error(`Request failed with status ${response.statusCode}`);
+  if (!body.data) {
+    return [];
   }
 
   let questionSets: LocalQuestionSet[] = [];
@@ -214,7 +214,7 @@ export const getQuestionsFromCompetition = async (
   apiName: APIName, 
   num: number, 
   level: QuestionLevel
-) => {
+): Promise<LocalQuestionSet[]> => {
   const request = {
     body: {
       operation: APIOperation.MathDataset,
@@ -223,11 +223,10 @@ export const getQuestionsFromCompetition = async (
     }
   };
 
-  const response = await API.post(apiName, '/', request);
+  const body = await APIPost(apiName, '/', request);
 
-  const body = JSON.parse(response.body);
-  if (response.statusCode !== 200) {
-    throw JSON.stringify(body.error) || new Error(`Request failed with status ${response.statusCode}`);
+  if (!body.data) {
+    return [];
   }
   
   let questionSets: LocalQuestionSet[] = [];
@@ -287,7 +286,7 @@ export const generateQuestionSet = async (
   category: QuestionCategory,
   type: QuestionType,
   level: QuestionLevel
-): Promise<LocalQuestionSet> => {
+): Promise<LocalQuestionSet | undefined> => {
   // let c = concepts[Math.floor(Math.random() * concepts.length)];
   const request = {
     body: {
@@ -299,11 +298,10 @@ export const generateQuestionSet = async (
     }
   };
 
-  const response = await API.post(apiName, '/', request);
+  const body = await APIPost(apiName, '/', request);
 
-  const body = JSON.parse(response.body);
-  if (response.statusCode !== 200) {
-    throw JSON.stringify(body.error) || new Error(`Request failed with status ${response.statusCode}`);
+  if (!body.data) {
+    return undefined;
   }
 
   console.log(body.data);
@@ -366,11 +364,10 @@ export const getQuestionAnswer = async (
     }
   };
 
-  const response =await API.post(apiName, '/', request);
+  const body =await APIPost(apiName, '/', request);
 
-  const body = JSON.parse(response.body);
-  if (response.statusCode !== 200) {
-    throw JSON.stringify(body.error) || new Error(`Request failed with status ${response.statusCode}`);
+  if (!body.data) {
+    return '';
   }
 
   return body.data as string;
