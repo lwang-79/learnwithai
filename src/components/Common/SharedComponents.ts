@@ -1,4 +1,5 @@
 import { User } from '@/models';
+import { APIName } from '@/types/types';
 // import { UserParams } from '@/types/user';
 import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
@@ -8,6 +9,7 @@ type SharedComponentsMethods = {
   // setCurrentUser: Dispatch<SetStateAction<UserParams | undefined>>
   dataStoreUser: User | undefined
   setDataStoreUser: Dispatch<SetStateAction<User | undefined>>
+  apiName: APIName
 }
 
 const SharedComponents = createContext<SharedComponentsMethods>({
@@ -16,6 +18,7 @@ const SharedComponents = createContext<SharedComponentsMethods>({
   // setCurrentUser: () => {},
   dataStoreUser: undefined,
   setDataStoreUser: () => {},
+  apiName: APIName.OpenAI
 });
 
 export const useSharedComponents = () => useContext(SharedComponents);

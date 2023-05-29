@@ -153,3 +153,7 @@ export type CompetitionQuestion = {
   type: string
   solution: string
 }
+
+export enum APIName {
+  OpenAI = 'openai',
+}

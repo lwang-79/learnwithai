@@ -62,7 +62,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
   const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
   const [ isMarking, setIsMarking ] = useState(false);
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, apiName } = useContext(SharedComponents);
 
   const cancelRef = useRef(null);
 
@@ -93,7 +93,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
     };
 
-    API.post('OpenaiAPI', '/', request)
+    API.post(apiName, '/', request)
     .then(response => {
       const body = JSON.parse(response.body);
       const prompt = body.data as string;
@@ -140,8 +140,8 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         essay: text
       }
     };
-    
-    API.post('OpenaiAPI', '/', request)
+
+    API.post(apiName, '/', request)
     .then(response => {
       const body = JSON.parse(response.body);
       const mark = body.data as string;
@@ -165,21 +165,19 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const request = {
+      body: {
         operation: APIOperation.WritingPolish,
         level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
         essay: text
-      }),
-    })
-    .then(response => response.json())
-    .then(body => {
+      }
+    };
+
+    API.post(apiName, '/', request)
+    .then(response => {
+      const body = JSON.parse(response.body);
       const mark = body.data as string;
       setMark(mark.trim());
       setIsMarking(false);
@@ -201,18 +199,16 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const request = {
+      body: {
         operation: APIOperation.AskAnything,
         prompt: essay.prompt
-      }),
-    })
-    .then(response => response.json())
-    .then(body => {
+      }
+    };
+
+    API.post(apiName, '/', request)
+    .then(response => {
+      const body = JSON.parse(response.body);
       const mark = body.data as string;
       setMark(mark.trim());
       setIsMarking(false);

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
 import { User } from '@/models';
+import { APIName } from '@/types/types';
 
 
 if (typeof window === 'undefined') {
@@ -58,36 +59,18 @@ if (typeof window === 'undefined') {
     aws_cloud_logic_custom: [
       ...awsconfig.aws_cloud_logic_custom,
       {
-        name: "OpenaiAPI",
-        endpoint: `https://lambda.${awsconfig.aws_project_region}.amazonaws.com/2015-03-31/functions/learnwithaiOpenaiAPI-${process.env.AWS_BRANCH}/invocations`,
+        name: APIName.OpenAI,
+        endpoint: `https://lambda.${awsconfig.aws_project_region}.amazonaws.com/2015-03-31/functions/learnwithaiOpenaiAPI-${process.env.NEXT_PUBLIC_AWS_BRANCH}/invocations`,
         service: "lambda",
         region: awsconfig.aws_project_region,
       }
     ]
   }
 
+  console.log(process.env.NEXT_PUBLIC_AWS_BRANCH)
 
   Amplify.configure(updatedAwsConfig);
 }
-
-console.log(Amplify.configure())
-
-// Amplify.configure({
-//   API: {
-//     endpoints: [
-//       {
-//         name: "OpenaiAPI",
-//         endpoint: process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT,
-//         service: "lambda",
-//         region: "ap-southeast-2",
-//       }
-//     ]
-//   }
-// });
-
-
-// Amplify.Logger.LOG_LEVEL = 'DEBUG';
-
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);
@@ -107,7 +90,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <SharedComponents.Provider value={{ 
           setIsProcessing: setIsProcessing,
           dataStoreUser: dataStoreUser,
-          setDataStoreUser: setDataStoreUser
+          setDataStoreUser: setDataStoreUser,
+          apiName: APIName.OpenAI
         }} >
           <Component {...pageProps} />
         </SharedComponents.Provider>

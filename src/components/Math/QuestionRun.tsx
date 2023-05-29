@@ -1,5 +1,4 @@
 import { 
-  APIOperation,
   MathConcept, 
   QuestionCategory, 
   QuestionLevel, 
@@ -51,7 +50,7 @@ import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addMyMathQuestion, generateQuestionSet, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
+import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
@@ -109,7 +108,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
-  const { dataStoreUser, setDataStoreUser, setIsProcessing } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, setIsProcessing, apiName } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
   const [ timerStopped, setTimeStopped ] = useState(false);
   const [ duration, setDuration ] = useState(initialTest?.duration || 0);
@@ -227,7 +226,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
 
   const getAndSetDatasetQuestions = async (num: number) => {
     try {
-      const questionSets = await getQuestionsFromDataset(level, num);
+      const questionSets = await getQuestionsFromDataset(apiName, level, num);
       questionSetsRef.current = questionSets;
       lastIndexRef.current = maxNum - 1;
       setQuestionSets(questionSets);
@@ -247,7 +246,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
 
   const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
     try {
-      const competitionQuestionSets = await getQuestionsFromCompetition(num, level);
+      const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
       questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
     } catch (error) {
       console.error(error);
@@ -268,10 +267,10 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
         try {
           tryCount++;
           const c = concepts[Math.floor(Math.random() * concepts.length)];
-          questionSet = await generateQuestionSet(c, category, type, level);
-        } catch (error: any) {
+          questionSet = await generateQuestionSet(apiName, c, category, type, level);
+        } catch (error) {
           err = error;
-          console.error(`${tryCount} try failed: ${error.message}`);
+          console.error(`${tryCount} try failed: ${error}`);
         }
       } while (!questionSet && tryCount < 3)
 
@@ -474,26 +473,15 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     }
 
-    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        operation: APIOperation.MathAnswer,
-        question: questionString,
-      }),
-    })
-    .then(response => response.json())
-    .then(body => {
+    try {
+      const newAnswer = await getQuestionAnswer(apiName, questionString);
       setCurrentQuestionSet({
         ...currentQuestionSet,
-        workout: body.data
+        workout: newAnswer
       });
-      console.log(body.data);
+      console.log(newAnswer);
       setIsChallenging(false);
-    })
-    .catch(error => {
+    } catch (error) {
       console.error(`Request failed with error ${error}`);
       toast({
         description: `Failed to generate answer, please try again later.`,
@@ -503,7 +491,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
         position: 'top'
       });
       setIsChallenging(false);
-    });
+    }
   }
 
   const deleteButtonClickedHandler = async () => {
