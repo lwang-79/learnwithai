@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import { APIError, APIName } from "./types";
+import { APIName } from "./types";
 
 async function sesSendEmail(
 	to:string[], 

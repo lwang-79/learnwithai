@@ -66,10 +66,10 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\"]}",
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://www.studywithai.pro/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://www.studywithai.pro/\"]}"
   }
 }

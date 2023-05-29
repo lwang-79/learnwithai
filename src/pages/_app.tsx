@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify, API } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
@@ -25,20 +25,18 @@ if (typeof window === 'undefined') {
       )
   );
 
-  const isDevelopment = Boolean(
-    window.location.hostname.includes("learn.jinpearl")
-  );
+  const isDevelopment = process.env.NEXT_PUBLIC_AWS_BRANCH === 'dev';
   
   const [
     localRedirectSignIn,
-    // productionRedirectSignIn,
-    developmentRedirectSignIn
+    developmentRedirectSignIn,
+    productionRedirectSignIn,
   ] = awsconfig.oauth.redirectSignIn.split(",");
   
   const [
     localRedirectSignOut,
-    // productionRedirectSignOut,
-    developmentRedirectSignOut
+    developmentRedirectSignOut,
+    productionRedirectSignOut,
   ] = awsconfig.oauth.redirectSignOut.split(",");
 
   const updatedAwsConfig = {
@@ -47,14 +45,14 @@ if (typeof window === 'undefined') {
       ...awsconfig.oauth,
       redirectSignIn: isLocalhost ? 
         localRedirectSignIn : 
-        // isDevelopment ? 
-        developmentRedirectSignIn,
-        // productionRedirectSignIn,
+        isDevelopment ? 
+        developmentRedirectSignIn :
+        productionRedirectSignIn,
       redirectSignOut: isLocalhost ? 
         localRedirectSignOut : 
-        // isDevelopment ?
-        developmentRedirectSignOut
-        // productionRedirectSignOut,
+        isDevelopment ?
+        developmentRedirectSignOut :
+        productionRedirectSignOut,
     },
     aws_cloud_logic_custom: [
       ...awsconfig.aws_cloud_logic_custom,

@@ -27,13 +27,13 @@
     "secretsPathAmplifyAppId": {
       "Type": "String"
     },
+    "paypalWebhookId": {
+      "Type": "String"
+    },
     "paypalApiEndpoint": {
       "Type": "String"
     },
     "paypalClientId": {
-      "Type": "String"
-    },
-    "paypalWebhookId": {
       "Type": "String"
     }
   },
@@ -118,14 +118,14 @@
                 ]
               ]
             },
+            "PAYPAL_WEBHOOK_ID": {
+              "Ref": "paypalWebhookId"
+            },
             "PAYPAL_API_ENDPOINT": {
               "Ref": "paypalApiEndpoint"
             },
             "PAYPAL_CLIENT_ID": {
               "Ref": "paypalClientId"
-            },
-            "PAYPAL_WEBHOOK_ID": {
-              "Ref": "paypalWebhookId"
             }
           }
         },

@@ -19,10 +19,6 @@ export enum QuestionType {
 }
 
 export enum MathConcept {
-  // Addition = 'addition',
-  // Subtraction = 'subtraction',
-  // Multiplication = 'multiplication',
-  // Division = 'division',
   Arithmetic = 'arithmetic',
   Decimals = 'decimals',
   Percentage = 'percentage',
@@ -58,8 +54,6 @@ export enum MathConcept {
   // Indices = 'indices',
   // MeasurementPerimeter = 'measurement perimeter',
   // MeasurementArea = 'measurement area',
-  
-
 }
 
 export enum QuestionCategory {
