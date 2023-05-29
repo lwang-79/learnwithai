@@ -94,19 +94,6 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     };
 
     API.post('OpenaiAPI', '/', request)
-    // fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-    //   method: 'POST',
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     operation: APIOperation.WritingPrompt,
-    //     type: type,
-    //     level: level,
-    //     topic: topic
-    //   }),
-    // })
-    // .then(response => response.json())
     .then(response => {
       const body = JSON.parse(response.body);
       const prompt = body.data as string;
@@ -144,21 +131,19 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     setShouldShowMark(true);
     setIsMarking(true);
 
-    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const request = {
+      body: {
         operation: APIOperation.WritingMark,
         level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
         essay: text
-      }),
-    })
-    .then(response => response.json())
-    .then(body => {
+      }
+    };
+    
+    API.post('OpenaiAPI', '/', request)
+    .then(response => {
+      const body = JSON.parse(response.body);
       const mark = body.data as string;
       setMark(mark.trim());
       setIsMarking(false);
