@@ -46,7 +46,7 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
         switch (_b.label) {
             case 0:
                 console.log("EVENT: ".concat(JSON.stringify(event)));
-                req = JSON.parse(event.body);
+                req = event;
                 operation = req.operation || '';
                 if (Object.values(types_1.APIOperation).indexOf(operation) < 0) {
                     return [2 /*return*/, {

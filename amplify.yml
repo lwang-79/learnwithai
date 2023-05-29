@@ -12,7 +12,8 @@ frontend:
         - npm ci
     build:
       commands:
-        - env | grep -e OPENAI_API_KEY >> .env.production
+        - echo "AWS_BRANCH=$AWS_BRANCH" >> .env
+        # - env | grep -e OPENAI_API_KEY >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

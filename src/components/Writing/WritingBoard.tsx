@@ -35,7 +35,7 @@ import {
 import ResizeTextarea from "react-textarea-autosize";
 import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
-import { DataStore } from "aws-amplify";
+import { API, DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
 import { sesSendEmail } from "@/types/utils";
@@ -84,20 +84,31 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   useEffect(() => {
     if (essay) return;
 
-    fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const request = {
+      body: {
         operation: APIOperation.WritingPrompt,
         type: type,
         level: level,
         topic: topic
-      }),
-    })
-    .then(response => response.json())
-    .then(body => {
+      }
+    };
+
+    API.post('OpenaiAPI', '/', request)
+    // fetch(process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT!, {
+    //   method: 'POST',
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     operation: APIOperation.WritingPrompt,
+    //     type: type,
+    //     level: level,
+    //     topic: topic
+    //   }),
+    // })
+    // .then(response => response.json())
+    .then(response => {
+      const body = JSON.parse(response.body);
       const prompt = body.data as string;
 
       const essay = new Essay({

@@ -5,7 +5,8 @@ import { APIOperation, APIResponse } from "./types";
 
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
-  const req = JSON.parse(event.body);
+  // const req = JSON.parse(event.body);
+  const req = event;
   const operation = req.operation || '';
   if (Object.values(APIOperation).indexOf(operation) < 0) {
     return {

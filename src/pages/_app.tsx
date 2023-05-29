@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify } from 'aws-amplify';
+import { Amplify, API } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
@@ -54,10 +54,40 @@ if (typeof window === 'undefined') {
         // isDevelopment ?
         developmentRedirectSignOut
         // productionRedirectSignOut,
-    }
+    },
+    aws_cloud_logic_custom: [
+      ...awsconfig.aws_cloud_logic_custom,
+      {
+        name: "OpenaiAPI",
+        endpoint: `https://lambda.${awsconfig.aws_project_region}.amazonaws.com/2015-03-31/functions/learnwithaiOpenaiAPI-${process.env.AWS_BRANCH}/invocations`,
+        service: "lambda",
+        region: awsconfig.aws_project_region,
+      }
+    ]
   }
+
+
   Amplify.configure(updatedAwsConfig);
 }
+
+console.log(Amplify.configure())
+
+// Amplify.configure({
+//   API: {
+//     endpoints: [
+//       {
+//         name: "OpenaiAPI",
+//         endpoint: process.env.NEXT_PUBLIC_OPENAI_API_ENDPOINT,
+//         service: "lambda",
+//         region: "ap-southeast-2",
+//       }
+//     ]
+//   }
+// });
+
+
+// Amplify.Logger.LOG_LEVEL = 'DEBUG';
+
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);

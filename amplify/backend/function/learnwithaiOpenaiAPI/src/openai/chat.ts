@@ -1,16 +1,29 @@
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import { APIResponse } from "../types";
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+
 
 export const chatCompletion = async (
   messages:  ChatCompletionRequestMessage[],
   temperature: number = 1,
   max_tokens: number = 1000
 ): Promise<APIResponse> => {
+
+  const { Parameter } = await (new SSMClient({
+    region: process.env.AWS_REGION
+  }))
+    .send(new GetParameterCommand({
+      Name: process.env['OPENAI_API_KEY'],
+      WithDecryption: true,
+    }));
+  
+  const configuration = new Configuration({
+    apiKey: Parameter.Value,
+  });
+  
+  const openai = new OpenAIApi(configuration);  
+
   if (!configuration.apiKey) {
     return {
       statusCode: 500,
