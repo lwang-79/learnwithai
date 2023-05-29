@@ -1,12 +1,15 @@
-import { Box, Divider, HStack, Spacer, Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Divider, HStack, Spacer, Stack, Tag, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { SubStatus } from "@/pages/account"
 import PlanSubItem from "./PlanSubItem"
+import { useContext } from "react";
+import SharedComponents from "../Common/SharedComponents";
 
 interface PlanSubListProps {
   subStatus: SubStatus
 }
 
 function PlanSubList({ subStatus }: PlanSubListProps) {
+  const { dataStoreUser } = useContext(SharedComponents);
 
   let planSubs = [];
 
@@ -29,7 +32,7 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
     <Box
       rounded={'lg'}
       bg={useColorModeValue('white', 'gray.700')}
-      // boxShadow={'lg'}
+      boxShadow={'md'}
       p={8}
       w='full'
     >
@@ -40,6 +43,35 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
           <Tag borderRadius='full' colorScheme='green'>ACTIVE</Tag>
         </HStack>
         {planSubs}
+        {dataStoreUser && 
+          <>
+            <Divider />
+            <VStack align='flex-start' spacing={0}>
+              <Text>Current Quota</Text>
+              <HStack w='full'>
+                <Text fontSize='sm'>Math questions per day</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.mathPerDay}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Writing per day</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.writingPerDay}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Max saved tests</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.savedTests}</Text>
+              </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Max saved essays</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.savedEssays}</Text>
+              </HStack>
+            </VStack>
+          </>
+        }
+
       </Stack>
     </Box>
   )

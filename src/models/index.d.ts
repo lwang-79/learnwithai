@@ -2,7 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
-
+export enum NotificationType {
+  MONTHLY = "Monthly",
+  WEEKLY = "Weekly",
+  DAILY = "Daily",
+  INSTANT = "Instant"
+}
 
 type EagerMembership = {
   readonly current: number;
@@ -108,6 +113,20 @@ export declare type GameData = LazyLoading extends LazyLoadingDisabled ? EagerGa
 
 export declare const GameData: (new (init: ModelInit<GameData>) => GameData)
 
+type EagerNotification = {
+  readonly emails: (string | null)[];
+  readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
+}
+
+type LazyNotification = {
+  readonly emails: (string | null)[];
+  readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
+}
+
+export declare type Notification = LazyLoading extends LazyLoadingDisabled ? EagerNotification : LazyNotification
+
+export declare const Notification: (new (init: ModelInit<Notification>) => Notification)
+
 type EagerLocalQuestionSet = {
   readonly type: string;
   readonly category: string;
@@ -120,6 +139,7 @@ type EagerLocalQuestionSet = {
   readonly workout: string;
   readonly isBad: boolean;
   readonly isTarget: boolean;
+  readonly isMarked?: boolean | null;
 }
 
 type LazyLocalQuestionSet = {
@@ -134,6 +154,7 @@ type LazyLocalQuestionSet = {
   readonly workout: string;
   readonly isBad: boolean;
   readonly isTarget: boolean;
+  readonly isMarked?: boolean | null;
 }
 
 export declare type LocalQuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerLocalQuestionSet : LazyLocalQuestionSet
@@ -172,6 +193,7 @@ type EagerUser = {
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
+  readonly notification?: Notification | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -194,6 +216,7 @@ type LazyUser = {
   readonly monthly?: Statistic[] | null;
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
+  readonly notification?: Notification | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -218,9 +241,8 @@ type EagerQuestionSet = {
   readonly category: string;
   readonly level: string;
   readonly concept: string;
-  readonly correctCount: number;
-  readonly wrongCount: number;
-  readonly badCount: number;
+  readonly testId?: string | null;
+  readonly indexInTest?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -239,9 +261,8 @@ type LazyQuestionSet = {
   readonly category: string;
   readonly level: string;
   readonly concept: string;
-  readonly correctCount: number;
-  readonly wrongCount: number;
-  readonly badCount: number;
+  readonly testId?: string | null;
+  readonly indexInTest?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -259,7 +280,8 @@ type EagerTest = {
   };
   readonly id: string;
   readonly category: string;
-  readonly DateTime: string;
+  readonly dateTime: string;
+  readonly duration?: number | null;
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
@@ -275,7 +297,8 @@ type LazyTest = {
   };
   readonly id: string;
   readonly category: string;
-  readonly DateTime: string;
+  readonly dateTime: string;
+  readonly duration?: number | null;
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;

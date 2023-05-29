@@ -1,8 +1,11 @@
 import { QuestionLevel } from "@/types/types";
+import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
 
-export function generateDecimalsPrompt(level: QuestionLevel) {
+export function generateDecimalsPrompt(
+  level: QuestionLevel
+): ChatCompletionRequestMessage[] {
   const lowOperations = ['addition', 'subtraction'];
   const highOperations = ['multiplication', 'division'];
 

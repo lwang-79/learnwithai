@@ -10,18 +10,20 @@ interface pageProps {
 
 const WithAuth: React.FC<pageProps> = ({ children, href }) => {
   const router = useRouter();
-  const { currentUser } = useContext(SharedComponents);
-
   const { getItem } = useStorage();
-
   const isAuthenticated = (getItem('isAuthenticated', 'local') === 'true');
-
+  const { dataStoreUser } = useContext(SharedComponents);
+  console.log('withauth', isAuthenticated)
   useEffect(() => {
     if (!isAuthenticated) {
       if (href) router.push(href);
       else router.push('/intro');
+    } else if (!dataStoreUser) {
+      router.push('/');
     }
-  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [href, isAuthenticated, router]);
 
   if (isAuthenticated) { return children; }
 }

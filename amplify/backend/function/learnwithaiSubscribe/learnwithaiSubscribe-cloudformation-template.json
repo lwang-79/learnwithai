@@ -16,15 +16,6 @@
     "s3Key": {
       "Type": "String"
     },
-    "paypalApiEndpoint": {
-      "Type": "String"
-    },
-    "paypalClientId": {
-      "Type": "String"
-    },
-    "paypalWebhookId": {
-      "Type": "String"
-    },
     "apilearnwithaiGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apilearnwithaiGraphQLAPIIdOutput"
@@ -34,6 +25,15 @@
       "Default": "apilearnwithaiGraphQLAPIEndpointOutput"
     },
     "secretsPathAmplifyAppId": {
+      "Type": "String"
+    },
+    "paypalWebhookId": {
+      "Type": "String"
+    },
+    "paypalApiEndpoint": {
+      "Type": "String"
+    },
+    "paypalClientId": {
       "Type": "String"
     }
   },
@@ -96,15 +96,6 @@
             "API_LEARNWITHAI_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apilearnwithaiGraphQLAPIEndpointOutput"
             },
-            "PAYPAL_API_ENDPOINT": {
-              "Ref": "paypalApiEndpoint"
-            },
-            "PAYPAL_CLIENT_ID": {
-              "Ref": "paypalClientId"
-            },
-            "PAYPAL_WEBHOOK_ID": {
-              "Ref": "paypalWebhookId"
-            },
             "PAYPAL_SECRET": {
               "Fn::Join": [
                 "",
@@ -126,6 +117,15 @@
                   "PAYPAL_SECRET"
                 ]
               ]
+            },
+            "PAYPAL_WEBHOOK_ID": {
+              "Ref": "paypalWebhookId"
+            },
+            "PAYPAL_API_ENDPOINT": {
+              "Ref": "paypalApiEndpoint"
+            },
+            "PAYPAL_CLIENT_ID": {
+              "Ref": "paypalClientId"
             }
           }
         },
@@ -137,7 +137,10 @@
         },
         "Runtime": "nodejs16.x",
         "Layers": [],
-        "Timeout": 25
+        "Timeout": 25,
+        "Architectures": [
+          "arm64"
+        ]
       }
     },
     "LambdaExecutionRole": {

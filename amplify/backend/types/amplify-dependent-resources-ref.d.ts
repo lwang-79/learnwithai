@@ -3,6 +3,11 @@ export type AmplifyDependentResourcesAttributes = {
     "learnwithai": {
       "GraphQLAPIEndpointOutput": "string",
       "GraphQLAPIIdOutput": "string"
+    },
+    "learnwithaipaypalwebhook": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     }
   },
   "auth": {
@@ -19,6 +24,21 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "learnwithaiBackend": {
+      "Arn": "string",
+      "CloudWatchEventRule": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "learnwithaiOpenaiAPI": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "learnwithaiSubscribe": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

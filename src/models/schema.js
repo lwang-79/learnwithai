@@ -110,6 +110,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "notification": {
+                    "name": "notification",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "Notification"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -252,25 +261,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "correctCount": {
-                    "name": "correctCount",
+                "testId": {
+                    "name": "testId",
                     "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 },
-                "wrongCount": {
-                    "name": "wrongCount",
+                "indexInTest": {
+                    "name": "indexInTest",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "badCount": {
-                    "name": "badCount",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -302,16 +304,10 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
                                 "provider": "userPools",
-                                "operations": [
-                                    "create",
-                                    "read"
-                                ]
-                            },
-                            {
-                                "allow": "private",
-                                "provider": "iam",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
@@ -341,11 +337,18 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "DateTime": {
-                    "name": "DateTime",
+                "dateTime": {
+                    "name": "dateTime",
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "duration": {
+                    "name": "duration",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "total": {
@@ -522,7 +525,17 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "NotificationType": {
+            "name": "NotificationType",
+            "values": [
+                "Monthly",
+                "Weekly",
+                "Daily",
+                "Instant"
+            ]
+        }
+    },
     "nonModels": {
         "Membership": {
             "name": "Membership",
@@ -743,6 +756,29 @@ export const schema = {
                 }
             }
         },
+        "Notification": {
+            "name": "Notification",
+            "fields": {
+                "emails": {
+                    "name": "emails",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "types": {
+                    "name": "types",
+                    "isArray": true,
+                    "type": {
+                        "enum": "NotificationType"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
+                }
+            }
+        },
         "LocalQuestionSet": {
             "name": "LocalQuestionSet",
             "fields": {
@@ -823,6 +859,13 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
+                },
+                "isMarked": {
+                    "name": "isMarked",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
@@ -847,5 +890,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "a4a4f09a4cc7d0e83633a5d130d71034"
+    "version": "89e16f53ad83377d6186ffb605a8c5f0"
 };

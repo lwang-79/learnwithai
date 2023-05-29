@@ -106,7 +106,7 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
       toast({
         description: `${response.data.learnwithaiSubscribe.body} You can manage your subscription from the profile or Paypal console.`,
         status: 'success',
-        duration: 30000,
+        duration: 10000,
         isClosable: true
       });
 
@@ -187,16 +187,16 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     Basic reports
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaTimesCircle} color="gray.500" />
+                    <ListIcon as={FaCheckCircle} color="green.500" />
                     Test mode
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaTimesCircle} color="gray.500" />
+                    <ListIcon as={FaCheckCircle} color="green.500" />
                     Save questions and test result
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaTimesCircle} color="gray.500" />
-                    Weekly report notification
+                    Report notification
                   </ListItem>
                 </List>
                 <Flex w='full' justify='center'>
@@ -273,7 +273,7 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
-                    Weekly report notification
+                    Report notification
                   </ListItem>
                 </List>
                 <Flex w='full' justify='center' >

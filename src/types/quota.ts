@@ -1,6 +1,6 @@
 export const Quota = {
   free: {
-    mathPerDay: 100,
+    mathPerDay: 40,
     readingPerDay: 3,
     writingPerDay: 1,
     savedQuestions: 0,

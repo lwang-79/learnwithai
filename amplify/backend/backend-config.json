@@ -27,6 +27,20 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
+    },
+    "learnwithaipaypalwebhook": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "learnwithaiSubscribe"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -61,6 +75,27 @@
     }
   },
   "function": {
+    "learnwithaiBackend": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "learnwithai"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "learnwithaiOpenaiAPI": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "learnwithaiSubscribe": {
       "build": true,
       "dependsOn": [
@@ -78,6 +113,46 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_learnwithaiBackend_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiBackend"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiBackend_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiBackend"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_learnwithaiOpenaiAPI_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiOpenaiAPI"
+        }
+      ]
+    },
     "AMPLIFY_function_learnwithaiSubscribe_deploymentBucketName": {
       "usedBy": [
         {

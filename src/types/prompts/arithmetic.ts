@@ -1,8 +1,11 @@
 import { QuestionLevel } from "@/types/types";
+import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
 
-export function generateArithmeticPrompt(level: QuestionLevel) {
+export function generateArithmeticPrompt(
+  level: QuestionLevel
+): ChatCompletionRequestMessage[] {
   const lowOperations = ['addition', 'subtraction'];
   const highOperations = ['multiplication', 'division'];
 
@@ -56,7 +59,7 @@ export function generateArithmeticPrompt(level: QuestionLevel) {
         );
       }
       break;
-    case QuestionLevel.Year5:
+    case QuestionLevel.Year6:
       if (random < 0.1) {
         prompt = generalArithmeticPrompt(
           lowOperations[randomIndex], 'integer', 1000, 100, 2

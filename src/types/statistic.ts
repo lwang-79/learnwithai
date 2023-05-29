@@ -27,14 +27,10 @@ export const getTodayStatistic = async (user: User) => {
 
 export const addStatisticData = async (
   statistic: Statistic,
-  userId?: string,
-  user?: User,
+  userId: string,
 ): Promise<User|undefined> => {
-  if (!user) {
-    if (!userId) return;
-    user = await DataStore.query(User, userId);
-    if (!user) return;
-  }
+  const user = await DataStore.query(User, userId);
+  if (!user) return;
 
   const today = (new Date()).toLocaleString('sv-SE');
   const currentDay = today.slice(0,10);
@@ -44,20 +40,31 @@ export const addStatisticData = async (
   let daily = [{...statistic, date: currentDay}];
   if (user.daily) {
     daily = addAndGetStatic(user.daily, statistic, currentDay);
+    if (daily.length > 365) {
+      daily.pop();
+    }
   }
 
   let monthly = [{...statistic, date: currentMonth}];
   if (user.monthly) {
     monthly = addAndGetStatic(user.monthly, statistic, currentMonth);
+    if (monthly.length > 60) {
+      monthly.pop();
+    }
   } 
 
   let yearly = [{...statistic, date: currentYear}];
   if (user.yearly) {
     yearly = addAndGetStatic(user.yearly, statistic, currentYear);
+    if (yearly.length > 10) {
+      yearly.pop();
+    }
   } 
 
+  const currentUser = await DataStore.query(User, userId);
+  if (!currentUser) return;
   const updatedUser = await DataStore.save(User.copyOf(
-    user,
+    currentUser,
     updated => {
       updated.daily = daily;
       updated.monthly = monthly;

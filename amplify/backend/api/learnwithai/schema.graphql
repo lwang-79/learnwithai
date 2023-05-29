@@ -35,6 +35,7 @@ type User
   monthly: [Statistic!]
   yearly: [Statistic!]
   gameData: GameData
+  notification: Notification
 }
 
 type Membership {
@@ -79,12 +80,19 @@ type GameData {
   collections: String! #[{tree: 1},{sunflower: 1}]
 }
 
-type QuestionSet @model 
-  @auth(
-    rules: [
-      { allow: private, provider: userPools, operations: [create, read] },
-      { allow: private, provider: iam }
-  ]) {
+type Notification {
+  emails: [String]!
+  types: [NotificationType]!
+}
+
+enum NotificationType {
+  Monthly
+  Weekly
+  Daily
+  Instant
+}
+
+type QuestionSet @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   question: String!
   options: [String!]
@@ -94,15 +102,15 @@ type QuestionSet @model
   category: String!  # Math, Reading ...
   level: String!     # Year9, High ...
   concept: String!   # Decimals, Algebra ...
-  correctCount: Int!
-  wrongCount: Int!
-  badCount: Int!
+  testId: ID
+  indexInTest: Int
 }
 
 type Test @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   category: String!
-  DateTime: AWSDateTime!
+  dateTime: AWSDateTime!
+  duration: Int    #in seconds
   total: Int!
   wrong: Int!
   correct: Int!
@@ -121,6 +129,7 @@ type LocalQuestionSet {
   workout: String!
   isBad: Boolean!
   isTarget: Boolean!
+  isMarked: Boolean
 }
 
 type Essay @model @auth(rules: [{ allow: owner }]) {

@@ -91,6 +91,10 @@ export const createUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -172,6 +176,10 @@ export const updateUser = /* GraphQL */ `
         score
         seed
         collections
+      }
+      notification {
+        emails
+        types
       }
       createdAt
       updatedAt
@@ -255,6 +263,10 @@ export const deleteUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -279,14 +291,14 @@ export const createQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -305,14 +317,14 @@ export const updateQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -331,14 +343,14 @@ export const deleteQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -350,7 +362,8 @@ export const createTest = /* GraphQL */ `
     createTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -366,6 +379,7 @@ export const createTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -384,7 +398,8 @@ export const updateTest = /* GraphQL */ `
     updateTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -400,6 +415,7 @@ export const updateTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -418,7 +434,8 @@ export const deleteTest = /* GraphQL */ `
     deleteTest(input: $input, condition: $condition) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -434,6 +451,7 @@ export const deleteTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt

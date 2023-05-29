@@ -3,13 +3,12 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
-import WritingBoard, { WritingMode } from '@/components/Writing/WritingBoard';
-import { Essay, Statistic, User } from '@/models';
+import WritingBoard from '@/components/Writing/WritingBoard';
+import { Essay, Statistic } from '@/models';
 import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 
-  Divider, 
   Flex, 
   Heading, 
   HStack, 
@@ -20,14 +19,13 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
-  Text, 
+  useBoolean, 
   useDisclosure, 
   useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { DataStore } from 'aws-amplify';
 import { useContext, useState } from 'react'
 
 function Writing() {
@@ -44,14 +42,14 @@ function Writing() {
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
   const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+
   const toast = useToast();
+  const [ refreshEssayList, setRefreshEssayList ] = useBoolean(false);
 
   const startButtonClickedHandler = async () => {
     setSelectedEssay(undefined);
-    if (!currentUser) return;
-
-    const user = await DataStore.query(User, currentUser.id);
+    const user = dataStoreUser;
     if (!user) return;
 
     const todayStatistic = await getTodayStatistic(user);
@@ -78,27 +76,34 @@ function Writing() {
       writingRequest: 1
     }
 
-    await addStatisticData(statistic, undefined, user);
+    setDataStoreUser(await addStatisticData(statistic, user.id));
   }
 
   const openModalWithEssay = (essay: Essay) => {
     setSelectedEssay(essay);
     setSelectedLevel(essay.level);
-    setSelectedTopic(essay.topic);
+    if (essay.topic) {
+      setSelectedTopic(essay.topic);
+    }
     setSelectedType(essay.type);
     setTimeout(()=>onOpenExamModal(), 100);
   }
 
+  const onCloseHandler = () => {
+    onCloseExamModal();
+    setRefreshEssayList.toggle();
+  }
+
   return (
     <WithAuth href='/login'>
-      {currentUser &&
+      {dataStoreUser &&
         <Flex
           minH='100vh'
           direction='column'
         >
           <Header />
 
-          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
+          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' pb={24} px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setSelectedType} value={selectedType}>
               <Heading size='sm'>Type</Heading>
               <Wrap spacing={4} mt={2}>
@@ -153,8 +158,6 @@ function Writing() {
                 </Wrap>
               </VStack>
             </RadioGroup>
-
-            <Divider />
               
             <HStack justify='flex-end' w='full'>
               <Button
@@ -164,12 +167,11 @@ function Writing() {
               </Button>
             </HStack>
 
-            <Divider />
-
             <EssayList 
               selectCallback={openModalWithEssay}
               title='Recent Essays'
               defaultPageStep={10}
+              refreshTrigger={refreshEssayList}
             />
 
             <Modal
@@ -186,7 +188,7 @@ function Writing() {
                     level={selectedLevel as QuestionLevel}
                     topic={selectedTopic as EssayTopic}
                     type={selectedType as EssayType}
-                    onClose={onCloseExamModal}
+                    onClose={onCloseHandler}
                     initEssay={selectedEssay}
                   />
                 </ModalBody>

@@ -3,9 +3,8 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
-import { Statistic, Test, User } from '@/models';
+import { Statistic, Test } from '@/models';
 import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
-import { getConcepts } from '@/types/math';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
   Button, 
@@ -15,6 +14,7 @@ import {
   Flex, 
   Heading, 
   HStack, 
+  Icon,
   Modal, 
   ModalBody, 
   ModalContent, 
@@ -22,17 +22,17 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
-  Text, 
+  Tooltip, 
+  useBoolean, 
   useDisclosure, 
   useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { DataStore } from 'aws-amplify';
-import Script from 'next/script';
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import TestList from '@/components/Math/TestList';
+import { MdHelpOutline } from 'react-icons/md';
 
 function MathExam() {
   const { 
@@ -43,18 +43,31 @@ function MathExam() {
 
   const concepts = Object.values(MathConcept);
   const levels = [
-    ...Object.values(QuestionLevel).slice(0,6), 
-    ...Object.values(QuestionLevel).slice(12,15)
+    ...Object.values(QuestionLevel).slice(0,14), 
   ];
+  const competitionLevels = [ ...Object.values(QuestionLevel).slice(14, 19) ];
   const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
-  const { currentUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
+  const [ refreshTestList, setRefreshTestList ] = useBoolean(false);
+
+  useEffect(() => {
+    if (mode === QuestionRunMode.Competition) {
+      setSelectedLevel(QuestionLevel.Level1);
+      setNum('50');
+    } else {
+      setSelectedLevel(QuestionLevel.GSM8K);
+      if (mode === QuestionRunMode.Test) setNum('20');
+      else if (mode === QuestionRunMode.Practice) setNum('10');
+    }
+
+  }, [mode]);
 
   const setCheckedConcepts = (value: MathConcept) => {
     let concepts = selectedConcepts;
@@ -78,9 +91,7 @@ function MathExam() {
 
   const startButtonClickedHandler = async () => {
     setSelectedTest(undefined);
-    if (!currentUser) return;
-
-    const user = await DataStore.query(User, currentUser.id);
+    const user = dataStoreUser;
     if (!user) return;
 
     const todayStatistic = await getTodayStatistic(user);
@@ -102,12 +113,14 @@ function MathExam() {
 
     setTimeout(()=>onOpenExamModal(), 100);
 
+    if (mode === QuestionRunMode.SavedQuestions) return; // Saved question doesn't consume quota
+
     const statistic: Statistic = {
       ...InitStatistic,
       mathRequest: Number(num)
     }
 
-    await addStatisticData(statistic, undefined, user);
+    setDataStoreUser(await addStatisticData(statistic, user.id));
   }
 
   const openModalWithTest = (test: Test) => {
@@ -123,35 +136,57 @@ function MathExam() {
     onCloseExamModal();
     setMode(QuestionRunMode.Practice);
     setNum('10');
+    setRefreshTestList.toggle();
   }
 
 
   return (
     <WithAuth href='/login'>
-      {currentUser &&
+      {dataStoreUser &&
         <Flex
           minH='100vh'
           direction='column'
         >
-          <Script src="https://polyfill.io/v3/polyfill.min.js?features=es6" />
-          <Script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" />
-
           <Header />
+          {/* <Script async 
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8667628388061043"
+            crossOrigin="anonymous">
+          </Script> */}
 
-          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' px={10} spacing={4} align='flex-start'>
+          <VStack minW='lg' maxW='5xl' mx='auto' mt='24' pb={24} px={10} spacing={4} align='flex-start'>
             <RadioGroup onChange={setMode} value={mode}>
               <HStack spacing={4}>
                 <Heading size='sm'>Mode</Heading>
                 <Radio value={QuestionRunMode.Practice}>Practice</Radio>
                 <Radio 
                   value={QuestionRunMode.Test}
-                  isDisabled={currentUser!.membership.current < 2}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
                 >
                   Test
                 </Radio>
+                <Radio 
+                  value={QuestionRunMode.Competition}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
+                >
+                  Competition
+                </Radio>
+                <Radio 
+                  value={QuestionRunMode.SavedQuestions}
+                  isDisabled={dataStoreUser!.membership!.current < 2}
+                >
+                  Saved Questions
+                </Radio>
               </HStack>
             </RadioGroup>
-            <RadioGroup onChange={setNum} value={num}>
+            <RadioGroup 
+              onChange={setNum} 
+              value={num} 
+              isDisabled={
+                dataStoreUser!.membership!.current < 2 ||
+                mode === QuestionRunMode.Competition ||
+                mode === QuestionRunMode.SavedQuestions
+              }
+            >
               <HStack spacing={4}>
                 <Heading size='sm'>Question Number</Heading>
                 <Radio value='10'>10</Radio>
@@ -161,7 +196,6 @@ function MathExam() {
                       <Radio 
                         value={num.toString()} 
                         key={`${num}-${index}`}
-                        isDisabled={currentUser!.membership.current < 2}
                       >
                         {num}
                       </Radio>
@@ -176,21 +210,45 @@ function MathExam() {
             <RadioGroup
               onChange={setSelectedLevel}
               value={selectedLevel}
+              isDisabled={mode === QuestionRunMode.SavedQuestions}
             >
               <VStack align='flex-start'>
-                <Heading size='sm'>Level</Heading>
-                <Text fontSize='xs' color='red'>
-                  {`Year level questions are generated by AI. Due to the limitation of AI's capability questions generated by AI maybe not accurate. Others are public dataset for AI training which can also be used to practice. The difficulty level is GSM8K < MathQA = AQuA.`}
-                </Text>
+                <HStack align='flex-start'>
+                  <Heading size='sm'>Level</Heading>
+                  <Tooltip 
+                    hasArrow
+                    bg='teal'
+                    placement='right'
+                    label={`Year level questions are generated by AI. Due to the limitation of AI's capability questions generated by AI maybe not accurate. Others are public dataset for AI training which can also be used to practice. The difficulty level is GSM8K < MathQA < Competition Levels.`}
+                  >
+                    <span><Icon as={MdHelpOutline} boxSize={5} /></span>
+                  </Tooltip>
+                </HStack>
                 <Wrap>
                   {levels.map((level, index) => {
                     return (
                       <WrapItem key={`${level}-${index}`} minW='150px'>
                         <Radio
                           value={level}
-                          isDisabled={currentUser.membership.current < 2}
+                          isDisabled={
+                            // currentUser.membership.current < 2 ||
+                            mode === QuestionRunMode.Competition ||
+                            mode === QuestionRunMode.SavedQuestions
+                          }
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </Radio>
+                      </WrapItem>
+                    )
+                  })}
+                  {competitionLevels.map((level, index) => {
+                    return (
+                      <WrapItem key={`${level}-${index}`} minW='150px'>
+                        <Radio
+                          value={level}
+                          isDisabled={mode !== QuestionRunMode.Competition}
+                        >
+                          {level}
                         </Radio>
                       </WrapItem>
                     )
@@ -244,13 +302,12 @@ function MathExam() {
                 Start
               </Button>
             </HStack>
-
-            <Divider />
             
             <TestList 
               selectCallback={openModalWithTest}
               title='Recent tests'
               defaultPageStep={10}
+              refreshTrigger={refreshTestList}
             />
 
 
@@ -269,10 +326,10 @@ function MathExam() {
                     type={QuestionType.MultiChoice}
                     level={selectedLevel as QuestionLevel}
                     concepts={selectedConcepts}
-                    maxNum={Number(num)}
+                    initMaxNum={Number(num)}
                     mode={mode as QuestionRunMode}
                     onClose={modalClosedHandler}
-                    test={selectedTest}
+                    initialTest={selectedTest}
                   />
                 </ModalBody>
               </ModalContent>

@@ -45,7 +45,7 @@ function ProfileCard({ user }: ProfileCardProps) {
   const [ picture, setPicture ] = useState(user.picture);
   const [ emailVerified, setEmailVerified ] = useState(false);
   const [ isInProgress, setIsInProgress ] = useState(false);
-  const { currentUser, setCurrentUser } = useContext(SharedComponents);
+  const { setDataStoreUser } = useContext(SharedComponents);
   const toast = useToast();
 
   const { 
@@ -66,18 +66,16 @@ function ProfileCard({ user }: ProfileCardProps) {
 
   const saveUser = async () => {
     try {
-      await DataStore.save(
-        User.copyOf(user, updated => {
+      const currentUser = await DataStore.query(User, user.id);
+      if (!currentUser) return;
+      const updatedUser = await DataStore.save(
+        User.copyOf(currentUser, updated => {
           updated.username = username,
           updated.picture = picture
         })
       );
 
-      setCurrentUser({
-        ...currentUser!,
-        username: username,
-        picture: picture
-      });
+      setDataStoreUser(updatedUser);
 
       setIsPopOpen.off();
       onClosePictureModal();
@@ -126,7 +124,7 @@ function ProfileCard({ user }: ProfileCardProps) {
         description: 'Email address has been verified successfully!',
         status: 'success',
         duration: 10000,
-        isClosable: true
+        isClosable: true,
       });
 
     } catch (error) {
@@ -147,11 +145,11 @@ function ProfileCard({ user }: ProfileCardProps) {
     <Box
       rounded={'lg'}
       bg={useColorModeValue('white', 'gray.700')}
-      boxShadow={'lg'}
+      boxShadow={'md'}
       p={8}
       w='full'
     >
-      <Stack align='center' spacing={4} >
+      <Stack align='center' >
         <Avatar 
           name={username} 
           src={picture} 
@@ -207,7 +205,11 @@ function ProfileCard({ user }: ProfileCardProps) {
             <Text fontSize='sm'>{user.email}</Text>
           </Box>
           {emailVerified ? (
-            <Tooltip label='Email verified'>
+            <Tooltip 
+              label='Email verified'
+              hasArrow
+              bg='teal'
+            >
               <Box>
                 <Icon as={MdVerified} color="green.500" />
               </Box>

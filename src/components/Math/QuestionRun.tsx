@@ -15,7 +15,6 @@ import {
   Box,
   Button, 
   Center, 
-  CloseButton, 
   Collapse, 
   Divider, 
   HStack, 
@@ -44,18 +43,24 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdBookmarkBorder, MdClose, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
+import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { Statistic, Test } from "@/models";
+import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addNewMathQuestions, getQuestionsFromDataset } from "@/types/questions";
+import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
+import Timer from "../Common/Timer";
+import { sesSendEmail } from "@/types/utils";
+import { DataStore } from "aws-amplify";
 
 export enum QuestionRunMode {
   Practice = 'practice',
   Test = 'test',
-  Review = 'review'
+  Competition = 'competition',
+  Review = 'review',
+  SavedQuestions = 'saved questions'
 }
 
 interface QuestionRunProps {
@@ -63,20 +68,23 @@ interface QuestionRunProps {
   type: QuestionType
   level: QuestionLevel
   concepts: MathConcept[]
-  maxNum?: number
+  initMaxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
-  test?: Test
+  initialTest?: Test
 }
 
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNumber, onClose, test }: QuestionRunProps) {
+function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
+  const isCompetition = mode === QuestionRunMode.Competition;
   const isReview = mode === QuestionRunMode.Review;
+  const isSavedQuestions = mode === QuestionRunMode.SavedQuestions;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
+  const [ maxNum, setMaxNum ] = useState(initMaxNum);
   const [ currentIndex, setCurrentIndex ] = useState(0);
   const questionSetsRef = useRef<LocalQuestionSet[]>([]);
 
@@ -94,11 +102,17 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
   // how many fetching is running, used to avoid querying too much.
   const addingQuestionCountRef = useRef(0);
 
+  // store the saved question sets state
+  const savedQuestionSetsRef = useRef<QuestionSet[]>(); 
+
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
   const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
-  const { currentUser, setIsProcessing } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, setIsProcessing, apiName } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
+  const [ timerStopped, setTimeStopped ] = useState(false);
+  const [ duration, setDuration ] = useState(initialTest?.duration || 0);
+  const testRef = useRef(initialTest);
   const cancelRef = useRef(null);
   const toast = useToast();
 
@@ -114,24 +128,51 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     onClose: onCloseAlert 
   } = useDisclosure();
 
-
+  const { 
+    isOpen: isOpenDeleteAlert, 
+    onOpen: onOpenDeleteAlert, 
+    onClose: onCloseDeleteAlert 
+  } = useDisclosure();
 
   useEffect(() => {
-    if (isReview && test) {
-      questionSetsRef.current = test.questionSets;
+    if (isReview && initialTest) {
+      questionSetsRef.current = [...initialTest.questionSets] as LocalQuestionSet[];
       lastIndexRef.current = maxNum - 1;
-      setQuestionSets(test.questionSets);
-      setCurrentQuestionSet(test.questionSets[0]);
-      setValue(test.questionSets[0].selected)
+      setQuestionSets([...initialTest.questionSets]);
+      setCurrentQuestionSet({...initialTest.questionSets[0]});
+      setValue(initialTest.questionSets[0].selected);
+      setTimeStopped(true);
       return;
     }
 
-    if (!level.includes('Year')) {
-      getAndSetAQuAQuestions(maxNum);
+    if (isSavedQuestions) {
+      addSavedQuestionSets();
       return;
     }
 
-    AddQuestionSets(cacheNumber);
+    if (isCompetition) {
+      addCompetitionQuestionSets(1, level);
+      return;
+    }
+
+    if (isTest) {
+      testRef.current = new Test({
+        category: QuestionCategory.Math,
+        dateTime: (new Date()).toISOString(),
+        total: 0,
+        wrong: 0,
+        correct: 0,
+        questionSets: []
+      });
+    }
+
+    if ([QuestionLevel.GSM8K, QuestionLevel.MathQA].includes(level)) {
+      getAndSetDatasetQuestions(maxNum);
+      return;
+    }
+
+    addQuestionSets(cacheNumber);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   useEffect(() => {
@@ -141,120 +182,108 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     if (questionSets.length < lastIndexRef.current + 1) {
       setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[fetchingStatus]);
 
-  const getAndSetAQuAQuestions = async (num: number) => {
-    const questionSets = await getQuestionsFromDataset(level, num);
-    questionSetsRef.current = questionSets;
-    lastIndexRef.current = maxNum - 1;
-    setQuestionSets(questionSets);
-    setCurrentQuestionSet(questionSets[0]);
+  const addSavedQuestionSets = async () => {
+    const allSavedQuestionSets = await DataStore.query(QuestionSet);
+    
+    if (allSavedQuestionSets.length === 0) {
+      onClose();
+      toast({
+        description: `No questions, please add some questions`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+    }
+
+    savedQuestionSetsRef.current = allSavedQuestionSets.sort((a, b) => a.createdAt! < b.createdAt! ? 1 : -1);
+    
+    for (const qs of savedQuestionSetsRef.current) {
+      const localQS: LocalQuestionSet = {
+        ...qs,
+        selected: '',
+        isBad: false,
+        isTarget: false,
+        isMarked: false,
+        options: qs.options!,
+        workout: qs.workout?? ''
+      }
+
+      questionSetsRef.current = [
+        ...questionSetsRef.current,
+        localQS
+      ];
+    }
+
+    lastIndexRef.current = savedQuestionSetsRef.current.length - 1;
+    setQuestionSets(questionSetsRef.current);
+    setCurrentQuestionSet(questionSetsRef.current[0]);
+    setMaxNum(savedQuestionSetsRef.current.length);
   }
 
-  const AddQuestionSets = async (num: number) => {
+  const getAndSetDatasetQuestions = async (num: number) => {
+      const questionSets = await getQuestionsFromDataset(apiName, level, num);
+      
+      if (questionSets.length === 0) {
+        onClose();
+        toast({
+          description: `Failed to generate questions, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        }); 
+      }
+
+      questionSetsRef.current = questionSets;
+      lastIndexRef.current = maxNum - 1;
+      setQuestionSets(questionSets);
+      setCurrentQuestionSet(questionSets[0]);
+  }
+
+  const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
+    const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
+    questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
+    // lastIndexRef.current += 1;
+    // setQuestionSets(questionSetsRef.current);
+    setFetchingStatus.toggle();
+  }
+
+  const addQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
 
     for (let i = 0; i < num; i++) {
       let questionSet: LocalQuestionSet | undefined;
+      const c = concepts[Math.floor(Math.random() * concepts.length)];
       let tryCount = 0;
-      let err: any;
       do {
         try {
           tryCount++;
-          questionSet = await generateQuestionSet();
-        } catch (error: any) {
-          err = error;
-          console.error(`${tryCount} try failed: ${error.message}`);
+          questionSet = await generateQuestionSet(apiName, c, category, type, level);
+        } catch (error) {
+          console.error(`${tryCount} try failed: ${error}`);
         }
       } while (!questionSet && tryCount < 3)
 
       if (!questionSet) {
-        if ( err && err.type && err.type === 'insufficient_quota' ) {
-          toast({
-            title: 'Insufficient quota',
-            description: `You OpenAI API key exceeded your current quota, please check your OpenAI plan and billing details. You can also join our membership.`,
-            status: 'error',
-            duration: 20000,
-            isClosable: true,
-            position: 'top'
-          });    
-        }
+        toast({
+          description: `Failed to generate questions, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });   
         return;
       }
+
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
 
     addingQuestionCountRef.current -= num;
-  }
-
-  const generateQuestionSet = async (): Promise<LocalQuestionSet> => {
-    let c = concepts[Math.floor(Math.random() * concepts.length)];
-
-    const response = await fetch('/api/math/question', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        category: category,
-        type: type,
-        level: level,
-        concept: c
-      }),
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    console.log(data.result);
-    const questionString = data.result as string;
-    if (
-      !questionString.includes('Question:') ||
-      !questionString.includes('Workout:') ||
-      !questionString.includes('Options:') ||
-      !questionString.includes('Answer:')
-    ) throw new Error('Bad return.');
-
-    // get question
-    const question = questionString.split('Workout:')[0].replace('Question:','').trim();
-
-    // get workout
-    let regex = /(?<=Workout:).*?(?=Options:)/s;
-    let matches = questionString.match(regex);
-
-    if (!matches) throw new Error('No workout.');
-    const workout = matches[0];
-
-    // get answer
-    const answer = questionString.split("Answer:")[1].trim()[0].toUpperCase();
-    if (!['A', 'B', 'C', 'D'].includes(answer)) throw new Error('Answer in wrong format');
-
-    // get options
-    regex = /^[A-D]:\s(.+)$/gm;
-    matches = questionString.match(regex);
-
-    if (!matches) throw new Error('No options.');
-
-    const options = matches.map(match => match.slice(3));
-
-    const questionSet: LocalQuestionSet = {
-      type: QuestionType.MultiChoice,
-      category: QuestionCategory.Math,
-      level: level,
-      concept: c,
-      question: question,
-      options: options,
-      answer: answer,
-      selected: '',
-      workout: workout,
-      isBad: false,
-      isTarget: false
-    };
-
-    return questionSet;
   }
 
   const setSelectedValue = (value: string) => {
@@ -274,9 +303,14 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     );
 
     if (currentIndexRef.current > lastIndexRef.current) {
-      console.log(currentIndexRef.current, lastIndexRef.current, questionSetsRef.current.length)
       lastIndexRef.current += 1;
-      if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) AddQuestionSets(1);
+      if (isCompetition) {
+        addCompetitionQuestionSets(1, level);
+      } else if (isSavedQuestions) {
+
+      } else if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
+        addQuestionSets(1);
+      }
     }
 
     setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
@@ -298,8 +332,9 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
   }
 
   const submitButtonClickedHandler = async () => {
-    if (!currentUser) return;
+    if (!dataStoreUser) return;
     onCloseAlert();
+    setTimeStopped(true);
 
     let correct = 0;
     for (let i = 0; i <= lastIndexRef.current; i++) {
@@ -311,37 +346,86 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
     const statistic: Statistic = {
       ...InitStatistic,
       mathCorrect: correct,
-      mathWrong: lastIndexRef.current + 1 - correct
+      mathWrong: lastIndexRef.current + 1 - correct,
+      mathExam: isTest ? 1 : 0
     };
 
-    addStatisticData(statistic, currentUser.id);
+    setDataStoreUser(await addStatisticData(statistic, dataStoreUser.id));
 
     setResult({ total: lastIndexRef.current + 1, correct: correct });
     setIsSubmitted(true);
     onOpenResultModal();
+
+    if (
+      isTest && 
+      dataStoreUser.notification && 
+      dataStoreUser.notification.types.includes(NotificationType.INSTANT) &&
+      dataStoreUser.notification.emails.length > 0
+    ) {
+      const message = `${dataStoreUser.username} just finished a math test.
+Level: ${level}
+Total questions: ${lastIndexRef.current + 1}
+Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) + '%'})
+      `
+      sesSendEmail(
+        dataStoreUser.notification.emails as string[], 
+        'Learn with AI instant notification', message, 'notification@jinpearl.com'
+      );
+    }
   }
 
   const getQuestionColor = (q: LocalQuestionSet, index: number) => {
     const isCurrent = index === currentIndexRef.current;
 
     if (!(isSubmitted || isReview)) {
-      if (q.isTarget) return 'yellow';
+      if (q.isMarked) return 'yellow';
       if (!isCurrent) return 'gray';
       if (isCurrent) return 'teal';
     } else {
       if (q.answer !== q.selected) return 'red';
-      if (q.isTarget) return 'yellow';
+      if (q.isMarked) return 'yellow';
     }
 
     return 'teal';
   }
 
-  const targetButtonClickedHandler = () => {
+  const targetButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;
-    questionSetsRef.current[currentIndexRef.current].isTarget = !questionSetsRef.current[currentIndexRef.current].isTarget;
+    try {
+      await addMyMathQuestion(currentQuestionSet, testRef.current?.id, currentIndexRef.current);
+      questionSetsRef.current[currentIndexRef.current] = {
+        ...questionSetsRef.current[currentIndexRef.current],
+        isTarget: !questionSetsRef.current[currentIndexRef.current].isTarget
+      }
+      setCurrentQuestionSet({
+        ...currentQuestionSet,
+        isTarget: questionSetsRef.current[currentIndexRef.current].isTarget
+      });
+      
+      toast({
+        description: `Question is added successfully`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true
+      });   
+    } catch (error) {
+      console.error(error);
+      toast({
+        description: `Failed to add the question: ${error}`,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top'
+      });   
+    }
+  }
+
+  const markQuestionButtonClickedHandler = () => {
+    if (!currentQuestionSet) return;
+    questionSetsRef.current[currentIndexRef.current].isMarked = !questionSetsRef.current[currentIndexRef.current].isMarked;
     setCurrentQuestionSet({
       ...currentQuestionSet,
-      isTarget: questionSetsRef.current[currentIndexRef.current].isTarget
+      isMarked: questionSetsRef.current[currentIndexRef.current].isMarked
     });
   }
 
@@ -356,7 +440,9 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    if (!isReview) await addNewMathQuestions(currentUser!.id, isTest, questionSetsRef.current);
+    if (isTest || isReview) {
+      await saveTest(testRef.current!, duration, questionSetsRef.current);
+    }
     onClose();
     setIsProcessing(false);
   }
@@ -371,28 +457,83 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
       questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     }
 
-    const response = await fetch('/api/math/answer', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        question: questionString,
-      }),
-    });
+      const newAnswer = await getQuestionAnswer(apiName, questionString);
+      if (!newAnswer) {
+        toast({
+          description: `Failed to generate answer, please try again later.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
+      } else {
+        setCurrentQuestionSet({
+          ...currentQuestionSet,
+          workout: newAnswer
+        });
+        console.log(newAnswer);
+      }
+      setIsChallenging(false);
+  }
 
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+  const deleteButtonClickedHandler = async () => {
+    if (!savedQuestionSetsRef.current || savedQuestionSetsRef.current.length === 0) {
+      return;
     }
 
-    setCurrentQuestionSet({
-      ...currentQuestionSet,
-      workout: data.result
-    });
-    console.log(data.result);
+    try {
+      const {testId, indexInTest} = savedQuestionSetsRef.current[currentIndexRef.current];
+      
+      await DataStore.delete(savedQuestionSetsRef.current[currentIndexRef.current]);
 
-    setIsChallenging(false);
+      if (testId && indexInTest) {
+        const test = await DataStore.query(Test, testId);
+        if (test) {
+          let qs = [...test.questionSets];
+          qs[indexInTest] = {
+            ...qs[indexInTest],
+            isTarget: false
+          };
+
+          DataStore.save(Test.copyOf(test, updated => {
+            updated.questionSets = qs;
+          }));
+        }
+      }
+      
+      savedQuestionSetsRef.current.splice(currentIndexRef.current, 1);
+      questionSetsRef.current.splice(currentIndexRef.current, 1);
+
+      lastIndexRef.current -= 1;
+      if (lastIndexRef.current < 0) {
+        onClose();
+        toast({
+          description: `No questions`,
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
+      }
+
+      if (currentIndexRef.current > lastIndexRef.current) {
+        currentIndexRef.current = lastIndexRef.current;
+      }
+
+      setQuestionSets(questionSetsRef.current);
+      setCurrentQuestionSet(questionSetsRef.current[currentIndexRef.current]);
+
+      onCloseDeleteAlert();
+    } catch (error) {
+      console.error(`Failed to delete the question: ${error}`);
+      toast({
+        description: `Failed to delete the question, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });  
+    }
   }
   
   // For wrap auto scroll 
@@ -408,6 +549,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               size='sm'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
+              isDisabled={isCompetition && !isSubmitted}
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
@@ -417,6 +559,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               size='sm'
               onClick={()=>questionSetClickedHandler(index)}
               colorScheme={getQuestionColor(questionSet, index)}
+              isDisabled={isCompetition && !isSubmitted}
               w='35px' h='35px'
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
@@ -435,34 +578,39 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
 
   return (
     <>
+      <IconButton
+        rounded='full'
+        variant='ghost'
+        aria-label='Close'
+        icon={<Icon as={MdClose} boxSize={6} />}
+        onClick={closeButtonClickedHandler}
+        zIndex={100}
+        position='fixed'
+        top={2} right={2}
+      />
+
       {questionSetsRef.current.length < 1 ? (
         <Stack h='70vh'>
           <Spacer />
           <Center>
-            <Spinner size='xl'/>
+            <VStack>
+              <Spinner size='xl'/>
+              <Text fontSize='lg'>AI is generating questions</Text>
+              <Text fontSize='lg'>It may take a while, please wait...</Text>
+            </VStack>
           </Center>
           <Spacer />
         </Stack>
       ) : (
         <>
-          <IconButton
-            rounded='full'
-            variant='ghost'
-            aria-label='Close'
-            icon={<Icon as={MdClose} boxSize={6} />}
-            onClick={closeButtonClickedHandler}
-            zIndex={100}
-            position='fixed'
-            top={2} right={2}
-          />
            <VStack 
             maxW='2xl'
             mt={20} mx='auto'
             align='flex-start'
             spacing={4}
           >
-            <HStack>
-              <Text fontSize='sm'>{isReview ? questionSetsRef.current[0].level : level}</Text>
+            <HStack w='full'>
+              <Text fontSize='sm'>{currentQuestionSet ? currentQuestionSet.level : level}</Text>
               <Tag 
                 rounded='full' 
                 fontSize='sm'
@@ -470,6 +618,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
+              <Spacer />
+              {(isTest || isReview) && <Timer isStopped={timerStopped} duration={duration} setDuration={setDuration} />}
             </HStack>
             
             <HStack 
@@ -490,66 +640,100 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                     Question {currentIndex + 1}
                   </Text>
                   <Spacer />
+                  {isSavedQuestions ? (
+                    <>
+                      <Tooltip label='Delete from my questions'>
+                        <IconButton
+                          rounded='full'
+                          variant='ghost'
+                          aria-label='Delete from my questions'
+                          colorScheme='red'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdOutlineDelete} boxSize={6} />}
+                          onClick={onOpenDeleteAlert}
+                        />
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <>
+                      <Tooltip label={
+                          dataStoreUser!.membership!.current < 2 ?
+                          'The feature is not available' : 'Save the question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
+                          }
+                          aria-label='Add to my questions'
+                          colorScheme='teal'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={SlTarget} boxSize={6} />}
+                          onClick={targetButtonClickedHandler}
+                          isDisabled={
+                            !currentQuestionSet || 
+                            dataStoreUser!.membership!.current < 2 || 
+                            currentQuestionSet.isTarget
+                          }
+                        />
+                      </Tooltip>
 
-                  <Tooltip label='Add to my questions'>
-                    <IconButton
-                      rounded='full'
-                      variant='ghost'
-                      aria-label='Add to my questions'
-                      colorScheme='teal'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={SlTarget} boxSize={6} />}
-                      // onClick={targetButtonClickedHandler}
-                      // isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
-                    />
-                  </Tooltip>
+                      <Tooltip
+                        label={
+                          currentQuestionSet && currentQuestionSet.isMarked ?
+                          'Remove the mark' : 'Mark the question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isMarked ? 'solid' : 'ghost'
+                          }
+                          aria-label='Mark the question'
+                          colorScheme='yellow'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
+                          onClick={markQuestionButtonClickedHandler}
+                          isDisabled={
+                            !currentQuestionSet || 
+                            dataStoreUser!.membership!.current < 2 || 
+                            isReview
+                          }
+                        />
+                      </Tooltip>
 
-                  <Tooltip
-                    label={
-                      currentQuestionSet && currentQuestionSet.isTarget ?
-                      'Remove the mark' : 'Mark the question'
-                    }
-                  >
-                    <IconButton
-                      rounded='full'
-                      variant={
-                        currentQuestionSet && currentQuestionSet.isTarget ? 'solid' : 'ghost'
-                      }
-                      aria-label='Mark the question'
-                      colorScheme='yellow'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={MdBookmarkBorder} boxSize={6} />}
-                      onClick={targetButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || currentUser!.membership.current < 2 || isReview}
-                    />
-                  </Tooltip>
-
-                  <Tooltip
-                    label={
-                      currentQuestionSet && currentQuestionSet.isBad ?
-                      'Not bad' : 'Bad question'
-                    }
-                  >
-                    <IconButton
-                      rounded='full'
-                      variant={
-                        currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
-                      }
-                      aria-label='Bac question'
-                      colorScheme='yellow'
-                      size='sm'
-                      w='35px' h='35px'
-                      icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
-                      onClick={badButtonClickedHandler}
-                      isDisabled={!currentQuestionSet || isReview}
-                    />
-                  </Tooltip>
+                      <Tooltip
+                        label={
+                          currentQuestionSet && currentQuestionSet.isBad ?
+                          'Not bad' : 'Bad question'
+                        }
+                      >
+                        <IconButton
+                          rounded='full'
+                          variant={
+                            currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
+                          }
+                          aria-label='Bac question'
+                          colorScheme='yellow'
+                          size='sm'
+                          w='35px' h='35px'
+                          icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
+                          onClick={badButtonClickedHandler}
+                          isDisabled={!currentQuestionSet || isReview}
+                        />
+                      </Tooltip>
+                    </>
+                  )}
+                  
                 </HStack>
                 {currentQuestionSet ? (
                   <>
                     <Text 
+                      as={isCompetition ? Latex : Text}
                       textAlign='justify'
                       overflow='auto'
                     >
@@ -565,7 +749,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                                 key={index}
                                 isDisabled={isSubmitted || isReview}
                               >
-                                {`${String.fromCharCode(65 + index)}: ${option}`}
+                                <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
                               </Radio>
                             )
                           })
@@ -589,7 +773,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                 <Button
                   onClick={nextButtonClickedHandler}
                   isDisabled={
-                    !value || !currentQuestionSet || 
+                    (!value && !isSavedQuestions) || !currentQuestionSet || 
                     currentIndexRef.current + 1 >= maxNum ||
                     isSubmitted
                   }
@@ -618,6 +802,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                   onClick={()=>setShouldShowWorkout.toggle()}
                   isDisabled={
                     (isTest && !isSubmitted) ||
+                    (isCompetition && !isSubmitted) ||
                     !currentQuestionSet
                   }
                 />
@@ -635,8 +820,8 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                   onClick={onOpenAlert}
                   isDisabled={
                     questionSets.length === 0 ||
-                    isSubmitted || isReview ||
-                    addingQuestionCountRef.current !== 0
+                    isSubmitted || isReview
+                    // addingQuestionCountRef.current !== 0
                   }
                 >
                   Submit
@@ -667,7 +852,7 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
                 <>
                   {currentQuestionSet && currentQuestionSet.workout.split("\n").map((line, index) => (
                     <Fragment key={index}>
-                      {line}
+                      <Latex>{line}</Latex>
                       {index !== currentQuestionSet.workout.split("\n").length - 1 && <br />}
                     </Fragment>
                   ))}
@@ -733,12 +918,47 @@ function QuestionRun({ category, type, level, concepts, mode, maxNum = defaultNu
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>
+
+          <AlertDialog
+            isOpen={isOpenDeleteAlert}
+            leastDestructiveRef={cancelRef}
+            onClose={onCloseDeleteAlert}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Delete question
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure? You can not undo this action afterwards.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onCloseDeleteAlert}
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    colorScheme='red' 
+                    rounded={'full'}
+                    px={6}
+                    onClick={deleteButtonClickedHandler} 
+                    ml={3}
+                  >
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
         </>
       )}
-
-     
     </>
-    
   )
 }
 

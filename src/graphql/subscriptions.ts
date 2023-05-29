@@ -75,6 +75,10 @@ export const onCreateUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -156,6 +160,10 @@ export const onUpdateUser = /* GraphQL */ `
         score
         seed
         collections
+      }
+      notification {
+        emails
+        types
       }
       createdAt
       updatedAt
@@ -239,6 +247,10 @@ export const onDeleteUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -251,8 +263,9 @@ export const onDeleteUser = /* GraphQL */ `
 export const onCreateQuestionSet = /* GraphQL */ `
   subscription OnCreateQuestionSet(
     $filter: ModelSubscriptionQuestionSetFilterInput
+    $owner: String
   ) {
-    onCreateQuestionSet(filter: $filter) {
+    onCreateQuestionSet(filter: $filter, owner: $owner) {
       id
       question
       options
@@ -262,22 +275,23 @@ export const onCreateQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onUpdateQuestionSet = /* GraphQL */ `
   subscription OnUpdateQuestionSet(
     $filter: ModelSubscriptionQuestionSetFilterInput
+    $owner: String
   ) {
-    onUpdateQuestionSet(filter: $filter) {
+    onUpdateQuestionSet(filter: $filter, owner: $owner) {
       id
       question
       options
@@ -287,22 +301,23 @@ export const onUpdateQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
 export const onDeleteQuestionSet = /* GraphQL */ `
   subscription OnDeleteQuestionSet(
     $filter: ModelSubscriptionQuestionSetFilterInput
+    $owner: String
   ) {
-    onDeleteQuestionSet(filter: $filter) {
+    onDeleteQuestionSet(filter: $filter, owner: $owner) {
       id
       question
       options
@@ -312,14 +327,14 @@ export const onDeleteQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -331,7 +346,8 @@ export const onCreateTest = /* GraphQL */ `
     onCreateTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -347,6 +363,7 @@ export const onCreateTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -365,7 +382,8 @@ export const onUpdateTest = /* GraphQL */ `
     onUpdateTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -381,6 +399,7 @@ export const onUpdateTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -399,7 +418,8 @@ export const onDeleteTest = /* GraphQL */ `
     onDeleteTest(filter: $filter, owner: $owner) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -415,6 +435,7 @@ export const onDeleteTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt

@@ -10,16 +10,16 @@
   "lambdaLayers": [],
   "environmentVariableList": [
     {
+      "cloudFormationParameterName": "paypalWebhookId",
+      "environmentVariableName": "PAYPAL_WEBHOOK_ID"
+    },
+    {
       "cloudFormationParameterName": "paypalApiEndpoint",
       "environmentVariableName": "PAYPAL_API_ENDPOINT"
     },
     {
       "cloudFormationParameterName": "paypalClientId",
       "environmentVariableName": "PAYPAL_CLIENT_ID"
-    },
-    {
-      "cloudFormationParameterName": "paypalWebhookId",
-      "environmentVariableName": "PAYPAL_WEBHOOK_ID"
     }
   ],
   "secretNames": [

@@ -1,18 +1,30 @@
+export enum APIOperation {
+  WritingPrompt = 'writing-prompt',
+  WritingMark = 'writing-mark',
+  WritingPolish = 'writing-polish',
+  MathAnswer = 'math-answer',
+  MathQuestion = 'math-question',
+  MathDataset = 'math-dataset',
+  AskAnything = 'ask-anything',
+}
+
+export type APIResponse = {
+  statusCode: number;
+  data?: any;
+  error?: string
+};
+
 export enum QuestionType {
   MultiChoice = 'multi-choice',
 }
 
 export enum MathConcept {
-  // Addition = 'addition',
-  // Subtraction = 'subtraction',
-  // Multiplication = 'multiplication',
-  // Division = 'division',
   Arithmetic = 'arithmetic',
   Decimals = 'decimals',
   Percentage = 'percentage',
   Ratio = 'ratio',
-
-  // Fractions = 'fractions',
+  Fractions = 'fractions',
+  TimeJourney = 'time or journey'
   // Probability = 'probability',
   // Statistics = 'statistics',
   // Algebra = 'algebra',
@@ -42,8 +54,6 @@ export enum MathConcept {
   // Indices = 'indices',
   // MeasurementPerimeter = 'measurement perimeter',
   // MeasurementArea = 'measurement area',
-  
-
 }
 
 export enum QuestionCategory {
@@ -66,8 +76,12 @@ export enum QuestionLevel {
   Year12 = 'Year-12',
   GSM8K = 'GSM8K',
   MathQA = 'MathQA',
-  AQuA = 'AQuA',
-  
+  // AQuA = 'AQuA',
+  Level1 = 'Level 1',
+  Level2 = 'Level 2',
+  Level3 = 'Level 3',
+  Level4 = 'Level 4',
+  Level5 = 'Level 5',
   // Primary = 'primary school',
   // Middle = 'middle school',
   // High = 'high school'
@@ -85,6 +99,7 @@ export type QuestionSet = {
   workout: string,
   isBad: boolean,
   isTarget: boolean,
+  isMarked?: boolean | null
 }
 
 export enum EssayTopic {
@@ -124,4 +139,20 @@ export type MathQAQuestion = {
 export type GSM8KQuestion = {
   question: string
   answer: string
+}
+
+export type CompetitionQuestion = {
+  problem: string
+  level: string
+  type: string
+  solution: string
+}
+
+export enum APIName {
+  OpenAI = 'openai',
+}
+
+export enum APIError {
+  Timeout = 'request is timed out',
+  TooBusy = 'the server is too busy',
 }

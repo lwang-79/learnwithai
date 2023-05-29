@@ -72,6 +72,10 @@ export const getUser = /* GraphQL */ `
         seed
         collections
       }
+      notification {
+        emails
+        types
+      }
       createdAt
       updatedAt
       _version
@@ -155,6 +159,10 @@ export const listUsers = /* GraphQL */ `
           score
           seed
           collections
+        }
+        notification {
+          emails
+          types
         }
         createdAt
         updatedAt
@@ -248,6 +256,10 @@ export const syncUsers = /* GraphQL */ `
           score
           seed
           collections
+        }
+        notification {
+          emails
+          types
         }
         createdAt
         updatedAt
@@ -344,6 +356,10 @@ export const userBySub = /* GraphQL */ `
           seed
           collections
         }
+        notification {
+          emails
+          types
+        }
         createdAt
         updatedAt
         _version
@@ -439,6 +455,10 @@ export const userByPayerId = /* GraphQL */ `
           seed
           collections
         }
+        notification {
+          emails
+          types
+        }
         createdAt
         updatedAt
         _version
@@ -463,14 +483,14 @@ export const getQuestionSet = /* GraphQL */ `
       category
       level
       concept
-      correctCount
-      wrongCount
-      badCount
+      testId
+      indexInTest
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
     }
   }
 `;
@@ -491,14 +511,14 @@ export const listQuestionSets = /* GraphQL */ `
         category
         level
         concept
-        correctCount
-        wrongCount
-        badCount
+        testId
+        indexInTest
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -528,14 +548,14 @@ export const syncQuestionSets = /* GraphQL */ `
         category
         level
         concept
-        correctCount
-        wrongCount
-        badCount
+        testId
+        indexInTest
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
       }
       nextToken
       startedAt
@@ -547,7 +567,8 @@ export const getTest = /* GraphQL */ `
     getTest(id: $id) {
       id
       category
-      DateTime
+      dateTime
+      duration
       total
       wrong
       correct
@@ -563,6 +584,7 @@ export const getTest = /* GraphQL */ `
         workout
         isBad
         isTarget
+        isMarked
       }
       createdAt
       updatedAt
@@ -583,7 +605,8 @@ export const listTests = /* GraphQL */ `
       items {
         id
         category
-        DateTime
+        dateTime
+        duration
         total
         wrong
         correct
@@ -599,6 +622,7 @@ export const listTests = /* GraphQL */ `
           workout
           isBad
           isTarget
+          isMarked
         }
         createdAt
         updatedAt
@@ -628,7 +652,8 @@ export const syncTests = /* GraphQL */ `
       items {
         id
         category
-        DateTime
+        dateTime
+        duration
         total
         wrong
         correct
@@ -644,6 +669,7 @@ export const syncTests = /* GraphQL */ `
           workout
           isBad
           isTarget
+          isMarked
         }
         createdAt
         updatedAt
