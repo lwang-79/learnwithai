@@ -1,8 +1,13 @@
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import { APIResponse } from "../types";
-import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 
+const OPENAI_API_KEY = Buffer.from(process.env.OPENAI_API_KEY, 'base64').toString();
 
+const configuration = new Configuration({
+  apiKey: OPENAI_API_KEY
+});
+
+const openai = new OpenAIApi(configuration);  
 
 export const chatCompletion = async (
   messages:  ChatCompletionRequestMessage[],
@@ -10,19 +15,19 @@ export const chatCompletion = async (
   max_tokens: number = 1000
 ): Promise<APIResponse> => {
 
-  const { Parameter } = await (new SSMClient({
-    region: process.env.AWS_REGION
-  }))
-    .send(new GetParameterCommand({
-      Name: process.env['OPENAI_API_KEY'],
-      WithDecryption: true,
-    }));
+  // const { Parameter } = await (new SSMClient({
+  //   region: process.env.AWS_REGION
+  // }))
+  //   .send(new GetParameterCommand({
+  //     Name: process.env['OPENAI_API_KEY'],
+  //     WithDecryption: true,
+  //   }));
   
-  const configuration = new Configuration({
-    apiKey: Parameter.Value,
-  });
+  // const configuration = new Configuration({
+  //   apiKey: Parameter.Value,
+  // });
   
-  const openai = new OpenAIApi(configuration);  
+  // const openai = new OpenAIApi(configuration);  
 
   if (!configuration.apiKey) {
     return {

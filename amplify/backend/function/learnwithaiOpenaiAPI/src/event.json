@@ -1,3 +1,6 @@
 {
-  "body": "{\"operation\":\"writing-prompt\",\"type\":\"narrative\",\"level\":\"Year-9\",\"topic\":\"society\"}"
+  "operation": "writing-prompt",
+  "type": "narrative",
+  "level": "Year-6",
+  "topic": "society"
 }

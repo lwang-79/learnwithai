@@ -35,8 +35,8 @@
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-443355727454664a4e73-build.zip",
-          "secretsPathAmplifyAppId": "d3pwxvup88n55n"
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-45385462347453556752-build.zip",
+          "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},
         "learnwithai6c436a2f": {}

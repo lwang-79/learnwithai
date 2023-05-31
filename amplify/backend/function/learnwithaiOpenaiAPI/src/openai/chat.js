@@ -38,50 +38,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.chatCompletion = void 0;
 var openai_1 = require("openai");
-var client_ssm_1 = require("@aws-sdk/client-ssm");
+var OPENAI_API_KEY = Buffer.from(process.env.OPENAI_API_KEY, 'base64').toString();
+var configuration = new openai_1.Configuration({
+    apiKey: OPENAI_API_KEY
+});
+var openai = new openai_1.OpenAIApi(configuration);
 var chatCompletion = function (messages, temperature, max_tokens) {
     if (temperature === void 0) { temperature = 1; }
     if (max_tokens === void 0) { max_tokens = 1000; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var Parameter, configuration, openai, completion, error_1;
+        var completion, error_1;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, (new client_ssm_1.SSMClient({
-                        region: process.env.AWS_REGION
-                    }))
-                        .send(new client_ssm_1.GetParameterCommand({
-                        Name: process.env['OPENAI_API_KEY'],
-                        WithDecryption: true
-                    }))];
-                case 1:
-                    Parameter = (_b.sent()).Parameter;
-                    configuration = new openai_1.Configuration({
-                        apiKey: Parameter.Value
-                    });
-                    openai = new openai_1.OpenAIApi(configuration);
+                case 0:
+                    // const { Parameter } = await (new SSMClient({
+                    //   region: process.env.AWS_REGION
+                    // }))
+                    //   .send(new GetParameterCommand({
+                    //     Name: process.env['OPENAI_API_KEY'],
+                    //     WithDecryption: true,
+                    //   }));
+                    // const configuration = new Configuration({
+                    //   apiKey: Parameter.Value,
+                    // });
+                    // const openai = new OpenAIApi(configuration);  
                     if (!configuration.apiKey) {
                         return [2 /*return*/, {
                                 statusCode: 500,
                                 error: "Missing API Key"
                             }];
                     }
-                    _b.label = 2;
-                case 2:
-                    _b.trys.push([2, 4, , 5]);
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, openai.createChatCompletion({
                             model: "gpt-3.5-turbo",
                             messages: messages,
                             temperature: temperature,
                             max_tokens: max_tokens
                         })];
-                case 3:
+                case 2:
                     completion = _b.sent();
                     return [2 /*return*/, {
                             statusCode: 200,
                             data: (_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.content
                         }];
-                case 4:
+                case 3:
                     error_1 = _b.sent();
                     if (error_1.response) {
                         console.error(error_1.response.status, error_1.response.data);
@@ -97,8 +100,8 @@ var chatCompletion = function (messages, temperature, max_tokens) {
                                 error: 'An error occurred during your request.'
                             }];
                     }
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

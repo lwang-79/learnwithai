@@ -304,7 +304,6 @@ export const generateQuestionSet = async (
     return undefined;
   }
 
-  console.log(body.data);
   const questionString = body.data as string;
   if (
     !questionString.includes('Question:') ||
