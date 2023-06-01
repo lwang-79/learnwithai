@@ -302,7 +302,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       questionSetsRef.current[currentIndexRef.current].selected : ''
     );
 
-    if (currentIndexRef.current > lastIndexRef.current) {
+    if (currentIndexRef.current > lastIndexRef.current && !isSubmitted) {
       lastIndexRef.current += 1;
       if (isCompetition) {
         addCompetitionQuestionSets(1, level);
@@ -353,6 +353,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     setDataStoreUser(await addStatisticData(statistic, dataStoreUser.id));
 
     setResult({ total: lastIndexRef.current + 1, correct: correct });
+    lastIndexRef.current = questionSets.length - 1;
     setIsSubmitted(true);
     onOpenResultModal();
 
@@ -441,7 +442,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
     if (isTest || isReview) {
-      await saveTest(testRef.current!, duration, questionSetsRef.current);
+      await saveTest(testRef.current!, duration, questionSetsRef.current.slice(0, questionSets.length));
     }
     onClose();
     setIsProcessing(false);
@@ -452,28 +453,27 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
     setIsChallenging(true);
 
-    let questionString = currentQuestionSet.question + ` Options: `;
-    for (let i = 0; i < currentQuestionSet.options.length; i++) {
-      questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
-    }
+    let questionString = currentQuestionSet.question; // + ` Options: `;
+    // for (let i = 0; i < currentQuestionSet.options.length; i++) {
+    //   questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
+    // }
 
-      const newAnswer = await getQuestionAnswer(apiName, questionString);
-      if (!newAnswer) {
-        toast({
-          description: `Failed to generate answer, please try again later.`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top'
-        });
-      } else {
-        setCurrentQuestionSet({
-          ...currentQuestionSet,
-          workout: newAnswer
-        });
-        console.log(newAnswer);
-      }
-      setIsChallenging(false);
+    const newAnswer = await getQuestionAnswer(apiName, questionString);
+    if (!newAnswer) {
+      toast({
+        description: `Failed to generate answer, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+    } else {
+      setCurrentQuestionSet({
+        ...currentQuestionSet,
+        workout: newAnswer
+      });
+    }
+    setIsChallenging(false);
   }
 
   const deleteButtonClickedHandler = async () => {
@@ -483,15 +483,14 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
     try {
       const {testId, indexInTest} = savedQuestionSetsRef.current[currentIndexRef.current];
-      
       await DataStore.delete(savedQuestionSetsRef.current[currentIndexRef.current]);
 
-      if (testId && indexInTest) {
+      if (testId) {
         const test = await DataStore.query(Test, testId);
         if (test) {
           let qs = [...test.questionSets];
-          qs[indexInTest] = {
-            ...qs[indexInTest],
+          qs[indexInTest!] = {
+            ...qs[indexInTest!],
             isTarget: false
           };
 
@@ -774,8 +773,8 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                   onClick={nextButtonClickedHandler}
                   isDisabled={
                     (!value && !isSavedQuestions) || !currentQuestionSet || 
-                    currentIndexRef.current + 1 >= maxNum ||
-                    isSubmitted
+                    (currentIndexRef.current >= lastIndexRef.current && (isSubmitted || isSavedQuestions)) ||
+                    currentIndexRef.current + 1 >= maxNum
                   }
                 >
                   Next

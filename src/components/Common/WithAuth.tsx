@@ -13,7 +13,7 @@ const WithAuth: React.FC<pageProps> = ({ children, href }) => {
   const { getItem } = useStorage();
   const isAuthenticated = (getItem('isAuthenticated', 'local') === 'true');
   const { dataStoreUser } = useContext(SharedComponents);
-  console.log('withauth', isAuthenticated)
+
   useEffect(() => {
     if (!isAuthenticated) {
       if (href) router.push(href);

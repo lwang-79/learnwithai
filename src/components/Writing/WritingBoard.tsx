@@ -410,7 +410,7 @@ Total words: ${count}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              You will not be allowed to change the essay again.
+              You will not be allowed to change your writing again.
             </AlertDialogBody>
 
             <AlertDialogFooter>

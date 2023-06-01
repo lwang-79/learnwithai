@@ -164,6 +164,9 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     /month
                   </Text>
                 </HStack>
+                <Text color="orange.500" fontWeight="500" fontSize="lg">
+                  7 days free trial
+                </Text>
               </Box>
               <VStack
                 bg={useColorModeValue('gray.50', 'gray.700')}
@@ -174,10 +177,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.personal.mathPerDay} math questions per day
                   </ListItem>
-                  <ListItem>
+                  {/* <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.personal.readingPerDay} reading sets per day
-                  </ListItem>
+                  </ListItem> */}
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.personal.writingPerDay} writing practice per day
@@ -241,6 +244,9 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     /month
                   </Text>
                 </HStack>
+                <Text color="orange.500" fontWeight="500" fontSize="lg">
+                  7 days free trial
+                </Text>
               </Box>
               <VStack
                 bg={useColorModeValue('gray.50', 'gray.700')}
@@ -251,10 +257,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.professional.mathPerDay} math questions per day
                   </ListItem>
-                  <ListItem>
+                  {/* <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.professional.readingPerDay} reading sets per day
-                  </ListItem>
+                  </ListItem> */}
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.professional.writingPerDay} writing practice per day

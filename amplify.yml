@@ -13,10 +13,9 @@ frontend:
     build:
       commands:
         - echo "NEXT_PUBLIC_AWS_BRANCH=$AWS_BRANCH" >> .env.production
-        # - env | grep -e OPENAI_API_KEY >> .env.production
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - '**/*'
   cache:

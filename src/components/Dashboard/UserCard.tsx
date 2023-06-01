@@ -2,6 +2,7 @@ import { Statistic } from "@/models"
 import { 
   Card, 
   CardBody, 
+  Divider, 
   HStack, 
   Icon,
   Link, 
@@ -54,17 +55,23 @@ function UserCard() {
 
   return (
     <Card w='full'>
-      <CardBody>
-        <Text mb={4}>Welcome {user.username}</Text>
-        <VStack align='flex-start'>
+      <VStack align='flex-start' mb={4}>
+        <Text mx={6} mt={4}>Welcome {user.username}</Text>
+        <Divider />
+        <VStack align='flex-start' px={6} w='full' spacing={1}>
           <HStack w='full'>
-            <Icon as={BiMath} color='teal' />
+            <Icon as={BiMath} color='orange.500' />
             <Text>Math:</Text>
             <Spacer />
             <Tag size='sm' colorScheme='teal' rounded='full'>Level-{mathLevel}</Tag>
           </HStack>
           {daily && daily.mathCorrect + daily.mathWrong > 0 ? (
-            <Text fontSize='sm'>Today: {daily.mathCorrect} / {daily.mathCorrect + daily.mathWrong} {(daily.mathCorrect / (daily.mathCorrect + daily.mathWrong) * 100).toFixed(0)}%</Text>
+            <HStack w='full'>
+              <Text fontSize='sm'>Today: {daily.mathCorrect} / {daily.mathCorrect + daily.mathWrong}</Text>
+              <Spacer />
+              <Text fontSize='sm'>{(daily.mathCorrect / (daily.mathCorrect + daily.mathWrong) * 100).toFixed(0)}%</Text>
+            </HStack>
+            
           ) : (
             <HStack>
               <Text fontSize='sm'>
@@ -82,16 +89,26 @@ function UserCard() {
           )}
 
           {monthly && monthly.mathCorrect + monthly.mathWrong > 0 &&
-            <Text fontSize='sm'>This month: {monthly.mathCorrect} / {monthly.mathCorrect + monthly.mathWrong} {(monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong) * 100).toFixed(0)}%</Text>
+            <HStack w='full'>
+              <Text fontSize='sm'>This month: {monthly.mathCorrect} / {monthly.mathCorrect + monthly.mathWrong}</Text>
+              <Spacer />
+              <Text fontSize='sm'>{(monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong) * 100).toFixed(0)}%</Text>
+            </HStack>
+            
           }
 
           {yearly && yearly.mathCorrect + yearly.mathWrong > 0 &&
-            <Text fontSize='sm'>This year: {yearly.mathCorrect} / {yearly.mathCorrect + yearly.mathWrong} {(yearly.mathCorrect / (yearly.mathCorrect + yearly.mathWrong) * 100).toFixed(0)}%</Text>
+            <HStack w='full'>
+              <Text fontSize='sm'>This year: {yearly.mathCorrect} / {yearly.mathCorrect + yearly.mathWrong}</Text>
+              <Spacer />
+              <Text fontSize='sm'>{(yearly.mathCorrect / (yearly.mathCorrect + yearly.mathWrong) * 100).toFixed(0)}%</Text>
+            </HStack>
           }
-
-          <Spacer />
+        </VStack>
+        <Divider />
+        <VStack align='flex-start' px={6} w='full' spacing={1}>
           <HStack w='full'>
-            <Icon as={TbWriting} color='teal' />
+            <Icon as={TbWriting} color='orange.500' />
             <Text>Writing:</Text>
             <Spacer />
             <Tag size='sm' colorScheme='teal' rounded='full'>Level-{writingLevel}</Tag>
@@ -125,7 +142,7 @@ function UserCard() {
         </VStack>
 
         
-      </CardBody>
+      </VStack>
     </Card>
   )
 }

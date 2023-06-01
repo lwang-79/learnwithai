@@ -137,7 +137,7 @@
         }
       ]
     },
-    "AMPLIFY_function_learnwithaiOpenaiAPI_s3Key": {
+    "AMPLIFY_function_learnwithaiOpenaiAPI_openaiApiKey": {
       "usedBy": [
         {
           "category": "function",
@@ -145,7 +145,7 @@
         }
       ]
     },
-    "AMPLIFY_function_learnwithaiOpenaiAPI_secretsPathAmplifyAppId": {
+    "AMPLIFY_function_learnwithaiOpenaiAPI_s3Key": {
       "usedBy": [
         {
           "category": "function",
