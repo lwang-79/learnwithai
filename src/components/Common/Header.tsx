@@ -111,7 +111,7 @@ export default function Header() {
                 <Box color={'teal.400'}>
                   <Icon as={MdOutlineSchool}  boxSize={8}/> 
                   <Text as='b'>
-                    LearnWithAI
+                    {process.env.NEXT_PUBLIC_APP_NAME}
                   </Text>
                 </Box>
               </Link>
