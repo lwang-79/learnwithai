@@ -12,7 +12,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - echo "NEXT_PUBLIC_AWS_BRANCH=$AWS_BRANCH" >> .env.production
+        - echo "NEXT_PUBLIC_AWS_BRANCH=$USER_BRANCH" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: out
