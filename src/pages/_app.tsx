@@ -79,7 +79,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={theme}>
       <Head>
         <title>Learn with AI</title>
-        <meta name="description" content="Learn with AI" />
+        <meta name="description" content="Study with AI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>

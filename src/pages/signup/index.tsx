@@ -163,7 +163,7 @@ export default function SignupCard() {
               <Box color={'teal.400'}>
                 <Icon as={MdOutlineSchool} boxSize={10}/> 
                 <Text as='b' fontSize='xl'>
-                  LearnWithAI
+                  {process.env.NEXT_PUBLIC_APP_NAME}
                 </Text>
               </Box>
             </Link>
