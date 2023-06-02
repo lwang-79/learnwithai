@@ -31,6 +31,7 @@ export default function Home() {
 
         if (user !== undefined) {
           setDataStoreUser(user);
+          console.log(`User is in DataStore. ${retryCount} tries`)
           return;
         }
 
@@ -45,10 +46,13 @@ export default function Home() {
     Auth.currentAuthenticatedUser()
     .then( authUser => {
       setItem('isAuthenticated', 'true', 'local');
-      console.log('create?')
       createUserIfNotExist(authUser.attributes)
       .then(user=>getAndSetDataStoreUser(user.id))
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(`Failed to create or fetch user: ${err}`);
+        setItem('isAuthenticated', 'false', 'local');
+        router.push('/intro');
+      });
     })
     .catch((err) => {
       console.error(err);

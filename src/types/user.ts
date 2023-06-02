@@ -42,6 +42,7 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
   const matchedUsers = queryResult.data?.userBySub?.items
 
   if (matchedUsers && matchedUsers.length > 0) {
+    console.log(`User exists in DB.`);
     return(matchedUsers[0]! as UserParams);
   }
 
@@ -71,6 +72,7 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
   ) as GraphQLResult<CreateUserMutation>
 
   const user = mutationResult.data?.createUser as UserParams
+  console.log(`User created in DB.`, user);
   
   return(user);
 }

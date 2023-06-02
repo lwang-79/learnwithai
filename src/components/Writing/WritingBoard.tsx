@@ -117,6 +117,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         })
     
         setEssay(essay);
+        updateStatistic();
       }
     });
   },[apiName, essay, level, onClose, toast, topic, type]);
@@ -124,6 +125,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   useEffect(() => {
     setCount(countWords(text));
   },[text]);
+
+  const updateStatistic = async () => {
+    const statistic: Statistic = {
+      ...InitStatistic,
+      writingRequest: 1
+    }
+
+    setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
+  }
 
 
   const markEssay = () => {

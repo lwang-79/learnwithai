@@ -70,13 +70,6 @@ function Writing() {
     }
 
     setTimeout(()=>onOpenExamModal(), 100);
-
-    const statistic: Statistic = {
-      ...InitStatistic,
-      writingRequest: 1
-    }
-
-    setDataStoreUser(await addStatisticData(statistic, user.id));
   }
 
   const openModalWithEssay = (essay: Essay) => {
@@ -89,7 +82,7 @@ function Writing() {
     setTimeout(()=>onOpenExamModal(), 100);
   }
 
-  const onCloseHandler = () => {
+  const onCloseHandler = async () => {
     onCloseExamModal();
     setRefreshEssayList.toggle();
   }

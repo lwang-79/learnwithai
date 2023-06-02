@@ -268,22 +268,29 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
         }
       } while (!questionSet && tryCount < 3)
 
+      addingQuestionCountRef.current -= 1;
+
       if (!questionSet) {
-        toast({
-          description: `Failed to generate questions, please try again later.`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top'
-        });   
-        return;
+        if (
+          addingQuestionCountRef.current === 0 &&
+          questionSetsRef.current.length === 0
+        ){
+          onClose();
+          toast({
+            description: `Failed to generate questions, please try again later.`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top'
+          });
+          return;
+        }        
+        continue;
       }
 
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
-
-    addingQuestionCountRef.current -= num;
   }
 
   const setSelectedValue = (value: string) => {
@@ -444,9 +451,21 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     if (isTest || isReview) {
       await saveTest(testRef.current!, duration, questionSetsRef.current.slice(0, questionSets.length));
     }
+
+    if (mode !== QuestionRunMode.SavedQuestions) { // Saved question doesn't consume quota
+
+      const statistic: Statistic = {
+        ...InitStatistic,
+        mathRequest: Number(maxNum)
+      }
+
+      setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
+    }
+
     onClose();
     setIsProcessing(false);
   }
+  
 
   const challengeButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;

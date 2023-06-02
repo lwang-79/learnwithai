@@ -139,7 +139,8 @@ function Notification({ user }: NotificationProps) {
           <Tooltip
             hasArrow
             bg='teal'
-            label={`Send practicing report by email.`}
+            label={`Schedule report and send by email. \n 
+                    Monitor activity instantly. \n`}
           >
             <span><Icon as={MdHelpOutline} boxSize={5} /></span>
           </Tooltip>
