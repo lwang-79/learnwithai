@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import WithAuth from '@/components/Common/WithAuth';
 import useStorage from '@/hooks/useStorage';
 import MyHome from '@/components/Home/MyHome';
-import { createUserIfNotExist } from '@/types/user';
+import { getDataStoreUserOrCreateIfNotExist } from '@/types/user';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
 import { User } from '@/models';
@@ -22,37 +22,19 @@ export default function Home() {
       return;
     }
 
-    const getAndSetDataStoreUser = async (userId: string) => {
-      let retryCount = 0;
-      let user: User | undefined;
-
-      while (retryCount < 50) {
-        user = await DataStore.query(User, userId);
-
-        if (user !== undefined) {
-          setDataStoreUser(user);
-          console.log(`User is in DataStore. ${retryCount} tries`)
-          return;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 100));
-        retryCount++;
-      }
-
-      console.error('User is not in DataStore');
-      router.push('/intro');    
-    }
-
     Auth.currentAuthenticatedUser()
     .then( authUser => {
       setItem('isAuthenticated', 'true', 'local');
-      createUserIfNotExist(authUser.attributes)
-      .then(user=>getAndSetDataStoreUser(user.id))
-      .catch(err => {
-        console.error(`Failed to create or fetch user: ${err}`);
-        setItem('isAuthenticated', 'false', 'local');
-        router.push('/intro');
-      });
+      getDataStoreUserOrCreateIfNotExist(authUser.attributes)
+      .then(user => {
+        if (!user) {
+          console.error('Failed to create or fetch user');
+          setItem('isAuthenticated', 'false', 'local');
+          router.push('/intro');
+          return;
+        }
+        setDataStoreUser(user);
+      })
     })
     .catch((err) => {
       console.error(err);
