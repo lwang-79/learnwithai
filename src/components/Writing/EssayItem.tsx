@@ -54,7 +54,13 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
       <HStack align='flex-end' w='full' >
         <Text whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>{essay.DateTime.slice(0,10)}</Text>
         <Text whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>{essay.level}</Text>
-        <Text color='teal' whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>{essay.type === EssayType.Narrative ? 'Creative Writing': 'Persuasive Essay'}</Text>
+        <Text color='teal' whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>
+          {
+            essay.type === EssayType.Narrative ? 'Creative Writing' :
+            essay.type === EssayType.Persuasive ? 'Persuasive Essay' :
+            'Custom Writing'
+          }
+        </Text>
         <Text 
           fontSize='sm'
           whiteSpace='nowrap' 

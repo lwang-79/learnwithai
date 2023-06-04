@@ -3,8 +3,8 @@ import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
-import { Statistic, Test } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
+import { Test } from '@/models';
+import { getTodayStatistic } from '@/types/statistic';
 import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
 import { 
   Button, 
@@ -51,7 +51,7 @@ function MathExam() {
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();

@@ -15,12 +15,6 @@ import {
   HStack,
   Icon,
   IconButton, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalFooter, 
-  ModalHeader, 
   SkeletonText, 
   Spacer, 
   Spinner, 
@@ -35,7 +29,7 @@ import {
 import ResizeTextarea from "react-textarea-autosize";
 import { Fragment, useContext, useEffect, useRef, useState } from "react"
 import { MdClose } from "react-icons/md"
-import { API, DataStore } from "aws-amplify";
+import { DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
 import { APIPost, sesSendEmail } from "@/types/utils";
@@ -74,15 +68,22 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     onClose: onCloseAlert 
   } = useDisclosure();
 
-  const { 
-    isOpen: isOpenPromptModal, 
-    onOpen: onOpenPromptModal, 
-    onClose: onClosePromptModal
-  } = useDisclosure();
-
   // generate writing topic
   useEffect(() => {
     if (essay) return;
+    if (type === EssayType.Custom) {
+      const essay = new Essay({
+        type: type,
+        level: level,
+        topic: '',
+        prompt: '',
+        text: '',
+        DateTime: (new Date()).toISOString()
+      })
+  
+      setEssay(essay);
+      return;
+    }
 
     const request = {
       body: {
@@ -94,7 +95,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     };
 
     APIPost(apiName, '/', request)
-    .then(body => {
+    .then(async body => {
       if (!body.data) {
         toast({
           description: `Failed to generate prompt, please try again later.`,
@@ -117,24 +118,19 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         })
     
         setEssay(essay);
-        updateStatistic();
+
+        const statistic: Statistic = {
+          ...InitStatistic,
+          writingRequest: 1
+        }
+        setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
       }
     });
-  },[apiName, essay, level, onClose, toast, topic, type]);
+  },[apiName, dataStoreUser, essay, level, onClose, setDataStoreUser, toast, topic, type]);
 
   useEffect(() => {
     setCount(countWords(text));
   },[text]);
-
-  const updateStatistic = async () => {
-    const statistic: Statistic = {
-      ...InitStatistic,
-      writingRequest: 1
-    }
-
-    setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
-  }
-
 
   const markEssay = () => {
     if (!essay) return;
@@ -152,7 +148,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     };
 
     APIPost(apiName, '/', request)
-    .then(body => {
+    .then(async body => {
       if (!body.data) {
         toast({
           description: `Failed to mark the essay, please try again later.`,
@@ -164,6 +160,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       } else {
         const mark = body.data as string;
         setMark(mark.trim());
+
+        if (type === EssayType.Custom) {
+          const statistic: Statistic = {
+            ...InitStatistic,
+            writingRequest: 1,
+          };
+      
+          setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
+        }
       }
       setIsMarking(false);
     });
@@ -236,26 +241,53 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const submitButtonClickedHandler = async () => {
     if (!essay) return;
 
+    if (essay.prompt.trim().length < 10) {
+      toast({
+        description: `Your writing prompt is too short.`,
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true
+      });
+      return;
+    }
+
+    if (text.trim().length < 50) {
+      toast({
+        description: `Your writing is too short, please finish your writing before submitting.`,
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true
+      });
+      return;
+    }
+
     setIsSubmitted(true);
 
-    if (initEssay) {
-      DataStore.save(Essay.copyOf(
-        initEssay,
-        updated => {
-          updated.text = text
-        }
-      ));
-    } else {
-      if (dataStoreUser!.membership!.current >= 2) {
+    // check if the user has enough quota to save the essay
+    if (dataStoreUser!.membership!.current >= 2) {
+      const savedEssayCount = (await DataStore.query(Essay)).length;
+
+      if (savedEssayCount >= dataStoreUser!.quota!.savedEssays) {
+        toast({
+          description: `You have reached the maximum SavedEssays quota ${dataStoreUser!.quota!.savedEssays}. This essay is not saved, please delete some essays or upgrade your plan.`,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+      } else {
         DataStore.save(Essay.copyOf(
           essay,
           updated => {
             updated.text = text;
           }
-        ));  
+        ));
       }
     }
 
+    // update the user's statistic
     const statistic: Statistic = {
       ...InitStatistic,
       writing: 1,
@@ -266,6 +298,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     markEssay();
     onCloseAlert();
 
+    // send instant email notification
     if (
       dataStoreUser && 
       dataStoreUser.membership!.current > 2 &&
@@ -311,22 +344,35 @@ Total words: ${count}
                 <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
               }
               <Spacer />
-              <Button 
-                size='sm'
-                variant='ghost'
-                isDisabled={isSubmitted}
-                onClick={onOpenPromptModal}
-              >
-                I have my own topic
-              </Button>
             </HStack>
-            <Box>
-              {essay && essay.prompt.split("\n").map((line, index) => (
-                <Fragment key={index}>
-                  {line}
-                  {index !== essay.prompt.split("\n").length - 1 && <br />}
-                </Fragment>
-              ))}
+            <Box w='full'>
+              {type === EssayType.Custom ? (
+                <Textarea
+                  as={ResizeTextarea}
+                  defaultValue={essay.prompt}
+                  placeholder='Please input your own writing prompt here.'
+                  minRows={1}
+                  isDisabled={isSubmitted}
+                  onChange={(e)=>setPrompt(e.target.value)}
+                  onBlur={
+                    ()=>{
+                      setEssay(Essay.copyOf(
+                        essay!,
+                        updated => {
+                          updated.prompt = prompt
+                        }
+                      ));
+                    }
+                  }
+                />
+              ) : (
+                essay && essay.prompt.split("\n").map((line, index) => (
+                  <Fragment key={index}>
+                    {line}
+                    {index !== essay.prompt.split("\n").length - 1 && <br />}
+                  </Fragment>
+                ))
+              )}
             </Box>
             <Divider />
             <Textarea 
@@ -445,44 +491,6 @@ Total words: ${count}
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-
-      <Modal
-        isOpen={isOpenPromptModal}
-        onClose={onClosePromptModal}
-        size='xl'
-      >
-        <ModalContent>
-          <ModalHeader textAlign='center'>
-            Bring your own writing topic
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Textarea 
-              as={ResizeTextarea}
-              placeholder='Paste your topic here'
-              minRows={5}
-              onChange={(e)=>setPrompt(e.target.value)}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              onClick={
-                ()=>{
-                  setEssay(Essay.copyOf(
-                    essay!,
-                    updated => {
-                      updated.prompt = prompt
-                    }
-                  ));
-                  onClosePromptModal();
-                }
-              }
-            >
-              OK
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </>
   )
 }

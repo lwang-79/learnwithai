@@ -400,7 +400,24 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
   const targetButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;
     try {
-      await addMyMathQuestion(currentQuestionSet, testRef.current?.id, currentIndexRef.current);
+      const returnedMessage =await addMyMathQuestion(
+        dataStoreUser!,
+        currentQuestionSet, 
+        testRef.current?.id, 
+        currentIndexRef.current
+      );
+
+      if (returnedMessage) {
+        toast({
+          description: returnedMessage,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+        return;
+      }
+      
       questionSetsRef.current[currentIndexRef.current] = {
         ...questionSetsRef.current[currentIndexRef.current],
         isTarget: !questionSetsRef.current[currentIndexRef.current].isTarget
@@ -449,7 +466,22 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
     if (isTest || isReview) {
-      await saveTest(testRef.current!, duration, questionSetsRef.current.slice(0, questionSets.length));
+      const returnMessage = await saveTest(
+        testRef.current!, 
+        duration, 
+        questionSetsRef.current.slice(0, questionSets.length),
+        dataStoreUser!
+      );
+
+      if (returnMessage) {
+        toast({
+          description: returnMessage,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+      }
     }
 
     if (mode !== QuestionRunMode.SavedQuestions) { // Saved question doesn't consume quota

@@ -118,7 +118,8 @@ export enum EssayType {
   Persuasive = 'persuasive',
   // Expository = 'expository',
   // Descriptive = 'descriptive',
-  Narrative = 'narrative'
+  Narrative = 'narrative',
+  Custom = 'custom'
 }
 
 export type AQuAQuestion = {

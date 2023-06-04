@@ -59,6 +59,11 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
                 <Text fontSize='sm'>{dataStoreUser.quota!.writingPerDay}</Text>
               </HStack>
               <HStack w='full'>
+                <Text fontSize='sm'>Max saved questions</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.savedQuestions}</Text>
+              </HStack>
+              <HStack w='full'>
                 <Text fontSize='sm'>Max saved tests</Text>
                 <Spacer />
                 <Text fontSize='sm'>{dataStoreUser.quota!.savedTests}</Text>

@@ -1,4 +1,4 @@
-import { QuestionSet, Test } from "@/models";
+import { QuestionSet, Test, User } from "@/models";
 import { DataStore } from "aws-amplify";
 import { 
   APIName,
@@ -17,8 +17,21 @@ import { APIPost } from "./utils";
 export const saveTest = async (
   test: Test,
   duration: number,
-  questionSets: LocalQuestionSet[]
+  questionSets: LocalQuestionSet[],
+  user: User
 ) => {
+  // if test exists grab the latest version
+  // if new test verify the quota
+  const latestTest = await DataStore.query(Test, test.id);
+  if (!latestTest) {
+    const totalTestCount = (await DataStore.query(Test)).length;
+    if (totalTestCount >= user.quota!.savedTests) {
+      return `You have reached the maximum SavedTests quota ${user.quota!.savedTests}. This test is not saved, please delete some tests or upgrade your plan.`
+    }
+  }
+
+  const origin = latestTest?? test;
+  
   let correct = 0;
   let wrong = 0;
 
@@ -29,11 +42,6 @@ export const saveTest = async (
     correct += correctCount;
     wrong += wrongCount;
   }
-
-  // if test exists grab the latest version
-  const latestTest = await DataStore.query(Test, test.id);
-  
-  const origin = latestTest?? test;
 
   const updatedTest = Test.copyOf(origin, updated => {
     updated.duration = duration;
@@ -48,10 +56,16 @@ export const saveTest = async (
 }
 
 export const addMyMathQuestion = async (
+  user: User,
   questionSet: LocalQuestionSet,
   testId?: string,
-  indexInTest?: number
+  indexInTest?: number,
 ) => {
+  const savedQuestionCount = (await DataStore.query(QuestionSet)).length;
+
+  if (savedQuestionCount >= user.quota!.savedQuestions) {
+    return `You have reached the maximum SavedQuestions quota ${user.quota!.savedQuestions}. This question is not added, please remove some questions or upgrade your plan.`
+  }
 
   if (testId && indexInTest) {
     const questionSets = await DataStore.query(QuestionSet);
