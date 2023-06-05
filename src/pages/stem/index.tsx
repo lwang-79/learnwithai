@@ -52,6 +52,7 @@ function Stem() {
       const collegeConcepts = selectedConcepts.filter(concept => concept !== StemConcept.Statistics);
       setSelectedConcepts([...collegeConcepts]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLevel]);
 
   const setCheckedConcepts = (value: StemConcept) => {
