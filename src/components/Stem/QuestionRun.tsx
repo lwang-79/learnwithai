@@ -49,6 +49,8 @@ import { NotificationType } from "@/models";
 import { getQuestionAnswer, getStemQuestionsFromDataset } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
+import 'katex/dist/katex.min.css';
+import { InlineMath } from "react-katex";
 
 interface QuestionRunProps {
   level: 'High School' | 'College'
@@ -394,7 +396,13 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                                 key={index}
                                 isDisabled={isSubmitted}
                               >
-                                <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
+                                {!option.includes('$') && option.includes('\\') ?
+                                  <HStack>
+                                    <Text>{String.fromCharCode(65 + index)}: </Text>
+                                    <InlineMath>{option}</InlineMath>
+                                  </HStack> :
+                                  <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
+                                }                              
                               </Radio>
                             )
                           })
