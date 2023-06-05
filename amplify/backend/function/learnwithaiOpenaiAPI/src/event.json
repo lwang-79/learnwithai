@@ -1,17 +1,8 @@
 {
   "operation": "stem-question",
   "concepts": [
-      "astronomy",
-      "biology",
-      "chemistry",
-      "computer science",
-      "electrical",
-      "mathematics",
-      "medicine",
-      "physics",
-      "conceptual physics",
-      "statistics"
+      "science"
   ],
-  "level": "High School",
+  "level": "Primary School",
   "questionCount": 10
 }

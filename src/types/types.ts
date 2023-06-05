@@ -66,6 +66,7 @@ export enum MathConcept {
 }
 
 export enum StemConcept {
+  Science = 'science',
   Astronomy = 'astronomy',
   Biology = 'biology',
   Chemistry = 'chemistry',

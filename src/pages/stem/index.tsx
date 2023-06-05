@@ -34,8 +34,8 @@ function Stem() {
     onClose: onCloseExamModal
   } = useDisclosure();
 
-  const concepts = Object.values(StemConcept);
-  const levels = ['High School', 'College'];
+  const concepts = Object.values(StemConcept).slice(1, 11);
+  const levels = ['Primary School', 'Middle School', 'High School', 'College'];
   const [ selectedConcepts, setSelectedConcepts ] = useState<StemConcept[]>(concepts);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(levels[0]);
   const [ num, setNum ] = useState('10');
@@ -45,13 +45,31 @@ function Stem() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
 
   useEffect(() => {
+    if (
+      selectedLevel === 'Primary School' || 
+      selectedLevel === 'Middle School'
+    ) {
+      setSelectedConcepts([StemConcept.Science]);
+      return;
+    } 
+    
     if (selectedLevel === 'High School') {
-      const highSchoolConcepts = selectedConcepts.filter(concept => concept !== StemConcept.Medicine && concept !== StemConcept.Electrical);
+      const highSchoolConcepts = concepts.filter(
+        concept => 
+        concept !== StemConcept.Medicine && 
+        concept !== StemConcept.Electrical &&
+        concept !== StemConcept.Science
+      );
       setSelectedConcepts([...highSchoolConcepts]);
-    } else {
-      const collegeConcepts = selectedConcepts.filter(concept => concept !== StemConcept.Statistics);
-      setSelectedConcepts([...collegeConcepts]);
-    }
+      return;
+    } 
+    
+    const collegeConcepts = concepts.filter(
+      concept => 
+      concept !== StemConcept.Statistics &&
+      concept !== StemConcept.Science
+    );
+    setSelectedConcepts([...collegeConcepts]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLevel]);
 
@@ -146,6 +164,7 @@ function Stem() {
 
             <CheckboxGroup
               value={selectedConcepts}
+              isDisabled={selectedLevel === 'Primary School' || selectedLevel === 'Middle School'}
             >
               <VStack align='flex-start'>
                 <Checkbox
@@ -163,6 +182,7 @@ function Stem() {
                           value={concept}
                           onChange={(e) => setCheckedConcepts(e.target.value as StemConcept)}
                           isDisabled={
+                            (selectedLevel === 'Primary School' || selectedLevel === 'Middle School') ||
                             (concept === StemConcept.Medicine && selectedLevel !== 'College') ||
                             (concept === StemConcept.Electrical && selectedLevel !== 'College') ||
                             (concept === StemConcept.Statistics && selectedLevel !== 'High School')
