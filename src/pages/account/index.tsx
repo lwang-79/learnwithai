@@ -67,7 +67,8 @@ function Profile() {
         if (!remoteUser) return;
   
         const clonedUser = User.copyOf(dataStoreUser, updated => {
-          updated.membership = remoteUser.membership
+          updated.membership = remoteUser.membership;
+          updated.quota = remoteUser.quota;
         });
   
         setDataStoreUser(clonedUser);

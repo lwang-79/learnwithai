@@ -1,10 +1,10 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API, DataStore, graphqlOperation } from "aws-amplify";
 import { CreateUserMutation, NotificationType, UserBySubQuery } from "./API";
 import { userBySub } from "../graphql/queries";
 import { GraphQLResult } from '@aws-amplify/api';
 import { Quota } from './quota';
 import { createUser } from "../graphql/mutations";
-import { Statistic } from "@/models";
+import { Statistic, User } from "@/models";
 
 export type UserParams = {
   id: string
@@ -42,6 +42,7 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
   const matchedUsers = queryResult.data?.userBySub?.items
 
   if (matchedUsers && matchedUsers.length > 0) {
+    console.log(`User exists in DB.`);
     return(matchedUsers[0]! as UserParams);
   }
 
@@ -71,9 +72,86 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
   ) as GraphQLResult<CreateUserMutation>
 
   const user = mutationResult.data?.createUser as UserParams
+  console.log(`User created in DB.`, user);
   
   return(user);
 }
+
+export const getDataStoreUserOrCreateIfNotExist = async (userAttributes: any): Promise<User | undefined> => {
+  const userId = await isUserInDatabase(userAttributes.sub);
+
+  if (!userId) {
+    const user = await createNewDataStoreUser(userAttributes);
+    return user;
+  }
+
+  const user = await retryGetDataStoreUserById(userId);
+  return user;
+}
+
+const isUserInDatabase = async (userSub: any): Promise<string> => {
+  const queryResult = await API.graphql<UserBySubQuery>(
+    graphqlOperation(userBySub, {sub: userSub})
+  ) as GraphQLResult<UserBySubQuery>;
+  
+  const matchedUsers = queryResult.data?.userBySub?.items
+
+  if (matchedUsers && matchedUsers.length > 0 && matchedUsers[0]) {
+    return matchedUsers[0].id;
+  }
+
+  console.log(`User does not exist in Database.`)
+  return '';
+}
+
+const createNewDataStoreUser = async (userAttributes: any): Promise<User> => {
+  const user = new User({
+    sub: userAttributes.sub as string,
+    username: userAttributes.name as string,
+    email: userAttributes.email as string,
+    picture: userAttributes.picture as string?? '',
+    quota: Quota.free,
+    membership: {
+      current: 0,
+      previous: 0,
+      paypalSubscriptions: {
+        personal: [],
+        professional: [],
+        enterprise: []
+      },
+    },
+    payerId: 'NA',
+    daily: [],
+    monthly: [],
+    yearly: [],
+  });
+
+  const newUser = await DataStore.save(user);
+  console.log(`User created in DataStore.`, newUser);
+  
+  return(newUser);
+}
+
+const retryGetDataStoreUserById = async (userId: string): Promise<User | undefined>  => {
+  let retryCount = 0;
+  let user: User | undefined;
+
+  while (retryCount < 50) {
+    user = await DataStore.query(User, userId);
+
+    if (user !== undefined) {
+      console.log(`User is in DataStore. ${retryCount} tries`)
+      return user;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+    retryCount++;
+  }
+
+  console.error('User is not in DataStore');
+}
+
+
 
 
 export const isAuthenticated = () => {

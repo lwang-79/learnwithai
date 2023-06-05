@@ -4,8 +4,8 @@ import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
 import WritingBoard from '@/components/Writing/WritingBoard';
-import { Essay, Statistic } from '@/models';
-import { InitStatistic, addStatisticData, getTodayStatistic } from '@/types/statistic';
+import { Essay } from '@/models';
+import { getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
   Button, 
@@ -19,6 +19,7 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
+  Tooltip, 
   useBoolean, 
   useDisclosure, 
   useToast, 
@@ -70,13 +71,6 @@ function Writing() {
     }
 
     setTimeout(()=>onOpenExamModal(), 100);
-
-    const statistic: Statistic = {
-      ...InitStatistic,
-      writingRequest: 1
-    }
-
-    setDataStoreUser(await addStatisticData(statistic, user.id));
   }
 
   const openModalWithEssay = (essay: Essay) => {
@@ -89,7 +83,7 @@ function Writing() {
     setTimeout(()=>onOpenExamModal(), 100);
   }
 
-  const onCloseHandler = () => {
+  const onCloseHandler = async () => {
     onCloseExamModal();
     setRefreshEssayList.toggle();
   }
@@ -112,8 +106,18 @@ function Writing() {
                     return (
                       <WrapItem key={`${type}-${index}`}>
                         <Radio value={type} >
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                          {type === EssayType.Custom ?
+                            <Tooltip
+                              hasArrow
+                              bg='teal'
+                              label={`Bring your own writing topic and prompt.`}
+                            >
+                              {type.charAt(0).toUpperCase() + type.slice(1)}
+                            </Tooltip> : <>{type.charAt(0).toUpperCase() + type.slice(1)}</>
+                          }
+                          
                         </Radio>
+                        
                       </WrapItem>
                     )
                   })
@@ -123,7 +127,7 @@ function Writing() {
             <RadioGroup 
               onChange={setSelectedTopic} 
               value={selectedTopic} 
-              isDisabled={selectedType===EssayType.Narrative}
+              isDisabled={selectedType!==EssayType.Persuasive}
             >
               <Heading size='sm'>Topic</Heading>
               <Wrap spacing={4} mt={2}>

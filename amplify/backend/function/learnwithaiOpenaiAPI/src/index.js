@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var stem_1 = require("./openai/stem");
 var anything_1 = require("./openai/anything");
 var math_1 = require("./openai/math");
 var writing_1 = require("./openai/writing");
@@ -66,43 +67,48 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
                     case types_1.APIOperation.MathDataset: return [3 /*break*/, 9];
                     case types_1.APIOperation.MathQuestion: return [3 /*break*/, 11];
                     case types_1.APIOperation.MathAnswer: return [3 /*break*/, 13];
+                    case types_1.APIOperation.StemQuestion: return [3 /*break*/, 15];
                 }
-                return [3 /*break*/, 15];
+                return [3 /*break*/, 17];
             case 1: return [4 /*yield*/, (0, anything_1.askAnything)(req.prompt || '')];
             case 2:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 3: return [4 /*yield*/, (0, writing_1.generateWritingPrompt)(req.type || '', req.topic || '', req.level || '')];
             case 4:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 5: return [4 /*yield*/, (0, writing_1.generateWritingMark)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
             case 6:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 7: return [4 /*yield*/, (0, writing_1.polishWriting)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
             case 8:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 9: return [4 /*yield*/, (0, math_1.getDatasetQuestions)(req.dataset || '', req.questionCount || '')];
             case 10:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 11: return [4 /*yield*/, (0, math_1.generateMathQuestion)(req.category || '', req.type || '', req.level || '', req.concept || '')];
             case 12:
                 body = _b.sent();
-                return [3 /*break*/, 16];
+                return [3 /*break*/, 18];
             case 13: return [4 /*yield*/, (0, math_1.generateMathAnswer)(req.question || '')];
             case 14:
                 body = _b.sent();
-                return [3 /*break*/, 16];
-            case 15:
+                return [3 /*break*/, 18];
+            case 15: return [4 /*yield*/, (0, stem_1.getStemQuestions)(req.concepts || [], req.level || '', req.questionCount || '')];
+            case 16:
+                body = _b.sent();
+                return [3 /*break*/, 18];
+            case 17:
                 body = {
                     statusCode: 400,
                     error: "Invalid operation"
                 };
-                _b.label = 16;
-            case 16:
+                _b.label = 18;
+            case 18:
                 if (body.statusCode !== 200) {
                     console.error(body.error);
                 }

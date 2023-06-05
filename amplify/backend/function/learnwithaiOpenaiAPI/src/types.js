@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.EssayType = exports.EssayTopic = exports.QuestionLevel = exports.QuestionCategory = exports.MathConcept = exports.QuestionType = exports.APIOperation = void 0;
+exports.EssayType = exports.EssayTopic = exports.QuestionLevel = exports.QuestionCategory = exports.StemConcept = exports.MathConcept = exports.QuestionType = exports.APIOperation = void 0;
 var APIOperation;
 (function (APIOperation) {
     APIOperation["WritingPrompt"] = "writing-prompt";
@@ -10,6 +10,7 @@ var APIOperation;
     APIOperation["MathQuestion"] = "math-question";
     APIOperation["MathDataset"] = "math-dataset";
     APIOperation["AskAnything"] = "ask-anything";
+    APIOperation["StemQuestion"] = "stem-question";
 })(APIOperation = exports.APIOperation || (exports.APIOperation = {}));
 var QuestionType;
 (function (QuestionType) {
@@ -17,10 +18,6 @@ var QuestionType;
 })(QuestionType = exports.QuestionType || (exports.QuestionType = {}));
 var MathConcept;
 (function (MathConcept) {
-    // Addition = 'addition',
-    // Subtraction = 'subtraction',
-    // Multiplication = 'multiplication',
-    // Division = 'division',
     MathConcept["Arithmetic"] = "arithmetic";
     MathConcept["Decimals"] = "decimals";
     MathConcept["Percentage"] = "percentage";
@@ -56,6 +53,19 @@ var MathConcept;
     // MeasurementPerimeter = 'measurement perimeter',
     // MeasurementArea = 'measurement area',
 })(MathConcept = exports.MathConcept || (exports.MathConcept = {}));
+var StemConcept;
+(function (StemConcept) {
+    StemConcept["Astronomy"] = "astronomy";
+    StemConcept["Biology"] = "biology";
+    StemConcept["Chemistry"] = "chemistry";
+    StemConcept["ComputerScience"] = "computer science";
+    StemConcept["Electrical"] = "electrical";
+    StemConcept["Mathematics"] = "mathematics";
+    StemConcept["Medicine"] = "medicine";
+    StemConcept["Physics"] = "physics";
+    StemConcept["ConceptualPhysics"] = "conceptual physics";
+    StemConcept["Statistics"] = "statistics";
+})(StemConcept = exports.StemConcept || (exports.StemConcept = {}));
 var QuestionCategory;
 (function (QuestionCategory) {
     QuestionCategory["Math"] = "mathematics";

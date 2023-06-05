@@ -73,6 +73,7 @@ export default function Login() {
         duration: 10000,
         isClosable: true
       });
+      setIsSigning(false);
     }
   }
 

@@ -2,6 +2,7 @@ import {
   MathConcept, 
   QuestionCategory, 
   QuestionLevel, 
+  QuestionRunMode, 
   QuestionSet as LocalQuestionSet,
   QuestionType 
 } from "@/types/types";
@@ -54,14 +55,6 @@ import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestions
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
-
-export enum QuestionRunMode {
-  Practice = 'practice',
-  Test = 'test',
-  Competition = 'competition',
-  Review = 'review',
-  SavedQuestions = 'saved questions'
-}
 
 interface QuestionRunProps {
   category: QuestionCategory
@@ -268,22 +261,29 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
         }
       } while (!questionSet && tryCount < 3)
 
+      addingQuestionCountRef.current -= 1;
+
       if (!questionSet) {
-        toast({
-          description: `Failed to generate questions, please try again later.`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top'
-        });   
-        return;
+        if (
+          addingQuestionCountRef.current === 0 &&
+          questionSetsRef.current.length === 0
+        ){
+          onClose();
+          toast({
+            description: `Failed to generate questions, please try again later.`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top'
+          });
+          return;
+        }        
+        continue;
       }
 
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
-
-    addingQuestionCountRef.current -= num;
   }
 
   const setSelectedValue = (value: string) => {
@@ -393,7 +393,24 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
   const targetButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;
     try {
-      await addMyMathQuestion(currentQuestionSet, testRef.current?.id, currentIndexRef.current);
+      const returnedMessage =await addMyMathQuestion(
+        dataStoreUser!,
+        currentQuestionSet, 
+        testRef.current?.id, 
+        currentIndexRef.current
+      );
+
+      if (returnedMessage) {
+        toast({
+          description: returnedMessage,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+        return;
+      }
+      
       questionSetsRef.current[currentIndexRef.current] = {
         ...questionSetsRef.current[currentIndexRef.current],
         isTarget: !questionSetsRef.current[currentIndexRef.current].isTarget
@@ -442,11 +459,38 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
     if (isTest || isReview) {
-      await saveTest(testRef.current!, duration, questionSetsRef.current.slice(0, questionSets.length));
+      const returnMessage = await saveTest(
+        testRef.current!, 
+        duration, 
+        questionSetsRef.current.slice(0, questionSets.length),
+        dataStoreUser!
+      );
+
+      if (returnMessage) {
+        toast({
+          description: returnMessage,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+      }
     }
+
+    if (mode !== QuestionRunMode.SavedQuestions) { // Saved question doesn't consume quota
+
+      const statistic: Statistic = {
+        ...InitStatistic,
+        mathRequest: Number(maxNum)
+      }
+
+      setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
+    }
+
     onClose();
     setIsProcessing(false);
   }
+  
 
   const challengeButtonClickedHandler = async () => {
     if (!currentQuestionSet) return;
@@ -542,13 +586,14 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     questionSets.map((questionSet, index) => {
       return (
         <WrapItem key={`questionSet-${index}`}>
-          {index === currentIndexRef.current ? (
+          {index === currentIndexRef.current || (questionSets[index].isMarked && !isSubmitted) ? (
             <Button 
               variant='solid'
               size='sm'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
               isDisabled={isCompetition && !isSubmitted}
+              onClick={()=>questionSetClickedHandler(index)}
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
@@ -699,7 +744,6 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           onClick={markQuestionButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 
-                            dataStoreUser!.membership!.current < 2 || 
                             isReview
                           }
                         />
