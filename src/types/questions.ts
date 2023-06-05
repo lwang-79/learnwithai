@@ -10,7 +10,9 @@ import {
   QuestionCategory, 
   QuestionLevel, 
   QuestionSet as LocalQuestionSet,
-  QuestionType 
+  QuestionType, 
+  StemConcept,
+  StemQuestion
 } from "./types";
 import { APIPost } from "./utils";
 
@@ -411,4 +413,47 @@ const replaceDigitsWithRandomOneByOne = (str: string) => {
     .split('')
     .map((char) => (/\d/.test(char) ? Math.floor(Math.random() * 9) + 1 : char))
     .join('');
+}
+
+export const getStemQuestionsFromDataset = async (
+  apiName: APIName,
+  concepts: StemConcept[],
+  level: 'High School' | 'College', 
+  num: number
+): Promise<LocalQuestionSet[]> => {
+  const request = {
+    body: {
+      operation: APIOperation.StemQuestion,
+      concepts: concepts,
+      level: level,
+      questionCount: num,
+    }
+  };
+
+  const body = await APIPost(apiName, '/', request);
+
+  if (!body.data) {
+    return [];
+  }
+
+  const questions = body.data as StemQuestion[];
+
+  let questionSets: LocalQuestionSet[] = [];
+
+  for (const q of questions) {
+    const questionSet: LocalQuestionSet = {
+      ...q,
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Stem,
+      level: level,
+      selected: '',
+      workout: '',
+      isBad: false,
+      isTarget: false,
+      isMarked: false
+    }
+    questionSets.push(questionSet);
+  }
+
+  return questionSets;
 }

@@ -43,8 +43,8 @@ import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
 
-const Links = ['/math', '/writing'];
-const LinkNames = ['Math', 'Writing']
+const Links = ['/math', '/writing', '/stem'];
+const LinkNames = ['Math', 'Writing', 'STEM']
 
 const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
   <Link

@@ -2,6 +2,7 @@ import {
   MathConcept, 
   QuestionCategory, 
   QuestionLevel, 
+  QuestionRunMode, 
   QuestionSet as LocalQuestionSet,
   QuestionType 
 } from "@/types/types";
@@ -54,14 +55,6 @@ import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestions
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
-
-export enum QuestionRunMode {
-  Practice = 'practice',
-  Test = 'test',
-  Competition = 'competition',
-  Review = 'review',
-  SavedQuestions = 'saved questions'
-}
 
 interface QuestionRunProps {
   category: QuestionCategory
@@ -593,13 +586,14 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     questionSets.map((questionSet, index) => {
       return (
         <WrapItem key={`questionSet-${index}`}>
-          {index === currentIndexRef.current ? (
+          {index === currentIndexRef.current || (questionSets[index].isMarked && !isSubmitted) ? (
             <Button 
               variant='solid'
               size='sm'
               w='35px' h='35px'
               colorScheme={getQuestionColor(questionSet, index)}
               isDisabled={isCompetition && !isSubmitted}
+              onClick={()=>questionSetClickedHandler(index)}
             >
               <Text fontWeight='extrabold'>{index + 1}</Text>
             </Button>
@@ -750,7 +744,6 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           onClick={markQuestionButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 
-                            dataStoreUser!.membership!.current < 2 || 
                             isReview
                           }
                         />

@@ -1,6 +1,17 @@
 {
-  "operation": "writing-prompt",
-  "type": "narrative",
-  "level": "Year-6",
-  "topic": "society"
+  "operation": "stem-question",
+  "concepts": [
+      "astronomy",
+      "biology",
+      "chemistry",
+      "computer science",
+      "electrical",
+      "mathematics",
+      "medicine",
+      "physics",
+      "conceptual physics",
+      "statistics"
+  ],
+  "level": "High School",
+  "questionCount": 10
 }

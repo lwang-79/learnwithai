@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "mockOpenai": "cd amplify/backend/function/learnwithaiOpenaiAPI/src/;tsc -p ./tsconfig.json;cd -;amplify mock function learnwithaiOpenaiAPI"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.3",

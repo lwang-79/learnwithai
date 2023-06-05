@@ -6,6 +6,7 @@ export enum APIOperation {
   MathQuestion = 'math-question',
   MathDataset = 'math-dataset',
   AskAnything = 'ask-anything',
+  StemQuestion = 'stem-question',
 }
 
 export type APIResponse = {
@@ -13,6 +14,14 @@ export type APIResponse = {
   data?: any;
   error?: string
 };
+
+export enum QuestionRunMode {
+  Practice = 'practice',
+  Test = 'test',
+  Competition = 'competition',
+  Review = 'review',
+  SavedQuestions = 'saved questions'
+}
 
 export enum QuestionType {
   MultiChoice = 'multi-choice',
@@ -56,9 +65,23 @@ export enum MathConcept {
   // MeasurementArea = 'measurement area',
 }
 
+export enum StemConcept {
+  Astronomy = 'astronomy',
+  Biology = 'biology',
+  Chemistry = 'chemistry',
+  ComputerScience = 'computer science',
+  Electrical = 'electrical',
+  Mathematics = 'mathematics',
+  Medicine = 'medicine',
+  Physics = 'physics',
+  ConceptualPhysics = 'conceptual physics',
+  Statistics = 'statistics',
+}
+
 export enum QuestionCategory {
   Math = 'mathematics',
-  AdvancedMath = 'advanced mathematics'
+  AdvancedMath = 'advanced mathematics',
+  Stem = 'stem'
 }
 
 export enum QuestionLevel {
@@ -139,6 +162,13 @@ export type MathQAQuestion = {
 
 export type GSM8KQuestion = {
   question: string
+  answer: string
+}
+
+export type StemQuestion = {
+  concept: string,
+  question: string,
+  options: string[],
   answer: string
 }
 

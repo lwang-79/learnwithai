@@ -6,6 +6,7 @@ export enum APIOperation {
   MathQuestion = 'math-question',
   MathDataset = 'math-dataset',
   AskAnything = 'ask-anything',
+  StemQuestion = 'stem-question',
 }
 
 export type APIResponse = {
@@ -19,10 +20,6 @@ export enum QuestionType {
 }
 
 export enum MathConcept {
-  // Addition = 'addition',
-  // Subtraction = 'subtraction',
-  // Multiplication = 'multiplication',
-  // Division = 'division',
   Arithmetic = 'arithmetic',
   Decimals = 'decimals',
   Percentage = 'percentage',
@@ -58,8 +55,19 @@ export enum MathConcept {
   // Indices = 'indices',
   // MeasurementPerimeter = 'measurement perimeter',
   // MeasurementArea = 'measurement area',
-  
+}
 
+export enum StemConcept {
+  Astronomy = 'astronomy',
+  Biology = 'biology',
+  Chemistry = 'chemistry',
+  ComputerScience = 'computer science',
+  Electrical = 'electrical',
+  Mathematics = 'mathematics',
+  Medicine = 'medicine',
+  Physics = 'physics',
+  ConceptualPhysics = 'conceptual physics',
+  Statistics = 'statistics',
 }
 
 export enum QuestionCategory {
@@ -144,6 +152,13 @@ export type MathQAQuestion = {
 
 export type GSM8KQuestion = {
   question: string
+  answer: string
+}
+
+export type StemQuestion = {
+  concept: string,
+  question: string,
+  options: string[],
   answer: string
 }
 

@@ -2,10 +2,10 @@ import Footer from '@/components/Common/Footer';
 import Header from '@/components/Common/Header';
 import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
-import QuestionRun, { QuestionRunMode } from '@/components/Math/QuestionRun';
+import QuestionRun from '@/components/Math/QuestionRun';
 import { Test } from '@/models';
 import { getTodayStatistic } from '@/types/statistic';
-import { MathConcept, QuestionCategory, QuestionLevel, QuestionType } from '@/types/types';
+import { MathConcept, QuestionCategory, QuestionLevel, QuestionRunMode, QuestionType } from '@/types/types';
 import { 
   Button, 
   Checkbox, 

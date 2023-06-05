@@ -1,3 +1,4 @@
+import { getStemQuestions } from "./openai/stem";
 import { askAnything } from "./openai/anything";
 import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from "./openai/math";
 import { generateWritingMark, generateWritingPrompt, polishWriting } from "./openai/writing";
@@ -70,6 +71,14 @@ exports.handler = async (event) => {
     case APIOperation.MathAnswer:
       body = await generateMathAnswer(
         req.question || ''
+      );
+      break;
+
+    case APIOperation.StemQuestion:
+      body = await getStemQuestions(
+        req.concepts || [],
+        req.level || '',
+        req.questionCount || ''
       );
       break;
 
