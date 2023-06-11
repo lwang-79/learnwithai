@@ -1,7 +1,7 @@
 import mathqa from '@/mathqa.json';
 import gsm8k from '@/gsm8k.json';
 import competition from '@/competition.json';
-import { APIResponse, CompetitionQuestion, GSM8KQuestion, MathQAQuestion, QuestionLevel } from '@/types/types';
+import { APIResponse, CompetitionQuestion, GSM8KQuestion, MathQAQuestion, QuestionLevel, QuestionSource } from '@/types/types';
 import { chatCompletion } from './chat';
 import { ChatCompletionRequestMessage } from 'openai';
 import { generateChatMessages } from '../prompts/math';
@@ -11,10 +11,10 @@ export const getDatasetQuestions = (
   questionCount: string
 ): APIResponse => {
   const count = Number(questionCount);
-  const ds = dataset === QuestionLevel.MathQA ? 
-    QuestionLevel.MathQA : 
-    dataset === QuestionLevel.GSM8K ? 
-    QuestionLevel.GSM8K : 
+  const ds = dataset === QuestionSource.MathQA ? 
+    QuestionSource.MathQA : 
+    dataset === QuestionSource.GSM8K ? 
+    QuestionSource.GSM8K : 
     Object.values(QuestionLevel).indexOf(dataset) > -1 ?
     dataset as QuestionLevel : '';
 
@@ -25,9 +25,9 @@ export const getDatasetQuestions = (
     }
   }
 
-  const questions = ds === QuestionLevel.MathQA ? 
+  const questions = ds === QuestionSource.MathQA ? 
     mathqa as MathQAQuestion[] :
-    ds === QuestionLevel.GSM8K ?
+    ds === QuestionSource.GSM8K ?
     gsm8k as GSM8KQuestion[] :
     (competition as CompetitionQuestion[]).filter(question => question.level === ds);
 

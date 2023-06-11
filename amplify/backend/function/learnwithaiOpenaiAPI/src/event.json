@@ -1,8 +1,7 @@
 {
-  "operation": "stem-question",
-  "concepts": [
-      "science"
-  ],
-  "level": "Primary School",
-  "questionCount": 10
+  "operation": "math-dataset",
+  "dataset": "Hendrycks MATH",
+  "concept": "Geometry",
+  "level": "Level 5",
+  "questionCount": 1
 }

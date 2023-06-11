@@ -3,13 +3,16 @@ import { DataStore } from "aws-amplify";
 import { 
   APIName,
   APIOperation,
+  AQuAQuestion,
   CompetitionQuestion, 
   GSM8KQuestion, 
+  HendrycksConcept, 
   MathConcept, 
   MathQAQuestion, 
   QuestionCategory, 
   QuestionLevel, 
   QuestionSet as LocalQuestionSet,
+  QuestionSource,
   QuestionType, 
   StemConcept,
   StemQuestion
@@ -100,201 +103,108 @@ export const addMyMathQuestion = async (
 
 export const getQuestionsFromDataset = async (
   apiName: APIName,
-  dataset: QuestionLevel, 
-  num: number
+  dataset: QuestionSource, 
+  num: number,
+  level: QuestionLevel,
+  concept?: MathConcept|HendrycksConcept,
 ): Promise<LocalQuestionSet[]> => {
   const request = {
     body: {
       operation: APIOperation.MathDataset,
       dataset: dataset,
       questionCount: num,
-    }
-  };
-
-  const body = await APIPost(apiName, '/', request);
-
-  if (!body.data) {
-    return [];
-  }
-
-  let questionSets: LocalQuestionSet[] = [];
-
-  // if (dataset === QuestionLevel.AQuA) {
-  //   const questions = body.data as AQuAQuestion[];
-
-  //   for (const q of questions) {
-  //     const options = [];
-  
-  //     for (const option of q.options) {
-  //       options.push(option.split(')')[1].trim());
-  //     }
-  
-  //     questionSets.push({
-  //       type: QuestionType.MultiChoice,
-  //       category: QuestionCategory.Math,
-  //       level: QuestionLevel.AQuA,
-  //       concept: '',
-  //       question: q.question,
-  //       options: options,
-  //       answer: q.correct,
-  //       selected: '',
-  //       workout: q.rationale,
-  //       isBad: false,
-  //       isTarget: false,
-  //       isMarked: false
-  //     })
-  //   }
-  // } else 
-  if (dataset === QuestionLevel.MathQA) {
-    const questions = body.data as MathQAQuestion[];
-
-    for (const q of questions) {
-
-      let qOptions: string[] = [];
-      if (q.options[0]==='[') {
-        qOptions = JSON.parse(q.options.replace(/'/g, "\"")) as string[];
-      } else {
-        const regex = /[a-e]\s\)(.+?)(?=[a-e]\s\)|$)/gm;
-        const matches = q.options.match(regex);
-        if (!matches) throw Error(`Failed to parse the options: ${q.options}`)
-        qOptions = matches;// qOptions = q.options.split(',');
-      }
-
-      const options = [];
-  
-      for (const option of qOptions) {
-        options.push(option.split(')')[1].replace(',','').trim());
-      }
-  
-      questionSets.push({
-        type: QuestionType.MultiChoice,
-        category: QuestionCategory.Math,
-        level: QuestionLevel.MathQA,
-        concept: q.category,
-        question: q.Problem,
-        options: options,
-        answer: q.correct.trim().toUpperCase(),
-        selected: '',
-        workout: q.Rationale,
-        isBad: false,
-        isTarget: false,
-        isMarked: false
-      })
-    } 
-  } else if (dataset === QuestionLevel.GSM8K) {
-    const questions = body.data as GSM8KQuestion[];
-
-    for (const q of questions) {
-      const answer = q.answer.split('####')[1].trim()
-      const randomIndex = Math.floor(Math.random() * 5);
-      const answerIndex = String.fromCharCode(randomIndex + 65);
-      let options: string[] = [];
-
-      for (let i = 0; i < 5; i++) {
-        if (i === randomIndex) {
-          options.push(answer);
-        } else {
-          let option = '';
-          
-          if (/\d/.test(answer)) {
-            do {
-              option = replaceDigitsWithRandomOneByOne(answer);
-            } while(options.includes(option));
-          }
-    
-          options.push(option);
-        }
-      }
-  
-      questionSets.push({
-        type: QuestionType.MultiChoice,
-        category: QuestionCategory.Math,
-        level: QuestionLevel.GSM8K,
-        concept: '',
-        question: q.question,
-        options: options,
-        answer: answerIndex,
-        selected: '',
-        workout: q.answer,
-        isBad: false,
-        isTarget: false,
-        isMarked: false
-      })
-    }
-  }
-
-  return questionSets;
-}
-
-export const getQuestionsFromCompetition = async (
-  apiName: APIName, 
-  num: number, 
-  level: QuestionLevel
-): Promise<LocalQuestionSet[]> => {
-  const request = {
-    body: {
-      operation: APIOperation.MathDataset,
-      dataset: level,
-      questionCount: num,
-    }
-  };
-
-  const body = await APIPost(apiName, '/', request);
-
-  if (!body.data) {
-    return [];
-  }
-  
-  let questionSets: LocalQuestionSet[] = [];
-  const questions = body.data as CompetitionQuestion[];
-
-  for (const q of questions) {
-    let regex = /boxed\{((?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*)\}/;
-    let match = q.solution.match(regex);
-
-    if (!match) throw Error(`Failed to parse the solution: ${q.solution}`);
-
-    const answer = `$${match[1]}$`;
-
-    const randomIndex = Math.floor(Math.random() * 4);
-    const answerIndex = String.fromCharCode(randomIndex + 65);
-    let options: string[] = [];
-    for (let i = 0; i < 4; i++) {
-      if (i === randomIndex) {
-        options.push(answer);
-      } else {
-        let option = '';
-
-        if (/\d/.test(answer)) {
-          do {
-            option = replaceDigitsWithRandomOneByOne(answer);
-          } while(options.includes(option));
-        }
-
-        options.push(option);
-      }
-    }
-
-
-    questionSets.push({
-      type: QuestionType.MultiChoice,
-      category: QuestionCategory.Math,
       level: level,
-      concept: q.type,
-      question: q.problem,
-      options: options,
-      answer: answerIndex,
-      selected: '',
-      workout: q.solution,
-      isBad: false,
-      isTarget: false,
-      isMarked: false
-    })
+      concept: concept
+    }
+  };
+
+  const body = await APIPost(apiName, '/', request);
+
+  if (!body.data) {
+    return [];
   }
 
-  return questionSets;
+  if (dataset === QuestionSource.MathQA) {
+    return parseMathQAQuestions(body.data as MathQAQuestion[]);
+  } else if (dataset === QuestionSource.GSM8K) {
+    return parseGSM8KQuestions(body.data as GSM8KQuestion[]);
+  } else if (dataset === QuestionSource.Competition) {
+    return parseCompetitionQuestions(body.data as CompetitionQuestion[], level);
+  } else if (dataset === QuestionSource.Hendrycks) {
+    return body.data as LocalQuestionSet[];
+  }
+
+  return [];
 }
 
+// export const getQuestionsFromCompetition = async (
+//   apiName: APIName, 
+//   num: number, 
+//   level: QuestionLevel
+// ): Promise<LocalQuestionSet[]> => {
+//   const request = {
+//     body: {
+//       operation: APIOperation.MathDataset,
+//       dataset: level,
+//       questionCount: num,
+//     }
+//   };
+
+//   const body = await APIPost(apiName, '/', request);
+
+//   if (!body.data) {
+//     return [];
+//   }
+  
+//   let questionSets: LocalQuestionSet[] = [];
+//   const questions = body.data as CompetitionQuestion[];
+
+//   for (const q of questions) {
+//     let regex = /boxed\{((?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*)\}/;
+//     let match = q.solution.match(regex);
+
+//     if (!match) throw Error(`Failed to parse the solution: ${q.solution}`);
+
+//     const answer = `$${match[1]}$`;
+
+//     const randomIndex = Math.floor(Math.random() * 4);
+//     const answerIndex = String.fromCharCode(randomIndex + 65);
+//     let options: string[] = [];
+//     for (let i = 0; i < 4; i++) {
+//       if (i === randomIndex) {
+//         options.push(answer);
+//       } else {
+//         let option = '';
+
+//         if (/\d/.test(answer)) {
+//           do {
+//             option = replaceDigitsWithRandomOneByOne(answer);
+//           } while(options.includes(option));
+//         }
+
+//         options.push(option);
+//       }
+//     }
+
+
+//     questionSets.push({
+//       type: QuestionType.MultiChoice,
+//       category: QuestionCategory.Math,
+//       level: level,
+//       concept: q.type,
+//       question: q.problem,
+//       options: options,
+//       answer: answerIndex,
+//       selected: '',
+//       workout: q.solution,
+//       isBad: false,
+//       isTarget: false,
+//       isMarked: false
+//     })
+//   }
+
+//   return questionSets;
+// }
 
 export const generateQuestionSet = async (
   apiName: APIName,
@@ -453,6 +363,170 @@ export const getStemQuestionsFromDataset = async (
       isMarked: false
     }
     questionSets.push(questionSet);
+  }
+
+  return questionSets;
+}
+
+const parseMathQAQuestions = (questions: MathQAQuestion[]): LocalQuestionSet[] => {
+  let questionSets: LocalQuestionSet[] = [];
+
+  for (const q of questions) {
+
+    let qOptions: string[] = [];
+    if (q.options[0]==='[') {
+      qOptions = JSON.parse(q.options.replace(/'/g, "\"")) as string[];
+    } else {
+      const regex = /[a-e]\s\)(.+?)(?=[a-e]\s\)|$)/gm;
+      const matches = q.options.match(regex);
+      if (!matches) throw Error(`Failed to parse the options: ${q.options}`)
+      qOptions = matches;// qOptions = q.options.split(',');
+    }
+
+    const options = [];
+
+    for (const option of qOptions) {
+      options.push(option.split(')')[1].replace(',','').trim());
+    }
+
+    questionSets.push({
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Math,
+      level: QuestionSource.MathQA,
+      concept: q.category,
+      question: q.Problem,
+      options: options,
+      answer: q.correct.trim().toUpperCase(),
+      selected: '',
+      workout: q.Rationale,
+      isBad: false,
+      isTarget: false,
+      isMarked: false
+    });
+  } 
+
+  return questionSets;
+}
+
+const parseGSM8KQuestions = (questions: GSM8KQuestion[]): LocalQuestionSet[] => {
+  let questionSets: LocalQuestionSet[] = [];
+
+  for (const q of questions) {
+    const answer = q.answer.split('####')[1].trim()
+    const randomIndex = Math.floor(Math.random() * 5);
+    const answerIndex = String.fromCharCode(randomIndex + 65);
+    let options: string[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      if (i === randomIndex) {
+        options.push(answer);
+      } else {
+        let option = '';
+        
+        if (/\d/.test(answer)) {
+          do {
+            option = replaceDigitsWithRandomOneByOne(answer);
+          } while(options.includes(option));
+        }
+  
+        options.push(option);
+      }
+    }
+
+    questionSets.push({
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Math,
+      level: QuestionSource.GSM8K,
+      concept: '',
+      question: q.question,
+      options: options,
+      answer: answerIndex,
+      selected: '',
+      workout: q.answer,
+      isBad: false,
+      isTarget: false,
+      isMarked: false
+    });
+  }
+
+  return questionSets;
+}
+
+const parseAQuAQuestions = (questions: AQuAQuestion[]): LocalQuestionSet[] => {
+  let questionSets: LocalQuestionSet[] = [];
+
+  for (const q of questions) {
+    const options = [];
+
+    for (const option of q.options) {
+      options.push(option.split(')')[1].trim());
+    }
+
+    questionSets.push({
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Math,
+      level: '', //QuestionSource.AQuA,
+      concept: '',
+      question: q.question,
+      options: options,
+      answer: q.correct,
+      selected: '',
+      workout: q.rationale,
+      isBad: false,
+      isTarget: false,
+      isMarked: false
+    })
+  }
+
+  return questionSets;
+}
+
+
+const parseCompetitionQuestions = (questions: CompetitionQuestion[], level: string): LocalQuestionSet[] => {
+  let questionSets: LocalQuestionSet[] = [];
+
+  for (const q of questions) {
+    let regex = /boxed\{((?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})*)\}/;
+    let match = q.solution.match(regex);
+
+    if (!match) throw Error(`Failed to parse the solution: ${q.solution}`);
+
+    const answer = `$${match[1]}$`;
+
+    const randomIndex = Math.floor(Math.random() * 4);
+    const answerIndex = String.fromCharCode(randomIndex + 65);
+    let options: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      if (i === randomIndex) {
+        options.push(answer);
+      } else {
+        let option = '';
+
+        if (/\d/.test(answer)) {
+          do {
+            option = replaceDigitsWithRandomOneByOne(answer);
+          } while(options.includes(option));
+        }
+
+        options.push(option);
+      }
+    }
+
+
+    questionSets.push({
+      type: QuestionType.MultiChoice,
+      category: QuestionCategory.Math,
+      level: level,
+      concept: q.type,
+      question: q.problem,
+      options: options,
+      answer: answerIndex,
+      selected: '',
+      workout: q.solution,
+      isBad: false,
+      isTarget: false,
+      isMarked: false
+    });
   }
 
   return questionSets;

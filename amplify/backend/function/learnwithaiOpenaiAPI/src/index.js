@@ -86,7 +86,7 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
             case 8:
                 body = _b.sent();
                 return [3 /*break*/, 18];
-            case 9: return [4 /*yield*/, (0, math_1.getDatasetQuestions)(req.dataset || '', req.questionCount || '')];
+            case 9: return [4 /*yield*/, (0, math_1.getDatasetQuestions)(req.dataset || '', req.questionCount || '', req.level || '', req.concept || '')];
             case 10:
                 body = _b.sent();
                 return [3 /*break*/, 18];

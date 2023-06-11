@@ -15,7 +15,7 @@ function SpinnerOverlay() {
       zIndex="99999"
     >
       <Spinner color="white" size="xl" />
-      <Text color="white">Loading please waite...</Text>
+      <Text color="white">Loading please wait...</Text>
     </VStack>
   )
 }
