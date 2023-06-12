@@ -70,7 +70,7 @@ function sendMonthlyNotification() {
                                     else {
                                         message += "\nMath questions: ".concat(monthly.mathCorrect + monthly.mathWrong, "\nMath correct: ").concat(monthly.mathCorrect, " (").concat(monthly.mathCorrect === 0 ? '' : (100 * monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(monthly.mathExam, "\nWriting practiced: ").concat(monthly.writing, "\n");
                                     }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, 'Learn with AI monthly report', message)];
+                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " monthly report"), message)];
                                 case 1:
                                     _b.sent();
                                     return [2 /*return*/];
@@ -124,7 +124,7 @@ function sendWeeklyNotification() {
                                     data = user.daily.filter(function (d) { return d.date >= startDate && d.date <= endDate; });
                                     message = "\nWeekly report for ".concat(user.username, "\nDate: from ").concat(startDate, " to ").concat(endDate, "\n    ");
                                     if (data.length === 0) {
-                                        message += "\nYou didn't have any practices last month!\n";
+                                        message += "\nYou didn't have any practices last week!\n";
                                     }
                                     else {
                                         total = data.reduce(function (acc, obj) {
@@ -137,7 +137,7 @@ function sendWeeklyNotification() {
                                         }, { mathCorrect: 0, mathWrong: 0, mathExam: 0, writing: 0 });
                                         message += "\nMath questions: ".concat(total.mathCorrect + total.mathWrong, "\nMath correct: ").concat(total.mathCorrect, " (").concat(total.mathCorrect === 0 ? '' : (100 * total.mathCorrect / (total.mathCorrect + total.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(total.mathExam, "\nWriting practiced: ").concat(total.writing, "\n");
                                     }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, 'Learn with AI weekly report', message)];
+                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " weekly report"), message)];
                                 case 1:
                                     _b.sent();
                                     return [2 /*return*/];
@@ -193,7 +193,7 @@ function sendDailyNotification() {
                                     else {
                                         message += "\nMath questions: ".concat(daily.mathCorrect + daily.mathWrong, "\nMath correct: ").concat(daily.mathCorrect, " (").concat(daily.mathCorrect === 0 ? '' : (100 * daily.mathCorrect / (daily.mathCorrect + daily.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(daily.mathExam, "\nWriting practiced: ").concat(daily.writing, "\n");
                                     }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, 'Learn with AI daily report', message)];
+                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " daily report"), message)];
                                 case 1:
                                     _b.sent();
                                     return [2 /*return*/];
@@ -228,7 +228,7 @@ function sesSendEmail(to, subject, message) {
             switch (_a.label) {
                 case 0:
                     body = {
-                        'from': 'support@jinpearl.com',
+                        'from': 'notification@StudyWithAI.pro',
                         'to': to,
                         'subject': subject,
                         'message': message

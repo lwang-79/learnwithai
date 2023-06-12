@@ -1,22 +1,27 @@
 import mathqa from '../models/mathqa.json';
 import gsm8k from '../models/gsm8k.json';
+import hendrycks from '../models/hendrycks.json';
 import competition from '../models/competition.json';
-import { APIResponse, CompetitionQuestion, GSM8KQuestion, MathQAQuestion, QuestionLevel } from '../types';
+import { APIResponse, CompetitionQuestion, GSM8KQuestion, HendrycksQuestion, MathQAQuestion, QuestionCategory, QuestionLevel, QuestionSet, QuestionSource, QuestionType } from '../types';
 import { chatCompletion } from './chat';
 import { ChatCompletionRequestMessage } from 'openai';
 import { generateChatMessages } from '../prompts/math';
 
-export const getDatasetQuestions = (
+export const getDatasetQuestions = async (
   dataset: any,
-  questionCount: string
-): APIResponse => {
+  questionCount: string,
+  level: any,
+  concept: any,
+): Promise<APIResponse> => {
   const count = Number(questionCount);
-  const ds = dataset === QuestionLevel.MathQA ? 
-    QuestionLevel.MathQA : 
-    dataset === QuestionLevel.GSM8K ? 
-    QuestionLevel.GSM8K : 
-    Object.values(QuestionLevel).indexOf(dataset) > -1 ?
-    dataset as QuestionLevel : '';
+  const ds = dataset === QuestionSource.MathQA ? 
+    QuestionSource.MathQA : 
+    dataset === QuestionSource.GSM8K ? 
+    QuestionSource.GSM8K : 
+    dataset === QuestionSource.Competition ?
+    QuestionSource.Competition : 
+    dataset === QuestionSource.Hendrycks ?
+    QuestionSource.Hendrycks :'';
 
   if (isNaN(count) || count <= 0 || ds.length === 0) {
     return {
@@ -25,13 +30,48 @@ export const getDatasetQuestions = (
     }
   }
 
-  const questions = ds === QuestionLevel.MathQA ? 
+  if (
+    ds === QuestionSource.Competition &&
+    Object.values(QuestionLevel).slice(12, 17).indexOf(level) === -1
+  ) {
+    return {
+      statusCode: 400,
+      error: 'Please enter a valid value'
+    }
+  }
+
+  const questions = ds === QuestionSource.MathQA ? 
     mathqa as MathQAQuestion[] :
-    ds === QuestionLevel.GSM8K ?
+    ds === QuestionSource.GSM8K ?
     gsm8k as GSM8KQuestion[] :
-    (competition as CompetitionQuestion[]).filter(question => question.level === ds);
+    ds === QuestionSource.Competition ?
+    (competition as CompetitionQuestion[]).filter(question => question.level === level):
+    ds === QuestionSource.Hendrycks ?
+    (hendrycks as HendrycksQuestion[]).filter(
+      question => 
+      question.level === level && 
+      concept === question.type
+    ) : [];
 
   const randomIndex = Math.floor(Math.random() * (questions.length - count));
+
+  if (ds === QuestionSource.Hendrycks) {
+    const questionSets = await generateHendrycksQuestionSets(
+      questions.slice(randomIndex, randomIndex + count) as HendrycksQuestion[]
+    );
+
+    if (questionSets.length === 0) {
+      return {
+        statusCode: 500,
+        error: 'Failed to generate question sets.'
+      }
+    }
+
+    return {
+      statusCode: 200,
+      data: questionSets
+    }
+  }
 
   return {
     statusCode: 200,
@@ -80,3 +120,81 @@ export const generateMathAnswer = async (
   return chatCompletion(messages);
 }
 
+const generateMathOptions = async (
+  question: string,
+  solution: string
+): Promise<APIResponse> => {
+  const prompt = `
+Based on the following math question and solution, please generate answer options to form a multichoice question. Put the correct answer in the 4 options randamly. Indicate the option by capital alphabet followed by column. And put the correct answer's indicator in answer.
+Question: "${question}"
+Solution: "${solution}"
+Desired template:
+A: <>
+B: <>
+C: <>
+D: <>
+Answer: <>
+`;
+
+  const messages: ChatCompletionRequestMessage[] = [
+    { role: 'system', content: 'You are a math teacher.' },
+    { role: 'user', content: prompt }
+  ];
+
+  return chatCompletion(messages);
+}
+
+const generateHendrycksQuestionSets = async (
+  questions: HendrycksQuestion[]
+): Promise<QuestionSet[]> => {
+  let questionSets: QuestionSet[] = [];
+
+  for (const question of questions) {
+    let count = 0;
+    let done = false;
+    while (count < 3 && !done) {
+      try {
+        const response = await generateMathOptions(question.problem, question.solution);
+        if (response.statusCode !== 200) {
+          console.error(`Failed to generate options`);
+          count ++;
+          continue;
+        }
+  
+        const optionsString = response.data.split('Answer:')[0].trim();
+        const answer = response.data.split('Answer:')[1].trim();
+  
+        const options: string[] = optionsString.split('\n').map(line => line.split(':')[1].trim());
+        if (options.length !== 4 || answer.length !== 1) {
+          console.error(`Can't parse the options or answer`);
+          count ++;
+          continue;
+        }
+  
+        questionSets.push({
+          type: QuestionType.MultiChoice,
+          category: QuestionCategory.Math,
+          level: question.level,
+          concept: question.type,
+          question: question.problem,
+          options: options,
+          answer: answer,
+          selected: '',
+          workout: question.solution,
+          isBad: false,
+          isTarget: false,
+          isMarked: false
+        });
+  
+        done = true;
+  
+      } catch (error) {
+        console.error(error);
+        count ++;
+        continue;        
+      }
+    }
+  }
+
+  return questionSets;
+}

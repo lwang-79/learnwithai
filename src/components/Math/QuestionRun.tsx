@@ -1,9 +1,11 @@
 import { 
+  HendrycksConcept,
   MathConcept, 
   QuestionCategory, 
   QuestionLevel, 
   QuestionRunMode, 
   QuestionSet as LocalQuestionSet,
+  QuestionSource,
   QuestionType 
 } from "@/types/types";
 import { 
@@ -51,16 +53,18 @@ import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
 import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
-import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromCompetition, getQuestionsFromDataset, saveTest } from "@/types/questions";
+import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
+import { InlineMath } from "react-katex";
 
 interface QuestionRunProps {
+  source: QuestionSource
   category: QuestionCategory
   type: QuestionType
   level: QuestionLevel
-  concepts: MathConcept[]
+  concepts: (MathConcept|HendrycksConcept)[]
   initMaxNum?: number
   mode: QuestionRunMode
   onClose: ()=>void
@@ -70,11 +74,11 @@ interface QuestionRunProps {
 const cacheNumber = 3;
 const defaultNumber = 10
 
-function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
+function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum = defaultNumber, onClose, initialTest }: QuestionRunProps) {
   const isTest = mode === QuestionRunMode.Test;
-  const isCompetition = mode === QuestionRunMode.Competition;
+  const isCompetition = source === QuestionSource.Competition;
   const isReview = mode === QuestionRunMode.Review;
-  const isSavedQuestions = mode === QuestionRunMode.SavedQuestions;
+  const isSavedQuestions = source === QuestionSource.SavedQuestions;
   const lastIndexRef = useRef(0);
   const currentIndexRef = useRef(0);
   const [ maxNum, setMaxNum ] = useState(initMaxNum);
@@ -86,7 +90,7 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
   // value is the user selected answer
   const [ value, setValue ] = useState('');
 
-  // questionSets is used to list the questions on left
+  // questionSets is used to list the questions on right
   const [ questionSets, setQuestionSets ] = useState<LocalQuestionSet[]>([]);
 
   // fetchingStatus is used to detect new set and resume from waiting status
@@ -138,16 +142,6 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       return;
     }
 
-    if (isSavedQuestions) {
-      addSavedQuestionSets();
-      return;
-    }
-
-    if (isCompetition) {
-      addCompetitionQuestionSets(1, level);
-      return;
-    }
-
     if (isTest) {
       testRef.current = new Test({
         category: QuestionCategory.Math,
@@ -159,12 +153,28 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
       });
     }
 
-    if ([QuestionLevel.GSM8K, QuestionLevel.MathQA].includes(level)) {
-      getAndSetDatasetQuestions(maxNum);
+    if (source === QuestionSource.SavedQuestions) {
+      addSavedQuestionSets();
       return;
     }
 
-    addQuestionSets(cacheNumber);
+    // if (isCompetition) {
+    //   addCompetitionQuestionSets(1, level);
+    //   return;
+    // }
+
+
+    if (source === QuestionSource.ChatGPT) {
+      addChatGPTQuestionSets(cacheNumber);
+      return;
+    }
+
+    if (source === QuestionSource.Hendrycks) {
+      addHendrycksQuestionSets(cacheNumber);
+      return;
+    }
+    
+    getAndSetDatasetQuestions(maxNum);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
@@ -217,40 +227,40 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     setMaxNum(savedQuestionSetsRef.current.length);
   }
 
-  const getAndSetDatasetQuestions = async (num: number) => {
-      const questionSets = await getQuestionsFromDataset(apiName, level, num);
-      
-      if (questionSets.length === 0) {
-        onClose();
-        toast({
-          description: `Failed to generate questions, please try again later.`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top'
-        }); 
-      }
+  const getAndSetDatasetQuestions = async (num: number, concept?: HendrycksConcept) => {
+    const questionSets = await getQuestionsFromDataset(apiName, source, num, level, concept);
+    
+    if (questionSets.length === 0) {
+      onClose();
+      toast({
+        description: `Failed to generate questions, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      }); 
+    }
 
-      questionSetsRef.current = questionSets;
-      lastIndexRef.current = maxNum - 1;
-      setQuestionSets(questionSets);
-      setCurrentQuestionSet(questionSets[0]);
+    questionSetsRef.current = questionSets;
+    lastIndexRef.current = maxNum - 1;
+    setQuestionSets(questionSets);
+    setCurrentQuestionSet(questionSets[0]);
   }
 
-  const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
-    const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
-    questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
-    // lastIndexRef.current += 1;
-    // setQuestionSets(questionSetsRef.current);
-    setFetchingStatus.toggle();
-  }
+  // const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
+  //   const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
+  //   questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
+  //   // lastIndexRef.current += 1;
+  //   // setQuestionSets(questionSetsRef.current);
+  //   setFetchingStatus.toggle();
+  // }
 
-  const addQuestionSets = async (num: number) => {
+  const addChatGPTQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
 
     for (let i = 0; i < num; i++) {
       let questionSet: LocalQuestionSet | undefined;
-      const c = concepts[Math.floor(Math.random() * concepts.length)];
+      const c = concepts[Math.floor(Math.random() * concepts.length)] as MathConcept;
       let tryCount = 0;
       do {
         try {
@@ -286,6 +296,37 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
     }
   }
 
+  const addHendrycksQuestionSets = async (num: number) => {
+    addingQuestionCountRef.current += num;
+
+    for (let i = 0; i < num; i++) {
+      const c = concepts[Math.floor(Math.random() * concepts.length)] as HendrycksConcept;
+      const questionSet = (await getQuestionsFromDataset(apiName, source, 1, level, c))[0];
+
+      addingQuestionCountRef.current -= 1;
+
+      if (!questionSet) {
+        if (
+          addingQuestionCountRef.current === 0 &&
+          questionSetsRef.current.length === 0
+        ){
+          onClose();
+          toast({
+            description: `Failed to generate questions, please try again later.`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: 'top'
+          });
+          return;
+        }
+        continue;
+      }
+      questionSetsRef.current = [...questionSetsRef.current, questionSet];
+      setFetchingStatus.toggle();
+    }
+  }
+
   const setSelectedValue = (value: string) => {
     setValue(value);
     questionSetsRef.current[currentIndexRef.current].selected = value;
@@ -304,12 +345,12 @@ function QuestionRun({ category, type, level, concepts, mode, initMaxNum = defau
 
     if (currentIndexRef.current > lastIndexRef.current && !isSubmitted) {
       lastIndexRef.current += 1;
-      if (isCompetition) {
-        addCompetitionQuestionSets(1, level);
+      if (source === QuestionSource.Hendrycks) {
+        addHendrycksQuestionSets(1);
       } else if (isSavedQuestions) {
 
       } else if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
-        addQuestionSets(1);
+        addChatGPTQuestionSets(1);
       }
     }
 
@@ -370,7 +411,9 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       `
       sesSendEmail(
         dataStoreUser.notification.emails as string[], 
-        'Learn with AI instant notification', message, 'notification@jinpearl.com'
+        `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`, 
+        message, 
+        'notification@studtwithai.pro'
       );
     }
   }
@@ -477,7 +520,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       }
     }
 
-    if (mode !== QuestionRunMode.SavedQuestions) { // Saved question doesn't consume quota
+    if (!isSavedQuestions) { // Saved question doesn't consume quota
 
       const statistic: Statistic = {
         ...InitStatistic,
@@ -684,7 +727,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                     Question {currentIndex + 1}
                   </Text>
                   <Spacer />
-                  {isSavedQuestions ? (
+                  {isSavedQuestions && !isReview ? (
                     <>
                       <Tooltip label='Delete from my questions'>
                         <IconButton
@@ -776,7 +819,10 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 {currentQuestionSet ? (
                   <>
                     <Text 
-                      as={isCompetition ? Latex : Text}
+                      as={
+                        currentQuestionSet.level.includes('Level') ?
+                        Latex : Text
+                      }
                       textAlign='justify'
                       overflow='auto'
                     >
@@ -792,7 +838,13 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                                 key={index}
                                 isDisabled={isSubmitted || isReview}
                               >
-                                <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
+                                {!option.includes('$') && option.includes('\\') ?
+                                  <HStack>
+                                    <Text>{String.fromCharCode(65 + index)}: </Text>
+                                    <InlineMath>{option}</InlineMath>
+                                  </HStack> :
+                                  <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex> 
+                                }
                               </Radio>
                             )
                           })

@@ -15,8 +15,35 @@ export type APIResponse = {
   error?: string
 };
 
+export enum QuestionSource {
+  GSM8K = 'GMS8K',
+  MathQA = 'MathQA',
+  Hendrycks = 'Hendrycks MATH',
+  Competition = 'Competition',
+  ChatGPT = 'ChatGPT',
+  SavedQuestions = 'Saved Questions'
+}
+
+export enum QuestionRunMode {
+  Practice = 'practice',
+  Test = 'test',
+  // Competition = 'competition',
+  Review = 'review',
+  // SavedQuestions = 'saved questions'
+}
+
 export enum QuestionType {
   MultiChoice = 'multi-choice',
+}
+
+export enum HendrycksConcept {
+  Prealgebra = 'Prealgebra',
+  IntermediateAlgebra = 'Intermediate Algebra',
+  Algebra = 'Algebra',
+  CountingProbability = 'Counting & Probability',
+  Geometry = 'Geometry',
+  NumberTheory = 'Number Theory',
+  Precalculus = 'Precalculus'
 }
 
 export enum MathConcept {
@@ -58,6 +85,7 @@ export enum MathConcept {
 }
 
 export enum StemConcept {
+  Science = 'science',
   Astronomy = 'astronomy',
   Biology = 'biology',
   Chemistry = 'chemistry',
@@ -72,7 +100,8 @@ export enum StemConcept {
 
 export enum QuestionCategory {
   Math = 'mathematics',
-  AdvancedMath = 'advanced mathematics'
+  AdvancedMath = 'advanced mathematics',
+  Stem = 'stem'
 }
 
 export enum QuestionLevel {
@@ -88,8 +117,8 @@ export enum QuestionLevel {
   Year10 = 'Year-10',
   Year11 = 'Year-11',
   Year12 = 'Year-12',
-  GSM8K = 'GSM8K',
-  MathQA = 'MathQA',
+  // GSM8K = 'GSM8K',
+  // MathQA = 'MathQA',
   // AQuA = 'AQuA',
   Level1 = 'Level 1',
   Level2 = 'Level 2',
@@ -123,16 +152,14 @@ export enum EssayTopic {
   Technology = 'technology',
   History = 'history',
   Politics = 'politics'
-  // Creative = 'creative'
-  // Narrative = 'narrative',
-  // Reading = 'reading'
 }
 
 export enum EssayType {
   Persuasive = 'persuasive',
   // Expository = 'expository',
   // Descriptive = 'descriptive',
-  Narrative = 'narrative'
+  Narrative = 'narrative',
+  Custom = 'custom'
 }
 
 export type AQuAQuestion = {
@@ -148,6 +175,13 @@ export type MathQAQuestion = {
   options: string
   correct: string
   category: string
+}
+
+export type HendrycksQuestion = {
+  problem: string
+  level: string
+  type: string
+  solution: string
 }
 
 export type GSM8KQuestion = {
@@ -167,4 +201,13 @@ export type CompetitionQuestion = {
   level: string
   type: string
   solution: string
+}
+
+export enum APIName {
+  OpenAI = 'openai',
+}
+
+export enum APIError {
+  Timeout = 'request is timed out',
+  TooBusy = 'the server is too busy',
 }

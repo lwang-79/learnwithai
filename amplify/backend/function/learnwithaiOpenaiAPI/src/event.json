@@ -1,17 +1,7 @@
 {
-  "operation": "stem-question",
-  "concepts": [
-      "astronomy",
-      "biology",
-      "chemistry",
-      "computer science",
-      "electrical",
-      "mathematics",
-      "medicine",
-      "physics",
-      "conceptual physics",
-      "statistics"
-  ],
-  "level": "High School",
-  "questionCount": 10
+  "operation": "math-dataset",
+  "dataset": "Hendrycks MATH",
+  "concept": "Geometry",
+  "level": "Level 5",
+  "questionCount": 1
 }

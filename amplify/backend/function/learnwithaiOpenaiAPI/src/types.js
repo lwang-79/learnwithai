@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.EssayType = exports.EssayTopic = exports.QuestionLevel = exports.QuestionCategory = exports.StemConcept = exports.MathConcept = exports.QuestionType = exports.APIOperation = void 0;
+exports.APIError = exports.APIName = exports.EssayType = exports.EssayTopic = exports.QuestionLevel = exports.QuestionCategory = exports.StemConcept = exports.MathConcept = exports.HendrycksConcept = exports.QuestionType = exports.QuestionRunMode = exports.QuestionSource = exports.APIOperation = void 0;
 var APIOperation;
 (function (APIOperation) {
     APIOperation["WritingPrompt"] = "writing-prompt";
@@ -12,10 +12,37 @@ var APIOperation;
     APIOperation["AskAnything"] = "ask-anything";
     APIOperation["StemQuestion"] = "stem-question";
 })(APIOperation = exports.APIOperation || (exports.APIOperation = {}));
+var QuestionSource;
+(function (QuestionSource) {
+    QuestionSource["GSM8K"] = "GMS8K";
+    QuestionSource["MathQA"] = "MathQA";
+    QuestionSource["Hendrycks"] = "Hendrycks MATH";
+    QuestionSource["Competition"] = "Competition";
+    QuestionSource["ChatGPT"] = "ChatGPT";
+    QuestionSource["SavedQuestions"] = "Saved Questions";
+})(QuestionSource = exports.QuestionSource || (exports.QuestionSource = {}));
+var QuestionRunMode;
+(function (QuestionRunMode) {
+    QuestionRunMode["Practice"] = "practice";
+    QuestionRunMode["Test"] = "test";
+    // Competition = 'competition',
+    QuestionRunMode["Review"] = "review";
+    // SavedQuestions = 'saved questions'
+})(QuestionRunMode = exports.QuestionRunMode || (exports.QuestionRunMode = {}));
 var QuestionType;
 (function (QuestionType) {
     QuestionType["MultiChoice"] = "multi-choice";
 })(QuestionType = exports.QuestionType || (exports.QuestionType = {}));
+var HendrycksConcept;
+(function (HendrycksConcept) {
+    HendrycksConcept["Prealgebra"] = "Prealgebra";
+    HendrycksConcept["IntermediateAlgebra"] = "Intermediate Algebra";
+    HendrycksConcept["Algebra"] = "Algebra";
+    HendrycksConcept["CountingProbability"] = "Counting & Probability";
+    HendrycksConcept["Geometry"] = "Geometry";
+    HendrycksConcept["NumberTheory"] = "Number Theory";
+    HendrycksConcept["Precalculus"] = "Precalculus";
+})(HendrycksConcept = exports.HendrycksConcept || (exports.HendrycksConcept = {}));
 var MathConcept;
 (function (MathConcept) {
     MathConcept["Arithmetic"] = "arithmetic";
@@ -55,6 +82,7 @@ var MathConcept;
 })(MathConcept = exports.MathConcept || (exports.MathConcept = {}));
 var StemConcept;
 (function (StemConcept) {
+    StemConcept["Science"] = "science";
     StemConcept["Astronomy"] = "astronomy";
     StemConcept["Biology"] = "biology";
     StemConcept["Chemistry"] = "chemistry";
@@ -70,6 +98,7 @@ var QuestionCategory;
 (function (QuestionCategory) {
     QuestionCategory["Math"] = "mathematics";
     QuestionCategory["AdvancedMath"] = "advanced mathematics";
+    QuestionCategory["Stem"] = "stem";
 })(QuestionCategory = exports.QuestionCategory || (exports.QuestionCategory = {}));
 var QuestionLevel;
 (function (QuestionLevel) {
@@ -85,8 +114,8 @@ var QuestionLevel;
     QuestionLevel["Year10"] = "Year-10";
     QuestionLevel["Year11"] = "Year-11";
     QuestionLevel["Year12"] = "Year-12";
-    QuestionLevel["GSM8K"] = "GSM8K";
-    QuestionLevel["MathQA"] = "MathQA";
+    // GSM8K = 'GSM8K',
+    // MathQA = 'MathQA',
     // AQuA = 'AQuA',
     QuestionLevel["Level1"] = "Level 1";
     QuestionLevel["Level2"] = "Level 2";
@@ -105,9 +134,6 @@ var EssayTopic;
     EssayTopic["Technology"] = "technology";
     EssayTopic["History"] = "history";
     EssayTopic["Politics"] = "politics";
-    // Creative = 'creative'
-    // Narrative = 'narrative',
-    // Reading = 'reading'
 })(EssayTopic = exports.EssayTopic || (exports.EssayTopic = {}));
 var EssayType;
 (function (EssayType) {
@@ -115,4 +141,14 @@ var EssayType;
     // Expository = 'expository',
     // Descriptive = 'descriptive',
     EssayType["Narrative"] = "narrative";
+    EssayType["Custom"] = "custom";
 })(EssayType = exports.EssayType || (exports.EssayType = {}));
+var APIName;
+(function (APIName) {
+    APIName["OpenAI"] = "openai";
+})(APIName = exports.APIName || (exports.APIName = {}));
+var APIError;
+(function (APIError) {
+    APIError["Timeout"] = "request is timed out";
+    APIError["TooBusy"] = "the server is too busy";
+})(APIError = exports.APIError || (exports.APIError = {}));

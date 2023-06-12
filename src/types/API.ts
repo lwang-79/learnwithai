@@ -91,6 +91,7 @@ export type ModelUserConditionInput = {
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelIDInput = {
@@ -147,6 +148,13 @@ export type ModelStringInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type User = {
@@ -278,6 +286,7 @@ export type ModelQuestionSetConditionInput = {
   and?: Array< ModelQuestionSetConditionInput | null > | null,
   or?: Array< ModelQuestionSetConditionInput | null > | null,
   not?: ModelQuestionSetConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelIntInput = {
@@ -370,6 +379,7 @@ export type ModelTestConditionInput = {
   and?: Array< ModelTestConditionInput | null > | null,
   or?: Array< ModelTestConditionInput | null > | null,
   not?: ModelTestConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Test = {
@@ -444,6 +454,7 @@ export type ModelEssayConditionInput = {
   and?: Array< ModelEssayConditionInput | null > | null,
   or?: Array< ModelEssayConditionInput | null > | null,
   not?: ModelEssayConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Essay = {
@@ -490,6 +501,7 @@ export type ModelUserFilterInput = {
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelUserConnection = {
@@ -520,6 +532,7 @@ export type ModelQuestionSetFilterInput = {
   and?: Array< ModelQuestionSetFilterInput | null > | null,
   or?: Array< ModelQuestionSetFilterInput | null > | null,
   not?: ModelQuestionSetFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelQuestionSetConnection = {
@@ -540,6 +553,7 @@ export type ModelTestFilterInput = {
   and?: Array< ModelTestFilterInput | null > | null,
   or?: Array< ModelTestFilterInput | null > | null,
   not?: ModelTestFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelTestConnection = {
@@ -560,6 +574,7 @@ export type ModelEssayFilterInput = {
   and?: Array< ModelEssayFilterInput | null > | null,
   or?: Array< ModelEssayFilterInput | null > | null,
   not?: ModelEssayFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelEssayConnection = {
@@ -579,6 +594,7 @@ export type ModelSubscriptionUserFilterInput = {
   markedQuestions?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -625,6 +641,7 @@ export type ModelSubscriptionQuestionSetFilterInput = {
   indexInTest?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionQuestionSetFilterInput | null > | null,
   or?: Array< ModelSubscriptionQuestionSetFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIntInput = {
@@ -649,6 +666,7 @@ export type ModelSubscriptionTestFilterInput = {
   correct?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionTestFilterInput | null > | null,
   or?: Array< ModelSubscriptionTestFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionEssayFilterInput = {
@@ -661,6 +679,7 @@ export type ModelSubscriptionEssayFilterInput = {
   DateTime?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEssayFilterInput | null > | null,
   or?: Array< ModelSubscriptionEssayFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type LearnwithaiSubscribeMutationVariables = {

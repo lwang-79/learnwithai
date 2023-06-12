@@ -7,5 +7,15 @@
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "appName",
+      "environmentVariableName": "APP_NAME"
+    },
+    {
+      "cloudFormationParameterName": "appName",
+      "environmentVariableName": "APP_NAME"
+    }
+  ]
 }

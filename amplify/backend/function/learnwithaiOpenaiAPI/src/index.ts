@@ -55,7 +55,9 @@ exports.handler = async (event) => {
     case APIOperation.MathDataset:
       body = await getDatasetQuestions(
         req.dataset || '',
-        req.questionCount || ''
+        req.questionCount || '',
+        req.level || '',
+        req.concept || ''
       );
       break;
 

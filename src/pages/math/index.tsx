@@ -5,7 +5,15 @@ import WithAuth from '@/components/Common/WithAuth';
 import QuestionRun from '@/components/Math/QuestionRun';
 import { Test } from '@/models';
 import { getTodayStatistic } from '@/types/statistic';
-import { MathConcept, QuestionCategory, QuestionLevel, QuestionRunMode, QuestionType } from '@/types/types';
+import { 
+  HendrycksConcept, 
+  MathConcept, 
+  QuestionCategory, 
+  QuestionLevel, 
+  QuestionRunMode, 
+  QuestionSource, 
+  QuestionType 
+} from '@/types/types';
 import { 
   Button, 
   Checkbox, 
@@ -32,7 +40,7 @@ import {
 } from '@chakra-ui/react'
 import { useContext, useEffect, useState } from 'react'
 import TestList from '@/components/Math/TestList';
-import { MdHelpOutline } from 'react-icons/md';
+import { MdErrorOutline } from 'react-icons/md';
 
 function MathExam() {
   const { 
@@ -41,34 +49,57 @@ function MathExam() {
     onClose: onCloseExamModal
   } = useDisclosure();
 
+  const sources = Object.values(QuestionSource);
   const concepts = Object.values(MathConcept);
+  const hendrycksConcepts = Object.values(HendrycksConcept);
   const levels = [
     ...Object.values(QuestionLevel).slice(0,6), 
-    ...Object.values(QuestionLevel).slice(12,14), 
   ];
-  const competitionLevels = [ ...Object.values(QuestionLevel).slice(14, 19) ];
-  const [ selectedConcepts, setSelectedConcepts ] = useState<MathConcept[]>([MathConcept.Arithmetic]);
-  const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.GSM8K);
+  const competitionLevels = [ ...Object.values(QuestionLevel).slice(12, 17) ];
+  const [ selectedSource, setSelectedSource ] = useState<string>(sources[0]);
+  const [ selectedConcepts, setSelectedConcepts ] = useState<(MathConcept|HendrycksConcept)[]>([MathConcept.Arithmetic]);
+  const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year4);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
   const { dataStoreUser } = useContext(SharedComponents);
-  const allConceptsChecked = concepts.length === selectedConcepts.length;
+  const [ allConceptsChecked, setAllConceptsChecked] = useState(false);
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
   const toast = useToast();
   const [ refreshTestList, setRefreshTestList ] = useBoolean(false);
 
   useEffect(() => {
-    if (mode === QuestionRunMode.Competition) {
-      setSelectedLevel(QuestionLevel.Level1);
-      setNum('50');
-    } else {
-      setSelectedLevel(QuestionLevel.GSM8K);
-      if (mode === QuestionRunMode.Test) setNum('20');
-      else if (mode === QuestionRunMode.Practice) setNum('10');
+    if (selectedSource === QuestionSource.SavedQuestions) {
+      setMode(QuestionRunMode.Practice);
+      return;
     }
 
-  }, [mode]);
+    if (mode === QuestionRunMode.Review) {
+      setMode(QuestionRunMode.Practice);
+    }
+
+    if (selectedSource === QuestionSource.Hendrycks) {
+      setSelectedLevel(QuestionLevel.Level1);
+      setSelectedConcepts(hendrycksConcepts);
+      setAllConceptsChecked(true);
+    } else if (selectedSource === QuestionSource.ChatGPT) {
+      setSelectedLevel(QuestionLevel.Year4);
+      setSelectedConcepts(concepts);
+      setAllConceptsChecked(true);
+    } else {
+      setSelectedLevel(QuestionLevel.Level1);
+      setSelectedConcepts([]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSource]);
+
+  useEffect(() => {
+    if (mode === QuestionRunMode.Practice) {
+      setNum('10');
+    } else {
+      setNum('20');
+    }
+  },[mode]);
 
   const setCheckedConcepts = (value: MathConcept) => {
     let concepts = selectedConcepts;
@@ -80,13 +111,36 @@ function MathExam() {
     } else {
       setSelectedConcepts([...concepts, value]);
     }
+
+    if (
+      selectedSource === QuestionSource.Hendrycks &&
+      concepts.length >= hendrycksConcepts.length
+    ) {
+      setAllConceptsChecked(true);
+      return
+    }
+
+    if (
+      selectedSource === QuestionSource.ChatGPT &&
+      concepts.length >= concepts.length
+    ) {
+      setAllConceptsChecked(true);
+      return;
+    }
+
+    setAllConceptsChecked(false);
   }
 
   const setAllCheckedConcepts = () => {
     if (selectedConcepts.length === 0) {
-      setSelectedConcepts(concepts);
+      setSelectedConcepts(
+        selectedSource === QuestionSource.ChatGPT ?
+        concepts : hendrycksConcepts
+      );
+      setAllConceptsChecked(true);
     } else {
       setSelectedConcepts([]);
+      setAllConceptsChecked(false);
     }
   }
 
@@ -115,6 +169,13 @@ function MathExam() {
     setTimeout(()=>onOpenExamModal(), 100);
   }
 
+  const savedQuestionsButtonClickedHandler = () => {
+    setSelectedSource(QuestionSource.SavedQuestions);
+    setTimeout(()=>{
+      onOpenExamModal();
+    }, 100);
+  }
+
   const openModalWithTest = (test: Test) => {
     setSelectedTest(test);
     setNum(test.questionSets.length.toString());
@@ -126,8 +187,13 @@ function MathExam() {
 
   const modalClosedHandler = async () => {
     onCloseExamModal();
-    setMode(QuestionRunMode.Practice);
-    setNum('10');
+    if (mode === QuestionRunMode.Review) {
+      setMode(QuestionRunMode.Practice);
+      setNum('10');
+    }
+    if (selectedSource === QuestionSource.SavedQuestions) {
+      setSelectedSource(sources[0]);
+    }
     setRefreshTestList.toggle();
   }
 
@@ -146,55 +212,85 @@ function MathExam() {
           </Script> */}
 
           <VStack minW='lg' maxW='5xl' mx='auto' mt='24' pb={24} px={10} spacing={4} align='flex-start'>
-            <RadioGroup onChange={setMode} value={mode}>
-              <HStack spacing={4}>
-                <Heading size='sm'>Mode</Heading>
-                <Radio value={QuestionRunMode.Practice}>Practice</Radio>
-                <Radio 
-                  value={QuestionRunMode.Test}
-                  isDisabled={dataStoreUser!.membership!.current < 2}
-                >
-                  Test
-                </Radio>
-                <Radio 
-                  value={QuestionRunMode.Competition}
-                  isDisabled={dataStoreUser!.membership!.current < 2}
-                >
-                  Competition
-                </Radio>
-                <Radio 
-                  value={QuestionRunMode.SavedQuestions}
-                  isDisabled={dataStoreUser!.membership!.current < 2}
-                >
-                  Saved Questions
-                </Radio>
-              </HStack>
-            </RadioGroup>
-            <RadioGroup 
-              onChange={setNum} 
-              value={num} 
-              isDisabled={
-                dataStoreUser!.membership!.current < 2 ||
-                mode === QuestionRunMode.Competition ||
-                mode === QuestionRunMode.SavedQuestions
-              }
-            >
-              <HStack spacing={4}>
-                <Heading size='sm'>Question Number</Heading>
-                <Radio value='10'>10</Radio>
-                {
-                  [20, 50].map((num, index) => {
-                    return (
-                      <Radio 
-                        value={num.toString()} 
-                        key={`${num}-${index}`}
-                      >
-                        {num}
-                      </Radio>
-                    )
-                  })
+            <HStack spacing={16}>
+              <RadioGroup 
+                onChange={setMode} 
+                value={mode}
+                isDisabled={selectedSource === QuestionSource.SavedQuestions}
+              >
+                <HStack spacing={4}>
+                  <Heading size='sm'>Mode</Heading>
+                  <Radio value={QuestionRunMode.Practice}>Practice</Radio>
+                  <Radio 
+                    value={QuestionRunMode.Test}
+                    isDisabled={
+                      dataStoreUser!.membership!.current < 2 ||
+                      selectedSource === QuestionSource.SavedQuestions 
+                    }
+                  >
+                    Test
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+
+              <RadioGroup 
+                onChange={setNum} 
+                value={num} 
+                isDisabled={
+                  dataStoreUser!.membership!.current < 2 ||
+                  // mode === QuestionRunMode.Competition ||
+                  selectedSource === QuestionSource.SavedQuestions
                 }
-              </HStack>
+              >
+                <HStack spacing={4}>
+                  <Heading size='sm'>Question Number</Heading>
+                  <Radio value='10'>10</Radio>
+                  {
+                    [20, 50].map((num, index) => {
+                      return (
+                        <Radio 
+                          value={num.toString()} 
+                          key={`${num}-${index}`}
+                        >
+                          {num}
+                        </Radio>
+                      )
+                    })
+                  }
+                </HStack>
+              </RadioGroup>
+            </HStack>
+
+            <Divider />
+
+            <RadioGroup
+              onChange={setSelectedSource}
+              value={selectedSource}
+            >
+              <VStack align='flex-start'>
+                <HStack align='flex-start'>
+                  <Heading size='sm'>Source</Heading>
+                  <Tooltip 
+                    hasArrow
+                    bg='teal'
+                    placement='right'
+                    label={`Due to the limitations of AI's capabilities, questions generated by ChatGPT may not be entirely accurate. On the other hand, public datasets used for AI training serve as alternative sources that offer significantly higher accuracy.`}
+                  >
+                    <span><Icon as={MdErrorOutline} boxSize={5} color='red.500' /></span>
+                  </Tooltip>
+                </HStack>
+                <Wrap>
+                  {sources.slice(0,5).map((source, index) => {
+                    return (
+                      <WrapItem key={`${source}-${index}`} minW='150px'>
+                        <Radio value={source}>
+                          {source}
+                        </Radio>
+                      </WrapItem>
+                    )
+                  })}
+                </Wrap>
+              </VStack>
             </RadioGroup>
 
             <Divider />
@@ -202,20 +298,11 @@ function MathExam() {
             <RadioGroup
               onChange={setSelectedLevel}
               value={selectedLevel}
-              isDisabled={mode === QuestionRunMode.SavedQuestions}
+              isDisabled={selectedSource === QuestionSource.SavedQuestions}
             >
               <VStack align='flex-start'>
                 <HStack align='flex-start'>
                   <Heading size='sm'>Level</Heading>
-                  <Tooltip 
-                    hasArrow
-                    bg='teal'
-                    placement='right'
-                    label={`Year level questions are generated by AI. Due to the limitation of AI's capability questions generated by AI maybe not accurate.\n
-                      Others are public dataset for AI training which can also be used to practice. The difficulty level is GSM8K < MathQA < Competition Levels.`}
-                  >
-                    <span><Icon as={MdHelpOutline} boxSize={5} /></span>
-                  </Tooltip>
                 </HStack>
                 <Wrap>
                   {levels.map((level, index) => {
@@ -224,9 +311,7 @@ function MathExam() {
                         <Radio
                           value={level}
                           isDisabled={
-                            // currentUser.membership.current < 2 ||
-                            mode === QuestionRunMode.Competition ||
-                            mode === QuestionRunMode.SavedQuestions
+                            selectedSource !== QuestionSource.ChatGPT
                           }
                         >
                           {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -239,7 +324,10 @@ function MathExam() {
                       <WrapItem key={`${level}-${index}`} minW='150px'>
                         <Radio
                           value={level}
-                          isDisabled={mode !== QuestionRunMode.Competition}
+                          isDisabled={
+                            selectedSource !== QuestionSource.Competition &&
+                            selectedSource !== QuestionSource.Hendrycks
+                          }
                         >
                           {level}
                         </Radio>
@@ -254,7 +342,10 @@ function MathExam() {
 
             <CheckboxGroup
               value={selectedConcepts}
-              isDisabled={!selectedLevel.includes('Year')}
+              isDisabled={
+                selectedSource !== QuestionSource.ChatGPT &&
+                selectedSource !== QuestionSource.Hendrycks
+              }
             >
               <VStack align='flex-start'>
                 <Checkbox
@@ -270,7 +361,20 @@ function MathExam() {
                       <WrapItem key={`${concept}-${index}`} minW='180px'>
                         <Checkbox
                           value={concept}
-                          isDisabled={!selectedLevel.includes('Year')}
+                          isDisabled={selectedSource !== QuestionSource.ChatGPT}
+                          onChange={(e) => setCheckedConcepts(e.target.value as MathConcept)}
+                        >
+                          {concept.charAt(0).toUpperCase() + concept.slice(1)}
+                        </Checkbox>
+                      </WrapItem>
+                    )
+                  })}
+                  {hendrycksConcepts.map((concept, index) => {
+                    return (
+                      <WrapItem key={`${concept}-${index}`} minW='180px'>
+                        <Checkbox
+                          value={concept}
+                          isDisabled={selectedSource !== QuestionSource.Hendrycks}
                           onChange={(e) => setCheckedConcepts(e.target.value as MathConcept)}
                         >
                           {concept.charAt(0).toUpperCase() + concept.slice(1)}
@@ -287,10 +391,23 @@ function MathExam() {
             </HStack>
             <Spacer />
 
-            <HStack justify='flex-end' w='full'>
+            <HStack w='full'>
+              <Button
+                variant='ghost'
+                onClick={savedQuestionsButtonClickedHandler}
+                isDisabled={dataStoreUser!.membership!.current < 2}
+              >
+                My saved questions
+              </Button>
+              <Spacer />
               <Button
                 onClick={startButtonClickedHandler}
-                isDisabled={!selectedConcepts.length || !selectedLevel}
+                isDisabled={
+                  ((selectedSource === QuestionSource.ChatGPT ||
+                  selectedSource === QuestionSource.Hendrycks) &&
+                  !selectedConcepts.length) || 
+                  !selectedLevel
+                }
               >
                 Start
               </Button>
@@ -315,6 +432,7 @@ function MathExam() {
               <ModalContent>
                 <ModalBody mt={-6}>
                   <QuestionRun 
+                    source={selectedSource as QuestionSource}
                     category={QuestionCategory.Math} 
                     type={QuestionType.MultiChoice}
                     level={selectedLevel as QuestionLevel}

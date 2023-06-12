@@ -15,16 +15,33 @@ export type APIResponse = {
   error?: string
 };
 
+export enum QuestionSource {
+  ChatGPT = 'ChatGPT',
+  Hendrycks = 'Hendrycks MATH',
+  GSM8K = 'GMS8K',
+  MathQA = 'MathQA',
+  Competition = 'Competition',
+  SavedQuestions = 'Saved Questions'
+}
+
 export enum QuestionRunMode {
   Practice = 'practice',
   Test = 'test',
-  Competition = 'competition',
   Review = 'review',
-  SavedQuestions = 'saved questions'
 }
 
 export enum QuestionType {
   MultiChoice = 'multi-choice',
+}
+
+export enum HendrycksConcept {
+  Algebra = 'Algebra',
+  Prealgebra = 'Prealgebra',
+  IntermediateAlgebra = 'Intermediate Algebra',
+  Geometry = 'Geometry',
+  NumberTheory = 'Number Theory',
+  Precalculus = 'Precalculus',
+  CountingProbability = 'Counting & Probability',
 }
 
 export enum MathConcept {
@@ -66,6 +83,7 @@ export enum MathConcept {
 }
 
 export enum StemConcept {
+  Science = 'science',
   Astronomy = 'astronomy',
   Biology = 'biology',
   Chemistry = 'chemistry',
@@ -97,8 +115,8 @@ export enum QuestionLevel {
   Year10 = 'Year-10',
   Year11 = 'Year-11',
   Year12 = 'Year-12',
-  GSM8K = 'GSM8K',
-  MathQA = 'MathQA',
+  // GSM8K = 'GSM8K',
+  // MathQA = 'MathQA',
   // AQuA = 'AQuA',
   Level1 = 'Level 1',
   Level2 = 'Level 2',
@@ -132,9 +150,6 @@ export enum EssayTopic {
   Technology = 'technology',
   History = 'history',
   Politics = 'politics'
-  // Creative = 'creative'
-  // Narrative = 'narrative',
-  // Reading = 'reading'
 }
 
 export enum EssayType {
@@ -158,6 +173,13 @@ export type MathQAQuestion = {
   options: string
   correct: string
   category: string
+}
+
+export type HendrycksQuestion = {
+  problem: string
+  level: string
+  type: string
+  solution: string
 }
 
 export type GSM8KQuestion = {
