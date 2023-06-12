@@ -35,13 +35,13 @@ export enum QuestionType {
 }
 
 export enum HendrycksConcept {
+  Algebra = 'Algebra',
   Prealgebra = 'Prealgebra',
   IntermediateAlgebra = 'Intermediate Algebra',
-  Algebra = 'Algebra',
-  CountingProbability = 'Counting & Probability',
   Geometry = 'Geometry',
   NumberTheory = 'Number Theory',
-  Precalculus = 'Precalculus'
+  Precalculus = 'Precalculus',
+  CountingProbability = 'Counting & Probability',
 }
 
 export enum MathConcept {

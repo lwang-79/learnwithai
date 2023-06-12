@@ -5,7 +5,7 @@ async function sesSendEmail(
 	to:string[], 
 	subject:string, 
 	message:string, 
-	from:string = 'notification@jinpearl.com'
+	from:string = 'notification@StudyWithAI.pro'
 ) {
 	const body = {
 		'from': from,

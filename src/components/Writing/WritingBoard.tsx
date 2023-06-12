@@ -313,7 +313,12 @@ Prompt: ${essay.prompt}
 Total words: ${count}
       `;
 
-      sesSendEmail(dataStoreUser.notification.emails as string[], 'Learn with AI instant notification', message, 'notification@jinpearl.com');
+      sesSendEmail(
+        dataStoreUser.notification.emails as string[], 
+        `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`, 
+        message, 
+        'notification@StudyWithAI.pro'
+      );
     }
   }
 

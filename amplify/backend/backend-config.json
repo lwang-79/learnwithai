@@ -113,6 +113,14 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_learnwithaiBackend_appName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "learnwithaiBackend"
+        }
+      ]
+    },
     "AMPLIFY_function_learnwithaiBackend_deploymentBucketName": {
       "usedBy": [
         {

@@ -411,7 +411,9 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       `
       sesSendEmail(
         dataStoreUser.notification.emails as string[], 
-        'Learn with AI instant notification', message, 'notification@jinpearl.com'
+        `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`, 
+        message, 
+        'notification@studtwithai.pro'
       );
     }
   }
@@ -817,7 +819,10 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 {currentQuestionSet ? (
                   <>
                     <Text 
-                      as={source === QuestionSource.Competition || source === QuestionSource.Hendrycks ? Latex : Text}
+                      as={
+                        currentQuestionSet.level.includes('Level') ?
+                        Latex : Text
+                      }
                       textAlign='justify'
                       overflow='auto'
                     >
@@ -833,7 +838,6 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                                 key={index}
                                 isDisabled={isSubmitted || isReview}
                               >
-                                {/* <Latex>{`${String.fromCharCode(65 + index)}: ${option}`}</Latex>  */}
                                 {!option.includes('$') && option.includes('\\') ?
                                   <HStack>
                                     <Text>{String.fromCharCode(65 + index)}: </Text>
