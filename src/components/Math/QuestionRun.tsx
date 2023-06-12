@@ -90,7 +90,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
   // value is the user selected answer
   const [ value, setValue ] = useState('');
 
-  // questionSets is used to list the questions on left
+  // questionSets is used to list the questions on right
   const [ questionSets, setQuestionSets ] = useState<LocalQuestionSet[]>([]);
 
   // fetchingStatus is used to detect new set and resume from waiting status
@@ -725,7 +725,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                     Question {currentIndex + 1}
                   </Text>
                   <Spacer />
-                  {isSavedQuestions ? (
+                  {isSavedQuestions && !isReview ? (
                     <>
                       <Tooltip label='Delete from my questions'>
                         <IconButton
