@@ -36,7 +36,7 @@ Writing practiced: ${monthly.writing}
 `
     }    
 
-    await sesSendEmail(user.notification.emails, 'Learn with AI monthly report', message);
+    await sesSendEmail(user.notification.emails, `${process.env.APP_NAME} monthly report`, message);
   }
 
   return {
@@ -74,7 +74,7 @@ Date: from ${startDate} to ${endDate}
     
     if (data.length === 0) {
       message += `
-You didn't have any practices last month!
+You didn't have any practices last week!
 `
     } else {
       const total = data.reduce((acc, obj) => {
@@ -94,7 +94,7 @@ Writing practiced: ${total.writing}
 `
     }
 
-    await sesSendEmail(user.notification.emails, 'Learn with AI weekly report', message);
+    await sesSendEmail(user.notification.emails, `${process.env.APP_NAME} weekly report`, message);
   }
 
   return {
@@ -138,7 +138,7 @@ Writing practiced: ${daily.writing}
 `
     }    
 
-    await sesSendEmail(user.notification.emails, 'Learn with AI daily report', message);
+    await sesSendEmail(user.notification.emails, `${process.env.APP_NAME} daily report`, message);
   }
 
   return {
@@ -149,7 +149,7 @@ Writing practiced: ${daily.writing}
 
 async function sesSendEmail(to:string[], subject:string, message:string) {
 	const body = {
-		'from': 'support@jinpearl.com',
+		'from': 'notification@StudyWithAI.pro',
 		'to': to,
 		'subject': subject,
 		'message': message
