@@ -9,7 +9,7 @@ const NotificationType = {
   "INSTANT": "Instant"
 };
 
-const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, GameData, Notification, LocalQuestionSet, LambdaResponse } = initSchema(schema);
+const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
   User,
@@ -23,6 +23,7 @@ export {
   Statistic,
   GameData,
   Notification,
+  OptionStates,
   LocalQuestionSet,
   LambdaResponse
 };

@@ -10,7 +10,6 @@ var getStemQuestions = function (concepts, level, questionCount) {
     var count = Number(questionCount);
     if (isNaN(count) ||
         count <= 0 ||
-        concepts.length === 0 ||
         ['Primary School', 'Middle School', 'High School', 'College'].indexOf(level) === -1) {
         return {
             statusCode: 400,
@@ -25,6 +24,12 @@ var getStemQuestions = function (concepts, level, questionCount) {
         return {
             statusCode: 200,
             data: questions_1.slice(randomIndex, randomIndex + count)
+        };
+    }
+    if (!concepts || concepts.length === 0) {
+        return {
+            statusCode: 400,
+            error: 'Please enter a valid value'
         };
     }
     var questions = mmlu_stem_json_1["default"].filter(function (question) { return !question.concept.includes(level === 'College' ? 'high_school' : 'college'); });

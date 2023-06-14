@@ -14,7 +14,6 @@ frontend:
       commands:
         # - echo "NEXT_PUBLIC_AWS_BRANCH=$USER_BRANCH" >> .env.production
         - npm run build
-        - ls ./out/_next/static/chunks/pages
   artifacts:
     baseDirectory: out
     files:

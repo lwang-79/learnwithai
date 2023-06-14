@@ -1,3 +1,7 @@
+export enum APIName {
+  OpenAI = 'openai',
+}
+
 export enum APIOperation {
   WritingPrompt = 'writing-prompt',
   WritingMark = 'writing-mark',
@@ -8,12 +12,6 @@ export enum APIOperation {
   AskAnything = 'ask-anything',
   StemQuestion = 'stem-question',
 }
-
-export type APIResponse = {
-  statusCode: number;
-  data?: any;
-  error?: string
-};
 
 export enum QuestionSource {
   ChatGPT = 'ChatGPT',
@@ -115,9 +113,6 @@ export enum QuestionLevel {
   Year10 = 'Year-10',
   Year11 = 'Year-11',
   Year12 = 'Year-12',
-  // GSM8K = 'GSM8K',
-  // MathQA = 'MathQA',
-  // AQuA = 'AQuA',
   Level1 = 'Level 1',
   Level2 = 'Level 2',
   Level3 = 'Level 3',
@@ -126,21 +121,6 @@ export enum QuestionLevel {
   // Primary = 'primary school',
   // Middle = 'middle school',
   // High = 'high school'
-}
-
-export type QuestionSet = {
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  question: string,
-  options: string[],
-  answer: string,
-  selected: string,
-  workout: string,
-  isBad: boolean,
-  isTarget: boolean,
-  isMarked?: boolean | null
 }
 
 export enum EssayTopic {
@@ -158,6 +138,27 @@ export enum EssayType {
   // Descriptive = 'descriptive',
   Narrative = 'narrative',
   Custom = 'custom'
+}
+
+export type APIResponse = {
+  statusCode: number;
+  data?: any;
+  error?: string
+};
+
+export type QuestionSet = {
+  type: string,
+  category: string,
+  level: string,
+  concept: string,
+  question: string,
+  options: string[],
+  answer: string,
+  selected: string,
+  workout: string,
+  isBad: boolean,
+  isTarget: boolean,
+  isMarked?: boolean | null
 }
 
 export type AQuAQuestion = {
@@ -199,13 +200,4 @@ export type CompetitionQuestion = {
   level: string
   type: string
   solution: string
-}
-
-export enum APIName {
-  OpenAI = 'openai',
-}
-
-export enum APIError {
-  Timeout = 'request is timed out',
-  TooBusy = 'the server is too busy',
 }

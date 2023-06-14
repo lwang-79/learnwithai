@@ -36,6 +36,7 @@ type User
   yearly: [Statistic!]
   gameData: GameData
   notification: Notification
+  optionStates: OptionStates
 }
 
 type Membership {
@@ -83,6 +84,21 @@ type GameData {
 type Notification {
   emails: [String]!
   types: [NotificationType]!
+}
+
+type OptionStates {
+  mathMode: String
+  mathNumber: Int
+  mathSource: String
+  mathLevel: String
+  mathConcepts: [String]
+  writingType: String
+  writingTopic: String
+  writingLevel: String
+  stemMode: String
+  stemNumber: Int
+  stemLevel: String
+  stemConcepts: [String]
 }
 
 enum NotificationType {

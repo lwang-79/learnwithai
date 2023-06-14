@@ -50,8 +50,9 @@ function GameCard() {
 
   const plantButtonClickedHandler = async () => {
     const seed = getSeed(user);
+    const currentUser = await DataStore.query(User, user.id);
     setDataStoreUser(
-      await DataStore.save(User.copyOf(user, (updated) => {
+      await DataStore.save(User.copyOf(currentUser!, (updated) => {
         updated.gameData = {
           startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
           level: 0,

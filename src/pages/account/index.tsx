@@ -17,7 +17,7 @@ import {
   useColorModeValue, 
   useDisclosure 
 } from '@chakra-ui/react'
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, DataStore, graphqlOperation } from 'aws-amplify'
 import { useContext, useEffect, useState } from 'react'
 import Header from '@/components/Common/Header'
 import WithAuth from '@/components/Common/WithAuth'
@@ -66,7 +66,8 @@ function Profile() {
   
         if (!remoteUser) return;
   
-        const clonedUser = User.copyOf(dataStoreUser, updated => {
+        const currentUser = await DataStore.query(User, dataStoreUser.id);
+        const clonedUser = User.copyOf(currentUser!, updated => {
           updated.membership = remoteUser.membership;
           updated.quota = remoteUser.quota;
         });

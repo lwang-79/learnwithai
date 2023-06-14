@@ -76,6 +76,20 @@ export const getUser = /* GraphQL */ `
         emails
         types
       }
+      optionStates {
+        mathMode
+        mathNumber
+        mathSource
+        mathLevel
+        mathConcepts
+        writingType
+        writingTopic
+        writingLevel
+        stemMode
+        stemNumber
+        stemLevel
+        stemConcepts
+      }
       createdAt
       updatedAt
       _version
@@ -163,6 +177,20 @@ export const listUsers = /* GraphQL */ `
         notification {
           emails
           types
+        }
+        optionStates {
+          mathMode
+          mathNumber
+          mathSource
+          mathLevel
+          mathConcepts
+          writingType
+          writingTopic
+          writingLevel
+          stemMode
+          stemNumber
+          stemLevel
+          stemConcepts
         }
         createdAt
         updatedAt
@@ -260,6 +288,20 @@ export const syncUsers = /* GraphQL */ `
         notification {
           emails
           types
+        }
+        optionStates {
+          mathMode
+          mathNumber
+          mathSource
+          mathLevel
+          mathConcepts
+          writingType
+          writingTopic
+          writingLevel
+          stemMode
+          stemNumber
+          stemLevel
+          stemConcepts
         }
         createdAt
         updatedAt
@@ -360,6 +402,20 @@ export const userBySub = /* GraphQL */ `
           emails
           types
         }
+        optionStates {
+          mathMode
+          mathNumber
+          mathSource
+          mathLevel
+          mathConcepts
+          writingType
+          writingTopic
+          writingLevel
+          stemMode
+          stemNumber
+          stemLevel
+          stemConcepts
+        }
         createdAt
         updatedAt
         _version
@@ -458,6 +514,20 @@ export const userByPayerId = /* GraphQL */ `
         notification {
           emails
           types
+        }
+        optionStates {
+          mathMode
+          mathNumber
+          mathSource
+          mathLevel
+          mathConcepts
+          writingType
+          writingTopic
+          writingLevel
+          stemMode
+          stemNumber
+          stemLevel
+          stemConcepts
         }
         createdAt
         updatedAt

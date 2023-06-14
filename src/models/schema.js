@@ -119,6 +119,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "optionStates": {
+                    "name": "optionStates",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "OptionStates"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -779,6 +788,97 @@ export const schema = {
                 }
             }
         },
+        "OptionStates": {
+            "name": "OptionStates",
+            "fields": {
+                "mathMode": {
+                    "name": "mathMode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "mathNumber": {
+                    "name": "mathNumber",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "mathSource": {
+                    "name": "mathSource",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "mathLevel": {
+                    "name": "mathLevel",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "mathConcepts": {
+                    "name": "mathConcepts",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "writingType": {
+                    "name": "writingType",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "writingTopic": {
+                    "name": "writingTopic",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "writingLevel": {
+                    "name": "writingLevel",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "stemMode": {
+                    "name": "stemMode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "stemNumber": {
+                    "name": "stemNumber",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "stemLevel": {
+                    "name": "stemLevel",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "stemConcepts": {
+                    "name": "stemConcepts",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            }
+        },
         "LocalQuestionSet": {
             "name": "LocalQuestionSet",
             "fields": {
@@ -890,5 +990,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "89e16f53ad83377d6186ffb605a8c5f0"
+    "version": "8a6441e11b5eddde805daee46d143243"
 };
