@@ -4,7 +4,7 @@ import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
 import WritingBoard from '@/components/Writing/WritingBoard';
-import { Essay } from '@/models';
+import { Essay, User } from '@/models';
 import { getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
@@ -27,7 +27,8 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { useContext, useState } from 'react'
+import { DataStore } from 'aws-amplify';
+import { useContext, useEffect, useState } from 'react'
 
 function Writing() {
   const { 
@@ -47,6 +48,15 @@ function Writing() {
 
   const toast = useToast();
   const [ refreshEssayList, setRefreshEssayList ] = useBoolean(false);
+
+  useEffect(() => {
+    if (!dataStoreUser) return;
+
+    if (dataStoreUser.optionStates?.writingType) setSelectedType(dataStoreUser.optionStates.writingType);
+    if (dataStoreUser.optionStates?.writingTopic) setSelectedTopic(dataStoreUser.optionStates.writingTopic);
+    if (dataStoreUser.optionStates?.writingLevel) setSelectedLevel(dataStoreUser.optionStates.writingLevel);
+  
+  },[dataStoreUser]);
 
   const startButtonClickedHandler = async () => {
     setSelectedEssay(undefined);
@@ -71,6 +81,18 @@ function Writing() {
     }
 
     setTimeout(()=>onOpenExamModal(), 100);
+
+    const currentUser = await DataStore.query(User, dataStoreUser.id);
+    const updatedUser = await DataStore.save(User.copyOf(currentUser!, updated => {
+      updated.optionStates = {
+        ...updated.optionStates,
+        writingType: selectedType,
+        writingTopic: selectedTopic,
+        writingLevel: selectedLevel
+      };
+    }));
+
+    setDataStoreUser(updatedUser);
   }
 
   const openModalWithEssay = (essay: Essay) => {

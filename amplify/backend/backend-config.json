@@ -74,6 +74,7 @@
       "service": "Cognito"
     }
   },
+  "custom": {},
   "function": {
     "learnwithaiBackend": {
       "build": true,

@@ -1,7 +1,6 @@
 {
-  "operation": "math-dataset",
-  "dataset": "Hendrycks MATH",
-  "concept": "Geometry",
-  "level": "Level 5",
-  "questionCount": 1
+  "operation": "writing-prompt",
+  "type": "narrative",
+  "topic": "test",
+  "level": "Year-4"
 }

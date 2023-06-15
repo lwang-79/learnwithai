@@ -36,6 +36,8 @@ type User
   yearly: [Statistic!]
   gameData: GameData
   notification: Notification
+  optionStates: OptionStates
+  owner: String
 }
 
 type Membership {
@@ -85,6 +87,21 @@ type Notification {
   types: [NotificationType]!
 }
 
+type OptionStates {
+  mathMode: String
+  mathNumber: Int
+  mathSource: String
+  mathLevel: String
+  mathConcepts: [String]
+  writingType: String
+  writingTopic: String
+  writingLevel: String
+  stemMode: String
+  stemNumber: Int
+  stemLevel: String
+  stemConcepts: [String]
+}
+
 enum NotificationType {
   Monthly
   Weekly
@@ -104,6 +121,7 @@ type QuestionSet @model @auth(rules: [{ allow: owner }]) {
   concept: String!   # Decimals, Algebra ...
   testId: ID
   indexInTest: Int
+  owner: String
 }
 
 type Test @model @auth(rules: [{ allow: owner }]) {
@@ -115,6 +133,7 @@ type Test @model @auth(rules: [{ allow: owner }]) {
   wrong: Int!
   correct: Int!
   questionSets: [LocalQuestionSet!]!
+  owner: String
 }
 
 type LocalQuestionSet {
@@ -140,6 +159,7 @@ type Essay @model @auth(rules: [{ allow: owner }]) {
   prompt: String!
   text: String!
   DateTime: AWSDateTime!
+  owner: String
 }
 
 type Mutation {

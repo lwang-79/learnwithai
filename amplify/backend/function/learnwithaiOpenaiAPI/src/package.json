@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.341.0",
-    "openai": "^3.2.1"
+    "openai": "^3.3.0"
   }
 }

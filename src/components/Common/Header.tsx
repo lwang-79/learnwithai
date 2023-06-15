@@ -24,17 +24,20 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalHeader,
+  useToast,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
 import { 
   MdClose, 
   MdDarkMode, 
+  MdDownload, 
   MdLightMode, 
   MdLogout, 
   MdMenu, 
   MdOutlineHelp, 
   MdOutlineSchool, 
-  MdPerson, 
+  MdPerson,
+  MdUpload, 
 } from 'react-icons/md';
 import NextLink from 'next/link';
 import { Auth, DataStore } from 'aws-amplify';
@@ -42,6 +45,7 @@ import { useRouter } from 'next/router';
 import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
+import { downloadData, importData } from '@/types/utils';
 
 const Links = ['/math', '/writing', '/stem'];
 const LinkNames = ['Math', 'Writing', 'STEM']
@@ -66,8 +70,9 @@ export default function Header() {
   const router = useRouter();
   const { setItem } = useStorage();
   const width = 'full';
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, setIsProcessing } = useContext(SharedComponents);
   const user = dataStoreUser!;
+  const toast = useToast();
 
   const { 
     isOpen: isOpenSupportModal, 
@@ -84,6 +89,38 @@ export default function Header() {
     } catch (error) {
       console.log('error signing out: ', error);
     }
+  }
+
+  const downloadClicked = () => {
+    if (user.membership!.current < 2) {
+      toast({
+        description: `The feature is not available for your current plan, please upgrade your plan in profile.`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    downloadData();
+  }
+
+  const uploadClicked = async () => {
+    if (user.membership!.current < 2) {
+      toast({
+        description: `The feature is not available for your current plan, please upgrade your plan in profile.`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true
+      });
+
+      return;
+    }
+
+    setIsProcessing(true);
+    await importData(user.owner!);
+    setIsProcessing(false);
   }
 
   return (
@@ -176,6 +213,18 @@ export default function Header() {
                     <HStack justifyContent={'center'}>
                       {colorMode === 'light' ? <Icon as={MdDarkMode} boxSize={6} color='gray.400' /> : <Icon as={MdLightMode} boxSize={6} color='gray.400' />}
                       <span>Change color</span>
+                    </HStack>
+                  </MenuItem>
+                  <MenuItem onClick={downloadClicked}>
+                    <HStack justifyContent={'center'}>
+                      <Icon as={MdDownload} boxSize={6} color='gray.400' />
+                      <span>Export data</span>
+                    </HStack>
+                  </MenuItem>
+                  <MenuItem onClick={uploadClicked}>
+                    <HStack justifyContent={'center'}>
+                      <Icon as={MdUpload} boxSize={6} color='gray.400' />
+                      <span>Import data</span>
                     </HStack>
                   </MenuItem>
                   <MenuItem onClick={onOpenSupportModal}>

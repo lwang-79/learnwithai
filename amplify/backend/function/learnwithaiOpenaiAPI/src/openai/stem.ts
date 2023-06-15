@@ -12,7 +12,6 @@ export const getStemQuestions = (
   if (
     isNaN(count) || 
     count <= 0 ||
-    concepts.length === 0 ||
     ['Primary School', 'Middle School', 'High School', 'College'].indexOf(level) === -1  
   ) {
     return {
@@ -36,6 +35,13 @@ export const getStemQuestions = (
     return {
       statusCode: 200,
       data: questions.slice(randomIndex, randomIndex + count)
+    }
+  }
+
+  if (!concepts || concepts.length === 0) {
+    return {
+      statusCode: 400,
+      error: 'Please enter a valid value'
     }
   }
 

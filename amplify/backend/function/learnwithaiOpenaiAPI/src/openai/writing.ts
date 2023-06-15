@@ -40,7 +40,26 @@ export const generateWritingPrompt = async (
     { role: 'system', content: 'You are an English writing teacher.' },
     { role: 'user', content: prompt }
   ]
-  return await chatCompletion(message);
+
+  const functions = [{
+    name: 'generateWritingPrompts',
+    parameters: {
+      type: 'object',
+      properties: {
+        text: {
+          type: 'string',
+          description: 'The generated background material for the writing.'
+        },
+        prompt: {
+          type: 'string',
+          description: 'The generated writing prompt.',
+        },
+      },
+      required: ['text', 'prompt']
+    }
+  }];
+
+  return await chatCompletion(message, functions);
 }
 
 export const generateWritingMark = async (

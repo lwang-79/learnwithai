@@ -95,12 +95,26 @@ export const createUser = /* GraphQL */ `
         emails
         types
       }
+      optionStates {
+        mathMode
+        mathNumber
+        mathSource
+        mathLevel
+        mathConcepts
+        writingType
+        writingTopic
+        writingLevel
+        stemMode
+        stemNumber
+        stemLevel
+        stemConcepts
+      }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -181,12 +195,26 @@ export const updateUser = /* GraphQL */ `
         emails
         types
       }
+      optionStates {
+        mathMode
+        mathNumber
+        mathSource
+        mathLevel
+        mathConcepts
+        writingType
+        writingTopic
+        writingLevel
+        stemMode
+        stemNumber
+        stemLevel
+        stemConcepts
+      }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -267,12 +295,26 @@ export const deleteUser = /* GraphQL */ `
         emails
         types
       }
+      optionStates {
+        mathMode
+        mathNumber
+        mathSource
+        mathLevel
+        mathConcepts
+        writingType
+        writingTopic
+        writingLevel
+        stemMode
+        stemNumber
+        stemLevel
+        stemConcepts
+      }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -293,12 +335,12 @@ export const createQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -319,12 +361,12 @@ export const updateQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -345,12 +387,12 @@ export const deleteQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -381,12 +423,12 @@ export const createTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -417,12 +459,12 @@ export const updateTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -453,12 +495,12 @@ export const deleteTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -475,12 +517,12 @@ export const createEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -497,12 +539,12 @@ export const updateEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -519,12 +561,12 @@ export const deleteEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;

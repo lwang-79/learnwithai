@@ -127,6 +127,40 @@ export declare type Notification = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const Notification: (new (init: ModelInit<Notification>) => Notification)
 
+type EagerOptionStates = {
+  readonly mathMode?: string | null;
+  readonly mathNumber?: number | null;
+  readonly mathSource?: string | null;
+  readonly mathLevel?: string | null;
+  readonly mathConcepts?: (string | null)[] | null;
+  readonly writingType?: string | null;
+  readonly writingTopic?: string | null;
+  readonly writingLevel?: string | null;
+  readonly stemMode?: string | null;
+  readonly stemNumber?: number | null;
+  readonly stemLevel?: string | null;
+  readonly stemConcepts?: (string | null)[] | null;
+}
+
+type LazyOptionStates = {
+  readonly mathMode?: string | null;
+  readonly mathNumber?: number | null;
+  readonly mathSource?: string | null;
+  readonly mathLevel?: string | null;
+  readonly mathConcepts?: (string | null)[] | null;
+  readonly writingType?: string | null;
+  readonly writingTopic?: string | null;
+  readonly writingLevel?: string | null;
+  readonly stemMode?: string | null;
+  readonly stemNumber?: number | null;
+  readonly stemLevel?: string | null;
+  readonly stemConcepts?: (string | null)[] | null;
+}
+
+export declare type OptionStates = LazyLoading extends LazyLoadingDisabled ? EagerOptionStates : LazyOptionStates
+
+export declare const OptionStates: (new (init: ModelInit<OptionStates>) => OptionStates)
+
 type EagerLocalQuestionSet = {
   readonly type: string;
   readonly category: string;
@@ -194,6 +228,8 @@ type EagerUser = {
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
+  readonly optionStates?: OptionStates | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -217,6 +253,8 @@ type LazyUser = {
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
+  readonly optionStates?: OptionStates | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -243,6 +281,7 @@ type EagerQuestionSet = {
   readonly concept: string;
   readonly testId?: string | null;
   readonly indexInTest?: number | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -263,6 +302,7 @@ type LazyQuestionSet = {
   readonly concept: string;
   readonly testId?: string | null;
   readonly indexInTest?: number | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -286,6 +326,7 @@ type EagerTest = {
   readonly wrong: number;
   readonly correct: number;
   readonly questionSets: LocalQuestionSet[];
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -303,6 +344,7 @@ type LazyTest = {
   readonly wrong: number;
   readonly correct: number;
   readonly questionSets: LocalQuestionSet[];
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -325,6 +367,7 @@ type EagerEssay = {
   readonly prompt: string;
   readonly text: string;
   readonly DateTime: string;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -341,6 +384,7 @@ type LazyEssay = {
   readonly prompt: string;
   readonly text: string;
   readonly DateTime: string;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
