@@ -41,7 +41,7 @@ var narrative_1 = require("../prompts/narrative");
 var types_1 = require("../types");
 var chat_1 = require("./chat");
 var generateWritingPrompt = function (type, topic, level) { return __awaiter(void 0, void 0, void 0, function () {
-    var prompt, message;
+    var prompt, message, functions;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -65,7 +65,24 @@ var generateWritingPrompt = function (type, topic, level) { return __awaiter(voi
                     { role: 'system', content: 'You are an English writing teacher.' },
                     { role: 'user', content: prompt }
                 ];
-                return [4 /*yield*/, (0, chat_1.chatCompletion)(message)];
+                functions = [{
+                        name: 'generateWritingPrompts',
+                        parameters: {
+                            type: 'object',
+                            properties: {
+                                text: {
+                                    type: 'string',
+                                    description: 'The generated background material for the writing.'
+                                },
+                                prompt: {
+                                    type: 'string',
+                                    description: 'The generated writing prompt.'
+                                }
+                            },
+                            required: ['text', 'prompt']
+                        }
+                    }];
+                return [4 /*yield*/, (0, chat_1.chatCompletion)(message, functions)];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });

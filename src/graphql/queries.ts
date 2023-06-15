@@ -90,12 +90,12 @@ export const getUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -192,12 +192,12 @@ export const listUsers = /* GraphQL */ `
           stemLevel
           stemConcepts
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -303,12 +303,12 @@ export const syncUsers = /* GraphQL */ `
           stemLevel
           stemConcepts
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -416,12 +416,12 @@ export const userBySub = /* GraphQL */ `
           stemLevel
           stemConcepts
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -529,12 +529,12 @@ export const userByPayerId = /* GraphQL */ `
           stemLevel
           stemConcepts
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -555,12 +555,12 @@ export const getQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -583,12 +583,12 @@ export const listQuestionSets = /* GraphQL */ `
         concept
         testId
         indexInTest
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -620,12 +620,12 @@ export const syncQuestionSets = /* GraphQL */ `
         concept
         testId
         indexInTest
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -656,12 +656,12 @@ export const getTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -694,12 +694,12 @@ export const listTests = /* GraphQL */ `
           isTarget
           isMarked
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -741,12 +741,12 @@ export const syncTests = /* GraphQL */ `
           isTarget
           isMarked
         }
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -763,12 +763,12 @@ export const getEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -787,12 +787,12 @@ export const listEssays = /* GraphQL */ `
         prompt
         text
         DateTime
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -820,12 +820,12 @@ export const syncEssays = /* GraphQL */ `
         prompt
         text
         DateTime
+        owner
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt

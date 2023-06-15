@@ -128,6 +128,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -284,6 +291,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -391,6 +405,13 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": false
                 },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -486,6 +507,13 @@ export const schema = {
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -990,5 +1018,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "8a6441e11b5eddde805daee46d143243"
+    "version": "ab27755d1d8bcfeb7cb9eb21dae94271"
 };

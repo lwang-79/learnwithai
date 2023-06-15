@@ -1,4 +1,4 @@
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import { ChatCompletionFunctions, ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import { APIResponse } from "../types";
 
 const OPENAI_API_KEY = Buffer.from(process.env.OPENAI_API_KEY, 'base64').toString();
@@ -11,8 +11,9 @@ const openai = new OpenAIApi(configuration);
 
 export const chatCompletion = async (
   messages:  ChatCompletionRequestMessage[],
+  functions?: ChatCompletionFunctions[],
   temperature: number = 1,
-  max_tokens: number = 1000
+  max_tokens: number = 1000,
 ): Promise<APIResponse> => {
 
   // const { Parameter } = await (new SSMClient({
@@ -36,17 +37,21 @@ export const chatCompletion = async (
     }
   }
 
+  console.log(messages)
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-0613",
       messages: messages,
+      // functions: functions,
       temperature: temperature,
       max_tokens: max_tokens
     });
 
+    // console.log(completion.data.choices[0].message);
     return {
       statusCode: 200,
-      data: completion.data.choices[0].message?.content,
+      // data: completion.data.choices[0].message?.function_call.arguments,
+      data: completion.data.choices[0].message?.content
     }
   } catch(error: any) {
     if (error.response) {

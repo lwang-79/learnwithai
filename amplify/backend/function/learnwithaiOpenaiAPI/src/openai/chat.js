@@ -43,7 +43,7 @@ var configuration = new openai_1.Configuration({
     apiKey: OPENAI_API_KEY
 });
 var openai = new openai_1.OpenAIApi(configuration);
-var chatCompletion = function (messages, temperature, max_tokens) {
+var chatCompletion = function (messages, functions, temperature, max_tokens) {
     if (temperature === void 0) { temperature = 1; }
     if (max_tokens === void 0) { max_tokens = 1000; }
     return __awaiter(void 0, void 0, void 0, function () {
@@ -69,19 +69,23 @@ var chatCompletion = function (messages, temperature, max_tokens) {
                                 error: "Missing API Key"
                             }];
                     }
+                    console.log(messages);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, openai.createChatCompletion({
-                            model: "gpt-3.5-turbo",
+                            model: "gpt-3.5-turbo-0613",
                             messages: messages,
+                            // functions: functions,
                             temperature: temperature,
                             max_tokens: max_tokens
                         })];
                 case 2:
                     completion = _b.sent();
+                    // console.log(completion.data.choices[0].message);
                     return [2 /*return*/, {
                             statusCode: 200,
+                            // data: completion.data.choices[0].message?.function_call.arguments,
                             data: (_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.content
                         }];
                 case 3:

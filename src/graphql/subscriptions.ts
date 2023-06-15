@@ -93,12 +93,12 @@ export const onCreateUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -193,12 +193,12 @@ export const onUpdateUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -293,12 +293,12 @@ export const onDeleteUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -319,12 +319,12 @@ export const onCreateQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -345,12 +345,12 @@ export const onUpdateQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -371,12 +371,12 @@ export const onDeleteQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -407,12 +407,12 @@ export const onCreateTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -443,12 +443,12 @@ export const onUpdateTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -479,12 +479,12 @@ export const onDeleteTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -501,12 +501,12 @@ export const onCreateEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -523,12 +523,12 @@ export const onUpdateEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -545,12 +545,12 @@ export const onDeleteEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;

@@ -109,12 +109,12 @@ export const createUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -209,12 +209,12 @@ export const updateUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -309,12 +309,12 @@ export const deleteUser = /* GraphQL */ `
         stemLevel
         stemConcepts
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -335,12 +335,12 @@ export const createQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -361,12 +361,12 @@ export const updateQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -387,12 +387,12 @@ export const deleteQuestionSet = /* GraphQL */ `
       concept
       testId
       indexInTest
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -423,12 +423,12 @@ export const createTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -459,12 +459,12 @@ export const updateTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -495,12 +495,12 @@ export const deleteTest = /* GraphQL */ `
         isTarget
         isMarked
       }
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -517,12 +517,12 @@ export const createEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -539,12 +539,12 @@ export const updateEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -561,12 +561,12 @@ export const deleteEssay = /* GraphQL */ `
       prompt
       text
       DateTime
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;

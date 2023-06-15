@@ -229,6 +229,7 @@ type EagerUser = {
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
   readonly optionStates?: OptionStates | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -253,6 +254,7 @@ type LazyUser = {
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
   readonly optionStates?: OptionStates | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -279,6 +281,7 @@ type EagerQuestionSet = {
   readonly concept: string;
   readonly testId?: string | null;
   readonly indexInTest?: number | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -299,6 +302,7 @@ type LazyQuestionSet = {
   readonly concept: string;
   readonly testId?: string | null;
   readonly indexInTest?: number | null;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -322,6 +326,7 @@ type EagerTest = {
   readonly wrong: number;
   readonly correct: number;
   readonly questionSets: LocalQuestionSet[];
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -339,6 +344,7 @@ type LazyTest = {
   readonly wrong: number;
   readonly correct: number;
   readonly questionSets: LocalQuestionSet[];
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -361,6 +367,7 @@ type EagerEssay = {
   readonly prompt: string;
   readonly text: string;
   readonly DateTime: string;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -377,6 +384,7 @@ type LazyEssay = {
   readonly prompt: string;
   readonly text: string;
   readonly DateTime: string;
+  readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
