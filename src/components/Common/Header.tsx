@@ -215,18 +215,21 @@ export default function Header() {
                       <span>Change color</span>
                     </HStack>
                   </MenuItem>
-                  <MenuItem onClick={downloadClicked}>
-                    <HStack justifyContent={'center'}>
-                      <Icon as={MdDownload} boxSize={6} color='gray.400' />
-                      <span>Export data</span>
-                    </HStack>
-                  </MenuItem>
-                  <MenuItem onClick={uploadClicked}>
-                    <HStack justifyContent={'center'}>
-                      <Icon as={MdUpload} boxSize={6} color='gray.400' />
-                      <span>Import data</span>
-                    </HStack>
-                  </MenuItem>
+                  {user.membership!.current > 9 &&
+                  <>
+                    <MenuItem onClick={downloadClicked}>
+                      <HStack justifyContent={'center'}>
+                        <Icon as={MdDownload} boxSize={6} color='gray.400' />
+                        <span>Export data</span>
+                      </HStack>
+                    </MenuItem>
+                    <MenuItem onClick={uploadClicked}>
+                      <HStack justifyContent={'center'}>
+                        <Icon as={MdUpload} boxSize={6} color='gray.400' />
+                        <span>Import data</span>
+                      </HStack>
+                    </MenuItem>
+                  </>}
                   <MenuItem onClick={onOpenSupportModal}>
                     <HStack justifyContent={'center'}>
                       <Icon as={MdOutlineHelp} boxSize={6} color='gray.400' />

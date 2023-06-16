@@ -109,7 +109,7 @@ var getDatasetQuestions = function (dataset, questionCount, level, concept) { re
 }); };
 exports.getDatasetQuestions = getDatasetQuestions;
 var generateMathQuestion = function (category, type, level, concept) { return __awaiter(void 0, void 0, void 0, function () {
-    var messages;
+    var messages, functions;
     return __generator(this, function (_a) {
         if (category.trim().length === 0 ||
             type.trim().length === 0 ||
@@ -121,6 +121,36 @@ var generateMathQuestion = function (category, type, level, concept) { return __
                 }];
         }
         messages = (0, math_1.generateChatMessages)(level, concept);
+        functions = [{
+                name: 'generateMultiChoiceMathQuestion',
+                parameters: {
+                    type: 'object',
+                    properties: {
+                        question: {
+                            type: 'string',
+                            description: 'The generated math question.'
+                        },
+                        options: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                                description: 'raw option without indicator (A, B, C, D)'
+                            },
+                            description: 'The generated four options including the answer.'
+                        },
+                        answer: {
+                            type: 'string',
+                            description: "The correct answer's indicator. If the answer is the first option, indicator is A, last is D.",
+                            "enum": ['A', 'B', 'C', 'D']
+                        },
+                        workout: {
+                            type: 'string',
+                            description: 'The workout of the correct answer.'
+                        }
+                    },
+                    required: ['question', 'options', 'answer', 'workout']
+                }
+            }];
         return [2 /*return*/, (0, chat_1.chatCompletion)(messages)];
     });
 }); };

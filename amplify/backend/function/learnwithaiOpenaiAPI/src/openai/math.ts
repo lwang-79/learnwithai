@@ -4,7 +4,7 @@ import hendrycks from '../models/hendrycks.json';
 import competition from '../models/competition.json';
 import { APIResponse, CompetitionQuestion, GSM8KQuestion, HendrycksQuestion, MathQAQuestion, QuestionCategory, QuestionLevel, QuestionSet, QuestionSource, QuestionType } from '../types';
 import { chatCompletion } from './chat';
-import { ChatCompletionRequestMessage } from 'openai';
+import { ChatCompletionFunctions, ChatCompletionRequestMessage } from 'openai';
 import { generateChatMessages } from '../prompts/math';
 
 export const getDatasetQuestions = async (
@@ -98,6 +98,37 @@ export const generateMathQuestion = async (
   }
 
   const messages = generateChatMessages(level, concept);
+
+  const functions: ChatCompletionFunctions[] = [{
+    name: 'generateMultiChoiceMathQuestion',
+    parameters: {
+      type: 'object',
+      properties: {
+        question: {
+          type: 'string',
+          description: 'The generated math question.'
+        },
+        options: {
+          type: 'array',
+          items: { 
+            type: 'string',
+            description: 'raw option without indicator (A, B, C, D)'
+          },
+          description: 'The generated four options including the answer.',
+        },
+        answer: {
+          type: 'string',
+          description: `The correct answer's indicator. If the answer is the first option, indicator is A, last is D.`,
+          enum: ['A', 'B', 'C', 'D']
+        },
+        workout: {
+          type: 'string',
+          description: 'The workout of the correct answer.'
+        }
+      },
+      required: ['question', 'options', 'answer', 'workout']
+    }
+  }];
 
   return chatCompletion(messages);
 }
