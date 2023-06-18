@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -38,40 +38,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var core_1 = require("./core");
 exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
-    var statusCode, body, today;
-    var _a, _b, _c, _d, _e;
-    return __generator(this, function (_f) {
-        switch (_f.label) {
+    var statusCode, body;
+    var _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 console.log("EVENT: ".concat(JSON.stringify(event)));
                 statusCode = 200;
                 body = 'Success';
-                today = new Date();
-                if (!(today.getDate() === 1)) return [3 /*break*/, 3];
-                return [4 /*yield*/, (0, core_1.sendMonthlyNotification)()];
+                return [4 /*yield*/, (0, core_1.processData)()];
             case 1:
-                (_a = _f.sent(), statusCode = _a.statusCode, body = _a.body);
-                return [4 /*yield*/, (0, core_1.sendDailyNotification)()];
-            case 2:
-                (_b = _f.sent(), statusCode = _b.statusCode, body = _b.body);
-                return [3 /*break*/, 8];
-            case 3:
-                if (!(today.getDay() === 0)) return [3 /*break*/, 6];
-                return [4 /*yield*/, (0, core_1.sendWeeklyNotification)()];
-            case 4:
-                (_c = _f.sent(), statusCode = _c.statusCode, body = _c.body);
-                return [4 /*yield*/, (0, core_1.sendDailyNotification)()];
-            case 5:
-                (_d = _f.sent(), statusCode = _d.statusCode, body = _d.body);
-                return [3 /*break*/, 8];
-            case 6: return [4 /*yield*/, (0, core_1.sendDailyNotification)()];
-            case 7:
-                (_e = _f.sent(), statusCode = _e.statusCode, body = _e.body);
-                _f.label = 8;
-            case 8: return [2 /*return*/, {
-                    statusCode: statusCode,
-                    body: body
-                }];
+                (_a = _b.sent(), statusCode = _a.statusCode, body = _a.body);
+                return [2 /*return*/, {
+                        statusCode: statusCode,
+                        body: body
+                    }];
         }
     });
 }); };

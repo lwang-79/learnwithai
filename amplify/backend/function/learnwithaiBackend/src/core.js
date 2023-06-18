@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -39,183 +39,114 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.sendWeeklyNotification = exports.sendMonthlyNotification = exports.sendDailyNotification = void 0;
+exports.sendWeeklyNotification = exports.sendMonthlyNotification = exports.sendDailyNotification = exports.processData = void 0;
 var graphql_1 = require("./graphql");
 var node_fetch_1 = __importDefault(require("node-fetch"));
-function sendMonthlyNotification() {
+function sendMonthlyNotification(user) {
     return __awaiter(this, void 0, void 0, function () {
-        var users, _loop_1, _i, users_1, user;
+        var date, dateString, monthly, message;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, graphql_1.listUserData)()];
+                case 0:
+                    if (!user.notification ||
+                        user.notification.emails.length === 0 ||
+                        !user.notification.types.includes('Monthly'))
+                        return [2 /*return*/];
+                    date = new Date();
+                    date.setDate(date.getDate() - 2);
+                    dateString = date.toISOString().slice(0, 7);
+                    monthly = user.monthly.find(function (d) { return d.date === dateString; });
+                    message = "\nMonthly report for ".concat(user.username, "\nDate: ").concat(dateString, "\n");
+                    if (!monthly) {
+                        message += "\nYou didn't have any practices last month!\n";
+                    }
+                    else {
+                        message += "\nMath questions: ".concat(monthly.mathCorrect + monthly.mathWrong, "\nMath correct: ").concat(monthly.mathCorrect, " (").concat(monthly.mathCorrect === 0 ? '' : (100 * monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(monthly.mathExam, "\nWriting practiced: ").concat(monthly.writing, "\n");
+                    }
+                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " monthly report"), message)];
                 case 1:
-                    users = _a.sent();
-                    _loop_1 = function (user) {
-                        var date, dateString, monthly, message;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    if (!user.notification ||
-                                        user.notification.emails.length === 0 ||
-                                        !user.notification.types.includes('Monthly'))
-                                        return [2 /*return*/, "continue"];
-                                    date = new Date();
-                                    date.setDate(date.getDate() - 2);
-                                    dateString = date.toISOString().slice(0, 7);
-                                    monthly = user.monthly.find(function (d) { return d.date === dateString; });
-                                    message = "\nMonthly report for ".concat(user.username, "\nDate: ").concat(dateString, "\n");
-                                    if (!monthly) {
-                                        message += "\nYou didn't have any practices last month!\n";
-                                    }
-                                    else {
-                                        message += "\nMath questions: ".concat(monthly.mathCorrect + monthly.mathWrong, "\nMath correct: ").concat(monthly.mathCorrect, " (").concat(monthly.mathCorrect === 0 ? '' : (100 * monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(monthly.mathExam, "\nWriting practiced: ").concat(monthly.writing, "\n");
-                                    }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " monthly report"), message)];
-                                case 1:
-                                    _b.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _i = 0, users_1 = users;
-                    _a.label = 2;
-                case 2:
-                    if (!(_i < users_1.length)) return [3 /*break*/, 5];
-                    user = users_1[_i];
-                    return [5 /*yield**/, _loop_1(user)];
-                case 3:
                     _a.sent();
-                    _a.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, {
-                        statusCode: 200,
-                        body: 'Success'
-                    }];
+                    return [2 /*return*/, {
+                            statusCode: 200,
+                            body: 'Success'
+                        }];
             }
         });
     });
 }
 exports.sendMonthlyNotification = sendMonthlyNotification;
-function sendWeeklyNotification() {
+function sendWeeklyNotification(user) {
     return __awaiter(this, void 0, void 0, function () {
-        var users, _loop_2, _i, users_2, user;
+        var date, endDate, startDate, data, message, total;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, graphql_1.listUserData)()];
+                case 0:
+                    if (!user.notification ||
+                        user.notification.emails.length === 0 ||
+                        !user.notification.types.includes('Monthly'))
+                        return [2 /*return*/];
+                    date = new Date();
+                    date.setDate(date.getDate() - 1);
+                    endDate = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
+                    date = new Date();
+                    date.setDate(date.getDate() - 7);
+                    startDate = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
+                    data = user.daily.filter(function (d) { return d.date >= startDate && d.date <= endDate; });
+                    message = "\nWeekly report for ".concat(user.username, "\nDate: from ").concat(startDate, " to ").concat(endDate, "\n");
+                    if (data.length === 0) {
+                        message += "\nYou didn't have any practices last week!\n";
+                    }
+                    else {
+                        total = data.reduce(function (acc, obj) {
+                            return {
+                                mathCorrect: acc.mathCorrect + obj.mathCorrect,
+                                mathWrong: acc.mathWrong + obj.mathWrong,
+                                mathExam: acc.mathExam + obj.mathExam,
+                                writing: acc.writing + obj.writing
+                            };
+                        }, { mathCorrect: 0, mathWrong: 0, mathExam: 0, writing: 0 });
+                        message += "\nMath questions: ".concat(total.mathCorrect + total.mathWrong, "\nMath correct: ").concat(total.mathCorrect, " (").concat(total.mathCorrect === 0 ? '' : (100 * total.mathCorrect / (total.mathCorrect + total.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(total.mathExam, "\nWriting practiced: ").concat(total.writing, "\n");
+                    }
+                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " weekly report"), message)];
                 case 1:
-                    users = _a.sent();
-                    _loop_2 = function (user) {
-                        var date, endDate, startDate, data, message, total;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    if (!user.notification ||
-                                        user.notification.emails.length === 0 ||
-                                        !user.notification.types.includes('Monthly'))
-                                        return [2 /*return*/, "continue"];
-                                    date = new Date();
-                                    date.setDate(date.getDate() - 1);
-                                    endDate = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
-                                    date = new Date();
-                                    date.setDate(date.getDate() - 7);
-                                    startDate = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
-                                    data = user.daily.filter(function (d) { return d.date >= startDate && d.date <= endDate; });
-                                    message = "\nWeekly report for ".concat(user.username, "\nDate: from ").concat(startDate, " to ").concat(endDate, "\n    ");
-                                    if (data.length === 0) {
-                                        message += "\nYou didn't have any practices last week!\n";
-                                    }
-                                    else {
-                                        total = data.reduce(function (acc, obj) {
-                                            return {
-                                                mathCorrect: acc.mathCorrect + obj.mathCorrect,
-                                                mathWrong: acc.mathWrong + obj.mathWrong,
-                                                mathExam: acc.mathExam + obj.mathExam,
-                                                writing: acc.writing + obj.writing
-                                            };
-                                        }, { mathCorrect: 0, mathWrong: 0, mathExam: 0, writing: 0 });
-                                        message += "\nMath questions: ".concat(total.mathCorrect + total.mathWrong, "\nMath correct: ").concat(total.mathCorrect, " (").concat(total.mathCorrect === 0 ? '' : (100 * total.mathCorrect / (total.mathCorrect + total.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(total.mathExam, "\nWriting practiced: ").concat(total.writing, "\n");
-                                    }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " weekly report"), message)];
-                                case 1:
-                                    _b.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _i = 0, users_2 = users;
-                    _a.label = 2;
-                case 2:
-                    if (!(_i < users_2.length)) return [3 /*break*/, 5];
-                    user = users_2[_i];
-                    return [5 /*yield**/, _loop_2(user)];
-                case 3:
                     _a.sent();
-                    _a.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, {
-                        statusCode: 200,
-                        body: 'Success'
-                    }];
+                    return [2 /*return*/, {
+                            statusCode: 200,
+                            body: 'Success'
+                        }];
             }
         });
     });
 }
 exports.sendWeeklyNotification = sendWeeklyNotification;
-function sendDailyNotification() {
+function sendDailyNotification(user) {
     return __awaiter(this, void 0, void 0, function () {
-        var users, _loop_3, _i, users_3, user;
+        var date, dateString, daily, message;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, graphql_1.listUserData)()];
+                case 0:
+                    if (!user.notification ||
+                        user.notification.emails.length === 0 ||
+                        !user.notification.types.includes('Daily'))
+                        return [2 /*return*/];
+                    date = new Date();
+                    date.setDate(date.getDate() - 1);
+                    dateString = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
+                    daily = user.daily.find(function (d) { return d.date === dateString; });
+                    message = "\nDaily report for ".concat(user.username, "\nDate: ").concat(dateString, "\n");
+                    if (!daily) {
+                        message += "\nYou didn't have any practices yesterday!\n";
+                    }
+                    else {
+                        message += "\nMath questions: ".concat(daily.mathCorrect + daily.mathWrong, "\nMath correct: ").concat(daily.mathCorrect, " (").concat(daily.mathCorrect === 0 ? '' : (100 * daily.mathCorrect / (daily.mathCorrect + daily.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(daily.mathExam, "\nWriting practiced: ").concat(daily.writing, "\n");
+                    }
+                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " daily report"), message)];
                 case 1:
-                    users = _a.sent();
-                    _loop_3 = function (user) {
-                        var date, dateString, daily, message;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0:
-                                    if (!user.notification ||
-                                        user.notification.emails.length === 0 ||
-                                        !user.notification.types.includes('Daily'))
-                                        return [2 /*return*/, "continue"];
-                                    date = new Date();
-                                    date.setDate(date.getDate() - 1);
-                                    dateString = new Date(date.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
-                                    daily = user.daily.find(function (d) { return d.date === dateString; });
-                                    message = "\nDaily report for ".concat(user.username, "\nDate: ").concat(dateString, "\n");
-                                    if (!daily) {
-                                        message += "\nYou didn't have any practices yesterday!\n";
-                                    }
-                                    else {
-                                        message += "\nMath questions: ".concat(daily.mathCorrect + daily.mathWrong, "\nMath correct: ").concat(daily.mathCorrect, " (").concat(daily.mathCorrect === 0 ? '' : (100 * daily.mathCorrect / (daily.mathCorrect + daily.mathWrong)).toFixed(0) + '%', ")\nMath test: ").concat(daily.mathExam, "\nWriting practiced: ").concat(daily.writing, "\n");
-                                    }
-                                    return [4 /*yield*/, sesSendEmail(user.notification.emails, "".concat(process.env.APP_NAME, " daily report"), message)];
-                                case 1:
-                                    _b.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
-                    _i = 0, users_3 = users;
-                    _a.label = 2;
-                case 2:
-                    if (!(_i < users_3.length)) return [3 /*break*/, 5];
-                    user = users_3[_i];
-                    return [5 /*yield**/, _loop_3(user)];
-                case 3:
                     _a.sent();
-                    _a.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, {
-                        statusCode: 200,
-                        body: 'Success'
-                    }];
+                    return [2 /*return*/, {
+                            statusCode: 200,
+                            body: 'Success'
+                        }];
             }
         });
     });
@@ -241,6 +172,189 @@ function sesSendEmail(to, subject, message) {
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
+            }
+        });
+    });
+}
+function getStaticDataAndSendNotification(users, dayString, monthString) {
+    return __awaiter(this, void 0, void 0, function () {
+        var mathCorrectNumberByDayData, mathCorrectNumberByMonthData, writingNumberByDayData, writingNumberByMonthData, _i, users_1, user, dayData, mathScore, monthData, mathScore, today;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    mathCorrectNumberByDayData = [];
+                    mathCorrectNumberByMonthData = [];
+                    writingNumberByDayData = [];
+                    writingNumberByMonthData = [];
+                    _i = 0, users_1 = users;
+                    _a.label = 1;
+                case 1:
+                    if (!(_i < users_1.length)) return [3 /*break*/, 10];
+                    user = users_1[_i];
+                    if (user.daily) {
+                        dayData = user.daily.find(function (d) { return d.date === dayString; });
+                        if (dayData) {
+                            mathScore = dayData.mathExam * 20 + dayData.mathCorrect * 10 + dayData.mathWrong;
+                            if (mathScore > 100) {
+                                mathCorrectNumberByDayData.push([user.username, mathScore]);
+                            }
+                            if (dayData.writing > 0) {
+                                writingNumberByDayData.push([user.username, dayData.writing * 10]);
+                            }
+                        }
+                    }
+                    if (user.monthly) {
+                        monthData = user.monthly.find(function (d) { return d.date === monthString; });
+                        if (monthData) {
+                            mathScore = monthData.mathExam * 20 + monthData.mathCorrect * 10 + monthData.mathWrong;
+                            if (mathScore > 500) {
+                                mathCorrectNumberByMonthData.push([user.username, mathScore]);
+                            }
+                            if (monthData.writing > 5) {
+                                writingNumberByMonthData.push([user.username, monthData.writing]);
+                            }
+                        }
+                    }
+                    today = new Date();
+                    if (!(today.getDate() === 1)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, sendMonthlyNotification(user)];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, sendDailyNotification(user)];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 9];
+                case 4:
+                    if (!(today.getDay() === 0)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, sendWeeklyNotification(user)];
+                case 5:
+                    _a.sent();
+                    return [4 /*yield*/, sendDailyNotification(user)];
+                case 6:
+                    _a.sent();
+                    return [3 /*break*/, 9];
+                case 7: return [4 /*yield*/, sendDailyNotification(user)];
+                case 8:
+                    _a.sent();
+                    _a.label = 9;
+                case 9:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 10: return [2 /*return*/, {
+                        mathByDay: mathCorrectNumberByDayData,
+                        mathByMonth: mathCorrectNumberByMonthData,
+                        writingByDay: writingNumberByDayData,
+                        writingByMonth: writingNumberByMonthData
+                    }];
+            }
+        });
+    });
+}
+function processData() {
+    return __awaiter(this, void 0, void 0, function () {
+        var today, yesterday, dayString, monthString, mathCorrectNumberByDayData, mathCorrectNumberByMonthData, writingNumberByDayData, writingNumberByMonthData, token, _a, users, nextToken, _b, mathByDay, mathByMonth, writingByDay, writingByMonth;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    today = new Date();
+                    yesterday = new Date(today);
+                    yesterday.setDate(today.getDate() - 1);
+                    dayString = new Date(yesterday.toLocaleString('sv').slice(0, 10)).toISOString().slice(0, 10);
+                    monthString = dayString.slice(0, 7);
+                    mathCorrectNumberByDayData = [];
+                    mathCorrectNumberByMonthData = [];
+                    writingNumberByDayData = [];
+                    writingNumberByMonthData = [];
+                    token = null;
+                    _c.label = 1;
+                case 1: return [4 /*yield*/, (0, graphql_1.listUserData)(token)];
+                case 2:
+                    _a = _c.sent(), users = _a.users, nextToken = _a.nextToken;
+                    return [4 /*yield*/, getStaticDataAndSendNotification(users, dayString, monthString)];
+                case 3:
+                    _b = _c.sent(), mathByDay = _b.mathByDay, mathByMonth = _b.mathByMonth, writingByDay = _b.writingByDay, writingByMonth = _b.writingByMonth;
+                    mathCorrectNumberByDayData = mathCorrectNumberByDayData.concat(mathByDay);
+                    mathCorrectNumberByMonthData = mathCorrectNumberByMonthData.concat(mathByMonth);
+                    writingNumberByDayData = writingNumberByDayData.concat(writingByDay);
+                    writingNumberByMonthData = writingNumberByMonthData.concat(writingByMonth);
+                    token = nextToken;
+                    _c.label = 4;
+                case 4:
+                    if (token) return [3 /*break*/, 1];
+                    _c.label = 5;
+                case 5: return [4 /*yield*/, createOrSaveRankingItem(graphql_1.RankingType.MATH_CORRECT_NUMBER_BY_DAY, dayString, mathCorrectNumberByDayData)];
+                case 6:
+                    _c.sent();
+                    return [4 /*yield*/, createOrSaveRankingItem(graphql_1.RankingType.MATH_CORRECT_NUMBER_BY_MONTH, monthString, mathCorrectNumberByMonthData)];
+                case 7:
+                    _c.sent();
+                    return [4 /*yield*/, createOrSaveRankingItem(graphql_1.RankingType.WRITING_NUMBER_BY_DAY, dayString, writingNumberByDayData)];
+                case 8:
+                    _c.sent();
+                    return [4 /*yield*/, createOrSaveRankingItem(graphql_1.RankingType.WRITING_NUMBER_BY_MONTH, monthString, writingNumberByMonthData)];
+                case 9:
+                    _c.sent();
+                    return [2 /*return*/, {
+                            statusCode: 200,
+                            body: 'Success'
+                        }];
+            }
+        });
+    });
+}
+exports.processData = processData;
+function createOrSaveRankingItem(type, date, data) {
+    return __awaiter(this, void 0, void 0, function () {
+        var firstNames, randomFirstName, randomScore, names, values, items, item, item;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    while (data.length < 5) {
+                        firstNames = [
+                            'Steve', 'John', 'Michael', 'David', 'Emily', 'Sarah', 'Jessica', 'Michelle',
+                            'James', 'William', 'Emma', 'Olivia', 'Sophia', 'Ava', 'Isabella',
+                            'Aarav', 'Arjun', 'Vivaan', 'Kabir', 'Aryan', 'Diya', 'Aishwarya', 'Suhana', 'Neha', 'Riya',
+                            'Akira', 'Hiroshi', 'Ryota', 'Kazuki', 'Kenji', 'Ayumi', 'Haruka', 'Yumi', 'Emi', 'Sakura',
+                            'Wei Chen', 'Xiao Li', 'Yi Wang', 'Jian Zhang', 'Hao Liu', 'Mei Huang', 'Li Yang', 'Xiu Wu', 'Yan Lin', 'Fang Xu',
+                            'Louis', 'Pierre', 'Lucas', 'Alexandre', 'Gabriel', 'Emma', 'Charlotte', 'Sophie', 'Camille', 'Juliette',
+                            'Carlos', 'Alejandro', 'Javier', 'Diego', 'Luis', 'Sofía', 'Isabella', 'Carmen', 'Ana', 'María',
+                            'Luca', 'Giuseppe', 'Alessandro', 'Marco', 'Antonio', 'Sofia', 'Giulia', 'Isabella', 'Francesca', 'Lorenza'
+                        ];
+                        randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                        randomScore = type === graphql_1.RankingType.MATH_CORRECT_NUMBER_BY_DAY ?
+                            Math.floor(Math.random() * 101) + 100 :
+                            type === graphql_1.RankingType.MATH_CORRECT_NUMBER_BY_MONTH ?
+                                Math.floor(Math.random() * 1001) + 1000 :
+                                type === graphql_1.RankingType.WRITING_NUMBER_BY_DAY ?
+                                    Math.floor(Math.random() * 2) + 1 :
+                                    Math.floor(Math.random() * 10) + 1;
+                        data.push(["".concat(randomFirstName), randomScore]);
+                    }
+                    names = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10).map(function (d) { return d[0]; });
+                    values = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10).map(function (d) { return d[1].toString(); });
+                    return [4 /*yield*/, (0, graphql_1.getRankingItemsByDateAndType)(date, type)];
+                case 1:
+                    items = _a.sent();
+                    if (!(!items || items.length === 0)) return [3 /*break*/, 3];
+                    item = {
+                        date: date,
+                        type: type,
+                        names: names,
+                        values: values
+                    };
+                    return [4 /*yield*/, (0, graphql_1.createRankingItem)(item)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 5];
+                case 3:
+                    item = items[0];
+                    item.names = names;
+                    item.values = values;
+                    return [4 /*yield*/, (0, graphql_1.updateRankingItem)(item)];
+                case 4:
+                    _a.sent();
+                    _a.label = 5;
+                case 5: return [2 /*return*/];
             }
         });
     });

@@ -560,6 +560,111 @@ export const schema = {
                     }
                 }
             ]
+        },
+        "RankingItem": {
+            "name": "RankingItem",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "date": {
+                    "name": "date",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RankingType"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "names": {
+                    "name": "names",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "values": {
+                    "name": "values",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "RankingItems",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byDateAndType",
+                        "queryField": "rankingItemsByDateAndType",
+                        "fields": [
+                            "date",
+                            "type"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     },
     "enums": {
@@ -570,6 +675,15 @@ export const schema = {
                 "Weekly",
                 "Daily",
                 "Instant"
+            ]
+        },
+        "RankingType": {
+            "name": "RankingType",
+            "values": [
+                "MathCorrectNumberByDay",
+                "MathCorrectNumberByMonth",
+                "WritingNumberByDay",
+                "WritingNumberByMonth"
             ]
         }
     },
@@ -1018,5 +1132,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "ab27755d1d8bcfeb7cb9eb21dae94271"
+    "version": "85cfc5974875f69fb155c3457da1867c"
 };

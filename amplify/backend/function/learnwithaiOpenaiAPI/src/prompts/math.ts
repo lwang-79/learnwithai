@@ -30,15 +30,27 @@ export function generateChatMessages(
   }
 }
 
-export const template = `
-Desired template:
-Question: <>
-Workout:
-Method1: <>
+export const template = 
+`
+Use the desired template:
+Question: [Insert question text here]
+Workout: [Explain the methods to solve the question]
 Options:
-A: <option>
-B: <option>
-C: <option>
-D: <option>
-Answer: <A, B, C or D>
-  `
+A: [Option A]
+B: [Option B]
+C: [Option C]
+D: [Option D]
+Answer: [A, B, C, or D]
+`
+// `
+// Desired template:
+// Question: <>
+// Workout:
+// Method1: <>
+// Options:
+// A: <option>
+// B: <option>
+// C: <option>
+// D: <option>
+// Answer: <A, B, C or D>
+//   `

@@ -27,4 +27,16 @@ function generateChatMessages(level, concept) {
     }
 }
 exports.generateChatMessages = generateChatMessages;
-exports.template = "\nDesired template:\nQuestion: <>\nWorkout:\nMethod1: <>\nOptions:\nA: <option>\nB: <option>\nC: <option>\nD: <option>\nAnswer: <A, B, C or D>\n  ";
+exports.template = "\nUse the desired template:\nQuestion: [Insert question text here]\nWorkout: [Explain the methods to solve the question]\nOptions:\nA: [Option A]\nB: [Option B]\nC: [Option C]\nD: [Option D]\nAnswer: [A, B, C, or D]\n";
+// `
+// Desired template:
+// Question: <>
+// Workout:
+// Method1: <>
+// Options:
+// A: <option>
+// B: <option>
+// C: <option>
+// D: <option>
+// Answer: <A, B, C or D>
+//   `

@@ -30,7 +30,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { createUserIfNotExist } from '../../types/user';
 import useStorage from '../../hooks/useStorage';
-import { MdOutlineSchool } from 'react-icons/md';
+import Logo from '@/components/Common/Logo';
 
 export default function Login() {
   const { 
@@ -107,15 +107,10 @@ export default function Login() {
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}>
       <Stack spacing={8} mx={'auto'} w={'full'} maxW='lg' py={12} px={6}>
-        <HStack align={'flex-end'} justify={'center'}>
+        <HStack justify={'center'}>
           <Text fontSize='xl' align={'end'} >Login to </Text>
           <Link href='/'>
-            <Box color={'teal.400'}>
-              <Icon as={MdOutlineSchool} boxSize={10}/> 
-              <Text as='b' fontSize='xl'>
-                {process.env.NEXT_PUBLIC_APP_NAME}
-              </Text>
-            </Box>
+            <Logo />
           </Link>
         </HStack>
         <Box

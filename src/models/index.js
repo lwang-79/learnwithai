@@ -9,14 +9,23 @@ const NotificationType = {
   "INSTANT": "Instant"
 };
 
-const { User, QuestionSet, Test, Essay, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
+const RankingType = {
+  "MATH_CORRECT_NUMBER_BY_DAY": "MathCorrectNumberByDay",
+  "MATH_CORRECT_NUMBER_BY_MONTH": "MathCorrectNumberByMonth",
+  "WRITING_NUMBER_BY_DAY": "WritingNumberByDay",
+  "WRITING_NUMBER_BY_MONTH": "WritingNumberByMonth"
+};
+
+const { User, QuestionSet, Test, Essay, RankingItem, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
   User,
   QuestionSet,
   Test,
   Essay,
+  RankingItem,
   NotificationType,
+  RankingType,
   Membership,
   Subscriptions,
   Quota,

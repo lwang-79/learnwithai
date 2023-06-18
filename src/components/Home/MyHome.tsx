@@ -18,6 +18,7 @@ function MyHome() {
         maxW='5xl' 
         direction='column'
         px={4}
+        pb={24}
       >
         <Dashboard/>
         <Spacer />

@@ -570,3 +570,60 @@ export const deleteEssay = /* GraphQL */ `
     }
   }
 `;
+export const createRankingItem = /* GraphQL */ `
+  mutation CreateRankingItem(
+    $input: CreateRankingItemInput!
+    $condition: ModelRankingItemConditionInput
+  ) {
+    createRankingItem(input: $input, condition: $condition) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateRankingItem = /* GraphQL */ `
+  mutation UpdateRankingItem(
+    $input: UpdateRankingItemInput!
+    $condition: ModelRankingItemConditionInput
+  ) {
+    updateRankingItem(input: $input, condition: $condition) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteRankingItem = /* GraphQL */ `
+  mutation DeleteRankingItem(
+    $input: DeleteRankingItemInput!
+    $condition: ModelRankingItemConditionInput
+  ) {
+    deleteRankingItem(input: $input, condition: $condition) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

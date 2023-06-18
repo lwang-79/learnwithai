@@ -1,3 +1,4 @@
+import Logo from '@/components/Common/Logo';
 import {
   Flex,
   Container,
@@ -5,12 +6,10 @@ import {
   Stack,
   Text,
   Button,
-  Icon,
   Box,
   Spacer,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { MdOutlineSchool } from 'react-icons/md';
 
 export default function Introduction() {
   return (
@@ -18,12 +17,7 @@ export default function Introduction() {
       <Box className='section section-1'>
         <Flex mt={4}>
           <Link href='/'>
-            <Box color={'teal.400'}>
-              <Icon as={MdOutlineSchool}  boxSize={8}/> 
-              <Text as='b'>
-                {process.env.NEXT_PUBLIC_APP_NAME}
-              </Text>
-            </Box>
+            <Logo />
           </Link>
           <Spacer />
           <Box>

@@ -832,3 +832,107 @@ export const syncEssays = /* GraphQL */ `
     }
   }
 `;
+export const getRankingItem = /* GraphQL */ `
+  query GetRankingItem($id: ID!) {
+    getRankingItem(id: $id) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listRankingItems = /* GraphQL */ `
+  query ListRankingItems(
+    $filter: ModelRankingItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRankingItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        date
+        type
+        names
+        values
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncRankingItems = /* GraphQL */ `
+  query SyncRankingItems(
+    $filter: ModelRankingItemFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncRankingItems(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        date
+        type
+        names
+        values
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const rankingItemsByDateAndType = /* GraphQL */ `
+  query RankingItemsByDateAndType(
+    $date: String!
+    $type: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelRankingItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    rankingItemsByDateAndType(
+      date: $date
+      type: $type
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        date
+        type
+        names
+        values
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

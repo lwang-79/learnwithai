@@ -31,12 +31,12 @@
         },
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-322f2f7155714f675930-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-574567735a507a397159-build.zip",
           "appName": "Learn with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-57545974543458646772-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-6b346537786f45333458-build.zip",
           "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},

@@ -129,19 +129,23 @@ function MathExam() {
   },[mode]);
 
   const setCheckedConcepts = (value: MathConcept) => {
-    let concepts = selectedConcepts;
-    const index = concepts.indexOf(value);
+    let sConcepts = selectedConcepts;
+    const index = sConcepts.indexOf(value);
 
     if (index > -1) {
-      concepts.splice(index, 1);
-      setSelectedConcepts([...concepts]);
+      if (sConcepts.length === 1 && index === 0) {
+        sConcepts = [];
+      } else {
+        sConcepts.splice(index, 1);
+      }
+      setSelectedConcepts([...sConcepts]);
     } else {
-      setSelectedConcepts([...concepts, value]);
+      setSelectedConcepts([...sConcepts, value]);
     }
 
     if (
       selectedSource === QuestionSource.Hendrycks &&
-      concepts.length >= hendrycksConcepts.length
+      sConcepts.length >= hendrycksConcepts.length
     ) {
       setAllConceptsChecked(true);
       return
@@ -149,7 +153,7 @@ function MathExam() {
 
     if (
       selectedSource === QuestionSource.ChatGPT &&
-      concepts.length >= concepts.length
+      sConcepts.length >= concepts.length
     ) {
       setAllConceptsChecked(true);
       return;

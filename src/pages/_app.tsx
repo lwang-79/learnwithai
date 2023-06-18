@@ -65,15 +65,12 @@ if (typeof window === 'undefined') {
     ]
   }
 
-  console.log(process.env.NEXT_PUBLIC_AWS_BRANCH)
-
   Amplify.configure(updatedAwsConfig);
 }
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);
   const [ dataStoreUser, setDataStoreUser ] = useState<User>();
-  console.log('app')
 
   return (
     <ChakraProvider theme={theme}>
