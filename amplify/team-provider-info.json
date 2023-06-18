@@ -31,12 +31,12 @@
         },
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-574567735a507a397159-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-5171707a6150584b6a49-build.zip",
           "appName": "Learn with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-6b346537786f45333458-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-4d6c7039304f67327974-build.zip",
           "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},
@@ -63,12 +63,12 @@
       "function": {
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-47624d51356a31356451-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-574567735a507a397159-build.zip",
           "appName": "Study with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-3453765a527958356878-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-6b346537786f45333458-build.zip",
           "openaiApiKey": "c2stWGJNYU1NUGRPYkk2cFlDZWJFWTdUM0JsYmtGSlc1clBMNUd4U2NHWGpMSGZtZ204"
         },
         "learnwithaiSubscribe": {

@@ -21,7 +21,7 @@ import {
 import { DataStore, SortDirection } from "aws-amplify";
 import { useEffect, useState } from "react"
 import { FaMedal } from "react-icons/fa";
-import { GiStarMedal } from "react-icons/gi";
+import { GiTrophyCup } from "react-icons/gi";
 
 function LeaderBoard() {
   const [ yesterdayMathRankingItem, setYesterdayMathRankingItem] = useState<RankingItem>();
@@ -90,12 +90,12 @@ function LeaderBoard() {
           <CardBody>
             <VStack>
               <HStack align='flex-start'>
-                <Icon as={GiStarMedal} boxSize={8} color='orange' />
+                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>MATH WINNER</Heading>
                   <Text fontSize='xs' color='blue.400'>{yesterdayMathRankingItem?.date}</Text>
                 </VStack>
-                <Icon as={GiStarMedal} boxSize={8} color='orange' />
+                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
               </HStack>
 
               {[0,1,2].map((name, index) => 
@@ -123,12 +123,12 @@ function LeaderBoard() {
           <CardBody>
             <VStack>
               <HStack align='flex-start'>
-                <Icon as={GiStarMedal} boxSize={8} color='orange' />
+                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>WRITING WINNER</Heading>
                   <Text fontSize='xs' color='blue.400'>{yesterdayWritingRankingItem?.date}</Text>
                 </VStack>
-                <Icon as={GiStarMedal} boxSize={8} color='orange' />
+                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
               </HStack>
               
               {[0,1,2].map((name, index) => 

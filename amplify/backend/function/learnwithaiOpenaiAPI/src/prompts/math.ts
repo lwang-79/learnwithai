@@ -34,7 +34,7 @@ export const template =
 `
 Use the desired template:
 Question: [Insert question text here]
-Workout: [Explain the methods to solve the question]
+Workout: [Detailed steps to solve the question]
 Options:
 A: [Option A]
 B: [Option B]

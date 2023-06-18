@@ -211,7 +211,7 @@ function getStaticDataAndSendNotification(users, dayString, monthString) {
                                 mathCorrectNumberByMonthData.push([user.username, mathScore]);
                             }
                             if (monthData.writing > 5) {
-                                writingNumberByMonthData.push([user.username, monthData.writing]);
+                                writingNumberByMonthData.push([user.username, monthData.writing * 10]);
                             }
                         }
                     }
@@ -327,11 +327,11 @@ function createOrSaveRankingItem(type, date, data) {
                                 Math.floor(Math.random() * 1001) + 1000 :
                                 type === graphql_1.RankingType.WRITING_NUMBER_BY_DAY ?
                                     Math.floor(Math.random() * 2) + 1 :
-                                    Math.floor(Math.random() * 10) + 1;
+                                    Math.floor(Math.random() * 100) + 10;
                         data.push(["".concat(randomFirstName), randomScore]);
                     }
-                    names = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10).map(function (d) { return d[0]; });
-                    values = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10).map(function (d) { return d[1].toString(); });
+                    names = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 5).map(function (d) { return d[0]; });
+                    values = data.sort(function (a, b) { return b[1] - a[1]; }).slice(0, 5).map(function (d) { return d[1].toString(); });
                     return [4 /*yield*/, (0, graphql_1.getRankingItemsByDateAndType)(date, type)];
                 case 1:
                     items = _a.sent();
