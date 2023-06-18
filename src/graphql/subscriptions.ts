@@ -554,3 +554,57 @@ export const onDeleteEssay = /* GraphQL */ `
     }
   }
 `;
+export const onCreateRankingItem = /* GraphQL */ `
+  subscription OnCreateRankingItem(
+    $filter: ModelSubscriptionRankingItemFilterInput
+  ) {
+    onCreateRankingItem(filter: $filter) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateRankingItem = /* GraphQL */ `
+  subscription OnUpdateRankingItem(
+    $filter: ModelSubscriptionRankingItemFilterInput
+  ) {
+    onUpdateRankingItem(filter: $filter) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteRankingItem = /* GraphQL */ `
+  subscription OnDeleteRankingItem(
+    $filter: ModelSubscriptionRankingItemFilterInput
+  ) {
+    onDeleteRankingItem(filter: $filter) {
+      id
+      date
+      type
+      names
+      values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

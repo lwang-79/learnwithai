@@ -162,6 +162,30 @@ type Essay @model @auth(rules: [{ allow: owner }]) {
   owner: String
 }
 
+type RankingItem @model 
+  @auth(rules: [
+    { allow: private }
+    { allow: private, provider: iam }
+  ]) {
+  id: ID!
+  date: String! 
+    @index(
+      name: "byDateAndType", 
+      sortKeyFields: ["type"], 
+      queryField: "rankingItemsByDateAndType"
+    )
+  type: RankingType!
+  names: [String!]!
+  values: [String!]!
+}
+
+enum RankingType {
+  MathCorrectNumberByDay
+  MathCorrectNumberByMonth
+  WritingNumberByDay
+  WritingNumberByMonth
+}
+
 type Mutation {
   learnwithaiSubscribe(
     operation: String!

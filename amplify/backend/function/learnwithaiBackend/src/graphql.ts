@@ -28,10 +28,26 @@ export interface UserData {
   _version: number
 }
 
-async function listUserData(): Promise<UserData[]> {
+export enum RankingType {
+  MATH_CORRECT_NUMBER_BY_DAY = "MathCorrectNumberByDay",
+  MATH_CORRECT_NUMBER_BY_MONTH = "MathCorrectNumberByMonth",
+  WRITING_NUMBER_BY_DAY = "WritingNumberByDay",
+  WRITING_NUMBER_BY_MONTH = "WritingNumberByMonth"
+}
+
+export interface RankingItem {
+  id?: string
+  date: string
+  type: RankingType
+  names: string[]
+  values: string[]
+  _version?: number
+}
+
+async function listUserData(nextToken?: string): Promise<{users: UserData[], nextToken: string}> {
   const query = /* GraphQL */ `
-    query ListUserData {
-      listUsers {
+    query ListUserData($nextToken: String) {
+      listUsers(limit: 20, nextToken: $nextToken) {
         items {
           id
           username
@@ -61,11 +77,12 @@ async function listUserData(): Promise<UserData[]> {
             types
           }
         }
+        nextToken
       }
     }
   `;
 
-  const variable = {};
+  const variable = {nextToken: nextToken};
 
   const response = await execute(query, variable);
 
@@ -79,9 +96,114 @@ async function listUserData(): Promise<UserData[]> {
     throw new Error('Failed to list users!');
   }
 
-  return users;
+  return {
+    users: users,
+    nextToken: response.body.data.listUsers.nextToken
+  };
+}
+
+async function getRankingItemsByDateAndType(
+  date: string, type: RankingType
+): Promise<RankingItem[]> {
+  const query = /* GraphQL */ `
+    query GetRankingItemsByDateAndType($date: String!, $type: String!) {
+      rankingItemsByDateAndType(date: $date, type: {eq: $type}) {
+        items {
+          id
+          date
+          names
+          type
+          values
+          _version
+        }
+      }
+    }
+
+  `;
+
+  const variable = {date: date, type: type};
+
+  const response = await execute(query, variable);
+
+  if (response.statusCode != 200) {
+    throw new Error('Failed to get ranking item!');
+  }
+
+  const items: RankingItem[] = response.body.data.rankingItemsByDateAndType.items;
+
+  return items;
+}
+
+async function createRankingItem(item: RankingItem): Promise<void> {
+  const query = /* GraphQL */ `
+    mutation CreateRankingItem($date: String!, $names: [String!]!, $type: RankingType!, $values: [String!]!) {
+      createRankingItem(input: {date: $date, names: $names, type: $type, values: $values}) {
+        id
+        date
+        _version
+        names
+        type
+        values
+        updatedAt
+        createdAt
+        _lastChangedAt
+        _deleted
+      }
+    }
+  `;
+
+  const variable = {
+    date: item.date,
+    names: item.names,
+    type: item.type,
+    values: item.values
+  };
+
+  const response = await execute(query, variable);
+  console.log(response)
+
+  if (response.statusCode != 200) {
+    throw new Error('Failed to create ranking item!');
+  }
+}
+
+async function updateRankingItem(item: RankingItem): Promise<void> {
+  const query = /* GraphQL */ `
+    mutation UpdateRankingItem($id: ID!, $date: String!, $names: [String!]!, $type: RankingType!, $values: [String!]!, $version: Int!) {
+      updateRankingItem(input: {id: $id, date: $date, names: $names, type: $type, values: $values, _version: $version}) {
+        id
+        date
+        _version
+        names
+        type
+        values
+        updatedAt
+        createdAt
+        _lastChangedAt
+        _deleted
+      }
+    }
+  `;
+
+  const variable = {
+    id: item.id!,
+    date: item.date,
+    names: item.names,
+    type: item.type,
+    values: item.values,
+    version: item._version
+  };
+
+  const response = await execute(query, variable);
+
+  if (response.statusCode != 200) {
+    throw new Error('Failed to create ranking item!');
+  }
 }
 
 export {
+  createRankingItem,
+  updateRankingItem,
+  getRankingItemsByDateAndType,
   listUserData
 }

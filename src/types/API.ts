@@ -536,6 +536,67 @@ export type DeleteEssayInput = {
   _version?: number | null,
 };
 
+export type CreateRankingItemInput = {
+  id?: string | null,
+  date: string,
+  type: RankingType,
+  names: Array< string >,
+  values: Array< string >,
+  _version?: number | null,
+};
+
+export enum RankingType {
+  MathCorrectNumberByDay = "MathCorrectNumberByDay",
+  MathCorrectNumberByMonth = "MathCorrectNumberByMonth",
+  WritingNumberByDay = "WritingNumberByDay",
+  WritingNumberByMonth = "WritingNumberByMonth",
+}
+
+
+export type ModelRankingItemConditionInput = {
+  date?: ModelStringInput | null,
+  type?: ModelRankingTypeInput | null,
+  names?: ModelStringInput | null,
+  values?: ModelStringInput | null,
+  and?: Array< ModelRankingItemConditionInput | null > | null,
+  or?: Array< ModelRankingItemConditionInput | null > | null,
+  not?: ModelRankingItemConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelRankingTypeInput = {
+  eq?: RankingType | null,
+  ne?: RankingType | null,
+};
+
+export type RankingItem = {
+  __typename: "RankingItem",
+  id: string,
+  date: string,
+  type: RankingType,
+  names: Array< string >,
+  values: Array< string >,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateRankingItemInput = {
+  id: string,
+  date?: string | null,
+  type?: RankingType | null,
+  names?: Array< string > | null,
+  values?: Array< string > | null,
+  _version?: number | null,
+};
+
+export type DeleteRankingItemInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   sub?: ModelIDInput | null,
@@ -634,6 +695,35 @@ export type ModelEssayConnection = {
   startedAt?: number | null,
 };
 
+export type ModelRankingItemFilterInput = {
+  id?: ModelIDInput | null,
+  date?: ModelStringInput | null,
+  type?: ModelRankingTypeInput | null,
+  names?: ModelStringInput | null,
+  values?: ModelStringInput | null,
+  and?: Array< ModelRankingItemFilterInput | null > | null,
+  or?: Array< ModelRankingItemFilterInput | null > | null,
+  not?: ModelRankingItemFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelRankingItemConnection = {
+  __typename: "ModelRankingItemConnection",
+  items:  Array<RankingItem | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   sub?: ModelSubscriptionIDInput | null,
@@ -729,6 +819,17 @@ export type ModelSubscriptionEssayFilterInput = {
   DateTime?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEssayFilterInput | null > | null,
   or?: Array< ModelSubscriptionEssayFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionRankingItemFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  date?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  names?: ModelSubscriptionStringInput | null,
+  values?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
+  or?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -1344,6 +1445,69 @@ export type DeleteEssayMutation = {
     text: string,
     DateTime: string,
     owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateRankingItemMutationVariables = {
+  input: CreateRankingItemInput,
+  condition?: ModelRankingItemConditionInput | null,
+};
+
+export type CreateRankingItemMutation = {
+  createRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateRankingItemMutationVariables = {
+  input: UpdateRankingItemInput,
+  condition?: ModelRankingItemConditionInput | null,
+};
+
+export type UpdateRankingItemMutation = {
+  updateRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteRankingItemMutationVariables = {
+  input: DeleteRankingItemInput,
+  condition?: ModelRankingItemConditionInput | null,
+};
+
+export type DeleteRankingItemMutation = {
+  deleteRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2244,6 +2408,111 @@ export type SyncEssaysQuery = {
   } | null,
 };
 
+export type GetRankingItemQueryVariables = {
+  id: string,
+};
+
+export type GetRankingItemQuery = {
+  getRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListRankingItemsQueryVariables = {
+  filter?: ModelRankingItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRankingItemsQuery = {
+  listRankingItems?:  {
+    __typename: "ModelRankingItemConnection",
+    items:  Array< {
+      __typename: "RankingItem",
+      id: string,
+      date: string,
+      type: RankingType,
+      names: Array< string >,
+      values: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncRankingItemsQueryVariables = {
+  filter?: ModelRankingItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncRankingItemsQuery = {
+  syncRankingItems?:  {
+    __typename: "ModelRankingItemConnection",
+    items:  Array< {
+      __typename: "RankingItem",
+      id: string,
+      date: string,
+      type: RankingType,
+      names: Array< string >,
+      values: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type RankingItemsByDateAndTypeQueryVariables = {
+  date: string,
+  type?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelRankingItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type RankingItemsByDateAndTypeQuery = {
+  rankingItemsByDateAndType?:  {
+    __typename: "ModelRankingItemConnection",
+    items:  Array< {
+      __typename: "RankingItem",
+      id: string,
+      date: string,
+      type: RankingType,
+      names: Array< string >,
+      values: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
   owner?: string | null,
@@ -2842,6 +3111,66 @@ export type OnDeleteEssaySubscription = {
     text: string,
     DateTime: string,
     owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateRankingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionRankingItemFilterInput | null,
+};
+
+export type OnCreateRankingItemSubscription = {
+  onCreateRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateRankingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionRankingItemFilterInput | null,
+};
+
+export type OnUpdateRankingItemSubscription = {
+  onUpdateRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteRankingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionRankingItemFilterInput | null,
+};
+
+export type OnDeleteRankingItemSubscription = {
+  onDeleteRankingItem?:  {
+    __typename: "RankingItem",
+    id: string,
+    date: string,
+    type: RankingType,
+    names: Array< string >,
+    values: Array< string >,
     createdAt: string,
     updatedAt: string,
     _version: number,

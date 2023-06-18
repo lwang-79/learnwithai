@@ -9,6 +9,13 @@ export enum NotificationType {
   INSTANT = "Instant"
 }
 
+export enum RankingType {
+  MATH_CORRECT_NUMBER_BY_DAY = "MathCorrectNumberByDay",
+  MATH_CORRECT_NUMBER_BY_MONTH = "MathCorrectNumberByMonth",
+  WRITING_NUMBER_BY_DAY = "WritingNumberByDay",
+  WRITING_NUMBER_BY_MONTH = "WritingNumberByMonth"
+}
+
 type EagerMembership = {
   readonly current: number;
   readonly previous: number;
@@ -393,4 +400,38 @@ export declare type Essay = LazyLoading extends LazyLoadingDisabled ? EagerEssay
 
 export declare const Essay: (new (init: ModelInit<Essay>) => Essay) & {
   copyOf(source: Essay, mutator: (draft: MutableModel<Essay>) => MutableModel<Essay> | void): Essay;
+}
+
+type EagerRankingItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RankingItem, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly date: string;
+  readonly type: RankingType | keyof typeof RankingType;
+  readonly names: string[];
+  readonly values: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRankingItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RankingItem, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly date: string;
+  readonly type: RankingType | keyof typeof RankingType;
+  readonly names: string[];
+  readonly values: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RankingItem = LazyLoading extends LazyLoadingDisabled ? EagerRankingItem : LazyRankingItem
+
+export declare const RankingItem: (new (init: ModelInit<RankingItem>) => RankingItem) & {
+  copyOf(source: RankingItem, mutator: (draft: MutableModel<RankingItem>) => MutableModel<RankingItem> | void): RankingItem;
 }

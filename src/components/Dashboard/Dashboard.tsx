@@ -3,6 +3,7 @@ import Highcharts from "highcharts/highstock";
 import { useMemo } from "react";
 import ColumnChart from "./ColumnChart"
 import GameCard from "./GameCard";
+import LeaderBoard from "./LeaderBoard";
 import UserCard from "./UserCard";
 
 function Dashboard() {
@@ -41,6 +42,7 @@ function Dashboard() {
           <GameCard />
         </VStack>
         <VStack w='full' maxW='2xl' spacing={4} >
+          <LeaderBoard />
           <ColumnChart />
         </VStack>
       </HStack>

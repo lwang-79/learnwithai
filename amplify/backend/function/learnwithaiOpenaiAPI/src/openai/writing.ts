@@ -59,7 +59,7 @@ export const generateWritingPrompt = async (
     }
   }];
 
-  return await chatCompletion(message, functions);
+  return await chatCompletion(message);
 }
 
 export const generateWritingMark = async (

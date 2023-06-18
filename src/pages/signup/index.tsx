@@ -25,13 +25,14 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { MdOutlineSchool, MdVisibility, MdVisibilityOff } from 'react-icons/md';
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
 import { createUserIfNotExist } from '../../types/user';
 import useStorage from '../../hooks/useStorage';
+import Logo from '@/components/Common/Logo';
 
 export default function SignupCard() {
   const { 
@@ -157,15 +158,10 @@ export default function SignupCard() {
       bg={useColorModeValue('gray.50', 'gray.800')}>
       <Stack spacing={8} mx={'auto'} w={'full'} maxW='lg' py={12} px={6}>
         <Stack align={'center'}>
-          <HStack align={'flex-end'} justify={'center'}>
+          <HStack justify={'center'}>
             <Text fontSize='xl' align={'end'} >Free sign up to </Text>
             <Link href='/'>
-              <Box color={'teal.400'}>
-                <Icon as={MdOutlineSchool} boxSize={10}/> 
-                <Text as='b' fontSize='xl'>
-                  {process.env.NEXT_PUBLIC_APP_NAME}
-                </Text>
-              </Box>
+              <Logo />
             </Link>
           </HStack>
         </Stack>

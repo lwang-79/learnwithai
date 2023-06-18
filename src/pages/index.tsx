@@ -1,4 +1,4 @@
-import { Auth, DataStore } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { useContext, useEffect } from 'react';
 import WithAuth from '@/components/Common/WithAuth';
 import useStorage from '@/hooks/useStorage';
@@ -6,7 +6,6 @@ import MyHome from '@/components/Home/MyHome';
 import { getDataStoreUserOrCreateIfNotExist } from '@/types/user';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
-import { User } from '@/models';
 import { useRouter } from 'next/router';
 
 
@@ -16,7 +15,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('index')
     if (dataStoreUser) {
       setItem('isAuthenticated', 'true', 'local');
       return;

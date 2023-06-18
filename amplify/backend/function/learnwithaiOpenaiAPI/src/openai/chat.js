@@ -48,9 +48,9 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
     if (max_tokens === void 0) { max_tokens = 1000; }
     return __awaiter(void 0, void 0, void 0, function () {
         var completion, error_1;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     // const { Parameter } = await (new SSMClient({
                     //   region: process.env.AWS_REGION
@@ -70,26 +70,30 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
                             }];
                     }
                     console.log(messages);
-                    _b.label = 1;
+                    _c.label = 1;
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
+                    _c.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, openai.createChatCompletion({
                             model: "gpt-3.5-turbo-0613",
                             messages: messages,
-                            // functions: functions,
+                            functions: functions,
                             temperature: temperature,
                             max_tokens: max_tokens
                         })];
                 case 2:
-                    completion = _b.sent();
-                    // console.log(completion.data.choices[0].message);
+                    completion = _c.sent();
+                    if (functions) {
+                        return [2 /*return*/, {
+                                statusCode: 200,
+                                data: (_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.function_call.arguments
+                            }];
+                    }
                     return [2 /*return*/, {
                             statusCode: 200,
-                            // data: completion.data.choices[0].message?.function_call.arguments,
-                            data: (_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.content
+                            data: (_b = completion.data.choices[0].message) === null || _b === void 0 ? void 0 : _b.content
                         }];
                 case 3:
-                    error_1 = _b.sent();
+                    error_1 = _c.sent();
                     if (error_1.response) {
                         console.error(error_1.response.status, error_1.response.data);
                         return [2 /*return*/, {

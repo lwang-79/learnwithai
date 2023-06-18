@@ -17,7 +17,6 @@ import {
   Stack,
   useColorMode,
   Container,
-  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -35,7 +34,6 @@ import {
   MdLogout, 
   MdMenu, 
   MdOutlineHelp, 
-  MdOutlineSchool, 
   MdPerson,
   MdUpload, 
 } from 'react-icons/md';
@@ -46,6 +44,7 @@ import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
 import { downloadData, importData } from '@/types/utils';
+import Logo from './Logo';
 
 const Links = ['/math', '/writing', '/stem'];
 const LinkNames = ['Math', 'Writing', 'STEM']
@@ -143,14 +142,9 @@ export default function Header() {
               display={{ md: 'none' }}
               onClick={isOpen ? onClose : onOpen}
             />
-            <HStack spacing={8} alignItems={'flex-end'}>
+            <HStack spacing={8}>
               <Link as={NextLink} href='/' style={{ textDecoration: 'none' }}>
-                <Box color={'teal.400'}>
-                  <Icon as={MdOutlineSchool}  boxSize={8}/> 
-                  <Text as='b'>
-                    {process.env.NEXT_PUBLIC_APP_NAME}
-                  </Text>
-                </Box>
+                <Logo />
               </Link>
               <HStack
                 as={'nav'}
@@ -215,18 +209,21 @@ export default function Header() {
                       <span>Change color</span>
                     </HStack>
                   </MenuItem>
-                  <MenuItem onClick={downloadClicked}>
-                    <HStack justifyContent={'center'}>
-                      <Icon as={MdDownload} boxSize={6} color='gray.400' />
-                      <span>Export data</span>
-                    </HStack>
-                  </MenuItem>
-                  <MenuItem onClick={uploadClicked}>
-                    <HStack justifyContent={'center'}>
-                      <Icon as={MdUpload} boxSize={6} color='gray.400' />
-                      <span>Import data</span>
-                    </HStack>
-                  </MenuItem>
+                  {user.membership!.current > 9 &&
+                  <>
+                    <MenuItem onClick={downloadClicked}>
+                      <HStack justifyContent={'center'}>
+                        <Icon as={MdDownload} boxSize={6} color='gray.400' />
+                        <span>Export data</span>
+                      </HStack>
+                    </MenuItem>
+                    <MenuItem onClick={uploadClicked}>
+                      <HStack justifyContent={'center'}>
+                        <Icon as={MdUpload} boxSize={6} color='gray.400' />
+                        <span>Import data</span>
+                      </HStack>
+                    </MenuItem>
+                  </>}
                   <MenuItem onClick={onOpenSupportModal}>
                     <HStack justifyContent={'center'}>
                       <Icon as={MdOutlineHelp} boxSize={6} color='gray.400' />

@@ -7,7 +7,8 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "mockOpenai": "cd amplify/backend/function/learnwithaiOpenaiAPI/src/;tsc -p ./tsconfig.json;cd -;amplify mock function learnwithaiOpenaiAPI"
+    "mockOpenai": "cd amplify/backend/function/learnwithaiOpenaiAPI/src/;tsc -p ./tsconfig.json;cd -;amplify mock function learnwithaiOpenaiAPI --timeout 60",
+    "mockBackend": "cd amplify/backend/function/learnwithaiBackend/src/;tsc -p ./tsconfig.json;cd -;amplify mock function learnwithaiBackend --timeout 60"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.3",

@@ -42,15 +42,20 @@ export const chatCompletion = async (
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0613",
       messages: messages,
-      // functions: functions,
+      functions: functions,
       temperature: temperature,
       max_tokens: max_tokens
     });
 
-    // console.log(completion.data.choices[0].message);
+    if (functions) {
+      return {
+        statusCode: 200,
+        data: completion.data.choices[0].message?.function_call.arguments,
+      }
+    }
+
     return {
       statusCode: 200,
-      // data: completion.data.choices[0].message?.function_call.arguments,
       data: completion.data.choices[0].message?.content
     }
   } catch(error: any) {

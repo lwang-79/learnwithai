@@ -82,7 +82,7 @@ var generateWritingPrompt = function (type, topic, level) { return __awaiter(voi
                             required: ['text', 'prompt']
                         }
                     }];
-                return [4 /*yield*/, (0, chat_1.chatCompletion)(message, functions)];
+                return [4 /*yield*/, (0, chat_1.chatCompletion)(message)];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });
