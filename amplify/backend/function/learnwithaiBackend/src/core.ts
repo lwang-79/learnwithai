@@ -181,7 +181,7 @@ async function getStaticDataAndSendNotification(users: UserData[], dayString: st
           mathCorrectNumberByMonthData.push([user.username, mathScore]);
         }
         if (monthData.writing > 5) {
-          writingNumberByMonthData.push([user.username, monthData.writing]);
+          writingNumberByMonthData.push([user.username, monthData.writing * 10]);
         }
       }  
     }
@@ -280,12 +280,12 @@ async function createOrSaveRankingItem(
       Math.floor(Math.random() * 1001) + 1000 :
       type === RankingType.WRITING_NUMBER_BY_DAY ?
       Math.floor(Math.random() * 2) + 1:
-      Math.floor(Math.random() * 10) + 1;
+      Math.floor(Math.random() * 100) + 10;
     data.push([`${randomFirstName}`, randomScore]);
   }
 
-  const names = data.sort((a,b) => b[1] - a[1]).slice(0,10).map(d => d[0]);
-  const values = data.sort((a,b) => b[1] - a[1]).slice(0,10).map(d => d[1].toString());
+  const names = data.sort((a,b) => b[1] - a[1]).slice(0,5).map(d => d[0]);
+  const values = data.sort((a,b) => b[1] - a[1]).slice(0,5).map(d => d[1].toString());
 
   const items = await getRankingItemsByDateAndType(date, type);
 
