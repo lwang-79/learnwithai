@@ -45,6 +45,14 @@ const theme = extendTheme({
       defaultProps: {
         colorScheme: 'teal'
       }
+    },
+    CloseButton: {
+      baseStyle: {
+        rounded: 'full',
+      },
+      defaultProps: {
+        colorScheme: 'teal'
+      },
     }
   },
 })

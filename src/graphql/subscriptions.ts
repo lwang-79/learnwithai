@@ -393,6 +393,7 @@ export const onCreateTest = /* GraphQL */ `
       total
       wrong
       correct
+      source
       questionSets {
         type
         category
@@ -429,6 +430,7 @@ export const onUpdateTest = /* GraphQL */ `
       total
       wrong
       correct
+      source
       questionSets {
         type
         category
@@ -465,6 +467,7 @@ export const onDeleteTest = /* GraphQL */ `
       total
       wrong
       correct
+      source
       questionSets {
         type
         category

@@ -132,6 +132,7 @@ type Test @model @auth(rules: [{ allow: owner }]) {
   total: Int!
   wrong: Int!
   correct: Int!
+  source: String
   questionSets: [LocalQuestionSet!]!
   owner: String
 }

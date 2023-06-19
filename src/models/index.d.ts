@@ -332,6 +332,7 @@ type EagerTest = {
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
+  readonly source?: string | null;
   readonly questionSets: LocalQuestionSet[];
   readonly owner?: string | null;
   readonly createdAt?: string | null;
@@ -350,6 +351,7 @@ type LazyTest = {
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
+  readonly source?: string | null;
   readonly questionSets: LocalQuestionSet[];
   readonly owner?: string | null;
   readonly createdAt?: string | null;

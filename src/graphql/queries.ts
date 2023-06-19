@@ -642,6 +642,7 @@ export const getTest = /* GraphQL */ `
       total
       wrong
       correct
+      source
       questionSets {
         type
         category
@@ -680,6 +681,7 @@ export const listTests = /* GraphQL */ `
         total
         wrong
         correct
+        source
         questionSets {
           type
           category
@@ -727,6 +729,7 @@ export const syncTests = /* GraphQL */ `
         total
         wrong
         correct
+        source
         questionSets {
           type
           category

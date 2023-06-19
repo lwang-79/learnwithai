@@ -112,6 +112,7 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
                 if (body.statusCode !== 200) {
                     console.error(body.error);
                 }
+                console.log(body);
                 return [2 /*return*/, {
                         statusCode: body.statusCode,
                         body: JSON.stringify(body)

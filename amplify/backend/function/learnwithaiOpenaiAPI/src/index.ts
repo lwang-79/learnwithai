@@ -95,6 +95,8 @@ exports.handler = async (event) => {
     console.error(body.error);
   }
 
+  console.log(body)
+
   return {
     statusCode: body.statusCode,
     body: JSON.stringify(body),

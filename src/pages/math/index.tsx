@@ -129,8 +129,9 @@ function MathExam() {
   },[mode]);
 
   const setCheckedConcepts = (value: MathConcept) => {
-    let sConcepts = selectedConcepts;
+    let sConcepts = [...selectedConcepts];
     const index = sConcepts.indexOf(value);
+    console.log(sConcepts, index)
 
     if (index > -1) {
       if (sConcepts.length === 1 && index === 0) {

@@ -89,7 +89,7 @@ function LeaderBoard() {
         <Card w='50%'>
           <CardBody>
             <VStack>
-              <HStack align='flex-start'>
+              <HStack>
                 <Icon as={GiTrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>MATH WINNER</Heading>
@@ -122,7 +122,7 @@ function LeaderBoard() {
         <Card w='50%'>
           <CardBody>
             <VStack>
-              <HStack align='flex-start'>
+              <HStack>
                 <Icon as={GiTrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>WRITING WINNER</Heading>

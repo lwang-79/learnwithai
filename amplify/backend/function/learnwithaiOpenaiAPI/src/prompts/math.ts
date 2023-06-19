@@ -54,3 +54,54 @@ Answer: [A, B, C, or D]
 // D: <option>
 // Answer: <A, B, C or D>
 //   `
+
+export const mathTemplate = (
+  level: string,
+  concept: string,
+  condition: string,
+  question: string,
+  answer: string,
+  workout: string,
+  options: string,
+): ChatCompletionRequestMessage[] => {
+  return [
+    { role: 'system', content: 'You are a math teacher.' },
+    { role: 'user', content: `
+Generate a ${level} difficulty math ${concept} question with the following conditions:
+
+${condition}
+` 
+    },
+    { role: 'assistant', content: `Question: ${question}` },
+    { role: 'user', content: 'Solve the above question.' },
+    { role: 'assistant', content: `
+Answer: ${answer}
+Workout: 
+${workout}
+` 
+    },
+    { role: 'user', content: `Use the above question, answer and workout to form a multi-choice question. Use the desired template:
+
+Question: [Insert question text here]
+Workout: [Explain the method to solve the question]
+Options:
+A: [Option A]
+B: [Option B]
+C: [Option C]
+D: [Option D]
+Answer: [A, B, C, or D]
+`
+    },
+    { role: 'assistant', content: `Question: ${question}
+
+Workout: ${workout}
+
+Options:
+${options}
+
+Answer: C
+`
+    },
+    { role: 'user', content: `Follow the above process to generate another ${concept} multi-choice math question with the same condition.` },
+  ]
+}

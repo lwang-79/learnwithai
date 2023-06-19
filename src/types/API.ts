@@ -390,6 +390,7 @@ export type CreateTestInput = {
   total: number,
   wrong: number,
   correct: number,
+  source?: string | null,
   questionSets: Array< LocalQuestionSetInput >,
   owner?: string | null,
   _version?: number | null,
@@ -417,6 +418,7 @@ export type ModelTestConditionInput = {
   total?: ModelIntInput | null,
   wrong?: ModelIntInput | null,
   correct?: ModelIntInput | null,
+  source?: ModelStringInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelTestConditionInput | null > | null,
   or?: Array< ModelTestConditionInput | null > | null,
@@ -433,6 +435,7 @@ export type Test = {
   total: number,
   wrong: number,
   correct: number,
+  source?: string | null,
   questionSets:  Array<LocalQuestionSet >,
   owner?: string | null,
   createdAt: string,
@@ -466,6 +469,7 @@ export type UpdateTestInput = {
   total?: number | null,
   wrong?: number | null,
   correct?: number | null,
+  source?: string | null,
   questionSets?: Array< LocalQuestionSetInput > | null,
   owner?: string | null,
   _version?: number | null,
@@ -659,6 +663,7 @@ export type ModelTestFilterInput = {
   total?: ModelIntInput | null,
   wrong?: ModelIntInput | null,
   correct?: ModelIntInput | null,
+  source?: ModelStringInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelTestFilterInput | null > | null,
   or?: Array< ModelTestFilterInput | null > | null,
@@ -804,6 +809,7 @@ export type ModelSubscriptionTestFilterInput = {
   total?: ModelSubscriptionIntInput | null,
   wrong?: ModelSubscriptionIntInput | null,
   correct?: ModelSubscriptionIntInput | null,
+  source?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTestFilterInput | null > | null,
   or?: Array< ModelSubscriptionTestFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1279,6 +1285,7 @@ export type CreateTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -1318,6 +1325,7 @@ export type UpdateTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -1357,6 +1365,7 @@ export type DeleteTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2209,6 +2218,7 @@ export type GetTestQuery = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2251,6 +2261,7 @@ export type ListTestsQuery = {
       total: number,
       wrong: number,
       correct: number,
+      source?: string | null,
       questionSets:  Array< {
         __typename: "LocalQuestionSet",
         type: string,
@@ -2297,6 +2308,7 @@ export type SyncTestsQuery = {
       total: number,
       wrong: number,
       correct: number,
+      source?: string | null,
       questionSets:  Array< {
         __typename: "LocalQuestionSet",
         type: string,
@@ -2945,6 +2957,7 @@ export type OnCreateTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2984,6 +2997,7 @@ export type OnUpdateTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -3023,6 +3037,7 @@ export type OnDeleteTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
