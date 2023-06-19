@@ -380,6 +380,78 @@ export const onDeleteQuestionSet = /* GraphQL */ `
     }
   }
 `;
+export const onCreateBadQuestionSet = /* GraphQL */ `
+  subscription OnCreateBadQuestionSet(
+    $filter: ModelSubscriptionBadQuestionSetFilterInput
+  ) {
+    onCreateBadQuestionSet(filter: $filter) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onUpdateBadQuestionSet = /* GraphQL */ `
+  subscription OnUpdateBadQuestionSet(
+    $filter: ModelSubscriptionBadQuestionSetFilterInput
+  ) {
+    onUpdateBadQuestionSet(filter: $filter) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const onDeleteBadQuestionSet = /* GraphQL */ `
+  subscription OnDeleteBadQuestionSet(
+    $filter: ModelSubscriptionBadQuestionSetFilterInput
+  ) {
+    onDeleteBadQuestionSet(filter: $filter) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const onCreateTest = /* GraphQL */ `
   subscription OnCreateTest(
     $filter: ModelSubscriptionTestFilterInput

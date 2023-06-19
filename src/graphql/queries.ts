@@ -632,6 +632,94 @@ export const syncQuestionSets = /* GraphQL */ `
     }
   }
 `;
+export const getBadQuestionSet = /* GraphQL */ `
+  query GetBadQuestionSet($id: ID!) {
+    getBadQuestionSet(id: $id) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const listBadQuestionSets = /* GraphQL */ `
+  query ListBadQuestionSets(
+    $filter: ModelBadQuestionSetFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBadQuestionSets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        source
+        question
+        options
+        answer
+        workout
+        type
+        category
+        level
+        concept
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncBadQuestionSets = /* GraphQL */ `
+  query SyncBadQuestionSets(
+    $filter: ModelBadQuestionSetFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncBadQuestionSets(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        source
+        question
+        options
+        answer
+        workout
+        type
+        category
+        level
+        concept
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getTest = /* GraphQL */ `
   query GetTest($id: ID!) {
     getTest(id: $id) {

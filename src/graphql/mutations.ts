@@ -396,6 +396,81 @@ export const deleteQuestionSet = /* GraphQL */ `
     }
   }
 `;
+export const createBadQuestionSet = /* GraphQL */ `
+  mutation CreateBadQuestionSet(
+    $input: CreateBadQuestionSetInput!
+    $condition: ModelBadQuestionSetConditionInput
+  ) {
+    createBadQuestionSet(input: $input, condition: $condition) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const updateBadQuestionSet = /* GraphQL */ `
+  mutation UpdateBadQuestionSet(
+    $input: UpdateBadQuestionSetInput!
+    $condition: ModelBadQuestionSetConditionInput
+  ) {
+    updateBadQuestionSet(input: $input, condition: $condition) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
+export const deleteBadQuestionSet = /* GraphQL */ `
+  mutation DeleteBadQuestionSet(
+    $input: DeleteBadQuestionSetInput!
+    $condition: ModelBadQuestionSetConditionInput
+  ) {
+    deleteBadQuestionSet(input: $input, condition: $condition) {
+      id
+      source
+      question
+      options
+      answer
+      workout
+      type
+      category
+      level
+      concept
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      owner
+    }
+  }
+`;
 export const createTest = /* GraphQL */ `
   mutation CreateTest(
     $input: CreateTestInput!

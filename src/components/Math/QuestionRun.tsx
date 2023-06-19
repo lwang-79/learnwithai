@@ -51,7 +51,7 @@ import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
+import { BadQuestionSet, NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
@@ -498,6 +498,13 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       ...currentQuestionSet,
       isBad: questionSetsRef.current[currentIndexRef.current].isBad
     });
+
+    // save bad question set
+    const badQuestionSet = new BadQuestionSet({
+      ...questionSetsRef.current[currentIndexRef.current],
+      source: source
+    });
+    DataStore.save(badQuestionSet);
   }
 
   const closeButtonClickedHandler = async () => {
@@ -811,26 +818,25 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                         />
                       </Tooltip>
 
-                      <Tooltip
-                        label={
-                          currentQuestionSet && currentQuestionSet.isBad ?
-                          'Not bad' : 'Bad question'
-                        }
-                      >
-                        <IconButton
-                          rounded='full'
-                          variant={
-                            currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
-                          }
-                          aria-label='Bac question'
-                          colorScheme='yellow'
-                          size='sm'
-                          w='35px' h='35px'
-                          icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
-                          onClick={badButtonClickedHandler}
-                          isDisabled={!currentQuestionSet || isReview}
-                        />
-                      </Tooltip>
+                      {source === QuestionSource.ChatGPT &&
+                        <Tooltip
+                          label='Report bad question'
+                        >
+                          <IconButton
+                            rounded='full'
+                            variant={
+                              currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
+                            }
+                            aria-label='Bac question'
+                            colorScheme='yellow'
+                            size='sm'
+                            w='35px' h='35px'
+                            icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
+                            onClick={badButtonClickedHandler}
+                            isDisabled={!currentQuestionSet || currentQuestionSet.isBad}
+                          />
+                        </Tooltip>
+                      }
                     </>
                   )}
                   

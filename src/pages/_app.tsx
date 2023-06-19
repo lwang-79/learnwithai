@@ -3,12 +3,12 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify } from 'aws-amplify';
+import { Amplify, DataStore, syncExpression } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
-import { User } from '@/models';
+import { BadQuestionSet, RankingItem, User } from '@/models';
 import { APIName } from '@/types/types';
 
 
@@ -67,6 +67,17 @@ if (typeof window === 'undefined') {
 
   Amplify.configure(updatedAwsConfig);
 }
+
+DataStore.configure({
+  syncExpressions: [
+    syncExpression(RankingItem, () => {
+      const date = new Date();
+      date.setMonth(date.getMonth() - 1);
+      const lastMonth = date.toISOString().slice(0,7);
+      return item => item.date.ge(lastMonth);
+    })
+  ]
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);
