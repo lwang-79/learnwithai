@@ -320,6 +320,50 @@ export declare const QuestionSet: (new (init: ModelInit<QuestionSet>) => Questio
   copyOf(source: QuestionSet, mutator: (draft: MutableModel<QuestionSet>) => MutableModel<QuestionSet> | void): QuestionSet;
 }
 
+type EagerBadQuestionSet = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BadQuestionSet, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly source: string;
+  readonly question: string;
+  readonly options?: string[] | null;
+  readonly answer: string;
+  readonly workout?: string | null;
+  readonly type: string;
+  readonly category: string;
+  readonly level: string;
+  readonly concept: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyBadQuestionSet = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BadQuestionSet, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly source: string;
+  readonly question: string;
+  readonly options?: string[] | null;
+  readonly answer: string;
+  readonly workout?: string | null;
+  readonly type: string;
+  readonly category: string;
+  readonly level: string;
+  readonly concept: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type BadQuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerBadQuestionSet : LazyBadQuestionSet
+
+export declare const BadQuestionSet: (new (init: ModelInit<BadQuestionSet>) => BadQuestionSet) & {
+  copyOf(source: BadQuestionSet, mutator: (draft: MutableModel<BadQuestionSet>) => MutableModel<BadQuestionSet> | void): BadQuestionSet;
+}
+
 type EagerTest = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Test, 'id'>;
@@ -332,6 +376,7 @@ type EagerTest = {
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
+  readonly source?: string | null;
   readonly questionSets: LocalQuestionSet[];
   readonly owner?: string | null;
   readonly createdAt?: string | null;
@@ -350,6 +395,7 @@ type LazyTest = {
   readonly total: number;
   readonly wrong: number;
   readonly correct: number;
+  readonly source?: string | null;
   readonly questionSets: LocalQuestionSet[];
   readonly owner?: string | null;
   readonly createdAt?: string | null;

@@ -161,6 +161,7 @@ export const generateQuestionSet = async (
     return undefined;
   }
 
+  // console.log(body.data);
   const questionString = body.data as string;
   if (
     !questionString.includes('Question:') ||
@@ -180,11 +181,12 @@ export const generateQuestionSet = async (
   const workout = matches[0];
 
   // get answer
-  const answer = questionString.split("Answer:")[1].trim()[0].toUpperCase();
+  const answer = questionString.split('Options:')[1].split("Answer:")[1].trim()[0].toUpperCase();
+
   if (!['A', 'B', 'C', 'D'].includes(answer)) throw new Error('Answer in wrong format');
 
   // get options
-  regex = /^[A-D]:\s(.+)$/gm;
+  regex = /^\s*[A-D]:\s(.+)$/gm;
   matches = questionString.match(regex);
 
   if (!matches) throw new Error('No options.');

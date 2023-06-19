@@ -124,6 +124,24 @@ type QuestionSet @model @auth(rules: [{ allow: owner }]) {
   owner: String
 }
 
+type BadQuestionSet 
+  @model
+  @auth(rules: [
+    { allow: private, provider: iam },
+    { allow: owner, operations: [create] }
+  ]) {
+  id: ID!
+  source: String!
+  question: String!
+  options: [String!]
+  answer: String!
+  workout: String
+  type: String!      # MultiChoice ...
+  category: String!  # Math, Reading ...
+  level: String!     # Year9, High ...
+  concept: String!   # Decimals, Algebra ...
+}
+
 type Test @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   category: String!
@@ -132,6 +150,7 @@ type Test @model @auth(rules: [{ allow: owner }]) {
   total: Int!
   wrong: Int!
   correct: Int!
+  source: String
   questionSets: [LocalQuestionSet!]!
   owner: String
 }

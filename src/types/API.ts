@@ -382,6 +382,75 @@ export type DeleteQuestionSetInput = {
   _version?: number | null,
 };
 
+export type CreateBadQuestionSetInput = {
+  id?: string | null,
+  source: string,
+  question: string,
+  options?: Array< string > | null,
+  answer: string,
+  workout?: string | null,
+  type: string,
+  category: string,
+  level: string,
+  concept: string,
+  _version?: number | null,
+};
+
+export type ModelBadQuestionSetConditionInput = {
+  source?: ModelStringInput | null,
+  question?: ModelStringInput | null,
+  options?: ModelStringInput | null,
+  answer?: ModelStringInput | null,
+  workout?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  category?: ModelStringInput | null,
+  level?: ModelStringInput | null,
+  concept?: ModelStringInput | null,
+  and?: Array< ModelBadQuestionSetConditionInput | null > | null,
+  or?: Array< ModelBadQuestionSetConditionInput | null > | null,
+  not?: ModelBadQuestionSetConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type BadQuestionSet = {
+  __typename: "BadQuestionSet",
+  id: string,
+  source: string,
+  question: string,
+  options?: Array< string > | null,
+  answer: string,
+  workout?: string | null,
+  type: string,
+  category: string,
+  level: string,
+  concept: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  owner?: string | null,
+};
+
+export type UpdateBadQuestionSetInput = {
+  id: string,
+  source?: string | null,
+  question?: string | null,
+  options?: Array< string > | null,
+  answer?: string | null,
+  workout?: string | null,
+  type?: string | null,
+  category?: string | null,
+  level?: string | null,
+  concept?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteBadQuestionSetInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type CreateTestInput = {
   id?: string | null,
   category: string,
@@ -390,6 +459,7 @@ export type CreateTestInput = {
   total: number,
   wrong: number,
   correct: number,
+  source?: string | null,
   questionSets: Array< LocalQuestionSetInput >,
   owner?: string | null,
   _version?: number | null,
@@ -417,6 +487,7 @@ export type ModelTestConditionInput = {
   total?: ModelIntInput | null,
   wrong?: ModelIntInput | null,
   correct?: ModelIntInput | null,
+  source?: ModelStringInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelTestConditionInput | null > | null,
   or?: Array< ModelTestConditionInput | null > | null,
@@ -433,6 +504,7 @@ export type Test = {
   total: number,
   wrong: number,
   correct: number,
+  source?: string | null,
   questionSets:  Array<LocalQuestionSet >,
   owner?: string | null,
   createdAt: string,
@@ -466,6 +538,7 @@ export type UpdateTestInput = {
   total?: number | null,
   wrong?: number | null,
   correct?: number | null,
+  source?: string | null,
   questionSets?: Array< LocalQuestionSetInput > | null,
   owner?: string | null,
   _version?: number | null,
@@ -651,6 +724,30 @@ export type ModelQuestionSetConnection = {
   startedAt?: number | null,
 };
 
+export type ModelBadQuestionSetFilterInput = {
+  id?: ModelIDInput | null,
+  source?: ModelStringInput | null,
+  question?: ModelStringInput | null,
+  options?: ModelStringInput | null,
+  answer?: ModelStringInput | null,
+  workout?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  category?: ModelStringInput | null,
+  level?: ModelStringInput | null,
+  concept?: ModelStringInput | null,
+  and?: Array< ModelBadQuestionSetFilterInput | null > | null,
+  or?: Array< ModelBadQuestionSetFilterInput | null > | null,
+  not?: ModelBadQuestionSetFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelBadQuestionSetConnection = {
+  __typename: "ModelBadQuestionSetConnection",
+  items:  Array<BadQuestionSet | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelTestFilterInput = {
   id?: ModelIDInput | null,
   category?: ModelStringInput | null,
@@ -659,6 +756,7 @@ export type ModelTestFilterInput = {
   total?: ModelIntInput | null,
   wrong?: ModelIntInput | null,
   correct?: ModelIntInput | null,
+  source?: ModelStringInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelTestFilterInput | null > | null,
   or?: Array< ModelTestFilterInput | null > | null,
@@ -796,6 +894,22 @@ export type ModelSubscriptionIntInput = {
   notIn?: Array< number | null > | null,
 };
 
+export type ModelSubscriptionBadQuestionSetFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  source?: ModelSubscriptionStringInput | null,
+  question?: ModelSubscriptionStringInput | null,
+  options?: ModelSubscriptionStringInput | null,
+  answer?: ModelSubscriptionStringInput | null,
+  workout?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  category?: ModelSubscriptionStringInput | null,
+  level?: ModelSubscriptionStringInput | null,
+  concept?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionBadQuestionSetFilterInput | null > | null,
+  or?: Array< ModelSubscriptionBadQuestionSetFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
 export type ModelSubscriptionTestFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   category?: ModelSubscriptionStringInput | null,
@@ -804,6 +918,7 @@ export type ModelSubscriptionTestFilterInput = {
   total?: ModelSubscriptionIntInput | null,
   wrong?: ModelSubscriptionIntInput | null,
   correct?: ModelSubscriptionIntInput | null,
+  source?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTestFilterInput | null > | null,
   or?: Array< ModelSubscriptionTestFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1264,6 +1379,87 @@ export type DeleteQuestionSetMutation = {
   } | null,
 };
 
+export type CreateBadQuestionSetMutationVariables = {
+  input: CreateBadQuestionSetInput,
+  condition?: ModelBadQuestionSetConditionInput | null,
+};
+
+export type CreateBadQuestionSetMutation = {
+  createBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateBadQuestionSetMutationVariables = {
+  input: UpdateBadQuestionSetInput,
+  condition?: ModelBadQuestionSetConditionInput | null,
+};
+
+export type UpdateBadQuestionSetMutation = {
+  updateBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteBadQuestionSetMutationVariables = {
+  input: DeleteBadQuestionSetInput,
+  condition?: ModelBadQuestionSetConditionInput | null,
+};
+
+export type DeleteBadQuestionSetMutation = {
+  deleteBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
 export type CreateTestMutationVariables = {
   input: CreateTestInput,
   condition?: ModelTestConditionInput | null,
@@ -1279,6 +1475,7 @@ export type CreateTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -1318,6 +1515,7 @@ export type UpdateTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -1357,6 +1555,7 @@ export type DeleteTestMutation = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2195,6 +2394,99 @@ export type SyncQuestionSetsQuery = {
   } | null,
 };
 
+export type GetBadQuestionSetQueryVariables = {
+  id: string,
+};
+
+export type GetBadQuestionSetQuery = {
+  getBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListBadQuestionSetsQueryVariables = {
+  filter?: ModelBadQuestionSetFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListBadQuestionSetsQuery = {
+  listBadQuestionSets?:  {
+    __typename: "ModelBadQuestionSetConnection",
+    items:  Array< {
+      __typename: "BadQuestionSet",
+      id: string,
+      source: string,
+      question: string,
+      options?: Array< string > | null,
+      answer: string,
+      workout?: string | null,
+      type: string,
+      category: string,
+      level: string,
+      concept: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncBadQuestionSetsQueryVariables = {
+  filter?: ModelBadQuestionSetFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncBadQuestionSetsQuery = {
+  syncBadQuestionSets?:  {
+    __typename: "ModelBadQuestionSetConnection",
+    items:  Array< {
+      __typename: "BadQuestionSet",
+      id: string,
+      source: string,
+      question: string,
+      options?: Array< string > | null,
+      answer: string,
+      workout?: string | null,
+      type: string,
+      category: string,
+      level: string,
+      concept: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type GetTestQueryVariables = {
   id: string,
 };
@@ -2209,6 +2501,7 @@ export type GetTestQuery = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2251,6 +2544,7 @@ export type ListTestsQuery = {
       total: number,
       wrong: number,
       correct: number,
+      source?: string | null,
       questionSets:  Array< {
         __typename: "LocalQuestionSet",
         type: string,
@@ -2297,6 +2591,7 @@ export type SyncTestsQuery = {
       total: number,
       wrong: number,
       correct: number,
+      source?: string | null,
       questionSets:  Array< {
         __typename: "LocalQuestionSet",
         type: string,
@@ -2930,6 +3225,84 @@ export type OnDeleteQuestionSetSubscription = {
   } | null,
 };
 
+export type OnCreateBadQuestionSetSubscriptionVariables = {
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+};
+
+export type OnCreateBadQuestionSetSubscription = {
+  onCreateBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateBadQuestionSetSubscriptionVariables = {
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+};
+
+export type OnUpdateBadQuestionSetSubscription = {
+  onUpdateBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteBadQuestionSetSubscriptionVariables = {
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+};
+
+export type OnDeleteBadQuestionSetSubscription = {
+  onDeleteBadQuestionSet?:  {
+    __typename: "BadQuestionSet",
+    id: string,
+    source: string,
+    question: string,
+    options?: Array< string > | null,
+    answer: string,
+    workout?: string | null,
+    type: string,
+    category: string,
+    level: string,
+    concept: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    owner?: string | null,
+  } | null,
+};
+
 export type OnCreateTestSubscriptionVariables = {
   filter?: ModelSubscriptionTestFilterInput | null,
   owner?: string | null,
@@ -2945,6 +3318,7 @@ export type OnCreateTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -2984,6 +3358,7 @@ export type OnUpdateTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,
@@ -3023,6 +3398,7 @@ export type OnDeleteTestSubscription = {
     total: number,
     wrong: number,
     correct: number,
+    source?: string | null,
     questionSets:  Array< {
       __typename: "LocalQuestionSet",
       type: string,

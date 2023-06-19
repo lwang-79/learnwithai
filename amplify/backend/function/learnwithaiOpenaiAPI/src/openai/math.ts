@@ -2,7 +2,18 @@ import mathqa from '../models/mathqa.json';
 import gsm8k from '../models/gsm8k.json';
 import hendrycks from '../models/hendrycks.json';
 import competition from '../models/competition.json';
-import { APIResponse, CompetitionQuestion, GSM8KQuestion, HendrycksQuestion, MathQAQuestion, QuestionCategory, QuestionLevel, QuestionSet, QuestionSource, QuestionType } from '../types';
+import { 
+  APIResponse, 
+  CompetitionQuestion, 
+  GSM8KQuestion, 
+  HendrycksQuestion, 
+  MathQAQuestion, 
+  QuestionCategory, 
+  QuestionLevel, 
+  QuestionSet, 
+  QuestionSource, 
+  QuestionType 
+} from '../types';
 import { chatCompletion } from './chat';
 import { ChatCompletionFunctions, ChatCompletionRequestMessage } from 'openai';
 import { generateChatMessages } from '../prompts/math';

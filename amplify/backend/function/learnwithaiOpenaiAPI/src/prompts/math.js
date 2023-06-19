@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.template = exports.generateChatMessages = void 0;
+exports.mathTemplate = exports.template = exports.generateChatMessages = void 0;
 var types_1 = require("../types");
 var arithmetic_1 = require("./arithmetic");
 var decimals_1 = require("./decimals");
@@ -40,3 +40,20 @@ exports.template = "\nUse the desired template:\nQuestion: [Insert question text
 // D: <option>
 // Answer: <A, B, C or D>
 //   `
+var mathTemplate = function (level, concept, condition, question, answer, workout, options) {
+    return [
+        { role: 'system', content: 'You are a math teacher.' },
+        { role: 'user', content: "\nGenerate a ".concat(level, " difficulty math ").concat(concept, " question with the following conditions:\n\n").concat(condition, "\n")
+        },
+        { role: 'assistant', content: "Question: ".concat(question) },
+        { role: 'user', content: 'Solve the above question.' },
+        { role: 'assistant', content: "\nAnswer: ".concat(answer, "\nWorkout: \n").concat(workout, "\n")
+        },
+        { role: 'user', content: "Use the above question, answer and workout to form a multi-choice question. Use the desired template:\n\nQuestion: [Insert question text here]\nWorkout: [Explain the method to solve the question]\nOptions:\nA: [Option A]\nB: [Option B]\nC: [Option C]\nD: [Option D]\nAnswer: [A, B, C, or D]\n"
+        },
+        { role: 'assistant', content: "Question: ".concat(question, "\n\nWorkout: ").concat(workout, "\n\nOptions:\n").concat(options, "\n\nAnswer: C\n")
+        },
+        { role: 'user', content: "Follow the above process to generate another ".concat(concept, " multi-choice math question with the same condition.") },
+    ];
+};
+exports.mathTemplate = mathTemplate;

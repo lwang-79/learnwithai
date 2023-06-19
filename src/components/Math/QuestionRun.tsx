@@ -46,12 +46,12 @@ import {
   WrapItem
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { MdBookmarkBorder, MdClose, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
+import { MdBookmarkBorder, MdClose, MdOutlineArticle, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
 import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
-import { NotificationType, QuestionSet, Statistic, Test } from "@/models";
+import { BadQuestionSet, NotificationType, QuestionSet, Statistic, Test } from "@/models";
 import { InitStatistic, addStatisticData } from "@/types/statistic";
 import { addMyMathQuestion, generateQuestionSet, getQuestionAnswer, getQuestionsFromDataset, saveTest } from "@/types/questions";
 import Timer from "../Common/Timer";
@@ -103,7 +103,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
   const savedQuestionSetsRef = useRef<QuestionSet[]>(); 
 
   const [ shouldShowWorkout, setShouldShowWorkout ] = useBoolean(false);
-  const [ result, setResult ] = useState<{ total: number, correct: number }>();
+  // const [ result, setResult ] = useState<{ total: number, correct: number }>();
   const [ isSubmitted, setIsSubmitted ] = useState(false);
   const { dataStoreUser, setDataStoreUser, setIsProcessing, apiName } = useContext(SharedComponents);
   const [ isChallenging, setIsChallenging ] = useState(false);
@@ -149,6 +149,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
         total: 0,
         wrong: 0,
         correct: 0,
+        source: source,
         questionSets: []
       });
     }
@@ -393,7 +394,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
 
     setDataStoreUser(await addStatisticData(statistic, dataStoreUser.id));
 
-    setResult({ total: lastIndexRef.current + 1, correct: correct });
+    // setResult({ total: lastIndexRef.current + 1, correct: correct });
     lastIndexRef.current = questionSets.length - 1;
     setIsSubmitted(true);
     onOpenResultModal();
@@ -497,6 +498,13 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
       ...currentQuestionSet,
       isBad: questionSetsRef.current[currentIndexRef.current].isBad
     });
+
+    // save bad question set
+    const badQuestionSet = new BadQuestionSet({
+      ...questionSetsRef.current[currentIndexRef.current],
+      source: source
+    });
+    DataStore.save(badQuestionSet);
   }
 
   const closeButtonClickedHandler = async () => {
@@ -705,6 +713,21 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
+              {isReview &&
+                <Tooltip label='Show result'>
+                  <IconButton
+                    rounded='full'
+                    variant='ghost'
+                    aria-label='Show report'
+                    colorScheme='teal'
+                    size='sm'
+                    w='35px' h='35px'
+                    icon={<Icon as={MdOutlineArticle} boxSize={6} />}
+                    onClick={onOpenResultModal}
+                  />
+                </Tooltip>
+              }
+
               <Spacer />
               {(isTest || isReview) && <Timer isStopped={timerStopped} duration={duration} setDuration={setDuration} />}
             </HStack>
@@ -726,6 +749,9 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                   <Text fontSize='lg' as='b' >
                     Question {currentIndex + 1}
                   </Text>
+                  {currentQuestionSet && currentQuestionSet.concept && 
+                    <Tag rounded='full' fontSize='xs'>{currentQuestionSet.concept.charAt(0).toUpperCase() + currentQuestionSet.concept.slice(1)}</Tag>
+                  }
                   <Spacer />
                   {isSavedQuestions && !isReview ? (
                     <>
@@ -792,26 +818,25 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                         />
                       </Tooltip>
 
-                      <Tooltip
-                        label={
-                          currentQuestionSet && currentQuestionSet.isBad ?
-                          'Not bad' : 'Bad question'
-                        }
-                      >
-                        <IconButton
-                          rounded='full'
-                          variant={
-                            currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
-                          }
-                          aria-label='Bac question'
-                          colorScheme='yellow'
-                          size='sm'
-                          w='35px' h='35px'
-                          icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
-                          onClick={badButtonClickedHandler}
-                          isDisabled={!currentQuestionSet || isReview}
-                        />
-                      </Tooltip>
+                      {source === QuestionSource.ChatGPT &&
+                        <Tooltip
+                          label='Report bad question'
+                        >
+                          <IconButton
+                            rounded='full'
+                            variant={
+                              currentQuestionSet && currentQuestionSet.isBad ? 'solid' : 'ghost'
+                            }
+                            aria-label='Bac question'
+                            colorScheme='yellow'
+                            size='sm'
+                            w='35px' h='35px'
+                            icon={<Icon as={MdThumbDownOffAlt} boxSize={6} />}
+                            onClick={badButtonClickedHandler}
+                            isDisabled={!currentQuestionSet || currentQuestionSet.isBad}
+                          />
+                        </Tooltip>
+                      }
                     </>
                   )}
                   
@@ -964,12 +989,9 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               <ModalContent>
                 <ModalCloseButton />
                 <ModalBody>
-                  {result &&
-                    <Result result={result}/>
-                  }
+                    <Result questionSets={questionSets}/>
                 </ModalBody>
                 <ModalFooter>
-                  {/* <Button onClick={onCloseResultModal}>Exit</Button> */}
                 </ModalFooter>
               </ModalContent>
             </Modal>
