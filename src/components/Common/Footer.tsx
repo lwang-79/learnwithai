@@ -1,4 +1,5 @@
 import { 
+  Box,
     Flex, 
     Modal, 
     ModalBody, 
@@ -10,6 +11,7 @@ import {
     useColorModeValue, 
     useDisclosure 
   } from "@chakra-ui/react"
+import Link from "next/link";
   import Support from "./Support";
   
   function Footer() {
@@ -18,6 +20,8 @@ import {
       onOpen: onOpenSupportModal, 
       onClose: onCloseSupportModal
     } = useDisclosure();
+
+    const bg = useColorModeValue('gray.100', 'gray.900');
   
     return (
       <Flex 
@@ -25,7 +29,7 @@ import {
         direction='column' 
         w='full'
         p={4}
-        bg={useColorModeValue('gray.100', 'gray.900')} 
+        bg={bg} 
         position='fixed'
         bottom={0}
       >
@@ -43,6 +47,16 @@ import {
         >
           Leave a message
         </Text>
+
+        <Box
+          position='absolute'
+          zIndex={10}
+          bottom={0}
+          right={0}
+          color={bg}
+        >
+          <Link href='/anything'>Anything</Link>
+        </Box>
       
         <Modal
           isOpen={isOpenSupportModal}

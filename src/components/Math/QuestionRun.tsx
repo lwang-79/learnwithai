@@ -248,14 +248,6 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
     setCurrentQuestionSet(questionSets[0]);
   }
 
-  // const addCompetitionQuestionSets = async (num: number, level: QuestionLevel) => {
-  //   const competitionQuestionSets = await getQuestionsFromCompetition(apiName, num, level);
-  //   questionSetsRef.current = [...questionSetsRef.current, ...competitionQuestionSets];
-  //   // lastIndexRef.current += 1;
-  //   // setQuestionSets(questionSetsRef.current);
-  //   setFetchingStatus.toggle();
-  // }
-
   const addChatGPTQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
 
@@ -394,11 +386,31 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
 
     setDataStoreUser(await addStatisticData(statistic, dataStoreUser.id));
 
-    // setResult({ total: lastIndexRef.current + 1, correct: correct });
     lastIndexRef.current = questionSets.length - 1;
     setIsSubmitted(true);
     onOpenResultModal();
 
+    // save test
+    if (isTest) {
+      const returnMessage = await saveTest(
+        testRef.current!, 
+        duration, 
+        questionSetsRef.current.slice(0, questionSets.length),
+        dataStoreUser!
+      );
+
+      if (returnMessage) {
+        toast({
+          description: returnMessage,
+          status: 'warning',
+          duration: 10000,
+          isClosable: true,
+          position: 'top'
+        });
+      }
+    }
+
+    // sent notification
     if (
       isTest && 
       dataStoreUser.notification && 
@@ -509,7 +521,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   const closeButtonClickedHandler = async () => {
     setIsProcessing(true);
-    if (isTest || isReview) {
+    if (isReview) {
       const returnMessage = await saveTest(
         testRef.current!, 
         duration, 
