@@ -59,17 +59,18 @@
     },
     "categories": {
       "auth": {
-        "learnwithai6c436a2f": {}
+        "learnwithai6c436a2f": {},
+        "userPoolGroups": {}
       },
       "function": {
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-5171707a6150584b6a49-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-6e5648555047697a6a75-build.zip",
           "appName": "Study with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-57616c4c313257614367-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-573253533851486d2b32-build.zip",
           "openaiApiKey": "c2stWGJNYU1NUGRPYkk2cFlDZWJFWTdUM0JsYmtGSlc1clBMNUd4U2NHWGpMSGZtZ204"
         },
         "learnwithaiSubscribe": {

@@ -19,9 +19,10 @@ import {
   Tag
 } from "@chakra-ui/react";
 import { DataStore, SortDirection } from "aws-amplify";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FaMedal } from "react-icons/fa";
 import { GiTrophyCup } from "react-icons/gi";
+import SharedComponents from "../Common/SharedComponents";
 
 function LeaderBoard() {
   const [ yesterdayMathRankingItem, setYesterdayMathRankingItem] = useState<RankingItem>();
@@ -30,8 +31,13 @@ function LeaderBoard() {
   const [ yesterdayWritingRankingItem, setYesterdayWritingRankingItem] = useState<RankingItem>();
   const [ lastMonthWritingRankingItem, setLastMonthWritingRankingItem] = useState<RankingItem>();
   const [ thisMonthWritingRankingItem, setThisMonthWritingRankingItem] = useState<RankingItem>();
+  const { isDataStoreReady } = useContext(SharedComponents);
 
   useEffect(() => {
+    if (!isDataStoreReady) {
+      return;
+    }
+
     const yesterday = (new Date(new Date().setDate(new Date().getDate() - 1))).toLocaleString('sv-SE').slice(0,10);
     const thisMonth = (new Date()).toLocaleString('sv-SE').slice(0,7);
     const lastMonth = (new Date(new Date().setMonth(new Date().getMonth() - 1))).toLocaleString('sv-SE').slice(0,7);
@@ -82,7 +88,7 @@ function LeaderBoard() {
       ])
     ).then(items => setLastMonthWritingRankingItem(items[0]));
       
-  },[]);
+  },[isDataStoreReady]);
   return (
     <>
       <HStack w='full'>
