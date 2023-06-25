@@ -38,6 +38,7 @@ type User
   notification: Notification
   optionStates: OptionStates
   owner: String
+  badges: [ID!]
 }
 
 type Membership {
@@ -203,6 +204,22 @@ enum RankingType {
   MathCorrectNumberByMonth
   WritingNumberByDay
   WritingNumberByMonth
+}
+
+type Badge @model
+  @auth(rules: [
+    { allow: groups, groups: ["Admin"] }
+    { allow: private, provider: iam }
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  name: String!
+  startDate: AWSDate!
+  endDate: AWSDate!
+  criteria: String!     # mathCorrect::1000
+  description: String!
+  image: String!
+  isVisible: Boolean! 
 }
 
 type Mutation {

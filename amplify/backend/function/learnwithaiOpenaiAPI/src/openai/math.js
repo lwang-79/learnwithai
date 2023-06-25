@@ -175,7 +175,7 @@ exports.generateMathAnswer = generateMathAnswer;
 var generateMathOptions = function (question, solution) { return __awaiter(void 0, void 0, void 0, function () {
     var prompt, messages;
     return __generator(this, function (_a) {
-        prompt = "\nBased on the following math question and solution, please generate answer options to form a multichoice question. Put the correct answer in the 4 options randamly. Indicate the option by capital alphabet followed by column. And put the correct answer's indicator in answer.\nQuestion: \"".concat(question, "\"\nSolution: \"").concat(solution, "\"\nDesired template:\nA: <>\nB: <>\nC: <>\nD: <>\nAnswer: <>\n");
+        prompt = "\n  Based on the given mathematical question and solution, please generate multiple-choice answer options. Randomly place the correct answer, which is the value or expression enclosed within the LaTeX notation \"\\boxed{}\", among the four options. Assign capital letters followed by a colon to each option. Don't use \"\\boxed{}\" notation or other indicator for the answer in the options. Finally, indicate the correct answer's letter in the \"Answer\" section.\n\n  Question: \"".concat(question, "\"\n  Solution: \"").concat(solution, "\"\n  \n  Desired template:\n  A: <>\n  B: <>\n  C: <>\n  D: <>\n  Answer: <>\n");
         messages = [
             { role: 'system', content: 'You are a math teacher.' },
             { role: 'user', content: prompt }

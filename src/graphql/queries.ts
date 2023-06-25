@@ -91,6 +91,7 @@ export const getUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -193,6 +194,7 @@ export const listUsers = /* GraphQL */ `
           stemConcepts
         }
         owner
+        badges
         createdAt
         updatedAt
         _version
@@ -304,6 +306,7 @@ export const syncUsers = /* GraphQL */ `
           stemConcepts
         }
         owner
+        badges
         createdAt
         updatedAt
         _version
@@ -417,6 +420,7 @@ export const userBySub = /* GraphQL */ `
           stemConcepts
         }
         owner
+        badges
         createdAt
         updatedAt
         _version
@@ -530,6 +534,7 @@ export const userByPayerId = /* GraphQL */ `
           stemConcepts
         }
         owner
+        badges
         createdAt
         updatedAt
         _version
@@ -1016,6 +1021,85 @@ export const rankingItemsByDateAndType = /* GraphQL */ `
         type
         names
         values
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getBadge = /* GraphQL */ `
+  query GetBadge($id: ID!) {
+    getBadge(id: $id) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listBadges = /* GraphQL */ `
+  query ListBadges(
+    $filter: ModelBadgeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBadges(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        startDate
+        endDate
+        criteria
+        description
+        image
+        isVisible
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncBadges = /* GraphQL */ `
+  query SyncBadges(
+    $filter: ModelBadgeFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncBadges(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        startDate
+        endDate
+        criteria
+        description
+        image
+        isVisible
         createdAt
         updatedAt
         _version

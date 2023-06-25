@@ -3,12 +3,12 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify, DataStore, syncExpression } from 'aws-amplify';
+import { Amplify, DataStore, Hub, syncExpression } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
-import { BadQuestionSet, RankingItem, User } from '@/models';
+import { RankingItem, User } from '@/models';
 import { APIName } from '@/types/types';
 
 
@@ -82,7 +82,17 @@ DataStore.configure({
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);
   const [ dataStoreUser, setDataStoreUser ] = useState<User>();
+  const [ isDataStoreReady, setIsDataStoreReady ] = useState(false);
 
+  const listener = Hub.listen("datastore", async hubData => {
+    const  { event, data } = hubData.payload;
+    if (event === "ready") {
+      console.log('DataStore is ready');
+      setIsDataStoreReady(true);
+      listener();
+    }
+  });
+  
   return (
     <ChakraProvider theme={theme}>
       <Head>
@@ -97,6 +107,8 @@ export default function App({ Component, pageProps }: AppProps) {
           setIsProcessing: setIsProcessing,
           dataStoreUser: dataStoreUser,
           setDataStoreUser: setDataStoreUser,
+          isDataStoreReady: isDataStoreReady,
+          setIsDataStoreReady: setIsDataStoreReady,
           apiName: APIName.OpenAI
         }} >
           <Component {...pageProps} />

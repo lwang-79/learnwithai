@@ -27,6 +27,10 @@ export const saveTest = async (
 ) => {
   // if test exists grab the latest version
   // if new test verify the quota
+  if (questionSets.length === 0) {
+    return;
+  }
+
   const latestTest = await DataStore.query(Test, test.id);
   if (!latestTest) {
     const totalTestCount = (await DataStore.query(Test)).length;

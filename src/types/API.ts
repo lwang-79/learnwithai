@@ -25,6 +25,7 @@ export type CreateUserInput = {
   notification?: NotificationInput | null,
   optionStates?: OptionStatesInput | null,
   owner?: string | null,
+  badges?: Array< string > | null,
   _version?: number | null,
 };
 
@@ -106,6 +107,7 @@ export type ModelUserConditionInput = {
   payerId?: ModelStringInput | null,
   markedQuestions?: ModelIDInput | null,
   owner?: ModelStringInput | null,
+  badges?: ModelIDInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -193,6 +195,7 @@ export type User = {
   notification?: Notification | null,
   optionStates?: OptionStates | null,
   owner?: string | null,
+  badges?: Array< string > | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -286,6 +289,7 @@ export type UpdateUserInput = {
   notification?: NotificationInput | null,
   optionStates?: OptionStatesInput | null,
   owner?: string | null,
+  badges?: Array< string > | null,
   _version?: number | null,
 };
 
@@ -670,6 +674,66 @@ export type DeleteRankingItemInput = {
   _version?: number | null,
 };
 
+export type CreateBadgeInput = {
+  id?: string | null,
+  name: string,
+  startDate: string,
+  endDate: string,
+  criteria: string,
+  description: string,
+  image: string,
+  isVisible: boolean,
+  _version?: number | null,
+};
+
+export type ModelBadgeConditionInput = {
+  name?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  endDate?: ModelStringInput | null,
+  criteria?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  isVisible?: ModelBooleanInput | null,
+  and?: Array< ModelBadgeConditionInput | null > | null,
+  or?: Array< ModelBadgeConditionInput | null > | null,
+  not?: ModelBadgeConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type Badge = {
+  __typename: "Badge",
+  id: string,
+  name: string,
+  startDate: string,
+  endDate: string,
+  criteria: string,
+  description: string,
+  image: string,
+  isVisible: boolean,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateBadgeInput = {
+  id: string,
+  name?: string | null,
+  startDate?: string | null,
+  endDate?: string | null,
+  criteria?: string | null,
+  description?: string | null,
+  image?: string | null,
+  isVisible?: boolean | null,
+  _version?: number | null,
+};
+
+export type DeleteBadgeInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   sub?: ModelIDInput | null,
@@ -679,6 +743,7 @@ export type ModelUserFilterInput = {
   payerId?: ModelStringInput | null,
   markedQuestions?: ModelIDInput | null,
   owner?: ModelStringInput | null,
+  badges?: ModelIDInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -822,6 +887,28 @@ export type ModelStringKeyConditionInput = {
   beginsWith?: string | null,
 };
 
+export type ModelBadgeFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  endDate?: ModelStringInput | null,
+  criteria?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  isVisible?: ModelBooleanInput | null,
+  and?: Array< ModelBadgeFilterInput | null > | null,
+  or?: Array< ModelBadgeFilterInput | null > | null,
+  not?: ModelBadgeFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelBadgeConnection = {
+  __typename: "ModelBadgeConnection",
+  items:  Array<Badge | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   sub?: ModelSubscriptionIDInput | null,
@@ -830,6 +917,7 @@ export type ModelSubscriptionUserFilterInput = {
   picture?: ModelSubscriptionStringInput | null,
   payerId?: ModelSubscriptionStringInput | null,
   markedQuestions?: ModelSubscriptionIDInput | null,
+  badges?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -946,6 +1034,25 @@ export type ModelSubscriptionRankingItemFilterInput = {
   and?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
   or?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionBadgeFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  startDate?: ModelSubscriptionStringInput | null,
+  endDate?: ModelSubscriptionStringInput | null,
+  criteria?: ModelSubscriptionStringInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  image?: ModelSubscriptionStringInput | null,
+  isVisible?: ModelSubscriptionBooleanInput | null,
+  and?: Array< ModelSubscriptionBadgeFilterInput | null > | null,
+  or?: Array< ModelSubscriptionBadgeFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
 };
 
 export type LearnwithaiSubscribeMutationVariables = {
@@ -1065,6 +1172,7 @@ export type CreateUserMutation = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1176,6 +1284,7 @@ export type UpdateUserMutation = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1287,6 +1396,7 @@ export type DeleteUserMutation = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1715,6 +1825,78 @@ export type DeleteRankingItemMutation = {
   } | null,
 };
 
+export type CreateBadgeMutationVariables = {
+  input: CreateBadgeInput,
+  condition?: ModelBadgeConditionInput | null,
+};
+
+export type CreateBadgeMutation = {
+  createBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateBadgeMutationVariables = {
+  input: UpdateBadgeInput,
+  condition?: ModelBadgeConditionInput | null,
+};
+
+export type UpdateBadgeMutation = {
+  updateBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteBadgeMutationVariables = {
+  input: DeleteBadgeInput,
+  condition?: ModelBadgeConditionInput | null,
+};
+
+export type DeleteBadgeMutation = {
+  deleteBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetUserQueryVariables = {
   id: string,
 };
@@ -1817,6 +1999,7 @@ export type GetUserQuery = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1931,6 +2114,7 @@ export type ListUsersQuery = {
         stemConcepts?: Array< string | null > | null,
       } | null,
       owner?: string | null,
+      badges?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2049,6 +2233,7 @@ export type SyncUsersQuery = {
         stemConcepts?: Array< string | null > | null,
       } | null,
       owner?: string | null,
+      badges?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2168,6 +2353,7 @@ export type UserBySubQuery = {
         stemConcepts?: Array< string | null > | null,
       } | null,
       owner?: string | null,
+      badges?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2287,6 +2473,7 @@ export type UserByPayerIdQuery = {
         stemConcepts?: Array< string | null > | null,
       } | null,
       owner?: string | null,
+      badges?: Array< string > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2808,6 +2995,90 @@ export type RankingItemsByDateAndTypeQuery = {
   } | null,
 };
 
+export type GetBadgeQueryVariables = {
+  id: string,
+};
+
+export type GetBadgeQuery = {
+  getBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListBadgesQueryVariables = {
+  filter?: ModelBadgeFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListBadgesQuery = {
+  listBadges?:  {
+    __typename: "ModelBadgeConnection",
+    items:  Array< {
+      __typename: "Badge",
+      id: string,
+      name: string,
+      startDate: string,
+      endDate: string,
+      criteria: string,
+      description: string,
+      image: string,
+      isVisible: boolean,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncBadgesQueryVariables = {
+  filter?: ModelBadgeFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncBadgesQuery = {
+  syncBadges?:  {
+    __typename: "ModelBadgeConnection",
+    items:  Array< {
+      __typename: "Badge",
+      id: string,
+      name: string,
+      startDate: string,
+      endDate: string,
+      criteria: string,
+      description: string,
+      image: string,
+      isVisible: boolean,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
   owner?: string | null,
@@ -2911,6 +3182,7 @@ export type OnCreateUserSubscription = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3022,6 +3294,7 @@ export type OnUpdateUserSubscription = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3133,6 +3406,7 @@ export type OnDeleteUserSubscription = {
       stemConcepts?: Array< string | null > | null,
     } | null,
     owner?: string | null,
+    badges?: Array< string > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3547,6 +3821,75 @@ export type OnDeleteRankingItemSubscription = {
     type: RankingType,
     names: Array< string >,
     values: Array< string >,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateBadgeSubscriptionVariables = {
+  filter?: ModelSubscriptionBadgeFilterInput | null,
+};
+
+export type OnCreateBadgeSubscription = {
+  onCreateBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateBadgeSubscriptionVariables = {
+  filter?: ModelSubscriptionBadgeFilterInput | null,
+};
+
+export type OnUpdateBadgeSubscription = {
+  onUpdateBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteBadgeSubscriptionVariables = {
+  filter?: ModelSubscriptionBadgeFilterInput | null,
+};
+
+export type OnDeleteBadgeSubscription = {
+  onDeleteBadge?:  {
+    __typename: "Badge",
+    id: string,
+    name: string,
+    startDate: string,
+    endDate: string,
+    criteria: string,
+    description: string,
+    image: string,
+    isVisible: boolean,
     createdAt: string,
     updatedAt: string,
     _version: number,

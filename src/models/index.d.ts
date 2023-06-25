@@ -237,6 +237,7 @@ type EagerUser = {
   readonly notification?: Notification | null;
   readonly optionStates?: OptionStates | null;
   readonly owner?: string | null;
+  readonly badges?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -262,6 +263,7 @@ type LazyUser = {
   readonly notification?: Notification | null;
   readonly optionStates?: OptionStates | null;
   readonly owner?: string | null;
+  readonly badges?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -480,4 +482,44 @@ export declare type RankingItem = LazyLoading extends LazyLoadingDisabled ? Eage
 
 export declare const RankingItem: (new (init: ModelInit<RankingItem>) => RankingItem) & {
   copyOf(source: RankingItem, mutator: (draft: MutableModel<RankingItem>) => MutableModel<RankingItem> | void): RankingItem;
+}
+
+type EagerBadge = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Badge, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly criteria: string;
+  readonly description: string;
+  readonly image: string;
+  readonly isVisible: boolean;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyBadge = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Badge, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly criteria: string;
+  readonly description: string;
+  readonly image: string;
+  readonly isVisible: boolean;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Badge = LazyLoading extends LazyLoadingDisabled ? EagerBadge : LazyBadge
+
+export declare const Badge: (new (init: ModelInit<Badge>) => Badge) & {
+  copyOf(source: Badge, mutator: (draft: MutableModel<Badge>) => MutableModel<Badge> | void): Badge;
 }

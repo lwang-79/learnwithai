@@ -28,14 +28,15 @@ import {
 import { Icon } from '@chakra-ui/react';
 import { 
   MdClose, 
-  MdDarkMode, 
-  MdDownload, 
-  MdLightMode, 
   MdLogout, 
   MdMenu, 
+  MdOutlineAdminPanelSettings, 
+  MdOutlineDarkMode, 
+  MdOutlineDownload, 
   MdOutlineHelp, 
-  MdPerson,
-  MdUpload, 
+  MdOutlineLightMode, 
+  MdOutlinePerson, 
+  MdOutlineUpload, 
 } from 'react-icons/md';
 import NextLink from 'next/link';
 import { Auth, DataStore } from 'aws-amplify';
@@ -199,13 +200,21 @@ export default function Header() {
                 <MenuList>
                   <MenuItem onClick={() => {router.push('/account')}}>
                     <HStack justifyContent={'center'}>
-                      <Icon as={MdPerson} boxSize={6} color='gray.400' />
+                      <Icon as={MdOutlinePerson} boxSize={6} color='gray.400' />
                       <span>Account</span>
                     </HStack>
                   </MenuItem>
+                  {user.membership!.current >50 && 
+                    <MenuItem onClick={() => {router.push('/admin')}}>
+                      <HStack justifyContent={'center'}>
+                        <Icon as={MdOutlineAdminPanelSettings} boxSize={6} color='gray.400' />
+                        <span>Administrator</span>
+                      </HStack>
+                    </MenuItem>
+                  }
                   <MenuItem onClick={toggleColorMode}>
                     <HStack justifyContent={'center'}>
-                      {colorMode === 'light' ? <Icon as={MdDarkMode} boxSize={6} color='gray.400' /> : <Icon as={MdLightMode} boxSize={6} color='gray.400' />}
+                      {colorMode === 'light' ? <Icon as={MdOutlineDarkMode} boxSize={6} color='gray.400' /> : <Icon as={MdOutlineLightMode} boxSize={6} color='gray.400' />}
                       <span>Change color</span>
                     </HStack>
                   </MenuItem>
@@ -213,13 +222,13 @@ export default function Header() {
                   <>
                     <MenuItem onClick={downloadClicked}>
                       <HStack justifyContent={'center'}>
-                        <Icon as={MdDownload} boxSize={6} color='gray.400' />
+                        <Icon as={MdOutlineDownload} boxSize={6} color='gray.400' />
                         <span>Export data</span>
                       </HStack>
                     </MenuItem>
                     <MenuItem onClick={uploadClicked}>
                       <HStack justifyContent={'center'}>
-                        <Icon as={MdUpload} boxSize={6} color='gray.400' />
+                        <Icon as={MdOutlineUpload} boxSize={6} color='gray.400' />
                         <span>Import data</span>
                       </HStack>
                     </MenuItem>

@@ -62,7 +62,15 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
       page: page,
       limit: limit
     }).then(tests => {
-      setTests(tests);
+      if (tests.length > 0) {
+        setTests(tests);
+      } else {
+        if (page > 0) {
+          setCurrentPage(page - 1);
+          setIsLastPage(true);
+          refreshList(page - 1, limit);
+        }
+      }
     });
   },[currentPage, pageStep])
 

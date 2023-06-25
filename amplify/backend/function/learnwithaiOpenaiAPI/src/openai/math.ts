@@ -167,15 +167,17 @@ const generateMathOptions = async (
   solution: string
 ): Promise<APIResponse> => {
   const prompt = `
-Based on the following math question and solution, please generate answer options to form a multichoice question. Put the correct answer in the 4 options randamly. Indicate the option by capital alphabet followed by column. And put the correct answer's indicator in answer.
-Question: "${question}"
-Solution: "${solution}"
-Desired template:
-A: <>
-B: <>
-C: <>
-D: <>
-Answer: <>
+  Based on the given mathematical question and solution, please generate multiple-choice answer options. Randomly place the correct answer, which is the value or expression enclosed within the LaTeX notation "\\boxed{}", among the four options. Assign capital letters followed by a colon to each option. Don't use "\\boxed{}" notation or other indicator for the answer in the options. Finally, indicate the correct answer's letter in the "Answer" section.
+
+  Question: "${question}"
+  Solution: "${solution}"
+  
+  Desired template:
+  A: <>
+  B: <>
+  C: <>
+  D: <>
+  Answer: <>
 `;
 
   const messages: ChatCompletionRequestMessage[] = [

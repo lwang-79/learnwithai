@@ -1,6 +1,7 @@
 import { HStack, useColorMode, VStack } from "@chakra-ui/react"
 import Highcharts from "highcharts/highstock";
 import { useMemo } from "react";
+import BadgeCard from "./BadgeCard";
 import ColumnChart from "./ColumnChart"
 import GameCard from "./GameCard";
 import LeaderBoard from "./LeaderBoard";
@@ -36,9 +37,10 @@ function Dashboard() {
   
   return (
     <>
-      <HStack py={4} w='full' spacing={4} align='flex-start'>
+      <HStack w='full' spacing={4} align='flex-start'>
         <VStack w='full' maxW='xs' spacing={4} >
           <UserCard />
+          <BadgeCard />
           <GameCard />
         </VStack>
         <VStack w='full' maxW='2xl' spacing={4} >

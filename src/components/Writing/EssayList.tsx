@@ -59,7 +59,17 @@ function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: E
       sort: e => e.DateTime(SortDirection.DESCENDING),
       page: page,
       limit: limit
-    }).then(essays => setEssays(essays));
+    }).then(essays => {
+      if (essays.length > 0) {
+        setEssays(essays);
+      } else {
+        if (page > 0) {
+          setCurrentPage(page - 1);
+          setIsLastPage(true);
+          refreshList(page - 1, limit);
+        }
+      }
+    });
   },[currentPage, pageStep])
 
   useEffect(() => {
@@ -137,6 +147,7 @@ function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: E
                     rounded='xl'
                     p={2}
                     w='full' 
+                    maxW='5xl'
                     key={index}
                     cursor='pointer'
                     _hover={{bg: bgColor}}
