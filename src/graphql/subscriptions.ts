@@ -94,6 +94,7 @@ export const onCreateUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -194,6 +195,7 @@ export const onUpdateUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -294,6 +296,7 @@ export const onDeleteUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -675,6 +678,63 @@ export const onDeleteRankingItem = /* GraphQL */ `
       type
       names
       values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateBadge = /* GraphQL */ `
+  subscription OnCreateBadge($filter: ModelSubscriptionBadgeFilterInput) {
+    onCreateBadge(filter: $filter) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateBadge = /* GraphQL */ `
+  subscription OnUpdateBadge($filter: ModelSubscriptionBadgeFilterInput) {
+    onUpdateBadge(filter: $filter) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteBadge = /* GraphQL */ `
+  subscription OnDeleteBadge($filter: ModelSubscriptionBadgeFilterInput) {
+    onDeleteBadge(filter: $filter) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
       createdAt
       updatedAt
       _version

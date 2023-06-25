@@ -1,12 +1,12 @@
 import { Auth } from 'aws-amplify';
 import { useContext, useEffect } from 'react';
-import WithAuth from '@/components/Common/WithAuth';
 import useStorage from '@/hooks/useStorage';
-import MyHome from '@/components/Home/MyHome';
 import { getDataStoreUserOrCreateIfNotExist } from '@/types/user';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
 import { useRouter } from 'next/router';
+import Layout from '@/components/Common/Layout';
+import Dashboard from '@/components/Dashboard/Dashboard';
 
 
 export default function Home() {
@@ -47,9 +47,9 @@ export default function Home() {
       { !dataStoreUser ? (
         <SpinnerOverlay />
       ) : (
-        <WithAuth>
-          <MyHome/>
-        </WithAuth>
+        <Layout>
+          <Dashboard/>
+        </Layout>
       )}
     </>
   )

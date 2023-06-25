@@ -830,7 +830,8 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                         />
                       </Tooltip>
 
-                      {source === QuestionSource.ChatGPT &&
+                      {(source === QuestionSource.ChatGPT || source === QuestionSource.Hendrycks) &&
+                        dataStoreUser!.membership!.current > 2 &&
                         <Tooltip
                           label='Report bad question'
                         >

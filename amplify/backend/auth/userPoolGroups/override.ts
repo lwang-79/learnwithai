@@ -1,14 +1,7 @@
-import { 
-  AmplifyProjectInfo, 
-  AmplifyUserPoolGroupStackTemplate,
-  AmplifyRootStackTemplate 
-} from '@aws-amplify/cli-extensibility-helper';
+import { AmplifyProjectInfo, AmplifyUserPoolGroupStackTemplate } from '@aws-amplify/cli-extensibility-helper';
 
-export function override(
-  resources: AmplifyRootStackTemplate, 
-  amplifyProjectInfo: AmplifyProjectInfo
-) {
-  const authRole = resources.authRole;
+export function override(resources: AmplifyUserPoolGroupStackTemplate, amplifyProjectInfo: AmplifyProjectInfo) {
+  const authRole = resources.userPoolGroupRole['Admin'];
 
   const basePolicies = Array.isArray(authRole.policies)
     ? authRole.policies

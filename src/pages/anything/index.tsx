@@ -1,5 +1,6 @@
 import Footer from "@/components/Common/Footer";
 import Header from "@/components/Common/Header";
+import Layout from "@/components/Common/Layout";
 import SharedComponents from "@/components/Common/SharedComponents";
 import WithAuth from "@/components/Common/WithAuth";
 import { APIOperation } from "@/types/types";
@@ -81,13 +82,13 @@ ${anything}
   }
   
   return (
-    <WithAuth>
-      <Flex
-        minH='100vh'
-        direction='column'
-      >
-        <Header />
-        <VStack w='full' maxW='5xl' mx='auto' mt='24' pb={24} px={10} spacing={4}>
+    // <WithAuth href='/login'>
+    //   <Flex
+    //     minH='100vh'
+    //     direction='column'
+    //   >
+    //     <Header />
+        <Layout>
           <Textarea
             as={ResizeTextarea}
             value={anything}
@@ -134,10 +135,10 @@ ${anything}
             rounded='md'
           />
 
-        </VStack>
-        <Footer/>
-      </Flex>
-    </WithAuth>
+        </Layout>
+    //     <Footer/>
+    //   </Flex>
+    // </WithAuth>
   )
 }
 

@@ -110,6 +110,7 @@ export const createUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -210,6 +211,7 @@ export const updateUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -310,6 +312,7 @@ export const deleteUser = /* GraphQL */ `
         stemConcepts
       }
       owner
+      badges
       createdAt
       updatedAt
       _version
@@ -697,6 +700,72 @@ export const deleteRankingItem = /* GraphQL */ `
       type
       names
       values
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createBadge = /* GraphQL */ `
+  mutation CreateBadge(
+    $input: CreateBadgeInput!
+    $condition: ModelBadgeConditionInput
+  ) {
+    createBadge(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateBadge = /* GraphQL */ `
+  mutation UpdateBadge(
+    $input: UpdateBadgeInput!
+    $condition: ModelBadgeConditionInput
+  ) {
+    updateBadge(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteBadge = /* GraphQL */ `
+  mutation DeleteBadge(
+    $input: DeleteBadgeInput!
+    $condition: ModelBadgeConditionInput
+  ) {
+    deleteBadge(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      endDate
+      criteria
+      description
+      image
+      isVisible
       createdAt
       updatedAt
       _version

@@ -147,6 +147,7 @@ function EssayList({ selectCallback, title, defaultPageStep, refreshTrigger }: E
                     rounded='xl'
                     p={2}
                     w='full' 
+                    maxW='5xl'
                     key={index}
                     cursor='pointer'
                     _hover={{bg: bgColor}}

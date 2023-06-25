@@ -2,7 +2,6 @@ import {
   Box, 
   Button, 
   Center, 
-  Flex, 
   Modal, 
   ModalBody, 
   ModalCloseButton, 
@@ -14,13 +13,10 @@ import {
   Spinner, 
   Stack, 
   useBoolean, 
-  useColorModeValue, 
   useDisclosure 
 } from '@chakra-ui/react'
 import { API, DataStore, graphqlOperation } from 'aws-amplify'
 import { useContext, useEffect, useState } from 'react'
-import Header from '@/components/Common/Header'
-import WithAuth from '@/components/Common/WithAuth'
 import { GetUserQuery, LearnwithaiSubscribeMutation } from '@/types/API'
 import { learnwithaiSubscribe } from '@/graphql/mutations'
 import { GraphQLResult } from "@aws-amplify/api-graphql"
@@ -32,6 +28,7 @@ import Subscription from '@/components/Account/Subscription'
 import { getUser } from '@/graphql/queries'
 import Notification from '@/components/Account/Notification'
 import SharedComponents from '@/components/Common/SharedComponents'
+import Layout from '@/components/Common/Layout'
 
 export interface SubStatus {
   personal: PlanSub,
@@ -114,77 +111,73 @@ function Profile() {
   }
 
   return (
-    <WithAuth>
-      <Flex direction='column' bg={useColorModeValue('gray.50', 'gray.800')} minH='100vh'>
-        {dataStoreUser ? (
-          <>
-            <Header />
-            <Stack
-              justify={'center'}
-              mt={24}
-              mx='auto'
-              pb={4}
-              w={{base: 'xs', sm: 'sm', md: 'lg'}}
-              spacing={4}
+    <Layout>
+      {dataStoreUser ? (
+        <>
+          <Stack
+            justify={'center'}
+            mx='auto'
+            pb={4}
+            w={{base: 'xs', sm: 'sm', md: 'lg'}}
+            spacing={4}
+          >
+            <ProfileCard user={dataStoreUser} />
+
+            <Notification user={dataStoreUser} />
+                
+            <Box cursor='pointer' onClick={onOpenSubModal} minH={100}>
+              {subStatus ? (
+                <PlanSubList subStatus={subStatus} />
+              ) : (
+                <Stack
+                  rounded={'lg'}
+                  boxShadow={'lg'}
+                  w='full'
+                  p={4}
+                  pt={8}
+                >
+                  <Skeleton height='20px' />
+                  <Skeleton height='20px' />
+                </Stack>
+              )}
+            </Box>
+
+            <Button 
+              boxShadow='md'
+              onClick={onOpenSubModal}
             >
-              <ProfileCard user={dataStoreUser} />
+              Upgrade plan or unsubscribe
+            </Button>
 
-              <Notification user={dataStoreUser} />
-                  
-              <Box cursor='pointer' onClick={onOpenSubModal} minH={100}>
-                {subStatus ? (
-                  <PlanSubList subStatus={subStatus} />
-                ) : (
-                  <Stack
-                    rounded={'lg'}
-                    boxShadow={'lg'}
-                    w='full'
-                    p={4}
-                    pt={8}
-                  >
-                    <Skeleton height='20px' />
-                    <Skeleton height='20px' />
-                  </Stack>
-                )}
-              </Box>
-
-              <Button 
-                boxShadow='md'
-                onClick={onOpenSubModal}
-              >
-                Upgrade plan or unsubscribe
-              </Button>
-
-            </Stack>
-          </> ) : (
-          <Stack  h='70vh'>
-            <Spacer />
-            <Center>
-              <Spinner size='xl'/>
-            </Center>
-            <Spacer />
           </Stack>
-        )}
-        
-        <Modal
-          isOpen={isOpenSubModal} 
-          onClose={onCloseSubModal}
-          scrollBehavior='inside'
-          size='full'
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalCloseButton />
-            <ModalBody mt={-6}>
-              {dataStoreUser && subStatus ? (<Subscription subStatus={subStatus} user={dataStoreUser} onClose={refreshAndCloseModal} />) : null}
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={onCloseSubModal}>Close</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </Flex>      
-    </WithAuth>
+        </> ) : (
+        <Stack  h='70vh'>
+          <Spacer />
+          <Center>
+            <Spinner size='xl'/>
+          </Center>
+          <Spacer />
+        </Stack>
+      )}
+      
+      <Modal
+        isOpen={isOpenSubModal} 
+        onClose={onCloseSubModal}
+        scrollBehavior='inside'
+        size='full'
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody mt={-6}>
+            {dataStoreUser && subStatus ? (<Subscription subStatus={subStatus} user={dataStoreUser} onClose={refreshAndCloseModal} />) : null}
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onCloseSubModal}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Layout>
   )
 }
 
