@@ -46,15 +46,11 @@ function Stem() {
 
   useEffect(() => {
     if (!dataStoreUser) return;
-    console.log(dataStoreUser)
     if (!ignoreTriggerRef.current) return;
-
+    
     if (dataStoreUser.optionStates?.stemMode) setMode(dataStoreUser.optionStates.stemMode);
-
     if (dataStoreUser.optionStates?.stemConcepts) setSelectedConcepts(dataStoreUser.optionStates.stemConcepts as StemConcept[]);
-
     if (dataStoreUser.optionStates?.stemLevel) setSelectedLevel(dataStoreUser.optionStates.stemLevel);
-
     if (dataStoreUser.optionStates?.stemNumber) setNum(dataStoreUser.optionStates.stemNumber.toString());
 
     setTimeout(() => {

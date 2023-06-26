@@ -129,7 +129,7 @@ function Achievement() {
               <Wrap spacing={4}>
               {availableBadges.map((badge, index) => (
                 <>{(!dataStoreUser.badges || !dataStoreUser.badges.includes(badge.id)) &&
-                  <WrapItem key={`${badge.id}-${index}`}>
+                  <WrapItem key={`${badge.createdAt}-${index}`}>
                     <Tooltip label={badge.description}>
                       <VStack>
                         <Image 

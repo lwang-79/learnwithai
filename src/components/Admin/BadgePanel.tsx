@@ -190,7 +190,7 @@ function BadgePanel() {
   }
 
   return (
-    <>
+    <VStack w='full' spacing={4}>
       <Card w='full'>
         <VStack px={4} py={4}>
           <HStack w='full'>
@@ -273,7 +273,7 @@ function BadgePanel() {
           </Button>
         </VStack>
       </Card>
-      
+
       <VStack w='full'>
         {badges.map((badge, index) => (
           <Card 
@@ -314,7 +314,7 @@ function BadgePanel() {
           </Card>
         ))}
       </VStack>
-    </>
+    </VStack>
   )
 }
 

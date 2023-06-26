@@ -505,15 +505,17 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   const badButtonClickedHandler = () => {
     if (!currentQuestionSet) return;
-    questionSetsRef.current[currentIndexRef.current].isBad = !questionSetsRef.current[currentIndexRef.current].isBad;
+    const q = {...questionSetsRef.current[currentIndexRef.current]};
+    q.isBad = !q.isBad;
+    questionSetsRef.current[currentIndexRef.current] = q;
     setCurrentQuestionSet({
       ...currentQuestionSet,
-      isBad: questionSetsRef.current[currentIndexRef.current].isBad
+      isBad: q.isBad
     });
 
     // save bad question set
     const badQuestionSet = new BadQuestionSet({
-      ...questionSetsRef.current[currentIndexRef.current],
+      ...q,
       source: source
     });
     DataStore.save(badQuestionSet);

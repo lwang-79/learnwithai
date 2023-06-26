@@ -25,7 +25,7 @@ const WithAuth: React.FC<pageProps> = ({ children, href }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [href, isAuthenticated, router]);
 
-  if (isAuthenticated) { return children; }
+  return isAuthenticated && dataStoreUser && children
 }
 
 export default WithAuth;
