@@ -34,9 +34,6 @@ function LeaderBoard() {
   const { isDataStoreReady } = useContext(SharedComponents);
 
   useEffect(() => {
-    if (!isDataStoreReady) {
-      return;
-    }
 
     const yesterday = (new Date(new Date().setDate(new Date().getDate() - 1))).toLocaleString('sv-SE').slice(0,10);
     const thisMonth = (new Date()).toLocaleString('sv-SE').slice(0,7);

@@ -5,11 +5,15 @@ import {
   FormControl, 
   FormLabel, 
   HStack, 
+  IconButton, 
   Image as CImage, 
   Input, 
   Select, 
   Spacer, 
   Switch, 
+  Tag, 
+  TagCloseButton, 
+  TagLabel, 
   Text, 
   useBoolean, 
   useToast, 
@@ -17,6 +21,7 @@ import {
 } from "@chakra-ui/react"
 import { DataStore } from "aws-amplify";
 import { useEffect, useState } from "react";
+import { MdAddCircleOutline } from "react-icons/md";
 
 function BadgePanel() {
   const initFormState = {
@@ -31,6 +36,7 @@ function BadgePanel() {
   };
 
   const [ formState, setFormState ] = useState(initFormState);
+  const [ criteria, setCriteria ] = useState<string[]>([]);
   const [ badges, setBadges ] = useState<Badge[]>([]);
   const [ shouldRefresh, setShouldRefresh ] = useBoolean(false);
 
@@ -57,6 +63,40 @@ function BadgePanel() {
       ...formState, 
       [key]: value
     });
+  }
+
+  const addCriteriaButtonClickedHandler = () => {
+    if (formState.criteriaValue === 0) {
+      toast({
+        description: `Criteria value must be greater than 0.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+      return;
+    }
+
+    for (const c of criteria){
+      if (c.includes(formState.criteriaName)) {
+        toast({
+          description: `Criteria is duplicated`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
+        return;
+      }
+    }
+
+    setCriteria([...criteria, `${formState.criteriaName}::${formState.criteriaValue}`]);
+    console.log([...criteria, `${formState.criteriaName}::${formState.criteriaValue}`])
+  }
+
+  const removeCriteriaButtonClickedHandler = (index: number) => {
+    const updatedCriteria = [...criteria];
+    setCriteria(updatedCriteria.filter((_, i) => i !== index));
   }
 
   const uploadImageClickedHandler = () => {
@@ -138,9 +178,9 @@ function BadgePanel() {
       return;
     }
 
-    if (formState.criteriaValue === 0) {
+    if (criteria.length === 0) {
       toast({
-        description: `Criteria value must be greater than 0.`,
+        description: `Criteria is required.`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -164,7 +204,7 @@ function BadgePanel() {
       name: formState.name,
       startDate: formState.startDate,
       endDate: formState.endDate,
-      criteria: `${formState.criteriaName}::${formState.criteriaValue}`,
+      criteria: criteria.join('||'),
       description: formState.description,
       image: formState.image,
       isVisible: formState.isVisible
@@ -196,20 +236,23 @@ function BadgePanel() {
           <HStack w='full'>
             <VStack w='full'>
               <HStack w='full'>
-                <FormControl>
-                  <Input 
-                    type="date" 
-                    value={formState.startDate}
-                    onChange={setInput('startDate')}
+                <FormControl maxW='175px'>
+                  <Input
+                    placeholder='Name'
+                    value={formState.name}
+                    onChange={setInput('name')}
                   />
                 </FormControl>
                 <FormControl>
-                  <Input 
-                    type="date" 
-                    value={formState.endDate}
-                    onChange={setInput('endDate')}
+                  <Input
+                    placeholder='Description'
+                    value={formState.description}
+                    onChange={setInput('description')}
                   />
                 </FormControl>
+              </HStack>
+              <HStack w='full'>
+                
                 <FormControl minW='170px'>
                   <Select 
                     value={formState.criteriaName} 
@@ -229,27 +272,33 @@ function BadgePanel() {
                     onChange={setInput('criteriaValue')} 
                   />
                 </FormControl>
+
+                <IconButton
+                  size='sm'
+                  variant='ghost'
+                  aria-label='add criteria'
+                  icon={<MdAddCircleOutline size='24px'/>}
+                  onClick={addCriteriaButtonClickedHandler}
+                />
+                <FormControl>
+                  <Input 
+                    type="date" 
+                    value={formState.startDate}
+                    onChange={setInput('startDate')}
+                  />
+                </FormControl>
+                <FormControl>
+                  <Input 
+                    type="date" 
+                    value={formState.endDate}
+                    onChange={setInput('endDate')}
+                  />
+                </FormControl>
                 <FormControl display='flex' alignItems='center' ps={4}>
                   <FormLabel mb={0}>Visible</FormLabel>  
                   <Switch onChange={setInput('isVisible')} colorScheme='teal' isChecked={formState.isVisible} />
                 </FormControl>
 
-              </HStack>
-              <HStack w='full'>
-                <FormControl maxW='175px'>
-                  <Input
-                    placeholder='Name'
-                    value={formState.name}
-                    onChange={setInput('name')}
-                  />
-                </FormControl>
-                <FormControl>
-                  <Input
-                    placeholder='Description'
-                    value={formState.description}
-                    onChange={setInput('description')}
-                  />
-                </FormControl>
               </HStack>
               
             </VStack>
@@ -264,13 +313,28 @@ function BadgePanel() {
               sx={{ cursor: 'pointer' }}
             />
           </HStack>
-          <Button 
-            w='full'
-            variant='ghost'
-            onClick={addBadgeClickedHandler}
-          >
-            Add Badge
-          </Button>
+          <HStack w='full'>
+            {criteria.map((c, index) => (
+              <Tag
+                key={`${c}_${index}`}
+                rounded='full'
+              >
+                <TagLabel>{c}</TagLabel>
+                <TagCloseButton onClick={() => removeCriteriaButtonClickedHandler(index)}/>
+              </Tag>
+            ))}
+
+            <Spacer />
+
+            <Button 
+              w='50%'
+              variant='ghost'
+              onClick={addBadgeClickedHandler}
+            >
+              Add Badge
+            </Button>
+          </HStack>
+          
         </VStack>
       </Card>
 

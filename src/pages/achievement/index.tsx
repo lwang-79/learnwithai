@@ -129,7 +129,7 @@ function Achievement() {
               <Wrap spacing={4}>
               {availableBadges.map((badge, index) => (
                 <>{(!dataStoreUser.badges || !dataStoreUser.badges.includes(badge.id)) &&
-                  <WrapItem key={`${badge.createdAt}-${index}`}>
+                  <WrapItem key={`${badge.id}-${index}`}>
                     <Tooltip label={badge.description}>
                       <VStack>
                         <Image 
@@ -155,8 +155,8 @@ function Achievement() {
             </CardHeader>
             <CardBody>
               <Wrap spacing={4}>
-                {myBadges.map(badge => (
-                  <WrapItem key={badge.id}>
+                {myBadges.map((badge, index) => (
+                  <WrapItem key={`${badge.id}_${index}`}>
                     <VStack>
                       <Image 
                         src={badge.image} 

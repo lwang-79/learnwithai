@@ -61,7 +61,7 @@ const theme = extendTheme({
     },
     Textarea: {
       defaultProps: {
-        focusBorderColor: 'teal.500',
+        focusBorderColor: 'teal.300',
       },
     },
   },

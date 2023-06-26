@@ -88,7 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const  { event, data } = hubData.payload;
     if (event === "ready") {
       console.log('DataStore is ready');
-      setIsDataStoreReady(true);
+      setIsDataStoreReady(!isDataStoreReady);
       listener();
     }
   });

@@ -12,7 +12,7 @@ function BadgeCard() {
 
 
   useEffect(() => {
-    if (!dataStoreUser || !dataStoreUser.badges || !isDataStoreReady) {
+    if (!dataStoreUser || !dataStoreUser.badges) {
       return;
     }
 
@@ -45,7 +45,7 @@ function BadgeCard() {
           {myBadges.length === 0 ? 'No badge yet >> Claim' : 
             <Wrap spacing={2}>
               {myBadges.map((badge, index) => (
-                <WrapItem key={`${badge.id}-${index}`}>
+                <WrapItem key={`${badge.id}+${index}`}>
                   <Image 
                     src={badge.image} 
                     alt={badge.name} 
