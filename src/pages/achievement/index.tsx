@@ -127,25 +127,27 @@ function Achievement() {
             </CardHeader>
             <CardBody>
               <Wrap spacing={4}>
-              {availableBadges.map((badge, index) => (
-                <>{(!dataStoreUser.badges || !dataStoreUser.badges.includes(badge.id)) &&
-                  <WrapItem key={`${badge.id}-${index}`}>
-                    <Tooltip label={badge.description}>
-                      <VStack>
-                        <Image 
-                          src={claimable[index] ? badge.image : `https://dummyimage.com/80&text=badge`} 
-                          alt={badge.name} 
-                          boxSize='100px'
-                          rounded='xl'
-                          onClick={claimable[index] ? ()=>badgeClaimClickedHandler(badge, index) : undefined}
-                          sx={claimable[index] ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
-                        />
-                        <Text as='b' fontSize='xs'>{badge.name}</Text>
-                      </VStack>
-                    </Tooltip>
-                  </WrapItem>
-                }</>
-              ))}
+              {availableBadges.map((badge, index) => {
+                if (!dataStoreUser.badges || !dataStoreUser.badges.includes(badge.id)) {
+                  return (
+                    <WrapItem key={`${badge.id}-${index}`}>
+                      <Tooltip label={badge.description}>
+                        <VStack>
+                          <Image 
+                            src={claimable[index] ? badge.image : `https://dummyimage.com/80&text=badge`} 
+                            alt={badge.name} 
+                            boxSize='100px'
+                            rounded='xl'
+                            onClick={claimable[index] ? ()=>badgeClaimClickedHandler(badge, index) : undefined}
+                            sx={claimable[index] ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
+                          />
+                          <Text as='b' fontSize='xs'>{badge.name}</Text>
+                        </VStack>
+                      </Tooltip>
+                    </WrapItem>
+                  )
+                }
+              })}
               </Wrap>
             </CardBody>
           </Card>
@@ -155,8 +157,8 @@ function Achievement() {
             </CardHeader>
             <CardBody>
               <Wrap spacing={4}>
-                {myBadges.map(badge => (
-                  <WrapItem key={badge.id}>
+                {myBadges.map((badge, index) => (
+                  <WrapItem key={`${badge.id}_${index}`}>
                     <VStack>
                       <Image 
                         src={badge.image} 

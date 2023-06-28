@@ -1,13 +1,18 @@
 import { Badge, User } from "@/models";
 
 export const isClaimable = (badge: Badge, user: User) => {
-  const criteriaName = badge.criteria.split('::')[0];
-  const criteriaValue = badge.criteria.split('::')[1];
+  const criteria = badge.criteria.split('||');
 
-  const data = user.daily?.filter(d => d.date >= badge.startDate && d.date <= badge.endDate);
-  if (!data) return false;
-
-  const value = data.reduce((accumulator, object) => accumulator + (object as any)[criteriaName], 0);
+  for (const c of criteria) {
+    const criteriaName = c.split('::')[0];
+    const criteriaValue = c.split('::')[1];
   
-  return value >= Number(criteriaValue);
+    const data = user.daily?.filter(d => d.date >= badge.startDate && d.date <= badge.endDate);
+    if (!data) return false;
+  
+    const value = data.reduce((accumulator, object) => accumulator + (object as any)[criteriaName], 0);
+    if (value < Number(criteriaValue)) return false;
+  }
+  
+  return true;
 }

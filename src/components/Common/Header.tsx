@@ -71,7 +71,7 @@ export default function Header() {
   const { setItem } = useStorage();
   const width = 'full';
   const { dataStoreUser, setDataStoreUser, setIsProcessing } = useContext(SharedComponents);
-  const user = dataStoreUser!;
+  const user = dataStoreUser;
   const toast = useToast();
 
   const { 
@@ -92,7 +92,7 @@ export default function Header() {
   }
 
   const downloadClicked = () => {
-    if (user.membership!.current < 2) {
+    if (user && user.membership!.current < 2) {
       toast({
         description: `The feature is not available for your current plan, please upgrade your plan in profile.`,
         status: 'warning',
@@ -107,6 +107,8 @@ export default function Header() {
   }
 
   const uploadClicked = async () => {
+    if (!user) return;
+
     if (user.membership!.current < 2) {
       toast({
         description: `The feature is not available for your current plan, please upgrade your plan in profile.`,
@@ -123,10 +125,12 @@ export default function Header() {
     setIsProcessing(false);
   }
 
+  const bg = useColorModeValue('gray.100', 'gray.900');
+
   return (
     <>
       <Flex 
-        bg={useColorModeValue('gray.100', 'gray.900')} 
+        bg={bg} 
         px={4} 
         w={width}
         position='fixed'
@@ -163,7 +167,7 @@ export default function Header() {
               </HStack>
             </HStack>
             <Flex alignItems={'center'}>
-              {user.membership!.current < 3 ? (
+              {user && user.membership!.current < 3 ? (
                 <Button 
                   size='sm' 
                   mr={{base: 1, md: 2}}
@@ -190,8 +194,8 @@ export default function Header() {
                   minW={0}>
                   <Avatar
                     size={'md'}
-                    name={user.username}
-                    src={user.picture}
+                    name={user?.username}
+                    src={user?.picture}
                     showBorder
                     borderWidth='2px'
                     borderColor='gray.200'
@@ -204,7 +208,7 @@ export default function Header() {
                       <span>Account</span>
                     </HStack>
                   </MenuItem>
-                  {user.membership!.current >50 && 
+                  {user && user.membership!.current >50 && 
                     <MenuItem onClick={() => {router.push('/admin')}}>
                       <HStack justifyContent={'center'}>
                         <Icon as={MdOutlineAdminPanelSettings} boxSize={6} color='gray.400' />
@@ -218,7 +222,7 @@ export default function Header() {
                       <span>Change color</span>
                     </HStack>
                   </MenuItem>
-                  {user.membership!.current > 9 &&
+                  {user && user.membership!.current > 9 &&
                   <>
                     <MenuItem onClick={downloadClicked}>
                       <HStack justifyContent={'center'}>
