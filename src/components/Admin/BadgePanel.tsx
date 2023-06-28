@@ -56,7 +56,7 @@ function BadgePanel() {
     }
 
     if (key === 'criteriaValue') {
-      value = parseInt(value);
+      value = Number(value);
     }
 
     setFormState({ 
@@ -91,7 +91,6 @@ function BadgePanel() {
     }
 
     setCriteria([...criteria, `${formState.criteriaName}::${formState.criteriaValue}`]);
-    console.log([...criteria, `${formState.criteriaName}::${formState.criteriaValue}`])
   }
 
   const removeCriteriaButtonClickedHandler = (index: number) => {
@@ -268,7 +267,7 @@ function BadgePanel() {
                     type='number' 
                     placeholder='Criteria Value'
                     min={0} step={1} 
-                    value={formState.criteriaValue} 
+                    value={formState.criteriaValue.toString()} 
                     onChange={setInput('criteriaValue')} 
                   />
                 </FormControl>
@@ -314,6 +313,7 @@ function BadgePanel() {
             />
           </HStack>
           <HStack w='full'>
+            {criteria.length === 0 && <Text ms={4}>{`Click button to add criteria   ☝️`}</Text>}
             {criteria.map((c, index) => (
               <Tag
                 key={`${c}_${index}`}
