@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -59,8 +59,8 @@ var generateWritingPrompt = function (type, topic, level) { return __awaiter(voi
                 }
                 else {
                     prompt = "\n    Give a famous word or story or some facts less than 100 words about ".concat(topic, ", \n    and then give a ").concat(level, " level ").concat(type, " essay prompt based on the material. \n    The student should be able to write an essay to this prompt with 400 words.\n    ");
+                    prompt += "\n    Desired format:\n    Text: <>\n    Prompt: <>\n    ";
                 }
-                prompt += "\n  Desired format:\n  Text: <>\n  Prompt: <>\n  ";
                 message = [
                     { role: 'system', content: 'You are an English writing teacher.' },
                     { role: 'user', content: prompt }

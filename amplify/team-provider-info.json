@@ -37,7 +37,7 @@
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-58705766693655444b7a-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-504e7963506649427a4c-build.zip",
           "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},
@@ -70,7 +70,7 @@
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-41704d4741472b544549-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-58705766693655444b7a-build.zip",
           "openaiApiKey": "c2stWGJNYU1NUGRPYkk2cFlDZWJFWTdUM0JsYmtGSlc1clBMNUd4U2NHWGpMSGZtZ204"
         },
         "learnwithaiSubscribe": {

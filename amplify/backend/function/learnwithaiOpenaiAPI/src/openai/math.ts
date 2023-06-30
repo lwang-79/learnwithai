@@ -56,7 +56,9 @@ export const getDatasetQuestions = async (
     ds === QuestionSource.GSM8K ?
     gsm8k as GSM8KQuestion[] :
     ds === QuestionSource.Competition ?
-    (competition as CompetitionQuestion[]).filter(question => question.level === level):
+    (competition as CompetitionQuestion[]).filter(question => 
+      question.level === level && !question.problem.includes('[asy]')
+    ):
     ds === QuestionSource.Hendrycks ?
     (hendrycks as HendrycksQuestion[]).filter(
       question => 

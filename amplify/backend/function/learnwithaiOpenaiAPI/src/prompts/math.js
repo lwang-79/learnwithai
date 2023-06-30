@@ -6,6 +6,7 @@ var arithmetic_1 = require("./arithmetic");
 var decimals_1 = require("./decimals");
 var fractions_1 = require("./fractions");
 var percentage_1 = require("./percentage");
+var probability_1 = require("./probability");
 var ratio_1 = require("./ratio");
 var time_journey_1 = require("./time_journey");
 function generateChatMessages(level, concept) {
@@ -22,6 +23,8 @@ function generateChatMessages(level, concept) {
             return (0, fractions_1.generateFractionsPrompt)(level);
         case types_1.MathConcept.TimeJourney:
             return (0, time_journey_1.generateTimeJourneyPrompt)(level);
+        case types_1.MathConcept.Probability:
+            return (0, probability_1.generateProbabilityPrompt)(level);
         default:
             return [{ role: 'system', content: 'You are a math teacher.' },];
     }
@@ -53,7 +56,7 @@ var mathTemplate = function (level, concept, condition, question, answer, workou
         },
         { role: 'assistant', content: "Question: ".concat(question, "\n\nWorkout: ").concat(workout, "\n\nOptions:\n").concat(options, "\n\nAnswer: C\n")
         },
-        { role: 'user', content: "Follow the above process to generate another ".concat(concept, " multi-choice math question with the same condition.") },
+        { role: 'user', content: "Follow the above process to generate another ".concat(level, " ").concat(concept, " multi-choice math question with the same condition.") },
     ];
 };
 exports.mathTemplate = mathTemplate;

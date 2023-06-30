@@ -51,7 +51,7 @@ var MathConcept;
     MathConcept["Ratio"] = "ratio";
     MathConcept["Fractions"] = "fractions";
     MathConcept["TimeJourney"] = "time or journey";
-    // Probability = 'probability',
+    MathConcept["Probability"] = "probability";
     // Statistics = 'statistics',
     // Algebra = 'algebra',
     // Measurement = 'measurement',

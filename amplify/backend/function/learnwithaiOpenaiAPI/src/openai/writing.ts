@@ -27,14 +27,15 @@ export const generateWritingPrompt = async (
     Give a famous word or story or some facts less than 100 words about ${topic}, 
     and then give a ${level} level ${type} essay prompt based on the material. 
     The student should be able to write an essay to this prompt with 400 words.
-    `
+    `;
+
+    prompt += `
+    Desired format:
+    Text: <>
+    Prompt: <>
+    `;  
   }
 
-  prompt += `
-  Desired format:
-  Text: <>
-  Prompt: <>
-  `;
 
   const message: ChatCompletionRequestMessage[] = [
     { role: 'system', content: 'You are an English writing teacher.' },

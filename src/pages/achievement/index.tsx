@@ -1,7 +1,7 @@
 import Layout from "@/components/Common/Layout"
 import SharedComponents from "@/components/Common/SharedComponents";
 import { Badge, User } from "@/models";
-import { isClaimable } from "@/types/badge";
+import { getBadgeProgress } from "@/types/badge";
 import { 
   Card, 
   CardBody, 
@@ -16,6 +16,7 @@ import {
   ModalFooter, 
   ModalHeader, 
   ModalOverlay, 
+  Progress, 
   Text, 
   Tooltip, 
   useDisclosure, 
@@ -30,9 +31,10 @@ import { useContext, useEffect, useState } from "react"
 function Achievement() {
   const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
   const [ availableBadges, setAvailableBadges ] = useState<Badge[]>([]);
-  const [ claimable, setClaimable ] = useState<boolean[]>([]);
+  const [ badgeProgress, setBadgeProgress ] = useState<number[]>([]);
   const [ myBadges, setMyBadges ] = useState<Badge[]>([]);
   const [ selectedBadge, setSelectedBadge ] = useState<Badge>();
+  const [ isUpdating, setIsUpdating ] = useState<boolean>(false);
 
   const { 
     isOpen: isOpenBadge, 
@@ -52,11 +54,11 @@ function Achievement() {
     })
     .then(badges => {
       setAvailableBadges(badges);
-      const claimable = [];
+      const progress = [];
       for (const badge of badges) {
-        claimable.push(isClaimable(badge, dataStoreUser));
+        progress.push(getBadgeProgress(badge, dataStoreUser));
       }
-      setClaimable(claimable);
+      setBadgeProgress(progress);
     });
   },[dataStoreUser]);
 
@@ -83,21 +85,21 @@ function Achievement() {
   const badgeClaimClickedHandler = async (badge: Badge, index: number) => {
     if (!dataStoreUser) return;
 
+    setIsUpdating(true);
+
     let ownedBadges = [badge.id];
 
     if (dataStoreUser.badges) {
       ownedBadges = [...dataStoreUser.badges!, badge.id];
     }
 
-    const updatedUser = await DataStore.save(User.copyOf(dataStoreUser, updated => {
+    const currentUser = await DataStore.query(User, dataStoreUser.id);
+    if (!currentUser) return;
+
+    const updatedUser = await DataStore.save(User.copyOf(currentUser, updated => {
       updated.badges = ownedBadges
     }));
     setDataStoreUser(updatedUser);
-
-    const c = isClaimable(badge, dataStoreUser);
-    const currentC = [...claimable];
-    currentC[index] = c;
-    setClaimable(currentC);
 
     setMyBadges([badge, ...myBadges]);
 
@@ -108,6 +110,8 @@ function Achievement() {
       isClosable: true,
       position: 'top'
     });
+
+    setIsUpdating(false);
   }
 
   const badgeClickedHandler = (badge: Badge) => {
@@ -131,19 +135,27 @@ function Achievement() {
                 if (!dataStoreUser.badges || !dataStoreUser.badges.includes(badge.id)) {
                   return (
                     <WrapItem key={`${badge.id}-${index}`}>
-                      <Tooltip label={badge.description}>
-                        <VStack>
-                          <Image 
-                            src={claimable[index] ? badge.image : `https://dummyimage.com/80&text=badge`} 
-                            alt={badge.name} 
-                            boxSize='100px'
-                            rounded='xl'
-                            onClick={claimable[index] ? ()=>badgeClaimClickedHandler(badge, index) : undefined}
-                            sx={claimable[index] ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
-                          />
-                          <Text as='b' fontSize='xs'>{badge.name}</Text>
-                        </VStack>
-                      </Tooltip>
+                      <VStack>
+                        <Tooltip hasArrow label={badge.description}>
+                            <Image 
+                              src={badgeProgress[index] >= 100 ? badge.image : `https://dummyimage.com/80&text=badge`} 
+                              alt={badge.name} 
+                              boxSize='100px'
+                              rounded='xl'
+                              onClick={badgeProgress[index] < 100 || isUpdating ? undefined : ()=>badgeClaimClickedHandler(badge, index)}
+                              sx={badgeProgress[index] < 100 || isUpdating ? { cursor: 'not-allowed' } : { cursor: 'pointer' }}
+                            />
+                        </Tooltip>
+                        <Tooltip
+                          hasArrow
+                          label={`Progress: ${badgeProgress[index] > 100 ? 100 : badgeProgress[index].toFixed(0)}%`}
+                        >
+                          <VStack w='full'>
+                            <Text as='b' fontSize='xs'>{badge.name}</Text>
+                            <Progress w='full' colorScheme='teal' size='xs' value={badgeProgress[index]} />
+                          </VStack>
+                        </Tooltip>
+                      </VStack>
                     </WrapItem>
                   )
                 }
