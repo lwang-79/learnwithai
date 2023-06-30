@@ -4,6 +4,7 @@ import { generateArithmeticPrompt } from "./arithmetic";
 import { generateDecimalsPrompt } from "./decimals";
 import { generateFractionsPrompt } from "./fractions";
 import { generatePercentagePrompt } from "./percentage";
+import { generateProbabilityPrompt } from "./probability";
 import { generateRatioPrompt } from "./ratio";
 import { generateTimeJourneyPrompt } from "./time_journey";
 
@@ -25,6 +26,8 @@ export function generateChatMessages(
       return generateFractionsPrompt(level);
     case MathConcept.TimeJourney:
       return generateTimeJourneyPrompt(level);
+    case MathConcept.Probability:
+      return generateProbabilityPrompt(level);
     default:
       return [{role: 'system', content: 'You are a math teacher.'},]
   }
@@ -102,6 +105,6 @@ ${options}
 Answer: C
 `
     },
-    { role: 'user', content: `Follow the above process to generate another ${concept} multi-choice math question with the same condition.` },
+    { role: 'user', content: `Follow the above process to generate another ${level} ${concept} multi-choice math question with the same condition.` },
   ]
 }

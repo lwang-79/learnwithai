@@ -496,10 +496,13 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
 
   const markQuestionButtonClickedHandler = () => {
     if (!currentQuestionSet) return;
-    questionSetsRef.current[currentIndexRef.current].isMarked = !questionSetsRef.current[currentIndexRef.current].isMarked;
+    const q = {...questionSetsRef.current[currentIndexRef.current]};
+    q.isMarked = !q.isMarked;
+    questionSetsRef.current[currentIndexRef.current] = q;
+    setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
     setCurrentQuestionSet({
       ...currentQuestionSet,
-      isMarked: questionSetsRef.current[currentIndexRef.current].isMarked
+      isMarked: q.isMarked
     });
   }
 
@@ -727,7 +730,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
-              {isReview &&
+              {(isReview || isSubmitted) &&
                 <Tooltip label='Show result'>
                   <IconButton
                     rounded='full'
@@ -827,7 +830,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           onClick={markQuestionButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 
-                            isReview
+                            isReview || isSubmitted
                           }
                         />
                       </Tooltip>
@@ -922,8 +925,8 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               </Center>
 
               <VStack 
-                minW='105px' 
-                maxW='105px' 
+                minW='110px' 
+                maxW='110px' 
                 align='flex-end'
                 minH='full'
                 maxH='50vh'
@@ -943,7 +946,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 />
                 <Wrap 
                   align='flex-end' 
-                  mt={8} spacing={0} flex={1}  
+                  mt={8} spacing='2px' flex={1}  
                   overflowY='scroll'
                   scrollBehavior='smooth'
                   ref={wrapRef}
