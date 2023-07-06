@@ -1,6 +1,12 @@
 import { NotificationType, User } from "@/models";
 import { isValidEmail } from "@/types/utils";
 import { 
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box, 
   Button, 
   Checkbox, 
@@ -14,13 +20,14 @@ import {
   Text, 
   Tooltip, 
   useColorModeValue, 
+  useDisclosure, 
   useToast, 
   VStack, 
   Wrap,
   WrapItem
 } from "@chakra-ui/react";
 import { DataStore } from "aws-amplify";
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { MdHelpOutline } from "react-icons/md";
 import SharedComponents from "../Common/SharedComponents";
 
@@ -35,10 +42,18 @@ function Notification({ user }: NotificationProps) {
     user.notification.types as (NotificationType | null)[] : 
     [NotificationType.MONTHLY]
   );
+  const selectedIndexRef = useRef(0);
 
   const { setDataStoreUser } = useContext(SharedComponents);
 
   const toast = useToast();
+
+  const { 
+    isOpen: isOpenRemoveAlert, 
+    onOpen: onOpenRemoveAlert, 
+    onClose: onCloseRemoveAlert 
+  } = useDisclosure();
+  const cancelRef = useRef(null);
 
   const setSelectedTypes = async (type: NotificationType) => {
     let updatedTypes = [...types];
@@ -110,19 +125,25 @@ function Notification({ user }: NotificationProps) {
     setDataStoreUser(updatedUser);
   }
 
-  const removeEmail = (index: number) => {
+  const removeEmail = async (index: number) => {
     if (!user.notification) return;
 
     let updatedEmails = [...user.notification.emails];
 
     updatedEmails.splice(index, 1);
 
-    DataStore.save(User.copyOf(user, updated=>{
+    const currentUser = await DataStore.query(User, user.id);
+    if (!currentUser) return;
+
+    const updatedUser = await DataStore.save(User.copyOf(currentUser, updated=>{
       updated.notification = {
         ...user.notification!,
         emails: updatedEmails,
       }
     }));
+    
+    setDataStoreUser(updatedUser);
+    onCloseRemoveAlert();
   }
 
   return (
@@ -155,7 +176,10 @@ function Notification({ user }: NotificationProps) {
                     <WrapItem key={`${email}-${index}`}>
                       <Tag rounded='full' size='sm'>
                         <TagLabel>{email}</TagLabel>
-                        <TagCloseButton onClick={()=>removeEmail(index)} />
+                        <TagCloseButton onClick={()=>{
+                          selectedIndexRef.current = index;
+                          onOpenRemoveAlert();
+                        }} />
                       </Tag>
                     </WrapItem>
                 )})}
@@ -210,6 +234,44 @@ function Notification({ user }: NotificationProps) {
           </Text>
         )}
       </VStack>
+
+      <AlertDialog
+        isOpen={isOpenRemoveAlert}
+        leastDestructiveRef={cancelRef}
+        onClose={onCloseRemoveAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Delete question?
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can not undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button 
+                ref={cancelRef} 
+                onClick={onCloseRemoveAlert}
+                rounded={'full'}
+                px={6}
+              >
+                Cancel
+              </Button>
+              <Button 
+                colorScheme='red' 
+                rounded={'full'}
+                px={6}
+                onClick={()=>removeEmail(selectedIndexRef.current)} 
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   )
 }

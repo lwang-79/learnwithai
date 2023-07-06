@@ -131,6 +131,12 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
     onClose: onCloseDeleteAlert 
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenExitAlert, 
+    onOpen: onOpenExitAlert, 
+    onClose: onCloseExitAlert 
+  } = useDisclosure();
+
   useEffect(() => {
     if (isReview && initialTest) {
       questionSetsRef.current = [...initialTest.questionSets] as LocalQuestionSet[];
@@ -159,22 +165,14 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
       return;
     }
 
-    // if (isCompetition) {
-    //   addCompetitionQuestionSets(1, level);
-    //   return;
-    // }
-
-
-    if (source === QuestionSource.ChatGPT) {
-      addChatGPTQuestionSets(cacheNumber);
+    if (
+      source === QuestionSource.ChatGPT ||
+      source === QuestionSource.Hendrycks    
+    ) {
+      addGeneratedQuestionSets(cacheNumber);
       return;
     }
 
-    if (source === QuestionSource.Hendrycks) {
-      addHendrycksQuestionSets(cacheNumber);
-      return;
-    }
-    
     getAndSetDatasetQuestions(maxNum);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
@@ -248,17 +246,20 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
     setCurrentQuestionSet(questionSets[0]);
   }
 
-  const addChatGPTQuestionSets = async (num: number) => {
+  const addGeneratedQuestionSets = async (num: number) => {
     addingQuestionCountRef.current += num;
 
+    let questionSet: LocalQuestionSet | undefined;
+
     for (let i = 0; i < num; i++) {
-      let questionSet: LocalQuestionSet | undefined;
       const c = concepts[Math.floor(Math.random() * concepts.length)] as MathConcept;
       let tryCount = 0;
       do {
         try {
           tryCount++;
-          questionSet = await generateQuestionSet(apiName, c, category, type, level);
+          questionSet = source === QuestionSource.ChatGPT ? 
+            await generateQuestionSet(apiName, c, category, type, level) :
+            (await getQuestionsFromDataset(apiName, source, 1, level, c))[0]
         } catch (error) {
           console.error(`${tryCount} try failed: ${error}`);
         }
@@ -280,44 +281,37 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
             position: 'top'
           });
           return;
-        }        
-        continue;
-      }
-
-      questionSetsRef.current = [...questionSetsRef.current, questionSet];
-      setFetchingStatus.toggle();
-    }
-  }
-
-  const addHendrycksQuestionSets = async (num: number) => {
-    addingQuestionCountRef.current += num;
-
-    for (let i = 0; i < num; i++) {
-      const c = concepts[Math.floor(Math.random() * concepts.length)] as HendrycksConcept;
-      const questionSet = (await getQuestionsFromDataset(apiName, source, 1, level, c))[0];
-
-      addingQuestionCountRef.current -= 1;
-
-      if (!questionSet) {
-        if (
-          addingQuestionCountRef.current === 0 &&
-          questionSetsRef.current.length === 0
-        ){
-          onClose();
-          toast({
-            description: `Failed to generate questions, please try again later.`,
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-            position: 'top'
-          });
-          return;
         }
+        
         continue;
       }
+
       questionSetsRef.current = [...questionSetsRef.current, questionSet];
       setFetchingStatus.toggle();
     }
+
+    if (
+      !questionSet && 
+      currentIndexRef.current > 0 &&
+      questionSets.length === questionSetsRef.current.length &&
+      addingQuestionCountRef.current === 0
+    ) {
+      currentIndexRef.current -= 1;
+      lastIndexRef.current -= 1;
+      setCurrentIndex(currentIndexRef.current);
+      setQuestionSets(questionSetsRef.current.slice(0, lastIndexRef.current + 1));
+      setCurrentQuestionSet(questionSetsRef.current[currentIndexRef.current]);
+      setValue(questionSetsRef.current[currentIndexRef.current].selected);
+
+      toast({
+        description: `Failed to generate question, please try again later.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+    }
+
   }
 
   const setSelectedValue = (value: string) => {
@@ -338,12 +332,9 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
 
     if (currentIndexRef.current > lastIndexRef.current && !isSubmitted) {
       lastIndexRef.current += 1;
-      if (source === QuestionSource.Hendrycks) {
-        addHendrycksQuestionSets(1);
-      } else if (isSavedQuestions) {
 
-      } else if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
-        addChatGPTQuestionSets(1);
+      if(questionSetsRef.current.length + addingQuestionCountRef.current < maxNum) {
+        addGeneratedQuestionSets(1);
       }
     }
 
@@ -695,7 +686,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
         variant='ghost'
         aria-label='Close'
         icon={<Icon as={MdClose} boxSize={6} />}
-        onClick={closeButtonClickedHandler}
+        onClick={isTest && !isSubmitted ? onOpenExitAlert : closeButtonClickedHandler}
         zIndex={100}
         position='fixed'
         top={2} right={2}
@@ -1062,7 +1053,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
             <AlertDialogOverlay>
               <AlertDialogContent>
                 <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                  Delete question
+                  Delete question?
                 </AlertDialogHeader>
 
                 <AlertDialogBody>
@@ -1091,6 +1082,45 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
               </AlertDialogContent>
             </AlertDialogOverlay>
           </AlertDialog>
+
+          <AlertDialog
+            isOpen={isOpenExitAlert}
+            leastDestructiveRef={cancelRef}
+            onClose={onCloseExitAlert}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  Exit?
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure you want to exit?
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button 
+                    ref={cancelRef} 
+                    onClick={onCloseExitAlert}
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    colorScheme='red' 
+                    rounded={'full'}
+                    px={6}
+                    onClick={closeButtonClickedHandler} 
+                    ml={3}
+                  >
+                    Exit
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+
         </>
       )}
     </>

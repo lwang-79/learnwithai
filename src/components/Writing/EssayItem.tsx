@@ -88,7 +88,7 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Delete essay
+              Delete essay?
             </AlertDialogHeader>
 
             <AlertDialogBody>

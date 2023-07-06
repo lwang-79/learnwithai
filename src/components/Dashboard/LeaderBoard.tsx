@@ -36,7 +36,10 @@ function LeaderBoard() {
   useEffect(() => {
 
     const yesterday = (new Date(new Date().setDate(new Date().getDate() - 1))).toLocaleString('sv-SE').slice(0,10);
-    const thisMonth = (new Date()).toLocaleString('sv-SE').slice(0,7);
+    let thisMonth = (new Date()).toLocaleString('sv-SE').slice(0,7);
+    if (new Date().getDate() === 1) {
+      thisMonth = (new Date(new Date().setMonth(new Date().getMonth() - 1))).toLocaleString('sv-SE').slice(0,7);
+    }
     const lastMonth = (new Date(new Date().setMonth(new Date().getMonth() - 1))).toLocaleString('sv-SE').slice(0,7);
     
     DataStore.query(RankingItem, (item) => 

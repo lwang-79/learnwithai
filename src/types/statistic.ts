@@ -73,7 +73,7 @@ export const addStatisticData = async (
       if (updated.gameData) {
         updated.gameData = {
           ...updated.gameData,
-          score: updated.gameData.score + statistic.writing * 20 + statistic.mathCorrect
+          score: updated.gameData.score + statistic.writing * 40 + statistic.mathCorrect
         }
       }
     }

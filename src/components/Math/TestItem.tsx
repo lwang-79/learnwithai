@@ -60,7 +60,7 @@ function TestItem({ test, refreshList, selectCallback }: TestItemProps) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Delete test
+              Delete test?
             </AlertDialogHeader>
 
             <AlertDialogBody>

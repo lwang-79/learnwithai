@@ -12,6 +12,12 @@ import {
   QuestionType 
 } from '@/types/types';
 import { 
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button, 
   Checkbox, 
   CheckboxGroup, 
