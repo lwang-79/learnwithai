@@ -68,6 +68,12 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     onClose: onCloseAlert 
   } = useDisclosure();
 
+  const { 
+    isOpen: isOpenExitAlert, 
+    onOpen: onOpenExitAlert, 
+    onClose: onCloseExitAlert 
+  } = useDisclosure();
+
   // generate writing topic
   useEffect(() => {
     if (essay) return;
@@ -329,7 +335,7 @@ Total words: ${count}
         variant='ghost'
         aria-label='Close'
         icon={<Icon as={MdClose} boxSize={6} />}
-        onClick={onClose}
+        onClick={isSubmitted ? onClose : onOpenExitAlert}
         zIndex={100}
         position='fixed'
         top={2} right={2}
@@ -491,6 +497,44 @@ Total words: ${count}
                 ml={3}
               >
                 Submit
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isOpen={isOpenExitAlert}
+        leastDestructiveRef={cancelRef}
+        onClose={onCloseExitAlert}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Exit?
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to exit?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button 
+                ref={cancelRef} 
+                onClick={onCloseExitAlert}
+                rounded={'full'}
+                px={6}
+              >
+                Cancel
+              </Button>
+              <Button 
+                colorScheme='red' 
+                rounded={'full'}
+                px={6}
+                onClick={onClose} 
+                ml={3}
+              >
+                Exit
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
