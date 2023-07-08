@@ -166,7 +166,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
     }
 
     if (
-      source === QuestionSource.ChatGPT ||
+      source.includes('ChatGPT') ||
       source === QuestionSource.Hendrycks    
     ) {
       addGeneratedQuestionSets(cacheNumber);
@@ -257,8 +257,8 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
       do {
         try {
           tryCount++;
-          questionSet = source === QuestionSource.ChatGPT ? 
-            await generateQuestionSet(apiName, c, category, type, level) :
+          questionSet = source.includes('ChatGPT') ? 
+            await generateQuestionSet(apiName, c, category, type, level, source) :
             (await getQuestionsFromDataset(apiName, source, 1, level, c))[0]
         } catch (error) {
           console.error(`${tryCount} try failed: ${error}`);
@@ -561,7 +561,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
     //   questionString += `${String.fromCharCode(65 + i)}: ${currentQuestionSet.options[i]}`;
     // }
 
-    const newAnswer = await getQuestionAnswer(apiName, questionString);
+    const newAnswer = await getQuestionAnswer(apiName, questionString, source);
     if (!newAnswer) {
       toast({
         description: `Failed to generate answer, please try again later.`,
@@ -722,7 +722,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </Tag>
               {(isReview || isSubmitted) &&
-                <Tooltip label='Show result'>
+                <Tooltip label='Show result' hasArrow>
                   <IconButton
                     rounded='full'
                     variant='ghost'
@@ -763,7 +763,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                   <Spacer />
                   {isSavedQuestions && !isReview ? (
                     <>
-                      <Tooltip label='Delete from my questions'>
+                      <Tooltip label='Delete from my questions' hasArrow>
                         <IconButton
                           rounded='full'
                           variant='ghost'
@@ -778,7 +778,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                     </>
                   ) : (
                     <>
-                      <Tooltip label={
+                      <Tooltip hasArrow label={
                           dataStoreUser!.membership!.current < 2 ?
                           'The feature is not available' : 'Save the question'
                         }
@@ -803,6 +803,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                       </Tooltip>
 
                       <Tooltip
+                        hasArrow
                         label={
                           currentQuestionSet && currentQuestionSet.isMarked ?
                           'Remove the mark' : 'Mark the question'
@@ -826,9 +827,10 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                         />
                       </Tooltip>
 
-                      {(source === QuestionSource.ChatGPT || source === QuestionSource.Hendrycks) &&
+                      {(source.includes('ChatGPT') || source === QuestionSource.Hendrycks) &&
                         dataStoreUser!.membership!.current > 2 &&
                         <Tooltip
+                          hasArrow
                           label='Report bad question'
                         >
                           <IconButton
@@ -1095,7 +1097,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                 </AlertDialogHeader>
 
                 <AlertDialogBody>
-                  Are you sure you want to exit?
+                  You have not submitted your answers. Are you sure you want to exit?
                 </AlertDialogBody>
 
                 <AlertDialogFooter>

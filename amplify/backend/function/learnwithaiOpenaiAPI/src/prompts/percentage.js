@@ -43,7 +43,6 @@ function generatePercentagePrompt(level) {
             prompt = highPercentagePrompt();
             break;
     }
-    console.log(prompt);
     return [
         { role: 'system', content: 'You are a math teacher.' },
         { role: 'user', content: prompt }
@@ -67,7 +66,6 @@ function middlePercentagePrompt() {
 }
 function highPercentagePrompt() {
     var random = Math.random();
-    console.log(random);
     if (random < 0.33) {
         return "\nGive a middle level difficulty math percentage multi-choice question with the following conditions.\n1. Percentage should be in the question or answer.\n2. Require three or more steps to workout the question. Example: \"A company's revenue increased by 20% in the first year and decreased by 25% in the second year. If the company's revenue at the end of the second year was $500,000, what was the company's revenue at the beginning of the first year?\"\n3. Work out the question with calculator and formula.\n4. There should be 4 options including the answer.\n5. Make sure the correct answer is in the options.\n6. ".concat(math_1.template, "\n");
     }

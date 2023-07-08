@@ -73,8 +73,6 @@ export function generateFractionsPrompt(
       }
   }
 
-  console.log(prompt)
-
   return [
     { role: 'system', content: 'You are a math teacher.' },
     { role: 'user', content: prompt }

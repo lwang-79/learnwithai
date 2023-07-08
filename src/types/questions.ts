@@ -146,7 +146,8 @@ export const generateQuestionSet = async (
   concept: MathConcept,
   category: QuestionCategory,
   type: QuestionType,
-  level: QuestionLevel
+  level: QuestionLevel,
+  source: string
 ): Promise<LocalQuestionSet | undefined> => {
   // let c = concepts[Math.floor(Math.random() * concepts.length)];
   const request = {
@@ -155,7 +156,8 @@ export const generateQuestionSet = async (
       category: category,
       type: type,
       level: level,
-      concept: concept
+      concept: concept,
+      source: source
     }
   };
 
@@ -217,12 +219,14 @@ export const generateQuestionSet = async (
 
 export const getQuestionAnswer = async (
   apiName: APIName,
-  question: string
+  question: string,
+  source: string,
 ): Promise<string> => {
   const request = {
     body: {
       operation: APIOperation.MathAnswer,
-      question: question
+      question: question,
+      source: source
     }
   };
 

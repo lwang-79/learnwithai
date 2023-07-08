@@ -1,3 +1,4 @@
+import { getModel } from "index";
 import { ChatCompletionFunctions, ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 import { APIResponse } from "../types";
 
@@ -37,10 +38,16 @@ export const chatCompletion = async (
     }
   }
 
-  console.log(messages)
+  const model = getModel();
+  console.log(`Model: ${model}`);
+  console.log(`Messages: ${JSON.stringify(messages)}`);
+  console.log(`Functions: ${JSON.stringify(functions)}`);
+  console.log(`Temperature: ${temperature}`);
+  console.log(`Max Tokens: ${max_tokens}`);
+
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-0613",
+      model: model,
       messages: messages,
       functions: functions,
       temperature: temperature,

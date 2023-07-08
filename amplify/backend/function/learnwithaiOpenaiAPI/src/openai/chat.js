@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.chatCompletion = void 0;
+var index_1 = require("index");
 var openai_1 = require("openai");
 var OPENAI_API_KEY = Buffer.from(process.env.OPENAI_API_KEY, 'base64').toString();
 var configuration = new openai_1.Configuration({
@@ -47,7 +48,7 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
     if (temperature === void 0) { temperature = 1; }
     if (max_tokens === void 0) { max_tokens = 1000; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var completion, error_1;
+        var model, completion, error_1;
         var _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
@@ -69,12 +70,17 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
                                 error: "Missing API Key"
                             }];
                     }
-                    console.log(messages);
+                    model = (0, index_1.getModel)();
+                    console.log("Model: ".concat(model));
+                    console.log("Messages: ".concat(JSON.stringify(messages)));
+                    console.log("Functions: ".concat(JSON.stringify(functions)));
+                    console.log("Temperature: ".concat(temperature));
+                    console.log("Max Tokens: ".concat(max_tokens));
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, openai.createChatCompletion({
-                            model: "gpt-3.5-turbo-0613",
+                            model: model,
                             messages: messages,
                             functions: functions,
                             temperature: temperature,

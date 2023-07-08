@@ -43,8 +43,6 @@ export function generatePercentagePrompt(
       break;
   }
 
-  console.log(prompt)
-
   return [
     { role: 'system', content: 'You are a math teacher.' },
     { role: 'user', content: prompt }
@@ -100,7 +98,7 @@ Give an middle level difficulty math percentage multi-choice question with the f
 
 function highPercentagePrompt() {
   const random = Math.random();
-  console.log(random)
+
   if (random < 0.33) {
     return `
 Give a middle level difficulty math percentage multi-choice question with the following conditions.

@@ -63,7 +63,6 @@ function generateTimeJourneyPrompt(level) {
                 prompt = highJourneyPrompt();
             }
     }
-    console.log(prompt);
     return __spreadArray([
         { role: 'system', content: 'You are a math teacher.' }
     ], prompt

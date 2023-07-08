@@ -2,13 +2,17 @@ import { getStemQuestions } from "./openai/stem";
 import { askAnything } from "./openai/anything";
 import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from "./openai/math";
 import { generateWritingMark, generateWritingPrompt, polishWriting } from "./openai/writing";
-import { APIOperation, APIResponse } from "./types";
+import { APIOperation, APIResponse, QuestionSource } from "./types";
+
+let model = 'gpt-3.5-turbo-0613';
+
 
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   // const req = JSON.parse(event.body);
   const req = event;
   const operation = req.operation || '';
+  model = req.source === QuestionSource.ChatGPT4 ? 'gpt-4' : 'gpt-3.5-turbo-0613';
   if (Object.values(APIOperation).indexOf(operation) < 0) {
     return {
       statusCode: 400,
@@ -102,3 +106,5 @@ exports.handler = async (event) => {
     body: JSON.stringify(body),
   };
 }
+
+export const getModel = () => model;

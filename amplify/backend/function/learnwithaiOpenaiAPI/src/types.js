@@ -14,20 +14,19 @@ var APIOperation;
 })(APIOperation = exports.APIOperation || (exports.APIOperation = {}));
 var QuestionSource;
 (function (QuestionSource) {
+    QuestionSource["ChatGPT3"] = "ChatGPT-3";
+    QuestionSource["ChatGPT4"] = "ChatGPT-4";
+    QuestionSource["Hendrycks"] = "Hendrycks MATH";
     QuestionSource["GSM8K"] = "GMS8K";
     QuestionSource["MathQA"] = "MathQA";
-    QuestionSource["Hendrycks"] = "Hendrycks MATH";
     QuestionSource["Competition"] = "Competition";
-    QuestionSource["ChatGPT"] = "ChatGPT";
     QuestionSource["SavedQuestions"] = "Saved Questions";
 })(QuestionSource = exports.QuestionSource || (exports.QuestionSource = {}));
 var QuestionRunMode;
 (function (QuestionRunMode) {
     QuestionRunMode["Practice"] = "practice";
     QuestionRunMode["Test"] = "test";
-    // Competition = 'competition',
     QuestionRunMode["Review"] = "review";
-    // SavedQuestions = 'saved questions'
 })(QuestionRunMode = exports.QuestionRunMode || (exports.QuestionRunMode = {}));
 var QuestionType;
 (function (QuestionType) {
@@ -114,9 +113,6 @@ var QuestionLevel;
     QuestionLevel["Year10"] = "Year-10";
     QuestionLevel["Year11"] = "Year-11";
     QuestionLevel["Year12"] = "Year-12";
-    // GSM8K = 'GSM8K',
-    // MathQA = 'MathQA',
-    // AQuA = 'AQuA',
     QuestionLevel["Level1"] = "Level 1";
     QuestionLevel["Level2"] = "Level 2";
     QuestionLevel["Level3"] = "Level 3";

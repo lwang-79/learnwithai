@@ -52,8 +52,6 @@ export function generateTimeJourneyPrompt(
       }
   }
 
-  console.log(prompt)
-
   return [
     { role: 'system', content: 'You are a math teacher.' },
     ...prompt
