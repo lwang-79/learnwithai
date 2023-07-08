@@ -220,7 +220,7 @@ export const generateQuestionSet = async (
 export const getQuestionAnswer = async (
   apiName: APIName,
   question: string,
-  source: string,
+  source?: string,
 ): Promise<string> => {
   const request = {
     body: {
