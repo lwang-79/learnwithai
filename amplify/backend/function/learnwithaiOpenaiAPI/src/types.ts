@@ -16,20 +16,19 @@ export type APIResponse = {
 };
 
 export enum QuestionSource {
+  ChatGPT3 = 'ChatGPT-3',
+  ChatGPT4 = 'ChatGPT-4',
+  Hendrycks = 'Hendrycks MATH',
   GSM8K = 'GMS8K',
   MathQA = 'MathQA',
-  Hendrycks = 'Hendrycks MATH',
   Competition = 'Competition',
-  ChatGPT = 'ChatGPT',
   SavedQuestions = 'Saved Questions'
 }
 
 export enum QuestionRunMode {
   Practice = 'practice',
   Test = 'test',
-  // Competition = 'competition',
   Review = 'review',
-  // SavedQuestions = 'saved questions'
 }
 
 export enum QuestionType {
@@ -117,9 +116,6 @@ export enum QuestionLevel {
   Year10 = 'Year-10',
   Year11 = 'Year-11',
   Year12 = 'Year-12',
-  // GSM8K = 'GSM8K',
-  // MathQA = 'MathQA',
-  // AQuA = 'AQuA',
   Level1 = 'Level 1',
   Level2 = 'Level 2',
   Level3 = 'Level 3',

@@ -1,4 +1,4 @@
-import { Test } from "@/models"
+import { LocalQuestionSet, Test } from "@/models"
 import { DataStore, Predicates, SortDirection } from "aws-amplify";
 import { useCallback, useEffect, useState } from "react";
 import TestItem from "./TestItem";
@@ -18,9 +18,18 @@ import {
   Wrap, 
   WrapItem, 
   useColorModeValue, 
-  Divider
+  Divider,
+  Tooltip,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure
 } from "@chakra-ui/react";
-import { MdMenu, MdNavigateBefore, MdNavigateNext, MdRefresh } from "react-icons/md";
+import { MdMenu, MdNavigateBefore, MdNavigateNext, MdOutlineArticle, MdRefresh } from "react-icons/md";
+import Result from "./Result";
 
 interface TestListProps {
   selectCallback: (test: Test) => void
@@ -35,6 +44,13 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
   const [ currentPage, setCurrentPage ] = useState(0);
   const [ isLastPage, setIsLastPage ] = useState(false);
   const bgColor = useColorModeValue('teal.100', 'teal.800');
+  const [ questionSets, setQuestionSets ] = useState<LocalQuestionSet[]>([]);
+
+  const { 
+    isOpen: isOpenResultModal, 
+    onOpen: onOpenResultModal, 
+    onClose: onCloseResultModal
+  } = useDisclosure();
 
   const changePageButtonClickedHandler = async (count: number) => {
     const page = currentPage + count;
@@ -48,6 +64,12 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
     );
 
     if (tests.length > 0) {
+      let questionSets: LocalQuestionSet[] = [];
+      for (const test of tests) {
+        const testQuestionSet = test.questionSets;
+        questionSets = [...questionSets, ...testQuestionSet];
+      }
+      setQuestionSets(questionSets);
       setTests(tests);
       setCurrentPage(page);
       setIsLastPage(false);
@@ -63,6 +85,13 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
       limit: limit
     }).then(tests => {
       if (tests.length > 0) {
+        let questionSets: LocalQuestionSet[] = [];
+        for (const test of tests) {
+          const testQuestionSet = test.questionSets;
+          questionSets = [...questionSets, ...testQuestionSet];
+        }
+        setQuestionSets(questionSets);
+  
         setTests(tests);
       } else {
         if (page > 0) {
@@ -87,6 +116,21 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
             <HStack w='full'>
               <Heading size='sm'>{title}</Heading>
               <Spacer />
+              <Tooltip 
+                hasArrow
+                label='Show report of all tests on this page'
+              >
+                <IconButton
+                  rounded='full'
+                  variant='ghost'
+                  aria-label='Show report'
+                  colorScheme='teal'
+                  size='sm'
+                  w='35px' h='35px'
+                  icon={<Icon as={MdOutlineArticle} boxSize={6} />}
+                  onClick={onOpenResultModal}
+                />
+              </Tooltip>
               <IconButton
                 rounded='full'
                 variant='ghost'
@@ -121,7 +165,7 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
                 <Box>
                   <MenuList >
                     <MenuGroup title='Items per page'>
-                    {[5, 10, 20, 50].map((count, index) => {
+                    {[10, 20, 50, 100].map((count, index) => {
                       return (
                         <MenuItem
                           key={`menu-item-${index}`}
@@ -160,6 +204,22 @@ function TestList({ selectCallback, title, defaultPageStep, refreshTrigger }: Te
             </Wrap>
             
           </VStack>
+
+          <Modal
+            isOpen={isOpenResultModal} 
+            onClose={onCloseResultModal}
+            scrollBehavior='inside'
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalCloseButton />
+              <ModalBody>
+                  <Result questionSets={questionSets}/>
+              </ModalBody>
+              <ModalFooter>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </>
       }
     </>

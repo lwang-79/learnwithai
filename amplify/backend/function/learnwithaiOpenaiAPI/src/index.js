@@ -36,11 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.getModel = void 0;
 var stem_1 = require("./openai/stem");
 var anything_1 = require("./openai/anything");
 var math_1 = require("./openai/math");
 var writing_1 = require("./openai/writing");
 var types_1 = require("./types");
+var model = 'gpt-3.5-turbo-0613';
 exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
     var req, operation, body, _a;
     return __generator(this, function (_b) {
@@ -49,6 +51,7 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
                 console.log("EVENT: ".concat(JSON.stringify(event)));
                 req = event;
                 operation = req.operation || '';
+                model = req.source === types_1.QuestionSource.ChatGPT4 ? 'gpt-4' : 'gpt-3.5-turbo-0613';
                 if (Object.values(types_1.APIOperation).indexOf(operation) < 0) {
                     return [2 /*return*/, {
                             statusCode: 400,
@@ -120,3 +123,5 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
         }
     });
 }); };
+var getModel = function () { return model; };
+exports.getModel = getModel;

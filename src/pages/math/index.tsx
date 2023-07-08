@@ -12,12 +12,6 @@ import {
   QuestionType 
 } from '@/types/types';
 import { 
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Button, 
   Checkbox, 
   CheckboxGroup, 
@@ -81,7 +75,22 @@ function MathExam() {
 
     if (dataStoreUser.optionStates?.mathSource) setSelectedSource(dataStoreUser.optionStates.mathSource);
 
-    if (dataStoreUser.optionStates?.mathConcepts) setSelectedConcepts(dataStoreUser.optionStates.mathConcepts as (MathConcept | HendrycksConcept)[]);
+    if (dataStoreUser.optionStates?.mathConcepts) {
+      setSelectedConcepts(dataStoreUser.optionStates.mathConcepts as (MathConcept | HendrycksConcept)[]);
+      if (
+        selectedSource === QuestionSource.Hendrycks &&
+        dataStoreUser.optionStates.mathConcepts.length >= hendrycksConcepts.length
+      ) {
+        setAllConceptsChecked(true);
+      }
+  
+      if (
+        selectedSource.includes('ChatGPT') &&
+        dataStoreUser.optionStates.mathConcepts.length >= concepts.length
+      ) {
+        setAllConceptsChecked(true);
+      }
+    }
 
     if (dataStoreUser.optionStates?.mathLevel) setSelectedLevel(dataStoreUser.optionStates.mathLevel);
 
@@ -109,7 +118,7 @@ function MathExam() {
       setSelectedLevel(QuestionLevel.Level1);
       setSelectedConcepts(hendrycksConcepts);
       setAllConceptsChecked(true);
-    } else if (selectedSource === QuestionSource.ChatGPT) {
+    } else if (selectedSource.includes('ChatGPT')) {
       setSelectedLevel(QuestionLevel.Year4);
       setSelectedConcepts(concepts);
       setAllConceptsChecked(true);
@@ -156,7 +165,7 @@ function MathExam() {
     }
 
     if (
-      selectedSource === QuestionSource.ChatGPT &&
+      selectedSource.includes('ChatGPT') &&
       sConcepts.length >= concepts.length
     ) {
       setAllConceptsChecked(true);
@@ -169,7 +178,7 @@ function MathExam() {
   const setAllCheckedConcepts = () => {
     if (selectedConcepts.length === 0) {
       setSelectedConcepts(
-        selectedSource === QuestionSource.ChatGPT ?
+        selectedSource.includes('ChatGPT') ?
         concepts : hendrycksConcepts
       );
       setAllConceptsChecked(true);
@@ -320,7 +329,13 @@ function MathExam() {
                 {sources.slice(0,5).map((source, index) => {
                   return (
                     <WrapItem key={`${source}-${index}`} minW='150px'>
-                      <Radio value={source}>
+                      <Radio 
+                        value={source}
+                        isDisabled={
+                          source === QuestionSource.ChatGPT4 &&
+                          dataStoreUser.membership?.current! < 3
+                        }
+                      >
                         {source}
                       </Radio>
                     </WrapItem>
@@ -348,7 +363,7 @@ function MathExam() {
                       <Radio
                         value={level}
                         isDisabled={
-                          selectedSource !== QuestionSource.ChatGPT
+                          !selectedSource.includes('ChatGPT')
                         }
                       >
                         {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -380,7 +395,7 @@ function MathExam() {
           <CheckboxGroup
             value={selectedConcepts}
             isDisabled={
-              selectedSource !== QuestionSource.ChatGPT &&
+              !selectedSource.includes('ChatGPT') &&
               selectedSource !== QuestionSource.Hendrycks
             }
           >
@@ -398,7 +413,7 @@ function MathExam() {
                     <WrapItem key={`${concept}-${index}`} minW='180px'>
                       <Checkbox
                         value={concept}
-                        isDisabled={selectedSource !== QuestionSource.ChatGPT}
+                        isDisabled={!selectedSource.includes('ChatGPT')}
                         onChange={(e) => setCheckedConcepts(e.target.value as MathConcept)}
                       >
                         {concept.charAt(0).toUpperCase() + concept.slice(1)}
@@ -440,7 +455,7 @@ function MathExam() {
             <Button
               onClick={startButtonClickedHandler}
               isDisabled={
-                ((selectedSource === QuestionSource.ChatGPT ||
+                ((selectedSource.includes('ChatGPT') ||
                 selectedSource === QuestionSource.Hendrycks) &&
                 !selectedConcepts.length) || 
                 !selectedLevel

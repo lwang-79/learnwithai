@@ -14,7 +14,8 @@ export enum APIOperation {
 }
 
 export enum QuestionSource {
-  ChatGPT = 'ChatGPT',
+  ChatGPT3 = 'ChatGPT-3',
+  ChatGPT4 = 'ChatGPT-4',
   Hendrycks = 'Hendrycks MATH',
   GSM8K = 'GMS8K',
   MathQA = 'MathQA',
