@@ -223,6 +223,17 @@ type Badge @model
   isVisible: Boolean! 
 }
 
+type SystemMessage @model
+  @auth(rules: [
+    { allow: groups, groups: ["Admin"] }
+    { allow: private, operations: [read] }
+  ]){
+  id: ID!
+  content: String!
+  internalLink: String
+  externalLink: String
+}
+
 type Mutation {
   learnwithaiSubscribe(
     operation: String!

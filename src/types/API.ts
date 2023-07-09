@@ -734,6 +734,50 @@ export type DeleteBadgeInput = {
   _version?: number | null,
 };
 
+export type CreateSystemMessageInput = {
+  id?: string | null,
+  content: string,
+  internalLink?: string | null,
+  externalLink?: string | null,
+  _version?: number | null,
+};
+
+export type ModelSystemMessageConditionInput = {
+  content?: ModelStringInput | null,
+  internalLink?: ModelStringInput | null,
+  externalLink?: ModelStringInput | null,
+  and?: Array< ModelSystemMessageConditionInput | null > | null,
+  or?: Array< ModelSystemMessageConditionInput | null > | null,
+  not?: ModelSystemMessageConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type SystemMessage = {
+  __typename: "SystemMessage",
+  id: string,
+  content: string,
+  internalLink?: string | null,
+  externalLink?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateSystemMessageInput = {
+  id: string,
+  content?: string | null,
+  internalLink?: string | null,
+  externalLink?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteSystemMessageInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   sub?: ModelIDInput | null,
@@ -909,6 +953,24 @@ export type ModelBadgeConnection = {
   startedAt?: number | null,
 };
 
+export type ModelSystemMessageFilterInput = {
+  id?: ModelIDInput | null,
+  content?: ModelStringInput | null,
+  internalLink?: ModelStringInput | null,
+  externalLink?: ModelStringInput | null,
+  and?: Array< ModelSystemMessageFilterInput | null > | null,
+  or?: Array< ModelSystemMessageFilterInput | null > | null,
+  not?: ModelSystemMessageFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSystemMessageConnection = {
+  __typename: "ModelSystemMessageConnection",
+  items:  Array<SystemMessage | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   sub?: ModelSubscriptionIDInput | null,
@@ -1053,6 +1115,16 @@ export type ModelSubscriptionBadgeFilterInput = {
 export type ModelSubscriptionBooleanInput = {
   ne?: boolean | null,
   eq?: boolean | null,
+};
+
+export type ModelSubscriptionSystemMessageFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  content?: ModelSubscriptionStringInput | null,
+  internalLink?: ModelSubscriptionStringInput | null,
+  externalLink?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
+  or?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type LearnwithaiSubscribeMutationVariables = {
@@ -1889,6 +1961,66 @@ export type DeleteBadgeMutation = {
     description: string,
     image: string,
     isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateSystemMessageMutationVariables = {
+  input: CreateSystemMessageInput,
+  condition?: ModelSystemMessageConditionInput | null,
+};
+
+export type CreateSystemMessageMutation = {
+  createSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateSystemMessageMutationVariables = {
+  input: UpdateSystemMessageInput,
+  condition?: ModelSystemMessageConditionInput | null,
+};
+
+export type UpdateSystemMessageMutation = {
+  updateSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteSystemMessageMutationVariables = {
+  input: DeleteSystemMessageInput,
+  condition?: ModelSystemMessageConditionInput | null,
+};
+
+export type DeleteSystemMessageMutation = {
+  deleteSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3079,6 +3211,78 @@ export type SyncBadgesQuery = {
   } | null,
 };
 
+export type GetSystemMessageQueryVariables = {
+  id: string,
+};
+
+export type GetSystemMessageQuery = {
+  getSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListSystemMessagesQueryVariables = {
+  filter?: ModelSystemMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSystemMessagesQuery = {
+  listSystemMessages?:  {
+    __typename: "ModelSystemMessageConnection",
+    items:  Array< {
+      __typename: "SystemMessage",
+      id: string,
+      content: string,
+      internalLink?: string | null,
+      externalLink?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncSystemMessagesQueryVariables = {
+  filter?: ModelSystemMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncSystemMessagesQuery = {
+  syncSystemMessages?:  {
+    __typename: "ModelSystemMessageConnection",
+    items:  Array< {
+      __typename: "SystemMessage",
+      id: string,
+      content: string,
+      internalLink?: string | null,
+      externalLink?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
   owner?: string | null,
@@ -3890,6 +4094,63 @@ export type OnDeleteBadgeSubscription = {
     description: string,
     image: string,
     isVisible: boolean,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateSystemMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+};
+
+export type OnCreateSystemMessageSubscription = {
+  onCreateSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateSystemMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+};
+
+export type OnUpdateSystemMessageSubscription = {
+  onUpdateSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteSystemMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+};
+
+export type OnDeleteSystemMessageSubscription = {
+  onDeleteSystemMessage?:  {
+    __typename: "SystemMessage",
+    id: string,
+    content: string,
+    internalLink?: string | null,
+    externalLink?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

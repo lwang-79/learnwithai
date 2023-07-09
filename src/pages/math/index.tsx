@@ -326,14 +326,14 @@ function MathExam() {
                 </Tooltip>
               </HStack>
               <Wrap>
-                {sources.slice(0,5).map((source, index) => {
+                {sources.slice(0,6).map((source, index) => {
                   return (
                     <WrapItem key={`${source}-${index}`} minW='150px'>
                       <Radio 
                         value={source}
                         isDisabled={
                           source === QuestionSource.ChatGPT4 &&
-                          dataStoreUser.membership?.current! < 3
+                          dataStoreUser.membership?.current! < 5
                         }
                       >
                         {source}
