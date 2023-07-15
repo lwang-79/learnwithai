@@ -774,3 +774,57 @@ export const deleteBadge = /* GraphQL */ `
     }
   }
 `;
+export const createSystemMessage = /* GraphQL */ `
+  mutation CreateSystemMessage(
+    $input: CreateSystemMessageInput!
+    $condition: ModelSystemMessageConditionInput
+  ) {
+    createSystemMessage(input: $input, condition: $condition) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateSystemMessage = /* GraphQL */ `
+  mutation UpdateSystemMessage(
+    $input: UpdateSystemMessageInput!
+    $condition: ModelSystemMessageConditionInput
+  ) {
+    updateSystemMessage(input: $input, condition: $condition) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteSystemMessage = /* GraphQL */ `
+  mutation DeleteSystemMessage(
+    $input: DeleteSystemMessageInput!
+    $condition: ModelSystemMessageConditionInput
+  ) {
+    deleteSystemMessage(input: $input, condition: $condition) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

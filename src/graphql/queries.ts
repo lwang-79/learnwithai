@@ -1111,3 +1111,70 @@ export const syncBadges = /* GraphQL */ `
     }
   }
 `;
+export const getSystemMessage = /* GraphQL */ `
+  query GetSystemMessage($id: ID!) {
+    getSystemMessage(id: $id) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listSystemMessages = /* GraphQL */ `
+  query ListSystemMessages(
+    $filter: ModelSystemMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSystemMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        content
+        internalLink
+        externalLink
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncSystemMessages = /* GraphQL */ `
+  query SyncSystemMessages(
+    $filter: ModelSystemMessageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSystemMessages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        content
+        internalLink
+        externalLink
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

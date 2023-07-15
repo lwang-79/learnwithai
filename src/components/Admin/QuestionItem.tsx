@@ -93,7 +93,7 @@ function QuestionItem({ question }: QuestionItemProps) {
             <AlertDialogOverlay>
               <AlertDialogContent>
                 <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                  Delete question
+                  Delete question?
                 </AlertDialogHeader>
 
                 <AlertDialogBody>

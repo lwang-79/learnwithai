@@ -523,3 +523,35 @@ export declare type Badge = LazyLoading extends LazyLoadingDisabled ? EagerBadge
 export declare const Badge: (new (init: ModelInit<Badge>) => Badge) & {
   copyOf(source: Badge, mutator: (draft: MutableModel<Badge>) => MutableModel<Badge> | void): Badge;
 }
+
+type EagerSystemMessage = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SystemMessage, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly content: string;
+  readonly internalLink?: string | null;
+  readonly externalLink?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySystemMessage = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SystemMessage, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly content: string;
+  readonly internalLink?: string | null;
+  readonly externalLink?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type SystemMessage = LazyLoading extends LazyLoadingDisabled ? EagerSystemMessage : LazySystemMessage
+
+export declare const SystemMessage: (new (init: ModelInit<SystemMessage>) => SystemMessage) & {
+  copyOf(source: SystemMessage, mutator: (draft: MutableModel<SystemMessage>) => MutableModel<SystemMessage> | void): SystemMessage;
+}

@@ -1,4 +1,4 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -39,13 +39,15 @@ import {
   MdOutlineUpload, 
 } from 'react-icons/md';
 import NextLink from 'next/link';
-import { Auth, DataStore } from 'aws-amplify';
+import { Auth, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import useStorage from '@/hooks/useStorage';
 import Support from './Support';
 import SharedComponents from './SharedComponents';
 import { downloadData, importData } from '@/types/utils';
 import Logo from './Logo';
+import { SystemMessage } from '@/models';
+import MessagePopover from './MessagePopover';
 
 const Links = ['/math', '/writing', '/stem'];
 const LinkNames = ['Math', 'Writing', 'STEM']
@@ -74,11 +76,27 @@ export default function Header() {
   const user = dataStoreUser;
   const toast = useToast();
 
+  const [ messages, setMessages ] = useState<SystemMessage[]>([]);
+
   const { 
     isOpen: isOpenSupportModal, 
     onOpen: onOpenSupportModal, 
     onClose: onCloseSupportModal
   } = useDisclosure();
+
+  useEffect(() => {
+    const subscription = DataStore.observeQuery(
+      SystemMessage, Predicates.ALL,
+      {
+        sort: m => m.createdAt(SortDirection.DESCENDING)
+      }
+    ).subscribe(snapshot => {
+      const { items } = snapshot;
+      setMessages(items);
+    });
+
+    return () => subscription.unsubscribe();
+  },[]);
 
   const signOut = async () => {
     try {
@@ -135,7 +153,7 @@ export default function Header() {
         w={width}
         position='fixed'
         as='header'
-        zIndex={100}
+        zIndex={5}
         shadow='sm'
       >
         <Container maxW="5xl">
@@ -166,34 +184,28 @@ export default function Header() {
                 ))}
               </HStack>
             </HStack>
-            <Flex alignItems={'center'}>
+            <Flex align='center'>
               {user && user.membership!.current < 3 ? (
                 <Button 
                   size='sm' 
-                  mr={{base: 1, md: 2}}
                   onClick={()=>router.push('/account')}
                   variant='unstyled'
                 >
                   {user.membership!.current < 2 ? (
-                    <Box className='shine'>
-                      Upgrade
-                    </Box>
+                    <Box className='shine'>Upgrade</Box>
                   ) : (
-                    <Box>
-                      Upgrade
-                    </Box>
+                    <Box>Upgrade</Box>
                   )}
                 </Button>
               ) : null}
+              {messages.length > 0 && 
+                <Box ms={{base: 1, md: 2}}>
+                  <MessagePopover messages={messages} />
+                </Box>
+              }
               <Menu isLazy>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant='unstyled'
-                  cursor={'pointer'}
-                  minW={0}>
+                <MenuButton cursor={'pointer'} ms={{base: 1, md: 2}}>
                   <Avatar
-                    size={'md'}
                     name={user?.username}
                     src={user?.picture}
                     showBorder

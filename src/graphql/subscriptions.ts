@@ -743,3 +743,54 @@ export const onDeleteBadge = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSystemMessage = /* GraphQL */ `
+  subscription OnCreateSystemMessage(
+    $filter: ModelSubscriptionSystemMessageFilterInput
+  ) {
+    onCreateSystemMessage(filter: $filter) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateSystemMessage = /* GraphQL */ `
+  subscription OnUpdateSystemMessage(
+    $filter: ModelSubscriptionSystemMessageFilterInput
+  ) {
+    onUpdateSystemMessage(filter: $filter) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteSystemMessage = /* GraphQL */ `
+  subscription OnDeleteSystemMessage(
+    $filter: ModelSubscriptionSystemMessageFilterInput
+  ) {
+    onDeleteSystemMessage(filter: $filter) {
+      id
+      content
+      internalLink
+      externalLink
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
