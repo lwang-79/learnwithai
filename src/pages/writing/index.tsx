@@ -51,7 +51,7 @@ function Writing() {
   const [ refreshEssayList, setRefreshEssayList ] = useBoolean(false);
 
   useEffect(() => {
-
+    if (!optionStatesRef.current) return;
     if (optionStatesRef.current?.writingType) setSelectedType(optionStatesRef.current.writingType);
     if (optionStatesRef.current?.writingTopic) setSelectedTopic(optionStatesRef.current.writingTopic);
     if (optionStatesRef.current?.writingLevel) setSelectedLevel(optionStatesRef.current.writingLevel);

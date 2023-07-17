@@ -45,7 +45,8 @@ function Stem() {
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const ignoreTriggerRef = useRef(true);
 
-  useEffect(() => {    
+  useEffect(() => {
+    if (!optionStatesRef.current) return;
     if (optionStatesRef.current?.stemMode) setMode(optionStatesRef.current.stemMode);
     if (optionStatesRef.current?.stemConcepts) setSelectedConcepts(optionStatesRef.current.stemConcepts as StemConcept[]);
     if (optionStatesRef.current?.stemLevel) setSelectedLevel(optionStatesRef.current.stemLevel);
