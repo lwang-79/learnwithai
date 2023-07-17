@@ -69,6 +69,8 @@ function MathExam() {
   const ignoreTriggerRef = useRef(true);
 
   useEffect(() => {
+    if (!optionStatesRef.current) return;
+    
     if (optionStatesRef.current.mathSource) {
       setSelectedSource(optionStatesRef.current.mathSource);
     }
