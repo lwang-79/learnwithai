@@ -1,7 +1,7 @@
 import Layout from '@/components/Common/Layout';
 import SharedComponents from '@/components/Common/SharedComponents';
 import QuestionRun from '@/components/Stem/QuestionRun';
-import { User } from '@/models';
+import { OptionStates } from '@/models';
 import { QuestionRunMode, StemConcept } from '@/types/types';
 import { 
   Button, 
@@ -23,7 +23,7 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { DataStore } from 'aws-amplify';
+import { Cache } from 'aws-amplify';
 import { useContext, useEffect, useRef, useState } from 'react'
 
 function Stem() {
@@ -32,6 +32,7 @@ function Stem() {
     onOpen: onOpenExamModal, 
     onClose: onCloseExamModal
   } = useDisclosure();
+  const optionStatesRef = useRef(Cache.getItem('optionStates') as OptionStates);
 
   const concepts = Object.values(StemConcept).slice(1, 11);
   const levels = ['Primary School', 'Middle School', 'High School', 'College'];
@@ -39,25 +40,21 @@ function Stem() {
   const [ selectedLevel, setSelectedLevel ] = useState<string>(levels[0]);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser } = useContext(SharedComponents);
   const allConceptsChecked = concepts.length === selectedConcepts.length;
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const ignoreTriggerRef = useRef(true);
 
-  useEffect(() => {
-    if (!dataStoreUser) return;
-    if (!ignoreTriggerRef.current) return;
-    
-    if (dataStoreUser.optionStates?.stemMode) setMode(dataStoreUser.optionStates.stemMode);
-    if (dataStoreUser.optionStates?.stemConcepts) setSelectedConcepts(dataStoreUser.optionStates.stemConcepts as StemConcept[]);
-    if (dataStoreUser.optionStates?.stemLevel) setSelectedLevel(dataStoreUser.optionStates.stemLevel);
-    if (dataStoreUser.optionStates?.stemNumber) setNum(dataStoreUser.optionStates.stemNumber.toString());
+  useEffect(() => {    
+    if (optionStatesRef.current?.stemMode) setMode(optionStatesRef.current.stemMode);
+    if (optionStatesRef.current?.stemConcepts) setSelectedConcepts(optionStatesRef.current.stemConcepts as StemConcept[]);
+    if (optionStatesRef.current?.stemLevel) setSelectedLevel(optionStatesRef.current.stemLevel);
+    if (optionStatesRef.current?.stemNumber) setNum(optionStatesRef.current.stemNumber.toString());
 
     setTimeout(() => {
       ignoreTriggerRef.current = false;
     }, 100);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[dataStoreUser]);
+  },[]);
 
   useEffect(() => {
     if (ignoreTriggerRef.current) return;
@@ -120,16 +117,21 @@ function Stem() {
     if (!dataStoreUser) return;
     onOpenExamModal();
     
-    const currentUser = await DataStore.query(User, dataStoreUser.id);
-    setDataStoreUser(await DataStore.save(User.copyOf(currentUser!, updated => {
-      updated.optionStates = {
-        ...updated.optionStates,
-        stemConcepts: selectedConcepts,
-        stemLevel: selectedLevel,
-        stemNumber: Number(num),
-        stemMode: mode
-      };
-    })));
+    optionStatesRef.current = {
+      ...optionStatesRef.current,
+      stemConcepts: selectedConcepts,
+      stemLevel: selectedLevel,
+      stemNumber: Number(num),
+      stemMode: mode
+    };
+
+    Cache.setItem(
+      'optionStates', 
+      optionStatesRef.current, 
+      { 
+        expires: new Date().getTime() + (1000 * 60 * 60 * 24 * 31)
+      }
+    );
   }
 
   return (

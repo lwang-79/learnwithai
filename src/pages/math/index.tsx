@@ -1,6 +1,6 @@
 import SharedComponents from '@/components/Common/SharedComponents';
 import QuestionRun from '@/components/Math/QuestionRun';
-import { Test, User } from '@/models';
+import { OptionStates, Test } from '@/models';
 import { getTodayStatistic } from '@/types/statistic';
 import { 
   HendrycksConcept, 
@@ -37,7 +37,7 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react'
 import TestList from '@/components/Math/TestList';
 import { MdErrorOutline } from 'react-icons/md';
-import { DataStore } from 'aws-amplify';
+import { Cache } from 'aws-amplify';
 import Layout from '@/components/Common/Layout';
 
 function MathExam() {
@@ -46,6 +46,7 @@ function MathExam() {
     onOpen: onOpenExamModal, 
     onClose: onCloseExamModal
   } = useDisclosure();
+  const optionStatesRef = useRef(Cache.getItem('optionStates') as OptionStates);
 
   const sources = Object.values(QuestionSource);
   const concepts = Object.values(MathConcept);
@@ -59,7 +60,7 @@ function MathExam() {
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year4);
   const [ num, setNum ] = useState('10');
   const [ mode, setMode ] = useState(QuestionRunMode.Practice as string);
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser } = useContext(SharedComponents);
   const [ allConceptsChecked, setAllConceptsChecked] = useState(false);
   const isConceptIndeterminate = selectedConcepts.length > 0 && selectedConcepts.length < concepts.length;
   const [ selectedTest, setSelectedTest ] = useState<Test>();
@@ -68,39 +69,30 @@ function MathExam() {
   const ignoreTriggerRef = useRef(true);
 
   useEffect(() => {
-    if (!dataStoreUser) return;
-    if (!ignoreTriggerRef.current) return;
-
-    if (dataStoreUser.optionStates?.mathMode) setMode(dataStoreUser.optionStates.mathMode);
-
-    if (dataStoreUser.optionStates?.mathSource) setSelectedSource(dataStoreUser.optionStates.mathSource);
-
-    if (dataStoreUser.optionStates?.mathConcepts) {
-      setSelectedConcepts(dataStoreUser.optionStates.mathConcepts as (MathConcept | HendrycksConcept)[]);
-      if (
-        selectedSource === QuestionSource.Hendrycks &&
-        dataStoreUser.optionStates.mathConcepts.length >= hendrycksConcepts.length
-      ) {
-        setAllConceptsChecked(true);
-      }
-  
-      if (
-        selectedSource.includes('ChatGPT') &&
-        dataStoreUser.optionStates.mathConcepts.length >= concepts.length
-      ) {
-        setAllConceptsChecked(true);
-      }
+    if (optionStatesRef.current.mathSource) {
+      setSelectedSource(optionStatesRef.current.mathSource);
     }
 
-    if (dataStoreUser.optionStates?.mathLevel) setSelectedLevel(dataStoreUser.optionStates.mathLevel);
+    if (optionStatesRef.current.mathLevel) {
+      setSelectedLevel(optionStatesRef.current.mathLevel);
+    }
 
-    if (dataStoreUser.optionStates?.mathNumber) setNum(dataStoreUser.optionStates.mathNumber.toString());
+    if (optionStatesRef.current.mathNumber) {
+      setNum(optionStatesRef.current.mathNumber.toString());
+    }
+
+    if (optionStatesRef.current.mathMode) {
+      setMode(optionStatesRef.current.mathMode);
+    }
+
+    if (optionStatesRef.current.mathConcepts) {
+      setSelectedConcepts(optionStatesRef.current.mathConcepts as (MathConcept | HendrycksConcept)[]);
+    }
 
     setTimeout(() => {
       ignoreTriggerRef.current = false;
     }, 100);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[dataStoreUser]);
+  }, []);
 
   useEffect(() => {
     if (ignoreTriggerRef.current) return;
@@ -212,17 +204,22 @@ function MathExam() {
 
     setTimeout(()=>onOpenExamModal(), 100);
 
-    const currentUser = await DataStore.query(User, dataStoreUser.id);
-    setDataStoreUser(await DataStore.save(User.copyOf(currentUser!, updated => {
-      updated.optionStates = {
-        ...updated.optionStates,
+    optionStatesRef.current = {
+      ...optionStatesRef.current,
         mathSource: selectedSource,
         mathConcepts: selectedConcepts,
         mathLevel: selectedLevel,
         mathNumber: Number(num),
         mathMode: mode
-      };
-    })));
+    };
+
+    Cache.setItem(
+      'optionStates', 
+      optionStatesRef.current, 
+      { 
+        expires: new Date().getTime() + (1000 * 60 * 60 * 24 * 31)
+      }
+    );
   }
 
   const savedQuestionsButtonClickedHandler = () => {

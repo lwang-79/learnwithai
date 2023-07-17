@@ -95,20 +95,6 @@ export const createUser = /* GraphQL */ `
         emails
         types
       }
-      optionStates {
-        mathMode
-        mathNumber
-        mathSource
-        mathLevel
-        mathConcepts
-        writingType
-        writingTopic
-        writingLevel
-        stemMode
-        stemNumber
-        stemLevel
-        stemConcepts
-      }
       owner
       badges
       createdAt
@@ -196,20 +182,6 @@ export const updateUser = /* GraphQL */ `
         emails
         types
       }
-      optionStates {
-        mathMode
-        mathNumber
-        mathSource
-        mathLevel
-        mathConcepts
-        writingType
-        writingTopic
-        writingLevel
-        stemMode
-        stemNumber
-        stemLevel
-        stemConcepts
-      }
       owner
       badges
       createdAt
@@ -296,20 +268,6 @@ export const deleteUser = /* GraphQL */ `
       notification {
         emails
         types
-      }
-      optionStates {
-        mathMode
-        mathNumber
-        mathSource
-        mathLevel
-        mathConcepts
-        writingType
-        writingTopic
-        writingLevel
-        stemMode
-        stemNumber
-        stemLevel
-        stemConcepts
       }
       owner
       badges

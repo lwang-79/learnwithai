@@ -4,7 +4,7 @@ import SharedComponents from '@/components/Common/SharedComponents';
 import WithAuth from '@/components/Common/WithAuth';
 import EssayList from '@/components/Writing/EssayList';
 import WritingBoard from '@/components/Writing/WritingBoard';
-import { Essay, User } from '@/models';
+import { Essay, OptionStates } from '@/models';
 import { getTodayStatistic } from '@/types/statistic';
 import { EssayTopic, EssayType, QuestionLevel } from '@/types/types';
 import { 
@@ -27,8 +27,8 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react'
-import { DataStore } from 'aws-amplify';
-import { useContext, useEffect, useState } from 'react'
+import { Cache } from 'aws-amplify';
+import { useContext, useEffect, useRef, useState } from 'react'
 
 function Writing() {
   const { 
@@ -36,6 +36,7 @@ function Writing() {
     onOpen: onOpenExamModal, 
     onClose: onCloseExamModal
   } = useDisclosure();
+  const optionStatesRef = useRef(Cache.getItem('optionStates') as OptionStates);
 
   const types = Object.values(EssayType)
   const topics = Object.values(EssayTopic);
@@ -44,17 +45,16 @@ function Writing() {
   const [ selectedTopic, setSelectedTopic ] = useState<string>(EssayTopic.Society);
   const [ selectedLevel, setSelectedLevel ] = useState<string>(QuestionLevel.Year6);
   const [ selectedEssay, setSelectedEssay ] = useState<Essay>();
-  const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
+  const { dataStoreUser } = useContext(SharedComponents);
 
   const toast = useToast();
   const [ refreshEssayList, setRefreshEssayList ] = useBoolean(false);
 
   useEffect(() => {
-    if (!dataStoreUser) return;
 
-    if (dataStoreUser.optionStates?.writingType) setSelectedType(dataStoreUser.optionStates.writingType);
-    if (dataStoreUser.optionStates?.writingTopic) setSelectedTopic(dataStoreUser.optionStates.writingTopic);
-    if (dataStoreUser.optionStates?.writingLevel) setSelectedLevel(dataStoreUser.optionStates.writingLevel);
+    if (optionStatesRef.current?.writingType) setSelectedType(optionStatesRef.current.writingType);
+    if (optionStatesRef.current?.writingTopic) setSelectedTopic(optionStatesRef.current.writingTopic);
+    if (optionStatesRef.current?.writingLevel) setSelectedLevel(optionStatesRef.current.writingLevel);
   
   },[dataStoreUser]);
 
@@ -82,17 +82,20 @@ function Writing() {
 
     setTimeout(()=>onOpenExamModal(), 100);
 
-    const currentUser = await DataStore.query(User, dataStoreUser.id);
-    const updatedUser = await DataStore.save(User.copyOf(currentUser!, updated => {
-      updated.optionStates = {
-        ...updated.optionStates,
-        writingType: selectedType,
-        writingTopic: selectedTopic,
-        writingLevel: selectedLevel
-      };
-    }));
+    optionStatesRef.current = {
+      ...optionStatesRef.current,
+      writingType: selectedType,
+      writingTopic: selectedTopic,
+      writingLevel: selectedLevel
+    };
 
-    setDataStoreUser(updatedUser);
+    Cache.setItem(
+      'optionStates', 
+      optionStatesRef.current, 
+      { 
+        expires: new Date().getTime() + (1000 * 60 * 60 * 24 * 31)
+      }
+    );
   }
 
   const openModalWithEssay = (essay: Essay) => {

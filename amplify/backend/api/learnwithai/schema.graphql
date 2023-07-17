@@ -36,7 +36,7 @@ type User
   yearly: [Statistic!]
   gameData: GameData
   notification: Notification
-  optionStates: OptionStates
+  # optionStates: OptionStates
   owner: String
   badges: [ID!]
 }
