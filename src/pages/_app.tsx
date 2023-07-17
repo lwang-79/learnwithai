@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify, DataStore, Hub, syncExpression } from 'aws-amplify';
+import { Amplify, Auth, DataStore, Hub, syncExpression } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
@@ -75,7 +75,11 @@ DataStore.configure({
       date.setMonth(date.getMonth() - 1);
       const lastMonth = date.toISOString().slice(0,7);
       return item => item.date.ge(lastMonth);
-    })
+    }),
+    syncExpression(User, async () => {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      return user => user.sub.eq(currentUser.attributes.sub);
+    }),
   ]
 })
 
