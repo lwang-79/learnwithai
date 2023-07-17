@@ -235,7 +235,6 @@ type EagerUser = {
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
-  readonly optionStates?: OptionStates | null;
   readonly owner?: string | null;
   readonly badges?: string[] | null;
   readonly createdAt?: string | null;
@@ -261,7 +260,6 @@ type LazyUser = {
   readonly yearly?: Statistic[] | null;
   readonly gameData?: GameData | null;
   readonly notification?: Notification | null;
-  readonly optionStates?: OptionStates | null;
   readonly owner?: string | null;
   readonly badges?: string[] | null;
   readonly createdAt?: string | null;

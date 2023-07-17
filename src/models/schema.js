@@ -119,15 +119,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "optionStates": {
-                    "name": "optionStates",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "OptionStates"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -1493,5 +1484,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "58e98f61ccc7654b0a44300b79009a76"
+    "version": "806fe2ae881fc6356e11d2aec97be75c"
 };

@@ -76,20 +76,6 @@ export const getUser = /* GraphQL */ `
         emails
         types
       }
-      optionStates {
-        mathMode
-        mathNumber
-        mathSource
-        mathLevel
-        mathConcepts
-        writingType
-        writingTopic
-        writingLevel
-        stemMode
-        stemNumber
-        stemLevel
-        stemConcepts
-      }
       owner
       badges
       createdAt
@@ -178,20 +164,6 @@ export const listUsers = /* GraphQL */ `
         notification {
           emails
           types
-        }
-        optionStates {
-          mathMode
-          mathNumber
-          mathSource
-          mathLevel
-          mathConcepts
-          writingType
-          writingTopic
-          writingLevel
-          stemMode
-          stemNumber
-          stemLevel
-          stemConcepts
         }
         owner
         badges
@@ -290,20 +262,6 @@ export const syncUsers = /* GraphQL */ `
         notification {
           emails
           types
-        }
-        optionStates {
-          mathMode
-          mathNumber
-          mathSource
-          mathLevel
-          mathConcepts
-          writingType
-          writingTopic
-          writingLevel
-          stemMode
-          stemNumber
-          stemLevel
-          stemConcepts
         }
         owner
         badges
@@ -405,20 +363,6 @@ export const userBySub = /* GraphQL */ `
           emails
           types
         }
-        optionStates {
-          mathMode
-          mathNumber
-          mathSource
-          mathLevel
-          mathConcepts
-          writingType
-          writingTopic
-          writingLevel
-          stemMode
-          stemNumber
-          stemLevel
-          stemConcepts
-        }
         owner
         badges
         createdAt
@@ -518,20 +462,6 @@ export const userByPayerId = /* GraphQL */ `
         notification {
           emails
           types
-        }
-        optionStates {
-          mathMode
-          mathNumber
-          mathSource
-          mathLevel
-          mathConcepts
-          writingType
-          writingTopic
-          writingLevel
-          stemMode
-          stemNumber
-          stemLevel
-          stemConcepts
         }
         owner
         badges
