@@ -62,42 +62,42 @@ export const Teachers: Character[] = [{
 
 export const Boys: Character[] = [{
   role: 'student',
-  name: 'Tom',
+  name: 'Lundy',
   picture: '/classroom/student-m-0.png',
   gender: 'male',
   skill: 1,
   behavior: 'naughty and energetic'
 }, {
   role: 'student',
-  name: 'James',
+  name: 'Lucas',
   picture: '/classroom/student-m-1.png',
   gender: 'male',
   skill: 2,
   behavior: 'confident and adventurous'
 }, {
   role: 'student',
-  name: 'Robert',
+  name: 'Aaron',
   picture: '/classroom/student-m-2.png',
   gender: 'male',
   skill: 3,
   behavior: 'curious and kind'
 }, {
   role: 'student',
-  name: 'Michael',
+  name: 'Ricky',
   picture: '/classroom/student-m-3.png',
   gender: 'male',
   skill: 4,
   behavior: 'adventurous and careless'
 }, {
   role: 'student',
-  name: 'Steven',
+  name: 'Asher',
   picture: '/classroom/student-m-4.png',
   gender: 'male',
   skill: 5,
   behavior: 'smart and lazy'
 }, {
   role: 'student',
-  name: 'David',
+  name: 'Eric',
   picture: '/classroom/student-m-5.png',
   gender: 'male',
   skill: 4,
@@ -106,63 +106,63 @@ export const Boys: Character[] = [{
 
 export const Girls: Character[] = [{
   role: 'student',
-  name: 'Mary',
+  name: 'Chara',
   picture: '/classroom/student-f-0.png',
   gender: 'female',
   skill: 1,
   behavior: 'naughty and modest'
 }, {
   role: 'student',
-  name: 'Linda',
+  name: 'Genevie',
   picture: '/classroom/student-f-1.png',
   gender: 'female',
   skill: 2,
   behavior: 'confident and cheerful'
 }, {
   role: 'student',
-  name: 'Barbara',
+  name: 'Jessica',
   picture: '/classroom/student-f-2.png',
   gender: 'female',
   skill: 3,
   behavior: 'optimistic and kind'
 }, {
   role: 'student',
-  name: 'Jennifer',
+  name: 'Mia',
   picture: '/classroom/student-f-3.png',
   gender: 'female',
   skill: 4,
   behavior: 'adventurous and careless'
 }, {
   role: 'student',
-  name: 'Nancy',
+  name: 'Jin',
   picture: '/classroom/student-f-4.png',
   gender: 'female',
   skill: 5,
   behavior: 'intelligent and patient'
 }, {
   role: 'student',
-  name: 'Lisa',
+  name: 'Selina',
   picture: '/classroom/student-f-5.png',
   gender: 'female',
   skill: 4,
   behavior: 'honest and steady'
 }, {
   role: 'student',
-  name: 'Carol',
+  name: 'Sophie',
   picture: '/classroom/student-f-6.png',
   gender: 'female',
   skill: 2,
   behavior: 'sensitive and creative'
 }, {
   role: 'student',
-  name: 'Helen',
+  name: 'Ruby',
   picture: '/classroom/student-f-7.png',
   gender: 'female',
   skill: 3,
   behavior: 'curious and ambitious'
 }, {
   role: 'student',
-  name: 'Margaret',
+  name: 'Lucy',
   picture: '/classroom/student-f-8.png',
   gender: 'female',
   skill: 4,
