@@ -54,7 +54,9 @@ export const chatCompletion = async (
       max_tokens: max_tokens
     });
 
-    if (functions) {
+    console.log(JSON.stringify(completion.data.choices[0].message))
+
+    if (completion.data.choices[0].message?.function_call) {
       return {
         statusCode: 200,
         data: completion.data.choices[0].message?.function_call.arguments,

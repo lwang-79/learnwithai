@@ -42,6 +42,7 @@ var anything_1 = require("./openai/anything");
 var math_1 = require("./openai/math");
 var writing_1 = require("./openai/writing");
 var types_1 = require("./types");
+var chat_1 = require("openai/chat");
 var model = 'gpt-3.5-turbo-0613';
 exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
     var req, operation, body, _a;
@@ -64,54 +65,59 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
                 _a = operation;
                 switch (_a) {
                     case types_1.APIOperation.AskAnything: return [3 /*break*/, 1];
-                    case types_1.APIOperation.WritingPrompt: return [3 /*break*/, 3];
-                    case types_1.APIOperation.WritingMark: return [3 /*break*/, 5];
-                    case types_1.APIOperation.WritingPolish: return [3 /*break*/, 7];
-                    case types_1.APIOperation.MathDataset: return [3 /*break*/, 9];
-                    case types_1.APIOperation.MathQuestion: return [3 /*break*/, 11];
-                    case types_1.APIOperation.MathAnswer: return [3 /*break*/, 13];
-                    case types_1.APIOperation.StemQuestion: return [3 /*break*/, 15];
+                    case types_1.APIOperation.Chat: return [3 /*break*/, 3];
+                    case types_1.APIOperation.WritingPrompt: return [3 /*break*/, 5];
+                    case types_1.APIOperation.WritingMark: return [3 /*break*/, 7];
+                    case types_1.APIOperation.WritingPolish: return [3 /*break*/, 9];
+                    case types_1.APIOperation.MathDataset: return [3 /*break*/, 11];
+                    case types_1.APIOperation.MathQuestion: return [3 /*break*/, 13];
+                    case types_1.APIOperation.MathAnswer: return [3 /*break*/, 15];
+                    case types_1.APIOperation.StemQuestion: return [3 /*break*/, 17];
                 }
-                return [3 /*break*/, 17];
+                return [3 /*break*/, 19];
             case 1: return [4 /*yield*/, (0, anything_1.askAnything)(req.prompt || '')];
             case 2:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 3: return [4 /*yield*/, (0, writing_1.generateWritingPrompt)(req.type || '', req.topic || '', req.level || '')];
+                return [3 /*break*/, 20];
+            case 3: return [4 /*yield*/, (0, chat_1.chatCompletion)(req.messages || '', req["function"] || '', req.temperature || 1, req.max_tokens || 1000)];
             case 4:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 5: return [4 /*yield*/, (0, writing_1.generateWritingMark)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
+                return [3 /*break*/, 20];
+            case 5: return [4 /*yield*/, (0, writing_1.generateWritingPrompt)(req.type || '', req.topic || '', req.level || '')];
             case 6:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 7: return [4 /*yield*/, (0, writing_1.polishWriting)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
+                return [3 /*break*/, 20];
+            case 7: return [4 /*yield*/, (0, writing_1.generateWritingMark)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
             case 8:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 9: return [4 /*yield*/, (0, math_1.getDatasetQuestions)(req.dataset || '', req.questionCount || '', req.level || '', req.concept || '')];
+                return [3 /*break*/, 20];
+            case 9: return [4 /*yield*/, (0, writing_1.polishWriting)(req.level || '', req.type || '', req.prompt || '', req.essay || '')];
             case 10:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 11: return [4 /*yield*/, (0, math_1.generateMathQuestion)(req.category || '', req.type || '', req.level || '', req.concept || '')];
+                return [3 /*break*/, 20];
+            case 11: return [4 /*yield*/, (0, math_1.getDatasetQuestions)(req.dataset || '', req.questionCount || '', req.level || '', req.concept || '')];
             case 12:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 13: return [4 /*yield*/, (0, math_1.generateMathAnswer)(req.question || '')];
+                return [3 /*break*/, 20];
+            case 13: return [4 /*yield*/, (0, math_1.generateMathQuestion)(req.category || '', req.type || '', req.level || '', req.concept || '')];
             case 14:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 15: return [4 /*yield*/, (0, stem_1.getStemQuestions)(req.concepts || [], req.level || '', req.questionCount || '')];
+                return [3 /*break*/, 20];
+            case 15: return [4 /*yield*/, (0, math_1.generateMathAnswer)(req.question || '')];
             case 16:
                 body = _b.sent();
-                return [3 /*break*/, 18];
-            case 17:
+                return [3 /*break*/, 20];
+            case 17: return [4 /*yield*/, (0, stem_1.getStemQuestions)(req.concepts || [], req.level || '', req.questionCount || '')];
+            case 18:
+                body = _b.sent();
+                return [3 /*break*/, 20];
+            case 19:
                 body = {
                     statusCode: 400,
                     error: "Invalid operation"
                 };
-                _b.label = 18;
-            case 18:
+                _b.label = 20;
+            case 20:
                 if (body.statusCode !== 200) {
                     console.error(body.error);
                 }

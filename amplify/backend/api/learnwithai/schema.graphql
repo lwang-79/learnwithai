@@ -60,6 +60,7 @@ type Quota {
   savedQuestions: Int!
   savedTests: Int!
   savedEssays: Int!
+  classroomRound: Int!
 }
 
 type Statistic {

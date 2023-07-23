@@ -55,6 +55,7 @@ type EagerQuota = {
   readonly savedQuestions: number;
   readonly savedTests: number;
   readonly savedEssays: number;
+  readonly classroomRound: number;
 }
 
 type LazyQuota = {
@@ -64,6 +65,7 @@ type LazyQuota = {
   readonly savedQuestions: number;
   readonly savedTests: number;
   readonly savedEssays: number;
+  readonly classroomRound: number;
 }
 
 export declare type Quota = LazyLoading extends LazyLoadingDisabled ? EagerQuota : LazyQuota

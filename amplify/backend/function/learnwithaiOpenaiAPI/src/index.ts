@@ -3,6 +3,7 @@ import { askAnything } from "./openai/anything";
 import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from "./openai/math";
 import { generateWritingMark, generateWritingPrompt, polishWriting } from "./openai/writing";
 import { APIOperation, APIResponse, QuestionSource } from "./types";
+import { chatCompletion } from "openai/chat";
 
 let model = 'gpt-3.5-turbo-0613';
 
@@ -28,6 +29,15 @@ exports.handler = async (event) => {
   switch (operation) {
     case APIOperation.AskAnything:
       body = await askAnything(req.prompt || '');
+      break;
+
+    case APIOperation.Chat:
+      body = await chatCompletion(
+        req.messages || '', 
+        req.function || '',
+        req.temperature || 1,
+        req.max_tokens || 1000
+      );
       break;
 
     case APIOperation.WritingPrompt:

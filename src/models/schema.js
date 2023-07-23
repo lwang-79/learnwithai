@@ -1141,6 +1141,13 @@ export const schema = {
                     "type": "Int",
                     "isRequired": true,
                     "attributes": []
+                },
+                "classroomRound": {
+                    "name": "classroomRound",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         },
@@ -1484,5 +1491,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "806fe2ae881fc6356e11d2aec97be75c"
+    "version": "bd71abf31dcc95391783b64f17e85288"
 };
