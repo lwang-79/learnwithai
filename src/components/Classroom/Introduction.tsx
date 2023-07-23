@@ -10,7 +10,7 @@ function Introduction() {
       </HStack>
       <HStack spacing={4} p={4}>
         <Avatar borderWidth='2px' borderColor='gray.200' size='lg' src='/classroom/teacher-1.png' />
-        <Tag p={4} colorScheme='orange'>{`Hi I am Ms. Cheung, It's a pleasure to meet you all! Another example, if you're a high school student seeking to discuss the Chinese poem "满江红" with AI students and teachers, input "Chinese" as the subject, "满江红" as the topic, and "high school" as the level.`}</Tag>
+        <Tag p={4} colorScheme='orange'>{`Hi I am Ms. Cheung, It's a pleasure to meet you all! Another example, if you're a high school student seeking to discuss the Chinese poem "" with AI students and teachers, input "Chinese" as the subject, "" as the topic, and "high school" as the level.`}</Tag>
       </HStack>
       <HStack spacing={4} p={4}>
         <Avatar borderWidth='2px' borderColor='gray.200' size='lg' src='/classroom/teacher-2.png' />
