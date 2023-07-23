@@ -17,6 +17,7 @@ export const getUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current
@@ -106,6 +107,7 @@ export const listUsers = /* GraphQL */ `
           savedQuestions
           savedTests
           savedEssays
+          classroomRound
         }
         membership {
           current
@@ -204,6 +206,7 @@ export const syncUsers = /* GraphQL */ `
           savedQuestions
           savedTests
           savedEssays
+          classroomRound
         }
         membership {
           current
@@ -304,6 +307,7 @@ export const userBySub = /* GraphQL */ `
           savedQuestions
           savedTests
           savedEssays
+          classroomRound
         }
         membership {
           current
@@ -404,6 +408,7 @@ export const userByPayerId = /* GraphQL */ `
           savedQuestions
           savedTests
           savedEssays
+          classroomRound
         }
         membership {
           current

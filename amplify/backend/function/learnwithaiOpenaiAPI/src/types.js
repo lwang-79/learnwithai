@@ -11,6 +11,7 @@ var APIOperation;
     APIOperation["MathDataset"] = "math-dataset";
     APIOperation["AskAnything"] = "ask-anything";
     APIOperation["StemQuestion"] = "stem-question";
+    APIOperation["Chat"] = "chat";
 })(APIOperation = exports.APIOperation || (exports.APIOperation = {}));
 var QuestionSource;
 (function (QuestionSource) {

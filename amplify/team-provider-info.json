@@ -25,7 +25,7 @@
         "learnwithaiSubscribe": {
           "secretsPathAmplifyAppId": "d3pwxvup88n55n",
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiSubscribe-415874776356626f636d-build.zip",
+          "s3Key": "amplify-builds/learnwithaiSubscribe-6e79794434636b2f5168-build.zip",
           "paypalApiEndpoint": "https://api-m.sandbox.paypal.com",
           "paypalClientId": "Ad9m5rn53n5uqK_7Oc6WtzMSoB4e6ip2OMQ_jlyglF0TVKfYJMbSOkiW2CH2x3gKRTvURai5TZobOH2j",
           "paypalWebhookId": "53Y44870C7408454U"
@@ -37,7 +37,7 @@
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-366d466c6f6a4a6c7662-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-58586233336d76413848-build.zip",
           "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},

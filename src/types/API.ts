@@ -35,6 +35,7 @@ export type QuotaInput = {
   savedQuestions: number,
   savedTests: number,
   savedEssays: number,
+  classroomRound: number,
 };
 
 export type MembershipInput = {
@@ -194,6 +195,7 @@ export type Quota = {
   savedQuestions: number,
   savedTests: number,
   savedEssays: number,
+  classroomRound: number,
 };
 
 export type Membership = {
@@ -1128,6 +1130,7 @@ export type CreateUserMutation = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -1225,6 +1228,7 @@ export type UpdateUserMutation = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -1322,6 +1326,7 @@ export type DeleteUserMutation = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -1970,6 +1975,7 @@ export type GetUserQuery = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -2070,6 +2076,7 @@ export type ListUsersQuery = {
         savedQuestions: number,
         savedTests: number,
         savedEssays: number,
+        classroomRound: number,
       } | null,
       membership?:  {
         __typename: "Membership",
@@ -2174,6 +2181,7 @@ export type SyncUsersQuery = {
         savedQuestions: number,
         savedTests: number,
         savedEssays: number,
+        classroomRound: number,
       } | null,
       membership?:  {
         __typename: "Membership",
@@ -2279,6 +2287,7 @@ export type UserBySubQuery = {
         savedQuestions: number,
         savedTests: number,
         savedEssays: number,
+        classroomRound: number,
       } | null,
       membership?:  {
         __typename: "Membership",
@@ -2384,6 +2393,7 @@ export type UserByPayerIdQuery = {
         savedQuestions: number,
         savedTests: number,
         savedEssays: number,
+        classroomRound: number,
       } | null,
       membership?:  {
         __typename: "Membership",
@@ -3150,6 +3160,7 @@ export type OnCreateUserSubscription = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -3247,6 +3258,7 @@ export type OnUpdateUserSubscription = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",
@@ -3344,6 +3356,7 @@ export type OnDeleteUserSubscription = {
       savedQuestions: number,
       savedTests: number,
       savedEssays: number,
+      classroomRound: number,
     } | null,
     membership?:  {
       __typename: "Membership",

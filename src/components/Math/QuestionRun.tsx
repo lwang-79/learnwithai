@@ -417,7 +417,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
         dataStoreUser.notification.emails as string[], 
         `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`, 
         message, 
-        'notification@studtwithai.pro'
+        'notification@studywithai.pro'
       );
     }
   }

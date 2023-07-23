@@ -20,6 +20,7 @@ export const onCreateUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current
@@ -107,6 +108,7 @@ export const onUpdateUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current
@@ -194,6 +196,7 @@ export const onDeleteUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current

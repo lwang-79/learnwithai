@@ -36,6 +36,7 @@ export const createUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current
@@ -123,6 +124,7 @@ export const updateUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current
@@ -210,6 +212,7 @@ export const deleteUser = /* GraphQL */ `
         savedQuestions
         savedTests
         savedEssays
+        classroomRound
       }
       membership {
         current

@@ -49,9 +49,9 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
     if (max_tokens === void 0) { max_tokens = 1000; }
     return __awaiter(void 0, void 0, void 0, function () {
         var model, completion, error_1;
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
                     // const { Parameter } = await (new SSMClient({
                     //   region: process.env.AWS_REGION
@@ -76,9 +76,9 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
                     console.log("Functions: ".concat(JSON.stringify(functions)));
                     console.log("Temperature: ".concat(temperature));
                     console.log("Max Tokens: ".concat(max_tokens));
-                    _c.label = 1;
+                    _d.label = 1;
                 case 1:
-                    _c.trys.push([1, 3, , 4]);
+                    _d.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, openai.createChatCompletion({
                             model: model,
                             messages: messages,
@@ -87,19 +87,20 @@ var chatCompletion = function (messages, functions, temperature, max_tokens) {
                             max_tokens: max_tokens
                         })];
                 case 2:
-                    completion = _c.sent();
-                    if (functions) {
+                    completion = _d.sent();
+                    console.log(JSON.stringify(completion.data.choices[0].message));
+                    if ((_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.function_call) {
                         return [2 /*return*/, {
                                 statusCode: 200,
-                                data: (_a = completion.data.choices[0].message) === null || _a === void 0 ? void 0 : _a.function_call.arguments
+                                data: (_b = completion.data.choices[0].message) === null || _b === void 0 ? void 0 : _b.function_call.arguments
                             }];
                     }
                     return [2 /*return*/, {
                             statusCode: 200,
-                            data: (_b = completion.data.choices[0].message) === null || _b === void 0 ? void 0 : _b.content
+                            data: (_c = completion.data.choices[0].message) === null || _c === void 0 ? void 0 : _c.content
                         }];
                 case 3:
-                    error_1 = _c.sent();
+                    error_1 = _d.sent();
                     if (error_1.response) {
                         console.error(error_1.response.status, error_1.response.data);
                         return [2 /*return*/, {

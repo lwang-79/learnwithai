@@ -49,8 +49,8 @@ import Logo from './Logo';
 import { SystemMessage } from '@/models';
 import MessagePopover from './MessagePopover';
 
-const Links = ['/math', '/writing', '/stem'];
-const LinkNames = ['Math', 'Writing', 'STEM']
+const Links = ['/math', '/writing', '/stem', '/classroom'];
+const LinkNames = ['Math', 'Writing', 'STEM', 'MiniClass'];
 
 const NavLink = ({ children, href }: { children: ReactNode, href: string }) => (
   <Link

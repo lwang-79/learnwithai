@@ -11,6 +11,7 @@ export enum APIOperation {
   MathDataset = 'math-dataset',
   AskAnything = 'ask-anything',
   StemQuestion = 'stem-question',
+  Chat = 'chat'
 }
 
 export enum QuestionSource {
