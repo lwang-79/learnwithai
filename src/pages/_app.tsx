@@ -10,7 +10,7 @@ import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
 import { RankingItem, User } from '@/models';
 import { APIName } from '@/types/types';
-import { AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
+import { Predictions, AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
 
 if (typeof window === 'undefined') {
   Amplify.configure(awsconfig);
@@ -66,7 +66,7 @@ if (typeof window === 'undefined') {
   }
 
   Amplify.configure(updatedAwsConfig);
-  Amplify.addPluggable(new AmazonAIPredictionsProvider());
+  Predictions.addPluggable(new AmazonAIPredictionsProvider());
 }
 
 DataStore.configure({
