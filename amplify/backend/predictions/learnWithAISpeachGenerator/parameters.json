@@ -1,0 +1,14 @@
+{
+    "resourceName": "learnWithAISpeachGenerator",
+    "convertPolicyName": "speechGeneratorPolicyf926c674",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "convertType": "speechGenerator",
+    "language": "en-US",
+    "voice": "Joanna",
+    "access": "auth"
+}

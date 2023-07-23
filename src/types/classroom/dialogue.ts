@@ -22,6 +22,7 @@ const getDialogue = async (messages: ChatMessage[], apiName: APIName) => {
     words = JSON.parse(body.data).words;
     nextRole = JSON.parse(body.data).nextRole;
   } catch (error) {
+    console.log(body.data)
     console.log(error)
     words = body.data;
   }

@@ -30,6 +30,7 @@ export type Character = {
   gender: 'male' | 'female'
   skill: number // 1 - 10
   behavior?: string
+  voice?: string
 }
 
 export const Teachers: Character[] = [{
@@ -38,21 +39,24 @@ export const Teachers: Character[] = [{
     picture: '/classroom/teacher-0.png',
     gender: 'female',
     skill: 10,
-    behavior: 'nice'
+    behavior: 'nice',
+    voice: 'Joanna'
   }, {
     role: 'teacher',
     name: 'Furgerson',
     picture: '/classroom/teacher-2.png',
     gender: 'male',
     skill: 10,
-    behavior: 'humor'
+    behavior: 'humor',
+    voice: 'Matthew'
   }, {
     role: 'teacher',
     name: 'Cheung',
     picture: '/classroom/teacher-1.png',
     gender: 'female',
     skill: 10,
-    behavior: 'strict'
+    behavior: 'strict',
+    voice: 'Salli'
   }
 ]
 

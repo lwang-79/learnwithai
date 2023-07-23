@@ -32,8 +32,9 @@ import {
   useToast, 
   VStack 
 } from '@chakra-ui/react';
+import { Predictions } from 'aws-amplify';
 import { useContext, useEffect, useRef, useState } from 'react'
-import { MdPause, MdPlayArrow, MdStop } from 'react-icons/md';
+import { MdPause, MdPlayArrow, MdStop, MdVolumeOff, MdVolumeUp } from 'react-icons/md';
 
 const MAX_ROUND = 10;
 
@@ -53,6 +54,10 @@ function Classroom() {
   const [ isPlaying, setIsPlaying ] = useState(isPlayingRef.current);
   const [ isFetchingFinished, setIsFetchingFinished ] = useState(true);
   const [ isPlayingFinished, setIsPlayingFinished ] = useState(true);
+  // const isAudioEnabledRef = useRef(true);
+  const [ isAudioEnabled, setIsAudioEnabled ] = useState(false);
+  const isAudioPlayingRef = useRef(false);
+  const [ audioPlayToggle, setAudioPlayToggle ] = useBoolean(false);
   const roundRef = useRef(0);
   const { dataStoreUser } = useContext(SharedComponents);
   const [ isTimedOut, setIsTimedOut ] = useBoolean(true);
@@ -73,8 +78,8 @@ function Classroom() {
   }, [setIsTimedOut]);
 
   useEffect(() => {
-    if (!isPlaying) return;
-    
+    if (isAudioPlayingRef.current || !isPlaying) return;
+
     const length = dialogues.length;
 
     if (length === maxRound) {
@@ -83,13 +88,48 @@ function Classroom() {
       setIsPlayingFinished(true);
     }
 
+    const playSpeech = async (text: string, voice: string = "Kendra") => {
+      try {
+        const result = await Predictions.convert({
+          textToSpeech: {
+            source: {
+              text: text
+            },
+            voiceId: voice
+          }
+        });
+
+        const audio = new Audio(result.speech.url);
+
+        const playAudio = (audio: HTMLAudioElement) => {
+          return new Promise(res=>{
+            audio.play()
+            audio.onended = res
+          })
+        }
+        await playAudio(audio);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     if (dialoguesRef.current.length > length ) {
       const newDialogues = dialoguesRef.current.slice(-(length+1));
       setDialogues(newDialogues);
-    }
 
+      if (isAudioEnabled) {
+        isAudioPlayingRef.current = true;
+        const voice = charactersRef.current.find(character => character.name === newDialogues[0].role.split('-')[1])?.voice;
+        playSpeech(newDialogues[0].content, voice).then(() => {
+          isAudioPlayingRef.current = false;
+          setTimeout(() => {setAudioPlayToggle.toggle()},1000);
+        });
+      }
+    }
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTimedOut]);
+  }, [audioPlayToggle, isTimedOut]);
 
   const selectedTeacherChangedHandler = (event: React.SyntheticEvent) => {
     const target = event.target as HTMLInputElement;
@@ -133,16 +173,17 @@ function Classroom() {
       charactersRef.current.push({
         role: 'student',
         name: dataStoreUser.username,
-        gender: 'male',
+        gender: 'female',
         skill: Math.floor(Math.random() * 5),
-        picture: dataStoreUser.picture
+        picture: dataStoreUser.picture,
+        voice: 'Ivy'
       })
 
       const randomBoy = Boys[Math.floor(Math.random() * Boys.length)];
       const randomGirl = Girls[Math.floor(Math.random() * Girls.length)];
 
-      charactersRef.current.push(randomBoy);
-      charactersRef.current.push(randomGirl);
+      charactersRef.current.push({...randomBoy, voice: 'Justin'});
+      charactersRef.current.push({...randomGirl, voice: 'Kimberly'});
 
       let content = `Let's play a role-playing game. The scene takes place in a small ${level} ${subject} class, where students are engaged in a lively discussion or learning session centered around ${concept}. The following characters are included: `;
       for (const character of charactersRef.current) {
@@ -175,6 +216,7 @@ function Classroom() {
 
     isPlayingRef.current = true;
     setIsPlaying(isPlayingRef.current);
+    if (isAudioEnabled) { setAudioPlayToggle.toggle() }
 
     while (isPlayingRef.current && roundRef.current < maxRound) {
       let words = '';
@@ -230,6 +272,8 @@ function Classroom() {
         nextRole;
 
       roundRef.current ++;
+      if (isAudioEnabled) { setAudioPlayToggle.toggle() }
+
       if (roundRef.current === maxRound) {
         dialoguesRef.current = [
           {
@@ -250,6 +294,7 @@ function Classroom() {
     setIsPlaying(isPlayingRef.current);
     setIsFetchingFinished(true);
     setIsPlayingFinished(true);
+    isAudioPlayingRef.current = false;
     setDialogues([
       {
         role: 'System-System',
@@ -341,6 +386,7 @@ function Classroom() {
                   rounded='full'
                   variant='ghost'
                   aria-label='Start'
+                  size='sm'
                   icon={<Icon as={MdPause} boxSize={6} />}
                   isDisabled={!isPlaying}
                   onClick={()=>{
@@ -354,6 +400,7 @@ function Classroom() {
                   rounded='full'
                   variant='ghost'
                   aria-label='Start'
+                  size='sm'
                   icon={<Icon as={MdPlayArrow} boxSize={6} />}
                   isDisabled={isPlaying}
                   onClick={startButtonClickedHandler}
@@ -365,11 +412,35 @@ function Classroom() {
                 rounded='full'
                 variant='ghost'
                 aria-label='Start'
+                size='sm'
                 icon={<Icon as={MdStop} boxSize={6} />}
                 isDisabled={isPlayingFinished}
                 onClick={onOpenStopAlert}
               />
             </Tooltip>
+            {dataStoreUser && isAudioEnabled ? 
+              <Tooltip label='Turn off' hasArrow>
+                <IconButton
+                  rounded='full'
+                  variant='ghost'
+                  aria-label='Start'
+                  size='sm'
+                  icon={<Icon as={MdVolumeUp} boxSize={6} />}
+                  onClick={()=>setIsAudioEnabled(false)}              
+                />
+              </Tooltip> : dataStoreUser &&
+              <Tooltip label={dataStoreUser.membership!.current > 1 ? 'Turn on' : 'No available for your current plan'} hasArrow>
+                <IconButton
+                  rounded='full'
+                  variant='ghost'
+                  aria-label='Start'
+                  size='sm'
+                  icon={<Icon as={MdVolumeOff} boxSize={6} />}
+                  isDisabled={dataStoreUser.membership!.current < 2}
+                  onClick={()=>setIsAudioEnabled(true)}
+                />
+              </Tooltip>
+            }
             
           </HStack>
           {!isPlayingFinished || dialogues.length > 0  ? 
