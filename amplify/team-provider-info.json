@@ -32,16 +32,19 @@
         },
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-6e5648555047697a6a75-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-514c446a56586b337176-build.zip",
           "appName": "Learn with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-dev-80734-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-58586233336d76413848-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-676b3558746468386e53-build.zip",
           "openaiApiKey": "c2stZWlGS25YcnJsRE5yeU9xT1BzZ1lUM0JsYmtGSlJLMXVFYUlxYXJhN1JYcjRBdWZm"
         },
         "learnwithai": {},
         "learnwithai6c436a2f": {}
+      },
+      "predictions": {
+        "learnWithAISpeachGenerator": {}
       }
     }
   },
@@ -65,18 +68,18 @@
       "function": {
         "learnwithaiBackend": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiBackend-6e5648555047697a6a75-build.zip",
+          "s3Key": "amplify-builds/learnwithaiBackend-514c446a56586b337176-build.zip",
           "appName": "Study with AI"
         },
         "learnwithaiOpenaiAPI": {
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-366d466c6f6a4a6c7662-build.zip",
+          "s3Key": "amplify-builds/learnwithaiOpenaiAPI-676b3558746468386e53-build.zip",
           "openaiApiKey": "c2stWGJNYU1NUGRPYkk2cFlDZWJFWTdUM0JsYmtGSlc1clBMNUd4U2NHWGpMSGZtZ204"
         },
         "learnwithaiSubscribe": {
           "secretsPathAmplifyAppId": "d1z4s09z41bvqi",
           "deploymentBucketName": "amplify-learnwithai-prod-175434-deployment",
-          "s3Key": "amplify-builds/learnwithaiSubscribe-415874776356626f636d-build.zip",
+          "s3Key": "amplify-builds/learnwithaiSubscribe-6e79794434636b2f5168-build.zip",
           "paypalWebhookId": "2Y77522359395464W",
           "paypalApiEndpoint": "https://api-m.paypal.com",
           "paypalClientId": "AUpZ-B6lb_k8I_SFfyClzbUSwbGXjYU0jciKIn511nayn0ehk2_1yA5K8d4sjct8MPhrSZfJ_TA4AhiE"
@@ -87,6 +90,9 @@
       "api": {
         "learnwithai": {},
         "learnwithaipaypalwebhook": {}
+      },
+      "predictions": {
+        "learnWithAISpeachGenerator": {}
       }
     }
   }

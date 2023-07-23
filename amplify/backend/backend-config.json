@@ -226,5 +226,12 @@
         }
       ]
     }
+  },
+  "predictions": {
+    "learnWithAISpeachGenerator": {
+      "convertType": "speechGenerator",
+      "providerPlugin": "awscloudformation",
+      "service": "Polly"
+    }
   }
 }

@@ -49,5 +49,12 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     }
+  },
+  "predictions": {
+    "learnWithAISpeachGenerator": {
+      "language": "string",
+      "region": "string",
+      "voice": "string"
+    }
   }
 }

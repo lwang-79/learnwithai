@@ -16,9 +16,14 @@ export function override(resources: AmplifyUserPoolGroupStackTemplate, amplifyPr
         Statement: [
           {
             Resource: "arn:aws:lambda:*:*:function:learnwithaiOpenaiAPI*", //resource to permission, needs to be restricted for according to scope
-            Action: ['lambda:InvokeFunction'], //permissions
+            Action: ["lambda:InvokeFunction"], //permissions
             Effect: "Allow", //action allow or deny
           },
+          {
+            Resource: "*",
+            Action: ["polly:SynthesizeSpeech"],
+            Effect: "Allow",
+          }
         ],
       },
     },
