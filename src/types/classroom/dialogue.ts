@@ -7,7 +7,8 @@ const getDialogue = async (messages: ChatMessage[], apiName: APIName) => {
     body: {
       operation: APIOperation.Chat,
       messages: messages,
-      function: ClassroomFunction
+      function: ClassroomFunction,
+      // source: QuestionSource.ChatGPT4
     }
   };
 
@@ -21,6 +22,9 @@ const getDialogue = async (messages: ChatMessage[], apiName: APIName) => {
   try {
     words = JSON.parse(body.data).words;
     nextRole = JSON.parse(body.data).nextRole;
+    if (!words) {
+      words = JSON.parse(body.data);
+    }
   } catch (error) {
     console.log(body.data)
     console.log(error)

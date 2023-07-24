@@ -16,7 +16,7 @@ export const ClassroomFunction = [{
       },
       nextRole: {
         type: 'string',
-        description: 'The specified next person to speak.',
+        description: 'The name of the next role to speak.',
       },
     },
     required: ['words']
@@ -56,7 +56,7 @@ export const Teachers: Character[] = [{
     gender: 'female',
     skill: 10,
     behavior: 'strict',
-    voice: 'Salli'
+    voice: 'Kimberly'
   }
 ]
 

@@ -23,9 +23,11 @@ import {
   NumberInput, 
   NumberInputField, 
   NumberInputStepper, 
+  Progress, 
   Select, 
   Spacer, 
   Tag, 
+  Text, 
   Tooltip, 
   useBoolean, 
   useDisclosure, 
@@ -33,8 +35,10 @@ import {
   VStack 
 } from '@chakra-ui/react';
 import { Predictions } from 'aws-amplify';
+import Script from 'next/script';
 import { useContext, useEffect, useRef, useState } from 'react'
 import { MdPause, MdPlayArrow, MdStop, MdVolumeOff, MdVolumeUp } from 'react-icons/md';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const MAX_ROUND = 10;
 
@@ -43,6 +47,7 @@ function Classroom() {
   const [ subject, setSubject ] = useState('math');
   const [ concept, setConcept ] = useState('ratio');
   const [ selectedTeacher, setSelectedTeacher ] = useState(Teachers[0]);
+  const maxRoundRef = useRef(MAX_ROUND);
   const [ maxRound, setMaxRound ] = useState(MAX_ROUND);
   const charactersRef = useRef<Character[]>([Teachers[0]]); 
   const currentRoleRef = useRef('');
@@ -54,9 +59,8 @@ function Classroom() {
   const [ isPlaying, setIsPlaying ] = useState(isPlayingRef.current);
   const [ isFetchingFinished, setIsFetchingFinished ] = useState(true);
   const [ isPlayingFinished, setIsPlayingFinished ] = useState(true);
-  // const isAudioEnabledRef = useRef(true);
   const [ isAudioEnabled, setIsAudioEnabled ] = useState(false);
-  const isAudioPlayingRef = useRef(false);
+  const [ isAudioPlaying, setIsAudioPlaying ] = useState(false);
   const [ audioPlayToggle, setAudioPlayToggle ] = useBoolean(false);
   const roundRef = useRef(0);
   const { dataStoreUser } = useContext(SharedComponents);
@@ -73,29 +77,31 @@ function Classroom() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsTimedOut.toggle();
-    }, 10000);
+    }, 8000);
     return () => clearInterval(interval);
-  }, [setIsTimedOut]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (isAudioPlayingRef.current || !isPlaying) return;
+    if (isAudioPlaying || !isPlaying) return;
 
     const length = dialogues.length;
 
-    if (length === maxRound) {
+    if (length == maxRoundRef.current) {
       isPlayingRef.current = false;
       setIsPlaying(isPlayingRef.current);
       setIsPlayingFinished(true);
+      maxRoundRef.current = maxRound;
     }
 
-    const playSpeech = async (text: string, voice: string = "Kendra") => {
+    const playSpeech = async (text: string, voice: string = "Joey") => {
       try {
         const result = await Predictions.convert({
           textToSpeech: {
             source: {
-              text: text
+              text: text,
             },
-            voiceId: voice
+            voiceId: voice,
           }
         });
 
@@ -119,10 +125,10 @@ function Classroom() {
       setDialogues(newDialogues);
 
       if (isAudioEnabled) {
-        isAudioPlayingRef.current = true;
+        setIsAudioPlaying(true);
         const voice = charactersRef.current.find(character => character.name === newDialogues[0].role.split('-')[1])?.voice;
         playSpeech(newDialogues[0].content, voice).then(() => {
-          isAudioPlayingRef.current = false;
+          setIsAudioPlaying(false);
           setTimeout(() => {setAudioPlayToggle.toggle()},1000);
         });
       }
@@ -154,7 +160,7 @@ function Classroom() {
     if (isFetchingFinished) {
       if (!dataStoreUser) return;
 
-      if (maxRound > dataStoreUser.quota!.classroomRound) {
+      if (maxRoundRef.current > dataStoreUser.quota!.classroomRound) {
         toast({
           description: `The max round: ${maxRound} exceeded your current quota ${dataStoreUser.quota!.classroomRound}.`,
           status: 'error',
@@ -183,7 +189,7 @@ function Classroom() {
       const randomGirl = Girls[Math.floor(Math.random() * Girls.length)];
 
       charactersRef.current.push({...randomBoy, voice: 'Justin'});
-      charactersRef.current.push({...randomGirl, voice: 'Kimberly'});
+      charactersRef.current.push({...randomGirl, voice: 'Salli'});
 
       let content = `Let's play a role-playing game. The scene takes place in a small ${level} ${subject} class, where students are engaged in a lively discussion or learning session centered around ${concept}. The following characters are included: `;
       for (const character of charactersRef.current) {
@@ -191,14 +197,15 @@ function Classroom() {
       }
       content += `You will take on different roles, and I'll indicate your character each time. Remember the rules:
       1. Only speak as the character I indicate.
-      2. Keep each response under 50 words.
-      3. Exclude my instructions in your response.
-      4. Introduce diverse topics or assign tasks to keep the conversation flowing.
-      5. Avoid getting stuck in loops.
-      6. Instead of naming a specific character, ask "who can" perform an action.
-      7. You can incorporate classroom events as well.
-      8. Don't generate multiple role's words in one reply.
-      Alright, now you are ${charactersRef.current[0].name}. Please say something to start the class.`
+      2. Don't generate multiple role's words in one reply.
+      3. Keep each response under 50 words.
+      4. Exclude my instructions in your response.
+      5. Introduce diverse questions or practices to keep the conversation flowing.
+      6. Don't finish the class unless I ask you to do that.
+      7. Avoid getting stuck in question loops.
+      8. Instead of naming a specific character, ask "who can" perform an action.
+      9. If ask specific character to action, indicate the character's name in the nextRole of the function.
+      Alright, now you are ${charactersRef.current[0].name}. Please start the class by explaining ${concept}.`
 
       messagesRef.current = [{
         role: 'system',
@@ -218,7 +225,10 @@ function Classroom() {
     setIsPlaying(isPlayingRef.current);
     if (isAudioEnabled) { setAudioPlayToggle.toggle() }
 
-    while (isPlayingRef.current && roundRef.current < maxRound) {
+    while (
+      isPlayingRef.current && 
+      roundRef.current < maxRoundRef.current
+    ) {
       let words = '';
       let nextRole = '';
       let tryCount = 0;
@@ -228,9 +238,11 @@ function Classroom() {
           tryCount ++;
           ({ words, nextRole } = await getDialogue(messagesRef.current, apiName))
         } catch (error) {
-          
+          console.error(error);
         }
       } while (!words && tryCount < 3)
+
+      console.log(`nextRole from function: ${nextRole}`)
 
       if (!words) {
         isPlayingRef.current = false;
@@ -244,6 +256,15 @@ function Classroom() {
         break;
       }
 
+      if (words.includes('nextRole: ')) {
+        if (!nextRole) {
+          nextRole = words.split('nextRole: ')[1];
+        }
+        words = words.split('nextRole: ')[0];
+      }
+
+      console.log(`nextRole from words: ${nextRole}`)
+
       dialoguesRef.current = [
         {
           role: currentRoleRef.current,
@@ -254,32 +275,45 @@ function Classroom() {
   
       nextRole = getNextRole(charactersRef.current, currentRoleRef.current, nextRole);
   
+      console.log(`Final nextRole: ${nextRole}`)
+
+      const currentRole = currentRoleRef.current;
+      const assistantContent = `${currentRoleRef.current.split('-')[1]}: ${words}`;
+      let userContent = `Now you are ${nextRole.split('-')[1]}`;
+      currentRoleRef.current = nextRole;
+
+      if (roundRef.current >= maxRoundRef.current - 2) {
+        if (!currentRole.includes('teacher')) {
+
+          currentRoleRef.current = `${charactersRef.current[0].role}-${charactersRef.current[0].name}`;
+          userContent = `Now you are ${charactersRef.current[0].name}, please answer the last question if have and say something to finish the class.`;
+        
+        } else if (roundRef.current === maxRoundRef.current - 2){
+          // add one more round to avoid teacher finish the class as soon as he/she asked a new question.
+          maxRoundRef.current += 1;
+        }
+      }
+        
       messagesRef.current = [
         ...messagesRef.current, 
         ...[{
           role: 'assistant',
-          content: `${currentRoleRef.current.split('-')[1]}: ${words}`
+          content: assistantContent
         }, {
           role: 'user',
-          content: roundRef.current === maxRound - 2 ? 
-            `Now you are ${charactersRef.current[0].name}, please say something to finish the class.` : 
-            `Now you are ${nextRole.split('-')[1]}`
+          content: userContent
         }]
       ];
-
-      currentRoleRef.current = roundRef.current === maxRound - 2 ?
-        `${charactersRef.current[0].role}-${charactersRef.current[0].name}` :
-        nextRole;
 
       roundRef.current ++;
       if (isAudioEnabled) { setAudioPlayToggle.toggle() }
 
-      if (roundRef.current === maxRound) {
+      if (roundRef.current === maxRoundRef.current) {
         dialoguesRef.current = [
           {
             role: 'System-System',
             content: dataStoreUser!.membership!.current < 3 ?
-            'Class is finished! Thank you for your participation! Consider upgrading your plan to have more rounds in class.' :
+            'Class is finished! Thank you! Consider upgrading your plan to have more rounds in class.' :
             'Class is finished! Thank you for your participation!'
           },
           ...dialoguesRef.current,
@@ -294,7 +328,7 @@ function Classroom() {
     setIsPlaying(isPlayingRef.current);
     setIsFetchingFinished(true);
     setIsPlayingFinished(true);
-    isAudioPlayingRef.current = false;
+    setIsAudioPlaying(false);
     setDialogues([
       {
         role: 'System-System',
@@ -315,8 +349,9 @@ function Classroom() {
 
   return (
     <Layout>
-      <HStack w='full'>
-        <VStack align='flex-start' w='full' spacing={4}>
+      <Script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" />
+      <VStack align='flex-start' w='full' spacing={4}>
+        <VStack spacing={1}>
           <HStack w='full'>
             <InputGroup size='sm'>
               <InputLeftAddon>Subject</InputLeftAddon>
@@ -369,7 +404,11 @@ function Classroom() {
                 value={maxRound}
                 isDisabled={!isPlayingFinished}
                 min={5} max={dataStoreUser.quota!.classroomRound} step={5}
-                onChange={(valueAsString, valueAsNumber) => setMaxRound(valueAsNumber)}
+                onChange={(valueAsString, valueAsNumber) => {
+                  maxRoundRef.current = valueAsNumber;
+                  setMaxRound(maxRoundRef.current);
+                }}
+                focusBorderColor='teal.500'
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -419,7 +458,7 @@ function Classroom() {
               />
             </Tooltip>
             {dataStoreUser && isAudioEnabled ? 
-              <Tooltip label='Turn off' hasArrow>
+              <Tooltip label='Mute from next' hasArrow>
                 <IconButton
                   rounded='full'
                   variant='ghost'
@@ -429,7 +468,7 @@ function Classroom() {
                   onClick={()=>setIsAudioEnabled(false)}              
                 />
               </Tooltip> : dataStoreUser &&
-              <Tooltip label={dataStoreUser.membership!.current > 1 ? 'Turn on' : 'No available for your current plan'} hasArrow>
+              <Tooltip label={dataStoreUser.membership!.current > 1 ? 'Unmute from next' : 'No available for your current plan'} hasArrow>
                 <IconButton
                   rounded='full'
                   variant='ghost'
@@ -443,39 +482,49 @@ function Classroom() {
             }
             
           </HStack>
-          {!isPlayingFinished || dialogues.length > 0  ? 
-            <>
-              {dialogues.length > 0 ? 
-              <>
-                {dialogues.map((dialogue, index) => 
-                  <HStack key={index} w='full'>
-                  {dialogue.role.split('-')[0] === 'teacher' || dialogue.role.split('-')[0] === 'System' ? (
-                    <>
-                      <Tooltip label={dialogue.role.split('-')[1]} hasArrow>
-                        <Avatar borderWidth='2px' borderColor='gray.200' name={dialogue.role.split('-')[1]} size='sm' mr={2} src={getPicture(dialogue.role.split('-')[1])} />
-                      </Tooltip>
-                      <Tag p={2} w='full' colorScheme='orange'>
-                        {`${dialogue.content}`}
-                      </Tag>
-                    </>
-                  ) : (
-                    <>
-                      <Tag p={2} w='full' colorScheme='blue'>
-                        {`${dialogue.content}`}
-                      </Tag>
-                      <Tooltip label={dialogue.role.split('-')[1]} hasArrow>
-                        <Avatar borderWidth='2px' borderColor='gray.200' name={dialogue.role.split('-')[1]} size='sm' mr={2} src={getPicture(dialogue.role.split('-')[1])} />
-                      </Tooltip>
-                    </>
-                  )}
-                  </HStack>
-                )}
-              </> : <Tag p={10} w='full' colorScheme='blue'>Class will start soon.</Tag>}
-            </> : <Introduction />
-          }
-          
+          <Progress size='xs' colorScheme='teal' w='full' hasStripe isAnimated={isPlaying} value={isPlaying? 100: 0}/>
         </VStack>
-      </HStack>
+        {!isPlayingFinished || dialogues.length > 0  ? 
+          <>
+            {dialogues.length > 0 ? 
+            <>
+              {dialogues.map((dialogue, index) => 
+                <HStack key={index} w='full'>
+                {dialogue.role.split('-')[0] === 'teacher' || dialogue.role.split('-')[0] === 'System' ? (
+                  <>
+                    <Tooltip label={dialogue.role.split('-')[1]} hasArrow>
+                      <HStack spacing={0}>
+                        <Avatar borderWidth='2px' borderColor='gray.200' name={dialogue.role.split('-')[1]} size='sm' mr={2} src={getPicture(dialogue.role.split('-')[1])} />
+                        {index === 0 && isAudioPlaying && <Player src='/classroom/sound.json' autoplay loop style={{ height: '30px', width: '30px' }} />}
+                      </HStack>
+                    </Tooltip>
+                    <Tag p={2} w='full' colorScheme='orange'>
+                        {dialogue.content}                        
+                    </Tag>
+                  </>
+                ) : (
+                  <>
+                    <Tag p={2} w='full' colorScheme='blue'>
+                      <Text as='span'>
+                        {dialogue.content}
+                      </Text>
+                      
+                    </Tag>
+                    <Tooltip label={dialogue.role.split('-')[1]} hasArrow>
+                      <HStack>
+                        {index === 0 && isAudioPlaying && <Player src='/classroom/sound.json' autoplay loop style={{ height: '30px', width: '30px' }} />}
+                        <Avatar borderWidth='2px' borderColor='gray.200' name={dialogue.role.split('-')[1]} size='sm' mr={2} src={getPicture(dialogue.role.split('-')[1])} />
+                      </HStack>
+                    </Tooltip>
+                  </>
+                )}
+                </HStack>
+              )}
+            </> : <Tag p={4} w='full' colorScheme='blue'>Class will start soon.</Tag>}
+          </> : <Introduction />
+        }
+        
+      </VStack>
 
       <AlertDialog
         isOpen={isOpenStopAlert}

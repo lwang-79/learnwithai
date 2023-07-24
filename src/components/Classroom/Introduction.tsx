@@ -2,7 +2,7 @@ import { Avatar, Heading, HStack, Tag, VStack } from "@chakra-ui/react"
 
 function Introduction() {
   return (
-    <VStack w='full'>
+    <VStack w='full' pt={4}>
       <Heading size='md' color='orange'>Welcome to StudyWithAI MiniClass</Heading>
       <HStack spacing={4} p={4}>
         <Avatar borderWidth='2px' borderColor='gray.200' size='lg' src='/classroom/teacher-0.png' />

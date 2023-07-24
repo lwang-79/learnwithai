@@ -6,7 +6,7 @@ export const Quota = {
     savedQuestions: 0,
     savedTests: 0,
     savedEssays: 0,
-    classroomRound: 10
+    classroomRound: 5
   },
   personal: {
     mathPerDay: 100,

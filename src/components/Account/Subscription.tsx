@@ -187,6 +187,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
+                    Max {Quota.personal.classroomRound} rounds in MiniClass
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={FaCheckCircle} color="green.500" />
                     Basic reports
                   </ListItem>
                   <ListItem>
@@ -264,6 +268,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
                     {Quota.professional.writingPerDay} writing practice per day
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    Max {Quota.professional.classroomRound} rounds in MiniClass
                   </ListItem>
                   <ListItem>
                     <ListIcon as={FaCheckCircle} color="green.500" />
