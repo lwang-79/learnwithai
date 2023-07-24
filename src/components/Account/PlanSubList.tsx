@@ -73,6 +73,11 @@ function PlanSubList({ subStatus }: PlanSubListProps) {
                 <Spacer />
                 <Text fontSize='sm'>{dataStoreUser.quota!.savedEssays}</Text>
               </HStack>
+              <HStack w='full'>
+                <Text fontSize='sm'>Max rounds in MiniClass</Text>
+                <Spacer />
+                <Text fontSize='sm'>{dataStoreUser.quota!.classroomRound}</Text>
+              </HStack>
             </VStack>
           </>
         }

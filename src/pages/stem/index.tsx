@@ -7,7 +7,6 @@ import {
   Button, 
   Checkbox, 
   CheckboxGroup, 
-  Code, 
   Divider, 
   Heading, 
   HStack, 
@@ -18,6 +17,7 @@ import {
   Radio, 
   RadioGroup, 
   Spacer, 
+  Tag, 
   useDisclosure, 
   VStack, 
   Wrap,
@@ -139,7 +139,7 @@ function Stem() {
     <Layout>
       {dataStoreUser &&
         <VStack spacing={4} align='flex-start'>
-          <Code colorScheme='blue'>STEM questions are from the public MMLU dataset. It is a free feature for all members. No quotas!</Code>
+          <Tag w='full' p={2} colorScheme='blue'>STEM questions are from the public MMLU dataset. It is a free feature for all members. No quotas!</Tag>
           
           <RadioGroup onChange={setMode} value={mode}>
             <HStack spacing={4}>
