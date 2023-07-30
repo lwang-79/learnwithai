@@ -60,8 +60,11 @@ export const saveTest = async (
     updated.questionSets = questionSets;
   });
 
-  await DataStore.save(updatedTest);
-
+  try {
+    await DataStore.save(updatedTest);
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const addMyMathQuestion = async (
