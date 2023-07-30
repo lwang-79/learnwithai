@@ -60,8 +60,6 @@ export const saveTest = async (
     updated.questionSets = questionSets;
   });
 
-  console.log(updatedTest)
-
   try {
     await DataStore.save(updatedTest);
   } catch (error) {
