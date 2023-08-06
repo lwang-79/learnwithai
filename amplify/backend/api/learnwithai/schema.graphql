@@ -1,3 +1,5 @@
+# Author: Leon Wang
+
 type User 
   @model 
   @auth(
