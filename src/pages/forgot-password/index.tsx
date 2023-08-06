@@ -20,7 +20,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { Auth } from 'aws-amplify';
-import { GiFootprint } from 'react-icons/gi';
 import { useRouter } from 'next/router';
 import Logo from '@/components/Common/Logo';
 
