@@ -85,9 +85,9 @@ export const generateWritingMark = async (
   Evaluate a student's ${type} based on the student's level which is ${level}.
   1. Make sure to carefully read the prompt and student's writing in full before evaluating.
   2. The student must write an original narrative and cannot copy the prompt directly. Otherwise the score should be 0 and stop evaluating.
-  3. Consider the following facts "Knowledge, understanding and control", "Response to prompt(copy prompt is not acceptable)", "Use of evidence", "Structure of response" and "Spelling and Punctuation".
+  3. Consider the following facts "Knowledge, understanding and control (20%)", "Response to prompt (20%, copy prompt is not acceptable)", "Use of evidence (20%)", "Structure of response (20%)" and "Spelling and Punctuation (20%)".
   4. Give a score from 0 to 100 according to your evaluation.
-  5. Mark the good sentences which increased the score and not good sentences which decreased the score.
+  5. Mark the good sentences which increased the score and not good sentences which decreased the score with reasons.
   6. Give comments on the thing doing well and things that need to improve.
   
   ${type} prompt:

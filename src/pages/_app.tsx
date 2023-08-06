@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/types/theme';
 import Head from 'next/head';
-import { Amplify, Auth, DataStore, Hub, syncExpression } from 'aws-amplify';
+import { Amplify, Auth, AuthModeStrategyType, DataStore, Hub, syncExpression } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
@@ -62,7 +62,10 @@ if (typeof window === 'undefined') {
         service: "lambda",
         region: awsconfig.aws_project_region,
       }
-    ]
+    ],
+    DataStore: {
+      authModeStrategyType: AuthModeStrategyType.MULTI_AUTH
+    }
   }
 
   Amplify.configure(updatedAwsConfig);
