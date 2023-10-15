@@ -11,6 +11,7 @@
     "mockBackend": "cd amplify/backend/function/learnwithaiBackend/src/;tsc -p ./tsconfig.json;cd -;amplify mock function learnwithaiBackend --timeout 60"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.0",
     "@chakra-ui/react": "^2.5.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -20,7 +21,7 @@
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
     "@types/react-katex": "^3.0.0",
-    "aws-amplify": "^5.0.24",
+    "aws-amplify": "^5.3.10",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "highcharts": "^10.3.3",
@@ -38,6 +39,8 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "@types/react-latex": "^2.0.0"
+    "@next/bundle-analyzer": "^13.4.19",
+    "@types/react-latex": "^2.0.0",
+    "cross-env": "^7.0.3"
   }
 }

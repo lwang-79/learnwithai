@@ -72,20 +72,20 @@ if (typeof window === 'undefined') {
   Predictions.addPluggable(new AmazonAIPredictionsProvider());
 }
 
-DataStore.configure({
-  syncExpressions: [
-    syncExpression(RankingItem, () => {
-      const date = new Date();
-      date.setMonth(date.getMonth() - 1);
-      const lastMonth = date.toISOString().slice(0,7);
-      return item => item.date.ge(lastMonth);
-    }),
-    syncExpression(User, async () => {
-      const currentUser = await Auth.currentAuthenticatedUser();
-      return user => user.sub.eq(currentUser.attributes.sub);
-    }),
-  ]
-})
+// DataStore.configure({
+//   syncExpressions: [
+//     syncExpression(RankingItem, () => {
+//       const date = new Date();
+//       date.setMonth(date.getMonth() - 1);
+//       const lastMonth = date.toISOString().slice(0,7);
+//       return item => item.date.ge(lastMonth);
+//     }),
+//     // syncExpression(User, async () => {
+//     //   const currentUser = await Auth.currentAuthenticatedUser();
+//     //   return user => user.sub.eq(currentUser.attributes.sub);
+//     // }),
+//   ]
+// })
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ isProcessing, setIsProcessing ] = useState(false);

@@ -8,14 +8,10 @@ import {
   VStack,
   useColorModeValue,
   List,
-  ListItem,
-  ListIcon,
   Button,
 } from '@chakra-ui/react';
-import { FaCheckCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import useStorage from '@/hooks/useStorage';
-import { Quota } from '@/types/quota';
 
 export function PriceWrapper({ children }: { children: ReactNode }) {
   return (

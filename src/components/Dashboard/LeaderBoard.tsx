@@ -20,8 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { DataStore, SortDirection } from "aws-amplify";
 import { useContext, useEffect, useState } from "react"
-import { FaMedal } from "react-icons/fa";
-import { GiTrophyCup } from "react-icons/gi";
+import { Medal, TrophyCup } from "../Common/Icons";
 import SharedComponents from "../Common/SharedComponents";
 
 function LeaderBoard() {
@@ -96,12 +95,12 @@ function LeaderBoard() {
           <CardBody>
             <VStack>
               <HStack>
-                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
+                <Icon as={TrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>MATH WINNER</Heading>
                   <Text fontSize='xs' color='blue.400'>{yesterdayMathRankingItem?.date}</Text>
                 </VStack>
-                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
+                <Icon as={TrophyCup} boxSize={8} color='orange' />
               </HStack>
 
               {[0,1,2].map((name, index) => 
@@ -112,7 +111,7 @@ function LeaderBoard() {
                     w='full'
                   >
                     <Icon 
-                      as={FaMedal} 
+                      as={Medal} 
                       boxSize={6}
                       color={index === 0 ? 'gold' : index === 1 ? 'silver' : 'orange'}  />
                     <Text fontWeight='extrabold'>{yesterdayMathRankingItem?.names[index]}</Text>
@@ -129,12 +128,12 @@ function LeaderBoard() {
           <CardBody>
             <VStack>
               <HStack>
-                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
+                <Icon as={TrophyCup} boxSize={8} color='orange' />
                 <VStack spacing={0}>
                   <Heading size='sm' color='blue.400'>WRITING WINNER</Heading>
                   <Text fontSize='xs' color='blue.400'>{yesterdayWritingRankingItem?.date}</Text>
                 </VStack>
-                <Icon as={GiTrophyCup} boxSize={8} color='orange' />
+                <Icon as={TrophyCup} boxSize={8} color='orange' />
               </HStack>
               
               {[0,1,2].map((name, index) => 
@@ -145,7 +144,7 @@ function LeaderBoard() {
                     w='full'
                   >
                     <Icon 
-                      as={FaMedal} 
+                      as={Medal} 
                       boxSize={6}
                       color={index === 0 ? 'gold' : index === 1 ? 'silver' : 'orange'}  />
                     <Text fontWeight='extrabold'>{yesterdayWritingRankingItem?.names[index]}</Text>

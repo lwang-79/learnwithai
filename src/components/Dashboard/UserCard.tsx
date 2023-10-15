@@ -11,12 +11,11 @@ import {
   Text, 
   VStack 
 } from "@chakra-ui/react";
-import { BiMath } from "react-icons/bi";
 import NextLink from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { TbWriting } from "react-icons/tb";
 import { getLevel } from "@/types/user";
 import SharedComponents from "../Common/SharedComponents";
+import { MdOutlineCalculate, MdOutlineDraw } from "react-icons/md";
 
 function UserCard() {
   const today = new Date();
@@ -60,7 +59,7 @@ function UserCard() {
         <Divider />
         <VStack align='flex-start' px={6} w='full' spacing={1}>
           <HStack w='full'>
-            <Icon as={BiMath} color='orange.500' />
+            <Icon as={MdOutlineCalculate} color='orange.500' />
             <Text>Math:</Text>
             <Spacer />
             <Tag size='sm' colorScheme='teal' rounded='full'>Level-{mathLevel}</Tag>
@@ -108,7 +107,7 @@ function UserCard() {
         <Divider />
         <VStack align='flex-start' px={6} w='full' spacing={1}>
           <HStack w='full'>
-            <Icon as={TbWriting} color='orange.500' />
+            <Icon as={MdOutlineDraw} color='orange.500' />
             <Text>Writing:</Text>
             <Spacer />
             <Tag size='sm' colorScheme='teal' rounded='full'>Level-{writingLevel}</Tag>

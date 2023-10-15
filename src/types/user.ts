@@ -79,7 +79,6 @@ export const createUserIfNotExist = async (userAttributes: any): Promise<UserPar
 
 export const getDataStoreUserOrCreateIfNotExist = async (userAttributes: any): Promise<User | undefined> => {
   const userId = await isUserInDatabase(userAttributes.sub);
-
   if (!userId) {
     const user = await createNewDataStoreUser(userAttributes);
     return user;
@@ -136,7 +135,7 @@ const retryGetDataStoreUserById = async (userId: string): Promise<User | undefin
   let retryCount = 0;
   let user: User | undefined;
 
-  while (retryCount < 50) {
+  while (retryCount < 500) {
     user = await DataStore.query(User, userId);
 
     if (user !== undefined) {

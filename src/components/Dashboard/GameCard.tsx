@@ -12,11 +12,11 @@ import {
   Spacer,
   Text, 
 } from "@chakra-ui/react"
-import { GiPlantWatering } from "react-icons/gi";
 import { DataStore } from "aws-amplify"
 import { useContext, useEffect, useState } from "react";
 import { convertCollectionsToString, getCollections, getSeed } from "@/types/game";
 import SharedComponents from "../Common/SharedComponents";
+import { PlantWatering } from "../Common/Icons";
 
 function GameCard() {
   const upgradeScore = 100;
@@ -145,7 +145,7 @@ function GameCard() {
                 size='sm'
                 aria-label='Previous Month'
                 isDisabled={currentScore < upgradeScore}
-                icon={<Icon as={GiPlantWatering} boxSize={6} />}
+                icon={<Icon as={PlantWatering} boxSize={6} />}
                 onClick={upgradeButtonClickedHandler}
               />
             </HStack>

@@ -26,13 +26,13 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
-import { FcGoogle } from 'react-icons/fc';
 import { Auth } from 'aws-amplify';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
 import { createUserIfNotExist } from '../../types/user';
 import useStorage from '../../hooks/useStorage';
 import Logo from '@/components/Common/Logo';
+import { FcGoogle } from '@/components/Common/Icons';
 
 export default function SignupCard() {
   const { 

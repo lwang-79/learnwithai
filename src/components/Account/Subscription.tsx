@@ -32,7 +32,6 @@ import {
 } from '@paypal/react-paypal-js'
 import { API, graphqlOperation } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import PayPalButtonWrapper from './PayPalButtonWrapper';
 import { PriceWrapper } from '@/components/Common/Pricing';
 import { GraphQLResult } from "@aws-amplify/api-graphql"
@@ -42,6 +41,7 @@ import { learnwithaiSubscribe } from '@/graphql/mutations';
 import { SubStatus } from '@/pages/account';
 import { Quota } from '@/types/quota';
 import Support from '@/components/Common/Support';
+import { MdCancel, MdCheckCircle } from 'react-icons/md';
 
 interface SubscriptionProps {
   subStatus: SubStatus
@@ -174,35 +174,35 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                 borderBottomRadius={'xl'}>
                 <List spacing={3} textAlign="start" px={12}>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.personal.mathPerDay} math questions per day
                   </ListItem>
                   {/* <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.personal.readingPerDay} reading sets per day
                   </ListItem> */}
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.personal.writingPerDay} writing practice per day
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Max {Quota.personal.classroomRound} rounds in MiniClass
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Basic reports
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Test mode
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Save questions and test result
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaTimesCircle} color="gray.500" />
+                    <ListIcon as={MdCancel} color="gray.500" />
                     Report notification
                   </ListItem>
                 </List>
@@ -258,35 +258,35 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                 borderBottomRadius={'xl'}>
                 <List spacing={3} textAlign="start" px={12}>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.professional.mathPerDay} math questions per day
                   </ListItem>
                   {/* <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.professional.readingPerDay} reading sets per day
                   </ListItem> */}
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.professional.writingPerDay} writing practice per day
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Max {Quota.professional.classroomRound} rounds in MiniClass
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Basic reports
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Test mode
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Save questions and test result
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Report notification
                   </ListItem>
                 </List>
@@ -336,31 +336,31 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                 borderBottomRadius={'xl'}>
                 <List spacing={3} textAlign="start" px={12}>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.enterprise.mathPerDay} math questions per day
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.enterprise.readingPerDay} reading sets per day
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     {Quota.enterprise.writingPerDay} writing practice per day
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Basic reports
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Test mode
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Save questions and test result
                   </ListItem>
                   <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
+                    <ListIcon as={MdCheckCircle} color="green.500" />
                     Weekly report notification
                   </ListItem>
                 </List>
