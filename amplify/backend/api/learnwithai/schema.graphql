@@ -84,6 +84,7 @@ type GameData {
   score: Int!
   seed: String!
   collections: String! #[{tree: 1},{sunflower: 1}]
+  coins: Int
 }
 
 type Notification {

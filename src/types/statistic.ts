@@ -71,9 +71,11 @@ export const addStatisticData = async (
       updated.yearly = yearly;
 
       if (updated.gameData) {
+        const baseCoins = updated.gameData.coins?? 0
         updated.gameData = {
           ...updated.gameData,
-          score: updated.gameData.score + statistic.writing * 40 + statistic.mathCorrect
+          score: updated.gameData.score + statistic.writing * 40 + statistic.mathCorrect,
+          coins: baseCoins + statistic.writing * 40 + statistic.mathCorrect
         }
       }
     }

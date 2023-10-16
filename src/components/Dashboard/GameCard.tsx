@@ -58,7 +58,7 @@ function GameCard() {
           level: 0,
           score: 0,
           seed: seed,
-          collections: '[]'
+          collections: '[]',
         }
       }))
     );
