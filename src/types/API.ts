@@ -69,6 +69,7 @@ export type GameDataInput = {
   score: number,
   seed: string,
   collections: string,
+  coins?: number | null,
 };
 
 export type NotificationInput = {
@@ -233,6 +234,7 @@ export type GameData = {
   score: number,
   seed: string,
   collections: string,
+  coins?: number | null,
 };
 
 export type Notification = {
@@ -1191,6 +1193,7 @@ export type CreateUserMutation = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -1289,6 +1292,7 @@ export type UpdateUserMutation = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -1387,6 +1391,7 @@ export type DeleteUserMutation = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -2036,6 +2041,7 @@ export type GetUserQuery = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -2137,6 +2143,7 @@ export type ListUsersQuery = {
         score: number,
         seed: string,
         collections: string,
+        coins?: number | null,
       } | null,
       notification?:  {
         __typename: "Notification",
@@ -2242,6 +2249,7 @@ export type SyncUsersQuery = {
         score: number,
         seed: string,
         collections: string,
+        coins?: number | null,
       } | null,
       notification?:  {
         __typename: "Notification",
@@ -2348,6 +2356,7 @@ export type UserBySubQuery = {
         score: number,
         seed: string,
         collections: string,
+        coins?: number | null,
       } | null,
       notification?:  {
         __typename: "Notification",
@@ -2454,6 +2463,7 @@ export type UserByPayerIdQuery = {
         score: number,
         seed: string,
         collections: string,
+        coins?: number | null,
       } | null,
       notification?:  {
         __typename: "Notification",
@@ -3221,6 +3231,7 @@ export type OnCreateUserSubscription = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -3319,6 +3330,7 @@ export type OnUpdateUserSubscription = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",
@@ -3417,6 +3429,7 @@ export type OnDeleteUserSubscription = {
       score: number,
       seed: string,
       collections: string,
+      coins?: number | null,
     } | null,
     notification?:  {
       __typename: "Notification",

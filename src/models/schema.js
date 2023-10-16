@@ -1263,6 +1263,13 @@ export const schema = {
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "coins": {
+                    "name": "coins",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
@@ -1490,6 +1497,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.4.3",
-    "version": "bd71abf31dcc95391783b64f17e85288"
+    "codegenVersion": "3.4.4",
+    "version": "c72a51a85cb6519d9de87cf555a03740"
 };

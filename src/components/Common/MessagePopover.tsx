@@ -17,8 +17,8 @@ import {
   VStack
 } from "@chakra-ui/react";
 import NextLink from 'next/link';
-import { HiOutlineExternalLink } from "react-icons/hi";
 import { MdNotificationsNone } from "react-icons/md"
+import { ExternalLink } from "./Icons";
 
 function MessagePopover({ messages }: { 
   messages: SystemMessage[],
@@ -75,7 +75,7 @@ const MessageItem = ({ message }: {
           >
             <IconButton
               aria-label='open'
-              icon={<Icon as={HiOutlineExternalLink} boxSize={5}/>}
+              icon={<Icon as={ExternalLink} boxSize={5}/>}
               rounded='full'
               size='xs'
               variant='ghost'
@@ -90,7 +90,7 @@ const MessageItem = ({ message }: {
           >
             <IconButton
               aria-label='open'
-              icon={<Icon as={HiOutlineExternalLink} boxSize={5}/>}
+              icon={<Icon as={ExternalLink} boxSize={5}/>}
               rounded='full'
               size='xs'
               variant='ghost'

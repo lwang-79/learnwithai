@@ -13,9 +13,8 @@ import {
 import { Auth } from "aws-amplify";
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import { MdOutlineAddAPhoto, MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { MdCenterFocusWeak, MdOutlineAddAPhoto, MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { User } from "@/models";
-import { TbCapture } from "react-icons/tb";
 
 interface AvatarFormProps {
   user: User,
@@ -213,7 +212,7 @@ function AvatarForm({ user, avatar, setAvatar }: AvatarFormProps) {
           <Avatar 
             icon={
               isCameraOn ? 
-              <Icon as={TbCapture} color='red' fontSize='2.5rem'/> :
+              <Icon as={MdCenterFocusWeak} color='red' fontSize='2.5rem'/> :
               <Icon as={MdOutlineAddAPhoto} fontSize='2.5rem'/>
             }
             size='lg'

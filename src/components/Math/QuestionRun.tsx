@@ -47,7 +47,6 @@ import {
 } from "@chakra-ui/react";
 import { Fragment, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { MdBookmarkBorder, MdClose, MdOutlineArticle, MdOutlineDelete, MdQuestionMark, MdThumbDownOffAlt } from "react-icons/md";
-import { SlTarget } from "react-icons/sl";
 import Latex from "react-latex";
 import SharedComponents from "../Common/SharedComponents";
 import Result from "./Result";
@@ -58,6 +57,7 @@ import Timer from "../Common/Timer";
 import { sesSendEmail } from "@/types/utils";
 import { DataStore } from "aws-amplify";
 import { InlineMath } from "react-katex";
+import { Target } from "../Common/Icons";
 
 interface QuestionRunProps {
   source: QuestionSource
@@ -792,7 +792,7 @@ Correct: ${correct} (${(100 * correct / (lastIndexRef.current + 1)).toFixed(0) +
                           colorScheme='teal'
                           size='sm'
                           w='35px' h='35px'
-                          icon={<Icon as={SlTarget} boxSize={6} />}
+                          icon={<Icon as={Target} boxSize={6} />}
                           onClick={targetButtonClickedHandler}
                           isDisabled={
                             !currentQuestionSet || 

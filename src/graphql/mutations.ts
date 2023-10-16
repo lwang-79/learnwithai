@@ -15,6 +15,7 @@ export const learnwithaiSubscribe = /* GraphQL */ `
     ) {
       statusCode
       body
+      __typename
     }
   }
 `;
@@ -37,6 +38,7 @@ export const createUser = /* GraphQL */ `
         savedTests
         savedEssays
         classroomRound
+        __typename
       }
       membership {
         current
@@ -45,7 +47,9 @@ export const createUser = /* GraphQL */ `
           personal
           professional
           enterprise
+          __typename
         }
+        __typename
       }
       payerId
       markedQuestions
@@ -60,6 +64,7 @@ export const createUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       monthly {
         date
@@ -72,6 +77,7 @@ export const createUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       yearly {
         date
@@ -84,6 +90,7 @@ export const createUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       gameData {
         startDate
@@ -91,10 +98,13 @@ export const createUser = /* GraphQL */ `
         score
         seed
         collections
+        coins
+        __typename
       }
       notification {
         emails
         types
+        __typename
       }
       owner
       badges
@@ -103,6 +113,7 @@ export const createUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -125,6 +136,7 @@ export const updateUser = /* GraphQL */ `
         savedTests
         savedEssays
         classroomRound
+        __typename
       }
       membership {
         current
@@ -133,7 +145,9 @@ export const updateUser = /* GraphQL */ `
           personal
           professional
           enterprise
+          __typename
         }
+        __typename
       }
       payerId
       markedQuestions
@@ -148,6 +162,7 @@ export const updateUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       monthly {
         date
@@ -160,6 +175,7 @@ export const updateUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       yearly {
         date
@@ -172,6 +188,7 @@ export const updateUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       gameData {
         startDate
@@ -179,10 +196,13 @@ export const updateUser = /* GraphQL */ `
         score
         seed
         collections
+        coins
+        __typename
       }
       notification {
         emails
         types
+        __typename
       }
       owner
       badges
@@ -191,6 +211,7 @@ export const updateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -213,6 +234,7 @@ export const deleteUser = /* GraphQL */ `
         savedTests
         savedEssays
         classroomRound
+        __typename
       }
       membership {
         current
@@ -221,7 +243,9 @@ export const deleteUser = /* GraphQL */ `
           personal
           professional
           enterprise
+          __typename
         }
+        __typename
       }
       payerId
       markedQuestions
@@ -236,6 +260,7 @@ export const deleteUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       monthly {
         date
@@ -248,6 +273,7 @@ export const deleteUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       yearly {
         date
@@ -260,6 +286,7 @@ export const deleteUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       gameData {
         startDate
@@ -267,10 +294,13 @@ export const deleteUser = /* GraphQL */ `
         score
         seed
         collections
+        coins
+        __typename
       }
       notification {
         emails
         types
+        __typename
       }
       owner
       badges
@@ -279,6 +309,7 @@ export const deleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -305,6 +336,7 @@ export const createQuestionSet = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -331,6 +363,7 @@ export const updateQuestionSet = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -357,6 +390,7 @@ export const deleteQuestionSet = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -382,6 +416,7 @@ export const createBadQuestionSet = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
+      __typename
     }
   }
 `;
@@ -407,6 +442,7 @@ export const updateBadQuestionSet = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
+      __typename
     }
   }
 `;
@@ -432,6 +468,7 @@ export const deleteBadQuestionSet = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
+      __typename
     }
   }
 `;
@@ -462,6 +499,7 @@ export const createTest = /* GraphQL */ `
         isBad
         isTarget
         isMarked
+        __typename
       }
       owner
       createdAt
@@ -469,6 +507,7 @@ export const createTest = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -499,6 +538,7 @@ export const updateTest = /* GraphQL */ `
         isBad
         isTarget
         isMarked
+        __typename
       }
       owner
       createdAt
@@ -506,6 +546,7 @@ export const updateTest = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -536,6 +577,7 @@ export const deleteTest = /* GraphQL */ `
         isBad
         isTarget
         isMarked
+        __typename
       }
       owner
       createdAt
@@ -543,6 +585,7 @@ export const deleteTest = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -565,6 +608,7 @@ export const createEssay = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -587,6 +631,7 @@ export const updateEssay = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -609,6 +654,7 @@ export const deleteEssay = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -628,6 +674,7 @@ export const createRankingItem = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -647,6 +694,7 @@ export const updateRankingItem = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -666,6 +714,7 @@ export const deleteRankingItem = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -688,6 +737,7 @@ export const createBadge = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -710,6 +760,7 @@ export const updateBadge = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -732,6 +783,7 @@ export const deleteBadge = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -750,6 +802,7 @@ export const createSystemMessage = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -768,6 +821,7 @@ export const updateSystemMessage = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -786,6 +840,7 @@ export const deleteSystemMessage = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;

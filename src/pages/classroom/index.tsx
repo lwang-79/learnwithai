@@ -344,7 +344,7 @@ function Classroom() {
     if (character) {
       return character.picture;
     }
-    return '';
+    return '/classroom/system.png';
   }
 
   return (

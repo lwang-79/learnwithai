@@ -11,12 +11,12 @@ export const getSeed = (user: User): string => {
 
   const random = Math.random();
 
-  const possibilities = [0.8, 0.12, 0.06, 0.02];
+  const possibilities = [0.5, 0.3, 0.15, 0.05];
 
-  possibilities[3] = possibilities[3] * level > 0.1 ? 0.1 : possibilities[3] * level;
-  possibilities[2] = possibilities[2] * level > 0.2 ? 0.2 : possibilities[2] * level;
-  possibilities[1] = possibilities[1] * level > 0.3 ? 0.3 : possibilities[1] * level;
-  possibilities[0] = 1 - possibilities[3] - possibilities[2] - possibilities[1];
+  // possibilities[3] = possibilities[3] * level > 0.1 ? 0.1 : possibilities[3] * level;
+  // possibilities[2] = possibilities[2] * level > 0.2 ? 0.2 : possibilities[2] * level;
+  // possibilities[1] = possibilities[1] * level > 0.3 ? 0.3 : possibilities[1] * level;
+  // possibilities[0] = 1 - possibilities[3] - possibilities[2] - possibilities[1];
 
   if (random < possibilities[0]) return Seeds[0];
   else if (random < possibilities[0] + possibilities[1]) return Seeds[1];

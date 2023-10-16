@@ -48,6 +48,7 @@ import { downloadData, importData } from '@/types/utils';
 import Logo from './Logo';
 import { SystemMessage } from '@/models';
 import MessagePopover from './MessagePopover';
+import { SWACoins } from './Icons';
 
 const Links = ['/math', '/writing', '/stem', '/classroom'];
 const LinkNames = ['Math', 'Writing', 'STEM', 'MiniClass'];
@@ -198,6 +199,14 @@ export default function Header() {
                   )}
                 </Button>
               ) : null}
+              
+              <Button variant='ghost' colorScheme='orange'>
+                <HStack>
+                  <Icon as={SWACoins} boxSize={6} />
+                  <span>{user?.gameData?.coins?? 0}</span>
+                </HStack>
+              </Button>
+              
               {messages.length > 0 && 
                 <Box ms={{base: 1, md: 2}}>
                   <MessagePopover messages={messages} />

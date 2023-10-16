@@ -18,6 +18,7 @@ export const getUser = /* GraphQL */ `
         savedTests
         savedEssays
         classroomRound
+        __typename
       }
       membership {
         current
@@ -26,7 +27,9 @@ export const getUser = /* GraphQL */ `
           personal
           professional
           enterprise
+          __typename
         }
+        __typename
       }
       payerId
       markedQuestions
@@ -41,6 +44,7 @@ export const getUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       monthly {
         date
@@ -53,6 +57,7 @@ export const getUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       yearly {
         date
@@ -65,6 +70,7 @@ export const getUser = /* GraphQL */ `
         readingRequest
         writing
         writingRequest
+        __typename
       }
       gameData {
         startDate
@@ -72,10 +78,13 @@ export const getUser = /* GraphQL */ `
         score
         seed
         collections
+        coins
+        __typename
       }
       notification {
         emails
         types
+        __typename
       }
       owner
       badges
@@ -84,6 +93,7 @@ export const getUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -108,6 +118,7 @@ export const listUsers = /* GraphQL */ `
           savedTests
           savedEssays
           classroomRound
+          __typename
         }
         membership {
           current
@@ -116,7 +127,9 @@ export const listUsers = /* GraphQL */ `
             personal
             professional
             enterprise
+            __typename
           }
+          __typename
         }
         payerId
         markedQuestions
@@ -131,6 +144,7 @@ export const listUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         monthly {
           date
@@ -143,6 +157,7 @@ export const listUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         yearly {
           date
@@ -155,6 +170,7 @@ export const listUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         gameData {
           startDate
@@ -162,10 +178,13 @@ export const listUsers = /* GraphQL */ `
           score
           seed
           collections
+          coins
+          __typename
         }
         notification {
           emails
           types
+          __typename
         }
         owner
         badges
@@ -174,9 +193,11 @@ export const listUsers = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -207,6 +228,7 @@ export const syncUsers = /* GraphQL */ `
           savedTests
           savedEssays
           classroomRound
+          __typename
         }
         membership {
           current
@@ -215,7 +237,9 @@ export const syncUsers = /* GraphQL */ `
             personal
             professional
             enterprise
+            __typename
           }
+          __typename
         }
         payerId
         markedQuestions
@@ -230,6 +254,7 @@ export const syncUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         monthly {
           date
@@ -242,6 +267,7 @@ export const syncUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         yearly {
           date
@@ -254,6 +280,7 @@ export const syncUsers = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         gameData {
           startDate
@@ -261,10 +288,13 @@ export const syncUsers = /* GraphQL */ `
           score
           seed
           collections
+          coins
+          __typename
         }
         notification {
           emails
           types
+          __typename
         }
         owner
         badges
@@ -273,9 +303,11 @@ export const syncUsers = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -308,6 +340,7 @@ export const userBySub = /* GraphQL */ `
           savedTests
           savedEssays
           classroomRound
+          __typename
         }
         membership {
           current
@@ -316,7 +349,9 @@ export const userBySub = /* GraphQL */ `
             personal
             professional
             enterprise
+            __typename
           }
+          __typename
         }
         payerId
         markedQuestions
@@ -331,6 +366,7 @@ export const userBySub = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         monthly {
           date
@@ -343,6 +379,7 @@ export const userBySub = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         yearly {
           date
@@ -355,6 +392,7 @@ export const userBySub = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         gameData {
           startDate
@@ -362,10 +400,13 @@ export const userBySub = /* GraphQL */ `
           score
           seed
           collections
+          coins
+          __typename
         }
         notification {
           emails
           types
+          __typename
         }
         owner
         badges
@@ -374,9 +415,11 @@ export const userBySub = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -409,6 +452,7 @@ export const userByPayerId = /* GraphQL */ `
           savedTests
           savedEssays
           classroomRound
+          __typename
         }
         membership {
           current
@@ -417,7 +461,9 @@ export const userByPayerId = /* GraphQL */ `
             personal
             professional
             enterprise
+            __typename
           }
+          __typename
         }
         payerId
         markedQuestions
@@ -432,6 +478,7 @@ export const userByPayerId = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         monthly {
           date
@@ -444,6 +491,7 @@ export const userByPayerId = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         yearly {
           date
@@ -456,6 +504,7 @@ export const userByPayerId = /* GraphQL */ `
           readingRequest
           writing
           writingRequest
+          __typename
         }
         gameData {
           startDate
@@ -463,10 +512,13 @@ export const userByPayerId = /* GraphQL */ `
           score
           seed
           collections
+          coins
+          __typename
         }
         notification {
           emails
           types
+          __typename
         }
         owner
         badges
@@ -475,9 +527,11 @@ export const userByPayerId = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -501,6 +555,7 @@ export const getQuestionSet = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -529,9 +584,11 @@ export const listQuestionSets = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -566,9 +623,11 @@ export const syncQuestionSets = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -591,6 +650,7 @@ export const getBadQuestionSet = /* GraphQL */ `
       _deleted
       _lastChangedAt
       owner
+      __typename
     }
   }
 `;
@@ -618,9 +678,11 @@ export const listBadQuestionSets = /* GraphQL */ `
         _deleted
         _lastChangedAt
         owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -654,9 +716,11 @@ export const syncBadQuestionSets = /* GraphQL */ `
         _deleted
         _lastChangedAt
         owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -684,6 +748,7 @@ export const getTest = /* GraphQL */ `
         isBad
         isTarget
         isMarked
+        __typename
       }
       owner
       createdAt
@@ -691,6 +756,7 @@ export const getTest = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -723,6 +789,7 @@ export const listTests = /* GraphQL */ `
           isBad
           isTarget
           isMarked
+          __typename
         }
         owner
         createdAt
@@ -730,9 +797,11 @@ export const listTests = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -771,6 +840,7 @@ export const syncTests = /* GraphQL */ `
           isBad
           isTarget
           isMarked
+          __typename
         }
         owner
         createdAt
@@ -778,9 +848,11 @@ export const syncTests = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -800,6 +872,7 @@ export const getEssay = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -824,9 +897,11 @@ export const listEssays = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -857,9 +932,11 @@ export const syncEssays = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -876,6 +953,7 @@ export const getRankingItem = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -897,9 +975,11 @@ export const listRankingItems = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -927,9 +1007,11 @@ export const syncRankingItems = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -961,9 +1043,11 @@ export const rankingItemsByDateAndType = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -983,6 +1067,7 @@ export const getBadge = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -1007,9 +1092,11 @@ export const listBadges = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -1040,9 +1127,11 @@ export const syncBadges = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -1058,6 +1147,7 @@ export const getSystemMessage = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -1078,9 +1168,11 @@ export const listSystemMessages = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -1107,9 +1199,11 @@ export const syncSystemMessages = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
