@@ -238,6 +238,18 @@ type SystemMessage @model
   externalLink: String
 }
 
+type ShoppingItem @model
+  @auth(rules: [
+    { allow: groups, groups: ["Admin"] }
+    { allow: private, operations: [read] }
+  ]){
+  id: ID!
+  name: String!
+  price: Int!
+  description: String!
+  image: String
+}
+
 type Mutation {
   learnwithaiSubscribe(
     operation: String!

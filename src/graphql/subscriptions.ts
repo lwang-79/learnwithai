@@ -809,3 +809,60 @@ export const onDeleteSystemMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateShoppingItem = /* GraphQL */ `
+  subscription OnCreateShoppingItem(
+    $filter: ModelSubscriptionShoppingItemFilterInput
+  ) {
+    onCreateShoppingItem(filter: $filter) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateShoppingItem = /* GraphQL */ `
+  subscription OnUpdateShoppingItem(
+    $filter: ModelSubscriptionShoppingItemFilterInput
+  ) {
+    onUpdateShoppingItem(filter: $filter) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteShoppingItem = /* GraphQL */ `
+  subscription OnDeleteShoppingItem(
+    $filter: ModelSubscriptionShoppingItemFilterInput
+  ) {
+    onDeleteShoppingItem(filter: $filter) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

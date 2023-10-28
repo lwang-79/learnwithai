@@ -748,6 +748,54 @@ export type DeleteSystemMessageInput = {
   _version?: number | null,
 };
 
+export type CreateShoppingItemInput = {
+  id?: string | null,
+  name: string,
+  price: number,
+  description: string,
+  image?: string | null,
+  _version?: number | null,
+};
+
+export type ModelShoppingItemConditionInput = {
+  name?: ModelStringInput | null,
+  price?: ModelIntInput | null,
+  description?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  and?: Array< ModelShoppingItemConditionInput | null > | null,
+  or?: Array< ModelShoppingItemConditionInput | null > | null,
+  not?: ModelShoppingItemConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ShoppingItem = {
+  __typename: "ShoppingItem",
+  id: string,
+  name: string,
+  price: number,
+  description: string,
+  image?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateShoppingItemInput = {
+  id: string,
+  name?: string | null,
+  price?: number | null,
+  description?: string | null,
+  image?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteShoppingItemInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   sub?: ModelIDInput | null,
@@ -941,6 +989,25 @@ export type ModelSystemMessageConnection = {
   startedAt?: number | null,
 };
 
+export type ModelShoppingItemFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  price?: ModelIntInput | null,
+  description?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  and?: Array< ModelShoppingItemFilterInput | null > | null,
+  or?: Array< ModelShoppingItemFilterInput | null > | null,
+  not?: ModelShoppingItemFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelShoppingItemConnection = {
+  __typename: "ModelShoppingItemConnection",
+  items:  Array<ShoppingItem | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   sub?: ModelSubscriptionIDInput | null,
@@ -1094,6 +1161,17 @@ export type ModelSubscriptionSystemMessageFilterInput = {
   externalLink?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
   or?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionShoppingItemFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  price?: ModelSubscriptionIntInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  image?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
+  or?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -1952,6 +2030,69 @@ export type DeleteSystemMessageMutation = {
     content: string,
     internalLink?: string | null,
     externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateShoppingItemMutationVariables = {
+  input: CreateShoppingItemInput,
+  condition?: ModelShoppingItemConditionInput | null,
+};
+
+export type CreateShoppingItemMutation = {
+  createShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateShoppingItemMutationVariables = {
+  input: UpdateShoppingItemInput,
+  condition?: ModelShoppingItemConditionInput | null,
+};
+
+export type UpdateShoppingItemMutation = {
+  updateShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteShoppingItemMutationVariables = {
+  input: DeleteShoppingItemInput,
+  condition?: ModelShoppingItemConditionInput | null,
+};
+
+export type DeleteShoppingItemMutation = {
+  deleteShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3149,6 +3290,81 @@ export type SyncSystemMessagesQuery = {
   } | null,
 };
 
+export type GetShoppingItemQueryVariables = {
+  id: string,
+};
+
+export type GetShoppingItemQuery = {
+  getShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListShoppingItemsQueryVariables = {
+  filter?: ModelShoppingItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShoppingItemsQuery = {
+  listShoppingItems?:  {
+    __typename: "ModelShoppingItemConnection",
+    items:  Array< {
+      __typename: "ShoppingItem",
+      id: string,
+      name: string,
+      price: number,
+      description: string,
+      image?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncShoppingItemsQueryVariables = {
+  filter?: ModelShoppingItemFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncShoppingItemsQuery = {
+  syncShoppingItems?:  {
+    __typename: "ModelShoppingItemConnection",
+    items:  Array< {
+      __typename: "ShoppingItem",
+      id: string,
+      name: string,
+      price: number,
+      description: string,
+      image?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
   owner?: string | null,
@@ -3978,6 +4194,66 @@ export type OnDeleteSystemMessageSubscription = {
     content: string,
     internalLink?: string | null,
     externalLink?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateShoppingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+};
+
+export type OnCreateShoppingItemSubscription = {
+  onCreateShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateShoppingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+};
+
+export type OnUpdateShoppingItemSubscription = {
+  onUpdateShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteShoppingItemSubscriptionVariables = {
+  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+};
+
+export type OnDeleteShoppingItemSubscription = {
+  onDeleteShoppingItem?:  {
+    __typename: "ShoppingItem",
+    id: string,
+    name: string,
+    price: number,
+    description: string,
+    image?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

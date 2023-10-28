@@ -16,7 +16,7 @@ const RankingType = {
   "WRITING_NUMBER_BY_MONTH": "WritingNumberByMonth"
 };
 
-const { User, QuestionSet, BadQuestionSet, Test, Essay, RankingItem, Badge, SystemMessage, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
+const { User, QuestionSet, BadQuestionSet, Test, Essay, RankingItem, Badge, SystemMessage, ShoppingItem, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
   User,
@@ -27,6 +27,7 @@ export {
   RankingItem,
   Badge,
   SystemMessage,
+  ShoppingItem,
   NotificationType,
   RankingType,
   Membership,
