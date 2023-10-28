@@ -557,3 +557,37 @@ export declare type SystemMessage = LazyLoading extends LazyLoadingDisabled ? Ea
 export declare const SystemMessage: (new (init: ModelInit<SystemMessage>) => SystemMessage) & {
   copyOf(source: SystemMessage, mutator: (draft: MutableModel<SystemMessage>) => MutableModel<SystemMessage> | void): SystemMessage;
 }
+
+type EagerShoppingItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ShoppingItem, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly price: number;
+  readonly description: string;
+  readonly image?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyShoppingItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ShoppingItem, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly price: number;
+  readonly description: string;
+  readonly image?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ShoppingItem = LazyLoading extends LazyLoadingDisabled ? EagerShoppingItem : LazyShoppingItem
+
+export declare const ShoppingItem: (new (init: ModelInit<ShoppingItem>) => ShoppingItem) & {
+  copyOf(source: ShoppingItem, mutator: (draft: MutableModel<ShoppingItem>) => MutableModel<ShoppingItem> | void): ShoppingItem;
+}

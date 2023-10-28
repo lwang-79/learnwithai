@@ -200,7 +200,11 @@ export default function Header() {
                 </Button>
               ) : null}
               
-              <Button variant='ghost' colorScheme='orange'>
+              <Button 
+                variant='ghost' 
+                colorScheme='orange'
+                onClick={()=>router.push('/store')}
+              >
                 <HStack>
                   <Icon as={SWACoins} boxSize={6} />
                   <span>{user?.gameData?.coins?? 0}</span>

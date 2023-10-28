@@ -844,3 +844,63 @@ export const deleteSystemMessage = /* GraphQL */ `
     }
   }
 `;
+export const createShoppingItem = /* GraphQL */ `
+  mutation CreateShoppingItem(
+    $input: CreateShoppingItemInput!
+    $condition: ModelShoppingItemConditionInput
+  ) {
+    createShoppingItem(input: $input, condition: $condition) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateShoppingItem = /* GraphQL */ `
+  mutation UpdateShoppingItem(
+    $input: UpdateShoppingItemInput!
+    $condition: ModelShoppingItemConditionInput
+  ) {
+    updateShoppingItem(input: $input, condition: $condition) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteShoppingItem = /* GraphQL */ `
+  mutation DeleteShoppingItem(
+    $input: DeleteShoppingItemInput!
+    $condition: ModelShoppingItemConditionInput
+  ) {
+    deleteShoppingItem(input: $input, condition: $condition) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

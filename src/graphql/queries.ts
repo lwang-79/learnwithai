@@ -1207,3 +1207,78 @@ export const syncSystemMessages = /* GraphQL */ `
     }
   }
 `;
+export const getShoppingItem = /* GraphQL */ `
+  query GetShoppingItem($id: ID!) {
+    getShoppingItem(id: $id) {
+      id
+      name
+      price
+      description
+      image
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listShoppingItems = /* GraphQL */ `
+  query ListShoppingItems(
+    $filter: ModelShoppingItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShoppingItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        price
+        description
+        image
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncShoppingItems = /* GraphQL */ `
+  query SyncShoppingItems(
+    $filter: ModelShoppingItemFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncShoppingItems(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        price
+        description
+        image
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
