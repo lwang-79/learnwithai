@@ -1056,6 +1056,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "category": {
+                    "name": "category",
+                    "isArray": false,
+                    "type": {
+                        "enum": "ShoppingItemCategory"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1127,6 +1136,14 @@ export const schema = {
                 "MathCorrectNumberByMonth",
                 "WritingNumberByDay",
                 "WritingNumberByMonth"
+            ]
+        },
+        "ShoppingItemCategory": {
+            "name": "ShoppingItemCategory",
+            "values": [
+                "Reward",
+                "Pet",
+                "Seed"
             ]
         }
     },
@@ -1589,5 +1606,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "31081762fbf10bcddbff081223fbe331"
+    "version": "35dfeeb359216f9d7f4141be1a591423"
 };

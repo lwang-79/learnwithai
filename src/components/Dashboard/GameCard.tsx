@@ -54,6 +54,7 @@ function GameCard() {
     setDataStoreUser(
       await DataStore.save(User.copyOf(currentUser!, (updated) => {
         updated.gameData = {
+          ...currentUser?.gameData,
           startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
           level: 0,
           score: 0,

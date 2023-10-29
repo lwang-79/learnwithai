@@ -16,6 +16,12 @@ export enum RankingType {
   WRITING_NUMBER_BY_MONTH = "WritingNumberByMonth"
 }
 
+export enum ShoppingItemCategory {
+  REWARD = "Reward",
+  PET = "Pet",
+  SEED = "Seed"
+}
+
 type EagerMembership = {
   readonly current: number;
   readonly previous: number;
@@ -568,6 +574,7 @@ type EagerShoppingItem = {
   readonly price: number;
   readonly description: string;
   readonly image?: string | null;
+  readonly category: ShoppingItemCategory | keyof typeof ShoppingItemCategory;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -582,6 +589,7 @@ type LazyShoppingItem = {
   readonly price: number;
   readonly description: string;
   readonly image?: string | null;
+  readonly category: ShoppingItemCategory | keyof typeof ShoppingItemCategory;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

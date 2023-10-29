@@ -1,4 +1,5 @@
-import { ShoppingItem, User } from "@/models"
+import { ShoppingItem, ShoppingItemCategory, User } from "@/models"
+import { redeemReward, redeemSeed } from "@/types/store"
 import { sesSendEmail } from "@/types/utils"
 import { 
   AlertDialog,
@@ -43,13 +44,13 @@ function ShoppingItemCard({ item }: ShoppingItemCardProps) {
 
   const cancelRef = useRef(null);
 
-  const redeemButtonClickedHandler = async (price: number) => {
+  const redeemButtonClickedHandler = async () => {
     if (!dataStoreUser) return;
     setIsProcessing(true);
 
     const user = await DataStore.query(User, dataStoreUser.id);
 
-    if (!user || !user.gameData || !user.gameData.coins || user.gameData.coins < price) {
+    if (!user || !user.gameData || !user.gameData.coins || user.gameData.coins < item.price) {
       toast({
         description: `You do not have enough coins.`,
         status: 'error',
@@ -62,42 +63,88 @@ function ShoppingItemCard({ item }: ShoppingItemCardProps) {
       return;
     }
 
-    try {
-      if (
-        dataStoreUser && 
-        dataStoreUser.notification && 
-        dataStoreUser.notification.emails.length > 0
-      ) {
-        const message = `${dataStoreUser.username} redeemed a reward cost ${item.price} coins.
-Name: ${item.name}
-Description: ${item.description}
-        `;
+//     try {
+//       if (
+//         dataStoreUser && 
+//         dataStoreUser.notification && 
+//         dataStoreUser.notification.emails.length > 0
+//       ) {
+//         const message = `${dataStoreUser.username} redeemed a reward cost ${item.price} coins.
+// Name: ${item.name}
+// Description: ${item.description}
+//         `;
 
-        sesSendEmail(
-          dataStoreUser.notification.emails as string[], 
-          `${process.env.NEXT_PUBLIC_APP_NAME} redeem notification`, 
-          message, 
-          'notification@StudyWithAI.pro'
-        );
-      } else {
-        console.log('no email');
+//         sesSendEmail(
+//           dataStoreUser.notification.emails as string[], 
+//           `${process.env.NEXT_PUBLIC_APP_NAME} redeem notification`, 
+//           message, 
+//           'notification@StudyWithAI.pro'
+//         );
+//       } else {
+//         console.log('no email');
+//         toast({
+//           description: `Please configure notification in your profile first.`,
+//           status: 'error',
+//           duration: 5000,
+//           isClosable: true,
+//           position: 'top'
+//         });
+  
+//         onCloseAlert();
+//         setIsProcessing(false);
+//         return;
+//       }
+      
+//     } catch (error) {
+//       console.error(error);
+//       toast({
+//         description: `Failed to send notification. Please make sure the email address is valid.`,
+//         status: 'error',
+//         duration: 5000,
+//         isClosable: true,
+//         position: 'top'
+//       });
+
+//       onCloseAlert();
+//       setIsProcessing(false);
+//       return;
+//     }
+
+//     const updatedUser = await DataStore.save(User.copyOf(user, updated => {
+//       updated.gameData!.coins = user.gameData!.coins! - item.price
+//     }));
+
+    try {
+      if (item.category === ShoppingItemCategory.REWARD) {
+
+        const updatedUser = await redeemReward(user, item);
+        setDataStoreUser(updatedUser);
+
         toast({
-          description: `Please configure notification in your profile first.`,
-          status: 'error',
+          description: `Redeemed successful. Notification has been sent.`,
+          status: 'success',
           duration: 5000,
           isClosable: true,
           position: 'top'
         });
-  
-        onCloseAlert();
-        setIsProcessing(false);
-        return;
+            
+      } else if (item.category === ShoppingItemCategory.SEED) {
+
+        const updatedUser = await redeemSeed(user, item);
+        setDataStoreUser(updatedUser);
+
+        toast({
+          description: `A new seed has been planted.`,
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
       }
-      
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       toast({
-        description: `Failed to send notification. Please make sure the email address is valid.`,
+        description: `${error.message}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -109,26 +156,13 @@ Description: ${item.description}
       return;
     }
 
-    const updatedUser = await DataStore.save(User.copyOf(user, updated => {
-      updated.gameData!.coins = user.gameData!.coins! - price
-    }));
-
-    toast({
-      description: `Redeemed successful. Notification has been sent.`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-      position: 'top'
-    });
-    
-    setDataStoreUser(updatedUser);
     onCloseAlert();
     setIsProcessing(false);
   }
 
   return (
     <>
-      <Card w='220px' h='450'>
+      <Card w='220px' h='full'>
         <CardHeader>{item.name}</CardHeader>
         <Image 
           src={item.image??''}
@@ -173,7 +207,10 @@ Description: ${item.description}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              {`${item.price} coins will be deducted. Notification will be sent to your guardians' email address.`}
+              {item.category === ShoppingItemCategory.REWARD ? 
+                `${item.price} coins will be deducted. Notification will be sent to your guardians' email address.` : 
+                `${item.price} coins will be deducted.`
+              }
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -190,7 +227,7 @@ Description: ${item.description}
                 rounded={'full'}
                 isLoading={isProcessing}
                 px={6}
-                onClick={()=>redeemButtonClickedHandler(item.price)} 
+                onClick={redeemButtonClickedHandler} 
                 ml={3}
               >
                 Redeem

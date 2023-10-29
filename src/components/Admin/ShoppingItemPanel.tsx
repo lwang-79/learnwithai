@@ -1,4 +1,4 @@
-import { ShoppingItem } from "@/models";
+import { ShoppingItem, ShoppingItemCategory } from "@/models";
 import { 
   AlertDialog,
   AlertDialogBody,
@@ -14,6 +14,8 @@ import {
   IconButton, 
   Image as CImage, 
   Input, 
+  Select, 
+  Spacer, 
   Text, 
   useBoolean, 
   useDisclosure, 
@@ -29,7 +31,8 @@ function ShoppingItemPanel() {
     name: '',
     description: '',
     price: 0,
-    image: ''
+    image: '',
+    category: ShoppingItemCategory.REWARD
   };
 
   const [ formState, setFormState ] = useState(initFormState);
@@ -107,13 +110,25 @@ function ShoppingItemPanel() {
       return;
     }
 
+    if (!formState.image) {
+      toast({
+        description: `Please upload an image for the item.`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top'
+      });
+      return;
+    }
+
     console.log(formState)
 
     await DataStore.save(new ShoppingItem({
       name: formState.name,
       description: formState.description,
       price: formState.price,
-      image: formState.image
+      image: formState.image,
+      category: formState.category
     }));
 
     toast({
@@ -231,6 +246,17 @@ function ShoppingItemPanel() {
                     onChange={setInput('price')}
                   />
                 </FormControl>
+                <FormControl>
+                  <Select
+                    value={formState.category} 
+                    onChange={setInput('category')}
+                  >
+                    {Object.values(ShoppingItemCategory).map(category => (
+                      <option key={category} value={category}>{category}</option>
+                    ))}
+                  </Select>
+                </FormControl>
+
               </HStack>
               <HStack w='full'>
                 <FormControl>
@@ -272,7 +298,9 @@ function ShoppingItemPanel() {
               <VStack w='full' align='flex-start'>
                 <HStack w='full' spacing={8}>
                   <Text>{`Name: ${item.name}`}</Text>
+                  <Spacer />
                   <Text>{`Price: ${item.price}`}</Text>
+                  <Text>{`Category: ${item.category}`}</Text>
                 </HStack>
                 <Text>{item.description}</Text>
               </VStack>

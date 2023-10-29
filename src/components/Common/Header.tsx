@@ -203,7 +203,18 @@ export default function Header() {
               <Button 
                 variant='ghost' 
                 colorScheme='orange'
-                onClick={()=>router.push('/store')}
+                onClick={()=>{
+                  if (user!.membership!.current < 2) {
+                    toast({
+                      description: `The feature is not available for your current plan, please upgrade your plan in profile.`,
+                      status: 'warning',
+                      duration: 5000,
+                      isClosable: true
+                    });
+                    return;
+                  }
+                  router.push('/store');
+                }}
               >
                 <HStack>
                   <Icon as={SWACoins} boxSize={6} />

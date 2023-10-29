@@ -1,10 +1,10 @@
 import { User } from "@/models";
 import { getLevel } from "./user";
 
-const Seeds = ['tree', 'sunflower', 'corn', 'daisy']
+export const SEEDS = ['tree', 'sunflower', 'corn', 'daisy']
 
 export const getSeed = (user: User): string => {
-  if (!user.daily) return Seeds[0];
+  if (!user.daily) return SEEDS[0];
 
   const { mathLevel, writingLevel } = getLevel(user.daily);
   const level = mathLevel + writingLevel;
@@ -18,10 +18,10 @@ export const getSeed = (user: User): string => {
   // possibilities[1] = possibilities[1] * level > 0.3 ? 0.3 : possibilities[1] * level;
   // possibilities[0] = 1 - possibilities[3] - possibilities[2] - possibilities[1];
 
-  if (random < possibilities[0]) return Seeds[0];
-  else if (random < possibilities[0] + possibilities[1]) return Seeds[1];
-  else if (random < possibilities[0] + possibilities[1] + possibilities[2]) return Seeds[2];
-  else return Seeds[3];
+  if (random < possibilities[0]) return SEEDS[0];
+  else if (random < possibilities[0] + possibilities[1]) return SEEDS[1];
+  else if (random < possibilities[0] + possibilities[1] + possibilities[2]) return SEEDS[2];
+  else return SEEDS[3];
 }
 
 export const getCollections = (collections: string) => {

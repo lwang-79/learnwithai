@@ -754,18 +754,32 @@ export type CreateShoppingItemInput = {
   price: number,
   description: string,
   image?: string | null,
+  category: ShoppingItemCategory,
   _version?: number | null,
 };
+
+export enum ShoppingItemCategory {
+  Reward = "Reward",
+  Pet = "Pet",
+  Seed = "Seed",
+}
+
 
 export type ModelShoppingItemConditionInput = {
   name?: ModelStringInput | null,
   price?: ModelIntInput | null,
   description?: ModelStringInput | null,
   image?: ModelStringInput | null,
+  category?: ModelShoppingItemCategoryInput | null,
   and?: Array< ModelShoppingItemConditionInput | null > | null,
   or?: Array< ModelShoppingItemConditionInput | null > | null,
   not?: ModelShoppingItemConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelShoppingItemCategoryInput = {
+  eq?: ShoppingItemCategory | null,
+  ne?: ShoppingItemCategory | null,
 };
 
 export type ShoppingItem = {
@@ -775,6 +789,7 @@ export type ShoppingItem = {
   price: number,
   description: string,
   image?: string | null,
+  category: ShoppingItemCategory,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -788,6 +803,7 @@ export type UpdateShoppingItemInput = {
   price?: number | null,
   description?: string | null,
   image?: string | null,
+  category?: ShoppingItemCategory | null,
   _version?: number | null,
 };
 
@@ -995,6 +1011,7 @@ export type ModelShoppingItemFilterInput = {
   price?: ModelIntInput | null,
   description?: ModelStringInput | null,
   image?: ModelStringInput | null,
+  category?: ModelShoppingItemCategoryInput | null,
   and?: Array< ModelShoppingItemFilterInput | null > | null,
   or?: Array< ModelShoppingItemFilterInput | null > | null,
   not?: ModelShoppingItemFilterInput | null,
@@ -1170,6 +1187,7 @@ export type ModelSubscriptionShoppingItemFilterInput = {
   price?: ModelSubscriptionIntInput | null,
   description?: ModelSubscriptionStringInput | null,
   image?: ModelSubscriptionStringInput | null,
+  category?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
   or?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -2051,6 +2069,7 @@ export type CreateShoppingItemMutation = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2072,6 +2091,7 @@ export type UpdateShoppingItemMutation = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2093,6 +2113,7 @@ export type DeleteShoppingItemMutation = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3302,6 +3323,7 @@ export type GetShoppingItemQuery = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3326,6 +3348,7 @@ export type ListShoppingItemsQuery = {
       price: number,
       description: string,
       image?: string | null,
+      category: ShoppingItemCategory,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3354,6 +3377,7 @@ export type SyncShoppingItemsQuery = {
       price: number,
       description: string,
       image?: string | null,
+      category: ShoppingItemCategory,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4214,6 +4238,7 @@ export type OnCreateShoppingItemSubscription = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4234,6 +4259,7 @@ export type OnUpdateShoppingItemSubscription = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4254,6 +4280,7 @@ export type OnDeleteShoppingItemSubscription = {
     price: number,
     description: string,
     image?: string | null,
+    category: ShoppingItemCategory,
     createdAt: string,
     updatedAt: string,
     _version: number,

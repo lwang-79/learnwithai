@@ -1,34 +1,57 @@
 import Layout from "@/components/Common/Layout"
-import ShoppingItemCard from "@/components/Store/ShoppingItemCard";
-import { ShoppingItem } from "@/models"
-import { Wrap, WrapItem } from "@chakra-ui/react";
+import SharedComponents from "@/components/Common/SharedComponents";
+import StorePanel from "@/components/Store/StorePanel";
+import { ShoppingItem, ShoppingItemCategory } from "@/models";
+import { Tab, TabList, TabPanel, TabPanels, Tabs, Tag, VStack } from "@chakra-ui/react";
 import { DataStore, Predicates, SortDirection } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 function Store() {
-  const [ items, setItems ] = useState<ShoppingItem[]>([]);
+  const [ rewards, setRewards ] = useState<ShoppingItem[]>([]);
+  const [ storeItems, setStoreItems ] = useState<ShoppingItem[]>([]);
+  const { dataStoreUser } = useContext(SharedComponents);
+  const router = useRouter();
 
   useEffect(() => {
+    if (!dataStoreUser) return;
+
+    if (dataStoreUser.membership!.current < 2) {
+      router.replace('/');
+      return;
+    }
+
     DataStore.query(ShoppingItem, Predicates.ALL,
       {
         sort: i => i.price(SortDirection.ASCENDING)
       }).then(items => {
-
-        setItems(items);
+        const rewards = items.filter(i => i.category === ShoppingItemCategory.REWARD);
+        setRewards(rewards);
+        const others = items.filter(i => i.category !== ShoppingItemCategory.REWARD);
+        setStoreItems(others);
       }
     );
-  },[]);
+  },[dataStoreUser, router]);
 
   return (
     <Layout>
-      <Wrap justify='center' spacing={4}>
-        {items.map(item => (
-          <WrapItem key={item.id}>
-            <ShoppingItemCard item={item} />
-          </WrapItem>
-        ))}
-      </Wrap>
-      
+      <Tabs isFitted w='full' colorScheme='teal'>
+        <TabList>
+          <Tab>Rewards</Tab>
+          <Tab>Store</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <VStack spacing={4}>
+              <Tag colorScheme='orange'>Redeem coins and notify your guardians. They will decide whether to purchase the reward for you. </Tag>
+              <StorePanel items={rewards} />
+            </VStack>
+          </TabPanel>
+          <TabPanel>
+          <StorePanel items={storeItems} />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Layout>
   )
 }
