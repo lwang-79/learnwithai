@@ -819,6 +819,7 @@ export const onCreateShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version
@@ -838,6 +839,7 @@ export const onUpdateShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version
@@ -857,6 +859,7 @@ export const onDeleteShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version

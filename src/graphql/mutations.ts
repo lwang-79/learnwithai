@@ -855,6 +855,7 @@ export const createShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version
@@ -875,6 +876,7 @@ export const updateShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version
@@ -895,6 +897,7 @@ export const deleteShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version

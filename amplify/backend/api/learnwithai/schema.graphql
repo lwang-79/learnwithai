@@ -248,6 +248,13 @@ type ShoppingItem @model
   price: Int!
   description: String!
   image: String
+  category: ShoppingItemCategory!
+}
+
+enum ShoppingItemCategory {
+  Reward
+  Pet
+  Seed
 }
 
 type Mutation {

@@ -1215,6 +1215,7 @@ export const getShoppingItem = /* GraphQL */ `
       price
       description
       image
+      category
       createdAt
       updatedAt
       _version
@@ -1237,6 +1238,7 @@ export const listShoppingItems = /* GraphQL */ `
         price
         description
         image
+        category
         createdAt
         updatedAt
         _version
@@ -1269,6 +1271,7 @@ export const syncShoppingItems = /* GraphQL */ `
         price
         description
         image
+        category
         createdAt
         updatedAt
         _version

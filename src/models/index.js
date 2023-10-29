@@ -16,6 +16,12 @@ const RankingType = {
   "WRITING_NUMBER_BY_MONTH": "WritingNumberByMonth"
 };
 
+const ShoppingItemCategory = {
+  "REWARD": "Reward",
+  "PET": "Pet",
+  "SEED": "Seed"
+};
+
 const { User, QuestionSet, BadQuestionSet, Test, Essay, RankingItem, Badge, SystemMessage, ShoppingItem, Membership, Subscriptions, Quota, Statistic, GameData, Notification, OptionStates, LocalQuestionSet, LambdaResponse } = initSchema(schema);
 
 export {
@@ -30,6 +36,7 @@ export {
   ShoppingItem,
   NotificationType,
   RankingType,
+  ShoppingItemCategory,
   Membership,
   Subscriptions,
   Quota,
