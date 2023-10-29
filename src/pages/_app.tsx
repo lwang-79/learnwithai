@@ -5,7 +5,7 @@ import theme from '@/types/theme';
 import Head from 'next/head';
 import { Amplify, AuthModeStrategyType, DataStore, Hub, syncExpression } from 'aws-amplify';
 import awsconfig from '../aws-exports';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SharedComponents from '@/components/Common/SharedComponents';
 import SpinnerOverlay from '@/components/Common/SpinnerOverlay';
 import { RankingItem, User } from '@/models';
@@ -94,12 +94,12 @@ export default function App({ Component, pageProps }: AppProps) {
       if (event === "ready") {
         console.log('DataStore is ready');
         setIsDataStoreReady(!isDataStoreReady);
-        listener();
       }
     });
+
+    return () => listener();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
-  
   
   return (
     <ChakraProvider theme={theme}>

@@ -73,7 +73,7 @@ export default function Header() {
   const router = useRouter();
   const { setItem } = useStorage();
   const width = 'full';
-  const { dataStoreUser, setDataStoreUser, setIsProcessing } = useContext(SharedComponents);
+  const { dataStoreUser, setDataStoreUser, setIsProcessing, setIsDataStoreReady } = useContext(SharedComponents);
   const user = dataStoreUser;
   const toast = useToast();
 
@@ -103,6 +103,7 @@ export default function Header() {
     try {
       setItem('isAuthenticated', 'false', 'local');
       DataStore.clear();        // must before signOut
+      setIsDataStoreReady(false);
       await Auth.signOut();     // for Social SignIn signOut will not return
       setDataStoreUser(undefined);
     } catch (error) {
