@@ -91,6 +91,7 @@ function GameCard() {
         const collectionsString = convertCollectionsToString(map);
 
         updated.gameData = {
+          ...updated.gameData,
           startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
           level: 0,
           score: updated.gameData.score - upgradeScore,
