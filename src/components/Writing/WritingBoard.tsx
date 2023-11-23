@@ -39,6 +39,14 @@ export enum WritingMode {
   Narrative = 'narrative'
 }
 
+interface EssayForm {
+  type: EssayType
+  level: QuestionLevel
+  topic: string
+  prompt: string,
+  text: string,
+}
+
 interface WritingBoardProps {
   type: EssayType
   level: QuestionLevel
@@ -48,7 +56,7 @@ interface WritingBoardProps {
 }
 
 function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardProps) {
-  const [ essay, setEssay ] = useState<Essay|undefined>(initEssay);
+  const [ essay, setEssay ] = useState<EssayForm|undefined>(initEssay ? initEssay as EssayForm : undefined);
   const [ text, setText ] = useState(initEssay ? initEssay.text : '');
   const [ count, setCount ] = useState(initEssay ? countWords(initEssay.text) : 0);
   const [ mark, setMark ] = useState('');
@@ -61,6 +69,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   const cancelRef = useRef(null);
 
   const toast = useToast();
+  console.log(type, level, topic)
 
   const { 
     isOpen: isOpenAlert, 
@@ -78,16 +87,14 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
   useEffect(() => {
     if (essay) return;
     if (type === EssayType.Custom) {
-      const essay = new Essay({
+  
+      setEssay({
         type: type,
         level: level,
         topic: '',
         prompt: '',
         text: '',
-        DateTime: (new Date()).toISOString()
-      })
-  
-      setEssay(essay);
+      });
       return;
     }
 
@@ -114,16 +121,13 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       } else {
         const prompt = body.data as string;
 
-        const essay = new Essay({
+        setEssay({
           type: type,
           level: level,
           topic: type === EssayType.Persuasive ? topic : '',
           prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
           text: '',
-          DateTime: (new Date()).toISOString()
-        })
-    
-        setEssay(essay);
+        });
 
         const statistic: Statistic = {
           ...InitStatistic,
@@ -284,12 +288,26 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
           position: 'top'
         });
       } else {
-        DataStore.save(Essay.copyOf(
-          essay,
-          updated => {
-            updated.text = text;
-          }
-        ));
+        console.log(essay)
+
+        const newEssay = await DataStore.save(new Essay({
+          type: essay.type,
+          level: essay.level,
+          topic: essay.topic,
+          prompt: essay.prompt,
+          text: text,
+          DateTime: (new Date()).toISOString()
+        }));
+
+        if (!newEssay)
+
+        toast({
+          description: `Failed to save the essay, please try again later.`,
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+          position: 'top'
+        });
       }
     }
 
@@ -365,16 +383,7 @@ Total words: ${count}
                   minRows={1}
                   isDisabled={isSubmitted}
                   onChange={(e)=>setPrompt(e.target.value)}
-                  onBlur={
-                    ()=>{
-                      setEssay(Essay.copyOf(
-                        essay!,
-                        updated => {
-                          updated.prompt = prompt
-                        }
-                      ));
-                    }
-                  }
+                  onBlur={()=>setEssay({...essay, prompt: prompt})}
                 />
               ) : (
                 essay && essay.prompt.split("\n").map((line, index) => (
