@@ -1,3 +1,4 @@
+import { TestState } from "@/components/Math/QuestionRun";
 import { QuestionSet, Test, User } from "@/models";
 import { DataStore } from "aws-amplify";
 import { 
@@ -20,7 +21,7 @@ import {
 import { APIPost } from "./utils";
 
 export const saveTest = async (
-  test: Test,
+  test: TestState,
   duration: number,
   questionSets: LocalQuestionSet[],
   user: User
@@ -39,7 +40,16 @@ export const saveTest = async (
     }
   }
 
-  const origin = latestTest?? test;
+  const origin: Test = latestTest?? await DataStore.save(new Test({
+    category: test.category,
+    dateTime: (new Date()).toISOString(),
+    duration: duration,
+    total: 0,
+    wrong: 0,
+    correct: 0,
+    source: test.source,
+    questionSets: test.questionSets,
+  }));
   
   let correct = 0;
   let wrong = 0;

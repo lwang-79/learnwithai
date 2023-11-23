@@ -71,6 +71,16 @@ interface QuestionRunProps {
   initialTest?: Test
 }
 
+export interface TestState {
+  id: string
+  category: QuestionCategory.Math
+  total: number
+  wrong: number
+  correct: number
+  source: QuestionSource
+  questionSets: LocalQuestionSet[]
+}
+
 const cacheNumber = 3;
 const defaultNumber = 10
 
@@ -109,7 +119,7 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
   const [ isChallenging, setIsChallenging ] = useState(false);
   const [ timerStopped, setTimeStopped ] = useState(false);
   const [ duration, setDuration ] = useState(initialTest?.duration || 0);
-  const testRef = useRef(initialTest);
+  const testRef = useRef<TestState|undefined>(initialTest ? initialTest as TestState : undefined);
   const cancelRef = useRef(null);
   const toast = useToast();
 
@@ -149,15 +159,15 @@ function QuestionRun({ source, category, type, level, concepts, mode, initMaxNum
     }
 
     if (isTest) {
-      testRef.current = new Test({
+      testRef.current = {
+        id: '',
         category: QuestionCategory.Math,
-        dateTime: (new Date()).toISOString(),
         total: 0,
         wrong: 0,
         correct: 0,
         source: source,
         questionSets: []
-      });
+      };
     }
 
     if (source === QuestionSource.SavedQuestions) {
