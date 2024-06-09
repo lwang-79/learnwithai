@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -43,7 +43,7 @@ var math_1 = require("./openai/math");
 var writing_1 = require("./openai/writing");
 var types_1 = require("./types");
 var chat_1 = require("openai/chat");
-var model = 'gpt-3.5-turbo-0613';
+var model = 'gpt-3.5-turbo';
 exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
     var req, operation, body, _a;
     return __generator(this, function (_b) {
@@ -52,7 +52,7 @@ exports.handler = function (event) { return __awaiter(void 0, void 0, void 0, fu
                 console.log("EVENT: ".concat(JSON.stringify(event)));
                 req = event;
                 operation = req.operation || '';
-                model = req.source === types_1.QuestionSource.ChatGPT4 ? 'gpt-4' : 'gpt-3.5-turbo-0613';
+                model = req.source === types_1.QuestionSource.ChatGPT4 ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
                 if (Object.values(types_1.APIOperation).indexOf(operation) < 0) {
                     return [2 /*return*/, {
                             statusCode: 400,

@@ -5,7 +5,7 @@ import { generateWritingMark, generateWritingPrompt, polishWriting } from "./ope
 import { APIOperation, APIResponse, QuestionSource } from "./types";
 import { chatCompletion } from "openai/chat";
 
-let model = 'gpt-3.5-turbo-0613';
+let model = 'gpt-3.5-turbo';
 
 
 exports.handler = async (event) => {
@@ -13,7 +13,7 @@ exports.handler = async (event) => {
   // const req = JSON.parse(event.body);
   const req = event;
   const operation = req.operation || '';
-  model = req.source === QuestionSource.ChatGPT4 ? 'gpt-4' : 'gpt-3.5-turbo-0613';
+  model = req.source === QuestionSource.ChatGPT4 ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
   if (Object.values(APIOperation).indexOf(operation) < 0) {
     return {
       statusCode: 400,
