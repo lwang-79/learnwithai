@@ -6,10 +6,9 @@ import Layout from "@/components/Common/Layout";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 function Admin() {
-
   return (
     <Layout>
-      <Tabs isFitted w='full' colorScheme='teal'>
+      <Tabs isFitted w="full" colorScheme="teal">
         <TabList>
           <Tab>Badge</Tab>
           <Tab>Bad Questions</Tab>
@@ -32,7 +31,7 @@ function Admin() {
         </TabPanels>
       </Tabs>
     </Layout>
-  )
+  );
 }
 
-export default Admin
+export default Admin;

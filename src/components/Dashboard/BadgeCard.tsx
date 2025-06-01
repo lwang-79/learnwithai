@@ -1,5 +1,14 @@
 import { Badge } from "@/models";
-import { Box, Card, Divider, Image, Text, VStack, Wrap, WrapItem } from "@chakra-ui/react"
+import {
+  Box,
+  Card,
+  Divider,
+  Image,
+  Text,
+  VStack,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
 import { DataStore } from "aws-amplify";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -8,8 +17,7 @@ import SharedComponents from "../Common/SharedComponents";
 function BadgeCard() {
   const { dataStoreUser, isDataStoreReady } = useContext(SharedComponents);
   const router = useRouter();
-  const [ myBadges, setMyBadges ] = useState<Badge[]>([]);
-
+  const [myBadges, setMyBadges] = useState<Badge[]>([]);
 
   useEffect(() => {
     if (!dataStoreUser || !dataStoreUser.badges) {
@@ -25,42 +33,51 @@ function BadgeCard() {
         }
       }
 
-      setMyBadges(myBadges.sort((a, b) => a.startDate > b.startDate ? -1 : 1).slice(0, 10));
-    }
+      setMyBadges(
+        myBadges
+          .sort((a, b) => (a.startDate > b.startDate ? -1 : 1))
+          .slice(0, 10),
+      );
+    };
 
     getMyBadges(dataStoreUser.badges);
-    
-  },[dataStoreUser, isDataStoreReady]);
+  }, [dataStoreUser, isDataStoreReady]);
 
   return (
-    <Card w='full'>
-      <VStack align='flex-start' mb={4}>
-        <Text  mx={6} mt={4}>Your Achievement</Text>
+    <Card w="full">
+      <VStack align="flex-start" mb={4}>
+        <Text mx={6} mt={4}>
+          Your Achievement
+        </Text>
         <Divider />
-        <Box  
-          px={4} w='full'
-          cursor='pointer'
-          onClick={() => {router.push('/achievement')}}
+        <Box
+          px={4}
+          w="full"
+          cursor="pointer"
+          onClick={() => {
+            router.push("/achievement");
+          }}
         >
-          {myBadges.length === 0 ? 'No badge yet >> Claim' : 
+          {myBadges.length === 0 ? (
+            "No badge yet >> Claim"
+          ) : (
             <Wrap spacing={2}>
               {myBadges.map((badge, index) => (
                 <WrapItem key={`${badge.id}+${index}`}>
-                  <Image 
-                    src={badge.image} 
-                    alt={badge.name} 
-                    boxSize= {myBadges.length < 4 ? '80px' : '50px'}
-                    rounded='xl'
+                  <Image
+                    src={badge.image}
+                    alt={badge.name}
+                    boxSize={myBadges.length < 4 ? "80px" : "50px"}
+                    rounded="xl"
                   />
                 </WrapItem>
               ))}
             </Wrap>
-          }
+          )}
         </Box>
       </VStack>
-      
     </Card>
-  )
+  );
 }
 
-export default BadgeCard
+export default BadgeCard;

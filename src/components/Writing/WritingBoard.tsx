@@ -1,6 +1,11 @@
-import { Essay, NotificationType, Statistic } from "@/models"
-import { APIOperation, EssayTopic, EssayType, QuestionLevel } from "@/types/types"
-import { 
+import { Essay, NotificationType, Statistic } from "@/models";
+import {
+  APIOperation,
+  EssayTopic,
+  EssayType,
+  QuestionLevel,
+} from "@/types/types";
+import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
@@ -14,86 +19,98 @@ import {
   Divider,
   HStack,
   Icon,
-  IconButton, 
-  SkeletonText, 
-  Spacer, 
-  Spinner, 
-  Stack, 
-  Tag, 
-  Text, 
-  Textarea, 
-  useDisclosure, 
-  useToast, 
-  VStack
-} from "@chakra-ui/react"
+  IconButton,
+  SkeletonText,
+  Spacer,
+  Spinner,
+  Stack,
+  Tag,
+  Text,
+  Textarea,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import ResizeTextarea from "react-textarea-autosize";
-import { Fragment, useContext, useEffect, useRef, useState } from "react"
-import { MdClose } from "react-icons/md"
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
+import { MdClose } from "react-icons/md";
 import { DataStore } from "aws-amplify";
 import { addStatisticData, InitStatistic } from "@/types/statistic";
 import SharedComponents from "../Common/SharedComponents";
 import { APIPost, sesSendEmail } from "@/types/utils";
 
 export enum WritingMode {
-  Essay = 'essay',
-  Narrative = 'narrative'
+  Essay = "essay",
+  Narrative = "narrative",
 }
 
 interface EssayForm {
-  type: EssayType
-  level: QuestionLevel
-  topic: string
-  prompt: string,
-  text: string,
+  type: EssayType;
+  level: QuestionLevel;
+  topic: string;
+  prompt: string;
+  text: string;
 }
 
 interface WritingBoardProps {
-  type: EssayType
-  level: QuestionLevel
-  topic: EssayTopic
-  onClose: ()=>void
-  initEssay?: Essay
+  type: EssayType;
+  level: QuestionLevel;
+  topic: EssayTopic;
+  onClose: () => void;
+  initEssay?: Essay;
 }
 
-function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardProps) {
-  const [ essay, setEssay ] = useState<EssayForm|undefined>(initEssay ? initEssay as EssayForm : undefined);
-  const [ text, setText ] = useState(initEssay ? initEssay.text : '');
-  const [ count, setCount ] = useState(initEssay ? countWords(initEssay.text) : 0);
-  const [ mark, setMark ] = useState('');
-  const [ prompt, setPrompt ] = useState('');
-  const [ isSubmitted, setIsSubmitted ] = useState(initEssay ? true : false);
-  const [ shouldShowMark, setShouldShowMark ] = useState(initEssay ? true : false);
-  const [ isMarking, setIsMarking ] = useState(false);
-  const { dataStoreUser, setDataStoreUser, apiName } = useContext(SharedComponents);
+function WritingBoard({
+  type,
+  level,
+  topic,
+  onClose,
+  initEssay,
+}: WritingBoardProps) {
+  const [essay, setEssay] = useState<EssayForm | undefined>(
+    initEssay ? (initEssay as EssayForm) : undefined,
+  );
+  const [text, setText] = useState(initEssay ? initEssay.text : "");
+  const [count, setCount] = useState(
+    initEssay ? countWords(initEssay.text) : 0,
+  );
+  const [mark, setMark] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(initEssay ? true : false);
+  const [shouldShowMark, setShouldShowMark] = useState(
+    initEssay ? true : false,
+  );
+  const [isMarking, setIsMarking] = useState(false);
+  const { dataStoreUser, setDataStoreUser, apiName } =
+    useContext(SharedComponents);
 
   const cancelRef = useRef(null);
 
   const toast = useToast();
-  console.log(type, level, topic)
+  console.log(type, level, topic);
 
-  const { 
-    isOpen: isOpenAlert, 
-    onOpen: onOpenAlert, 
-    onClose: onCloseAlert 
+  const {
+    isOpen: isOpenAlert,
+    onOpen: onOpenAlert,
+    onClose: onCloseAlert,
   } = useDisclosure();
 
-  const { 
-    isOpen: isOpenExitAlert, 
-    onOpen: onOpenExitAlert, 
-    onClose: onCloseExitAlert 
+  const {
+    isOpen: isOpenExitAlert,
+    onOpen: onOpenExitAlert,
+    onClose: onCloseExitAlert,
   } = useDisclosure();
 
   // generate writing topic
   useEffect(() => {
     if (essay) return;
     if (type === EssayType.Custom) {
-  
       setEssay({
         type: type,
         level: level,
-        topic: '',
-        prompt: '',
-        text: '',
+        topic: "",
+        prompt: "",
+        text: "",
       });
       return;
     }
@@ -103,19 +120,18 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         operation: APIOperation.WritingPrompt,
         type: type,
         level: level,
-        topic: topic
-      }
+        topic: topic,
+      },
     };
 
-    APIPost(apiName, '/', request)
-    .then(async body => {
+    APIPost(apiName, "/", request).then(async (body) => {
       if (!body.data) {
         toast({
           description: `Failed to generate prompt, please try again later.`,
-          status: 'error',
+          status: "error",
           duration: 5000,
-          position: 'top',
-          isClosable: true
+          position: "top",
+          isClosable: true,
         });
         onClose();
       } else {
@@ -124,23 +140,33 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         setEssay({
           type: type,
           level: level,
-          topic: type === EssayType.Persuasive ? topic : '',
-          prompt: prompt.trim().replace('Text: ', '').replace('Prompt: ', ''),
-          text: '',
+          topic: type === EssayType.Persuasive ? topic : "",
+          prompt: prompt.trim().replace("Text: ", "").replace("Prompt: ", ""),
+          text: "",
         });
 
         const statistic: Statistic = {
           ...InitStatistic,
-          writingRequest: 1
-        }
+          writingRequest: 1,
+        };
         setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
       }
     });
-  },[apiName, dataStoreUser, essay, level, onClose, setDataStoreUser, toast, topic, type]);
+  }, [
+    apiName,
+    dataStoreUser,
+    essay,
+    level,
+    onClose,
+    setDataStoreUser,
+    toast,
+    topic,
+    type,
+  ]);
 
   useEffect(() => {
     setCount(countWords(text));
-  },[text]);
+  }, [text]);
 
   const markEssay = () => {
     if (!essay) return;
@@ -153,19 +179,18 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
-        essay: text
-      }
+        essay: text,
+      },
     };
 
-    APIPost(apiName, '/', request)
-    .then(async body => {
+    APIPost(apiName, "/", request).then(async (body) => {
       if (!body.data) {
         toast({
           description: `Failed to mark the essay, please try again later.`,
-          status: 'error',
+          status: "error",
           duration: 5000,
-          position: 'top',
-          isClosable: true
+          position: "top",
+          isClosable: true,
         });
       } else {
         const mark = body.data as string;
@@ -176,13 +201,15 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
             ...InitStatistic,
             writingRequest: 1,
           };
-      
-          setDataStoreUser(await addStatisticData(statistic, dataStoreUser!.id));
+
+          setDataStoreUser(
+            await addStatisticData(statistic, dataStoreUser!.id),
+          );
         }
       }
       setIsMarking(false);
     });
-  }
+  };
 
   const polishWriting = () => {
     if (!essay) return;
@@ -195,19 +222,18 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
         level: essay.level,
         type: essay.type,
         prompt: essay.prompt,
-        essay: text
-      }
+        essay: text,
+      },
     };
 
-    APIPost(apiName, '/', request)
-    .then(body => {
-      if (!body.data){
+    APIPost(apiName, "/", request).then((body) => {
+      if (!body.data) {
         toast({
           description: `Failed to polish the writing, please try again later.`,
-          status: 'error',
+          status: "error",
           duration: 5000,
-          position: 'top',
-          isClosable: true
+          position: "top",
+          isClosable: true,
         });
       } else {
         const mark = body.data as string;
@@ -215,7 +241,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
       setIsMarking(false);
     });
-  }
+  };
 
   const generateSample = () => {
     if (!essay) return;
@@ -225,19 +251,18 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     const request = {
       body: {
         operation: APIOperation.AskAnything,
-        prompt: essay.prompt
-      }
+        prompt: essay.prompt,
+      },
     };
 
-    APIPost(apiName, '/', request)
-    .then(body => {
+    APIPost(apiName, "/", request).then((body) => {
       if (!body.data) {
         toast({
           description: `Failed to generate a sample, please try again later.`,
-          status: 'error',
+          status: "error",
           duration: 5000,
-          position: 'top',
-          isClosable: true
+          position: "top",
+          isClosable: true,
         });
       } else {
         const mark = body.data as string;
@@ -245,8 +270,7 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       }
       setIsMarking(false);
     });
-  }
-
+  };
 
   const submitButtonClickedHandler = async () => {
     if (!essay) return;
@@ -254,10 +278,10 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     if (essay.prompt.trim().length < 10) {
       toast({
         description: `Your writing prompt is too short.`,
-        status: 'error',
+        status: "error",
         duration: 5000,
-        position: 'top',
-        isClosable: true
+        position: "top",
+        isClosable: true,
       });
       return;
     }
@@ -265,10 +289,10 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
     if (text.trim().length < 50) {
       toast({
         description: `Your writing is too short, please finish your writing before submitting.`,
-        status: 'error',
+        status: "error",
         duration: 5000,
-        position: 'top',
-        isClosable: true
+        position: "top",
+        isClosable: true,
       });
       return;
     }
@@ -282,32 +306,33 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
       if (savedEssayCount >= dataStoreUser!.quota!.savedEssays) {
         toast({
           description: `You have reached the maximum SavedEssays quota ${dataStoreUser!.quota!.savedEssays}. This essay is not saved, please delete some essays or upgrade your plan.`,
-          status: 'warning',
+          status: "warning",
           duration: 10000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       } else {
-        console.log(essay)
+        console.log(essay);
 
-        const newEssay = await DataStore.save(new Essay({
-          type: essay.type,
-          level: essay.level,
-          topic: essay.topic,
-          prompt: essay.prompt,
-          text: text,
-          DateTime: (new Date()).toISOString()
-        }));
+        const newEssay = await DataStore.save(
+          new Essay({
+            type: essay.type,
+            level: essay.level,
+            topic: essay.topic,
+            prompt: essay.prompt,
+            text: text,
+            DateTime: new Date().toISOString(),
+          }),
+        );
 
         if (!newEssay)
-
-        toast({
-          description: `Failed to save the essay, please try again later.`,
-          status: 'warning',
-          duration: 5000,
-          isClosable: true,
-          position: 'top'
-        });
+          toast({
+            description: `Failed to save the essay, please try again later.`,
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+          });
       }
     }
 
@@ -324,9 +349,9 @@ function WritingBoard({ type, level, topic, onClose, initEssay}: WritingBoardPro
 
     // send instant email notification
     if (
-      dataStoreUser && 
+      dataStoreUser &&
       dataStoreUser.membership!.current > 2 &&
-      dataStoreUser.notification && 
+      dataStoreUser.notification &&
       dataStoreUser.notification.types.includes(NotificationType.INSTANT) &&
       dataStoreUser.notification.emails.length > 0
     ) {
@@ -338,55 +363,56 @@ Total words: ${count}
       `;
 
       sesSendEmail(
-        dataStoreUser.notification.emails as string[], 
-        `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`, 
-        message, 
-        'notification@StudyWithAI.pro'
+        dataStoreUser.notification.emails as string[],
+        `${process.env.NEXT_PUBLIC_APP_NAME} instant notification`,
+        message,
+        "notification@StudyWithAI.pro",
       );
     }
-  }
+  };
 
   return (
     <>
       <IconButton
-        rounded='full'
-        variant='ghost'
-        aria-label='Close'
+        rounded="full"
+        variant="ghost"
+        aria-label="Close"
         icon={<Icon as={MdClose} boxSize={6} />}
         onClick={isSubmitted ? onClose : onOpenExitAlert}
         zIndex={100}
-        position='fixed'
-        top={2} right={2}
+        position="fixed"
+        top={2}
+        right={2}
       />
 
       {essay ? (
         <>
-          <VStack
-            maxW='5xl'
-            mt={20} mx='auto'
-            align='flex-start'
-            spacing={4}
-          >
-            <HStack w='full'>
-              <Text>{level} {type}</Text>
-              {type == EssayType.Persuasive &&
-                <Tag variant='solid' rounded='full' colorScheme='teal'>{topic}</Tag>
-              }
+          <VStack maxW="5xl" mt={20} mx="auto" align="flex-start" spacing={4}>
+            <HStack w="full">
+              <Text>
+                {level} {type}
+              </Text>
+              {type == EssayType.Persuasive && (
+                <Tag variant="solid" rounded="full" colorScheme="teal">
+                  {topic}
+                </Tag>
+              )}
               <Spacer />
             </HStack>
-            <Box w='full'>
+            <Box w="full">
               {type === EssayType.Custom ? (
                 <Textarea
                   as={ResizeTextarea}
                   defaultValue={essay.prompt}
-                  placeholder='Please input your own writing prompt here.'
+                  placeholder="Please input your own writing prompt here."
                   minRows={1}
                   isDisabled={isSubmitted}
-                  onChange={(e)=>setPrompt(e.target.value)}
-                  onBlur={()=>setEssay({...essay, prompt: prompt})}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onBlur={() => setEssay({ ...essay, prompt: prompt })}
                 />
               ) : (
-                essay && essay.prompt.split("\n").map((line, index) => (
+                essay &&
+                essay.prompt.split("\n").map((line, index) => (
                   <Fragment key={index}>
                     {line}
                     {index !== essay.prompt.split("\n").length - 1 && <br />}
@@ -395,85 +421,76 @@ Total words: ${count}
               )}
             </Box>
             <Divider />
-            <Textarea 
+            <Textarea
               as={ResizeTextarea}
               defaultValue={essay.text}
-              placeholder='Start to write here'
+              placeholder="Start to write here"
               minRows={10}
               isDisabled={isSubmitted}
-              onChange={(e)=>setText(e.target.value)}
+              onChange={(e) => setText(e.target.value)}
             />
-            <HStack w='full' align='flex-start'>
-              <Text fontSize='sm'>Words: {count}</Text>
+            <HStack w="full" align="flex-start">
+              <Text fontSize="sm">Words: {count}</Text>
               <Spacer />
-              <Button
-                isDisabled={isSubmitted}
-                onClick={onOpenAlert}
-              >
+              <Button isDisabled={isSubmitted} onClick={onOpenAlert}>
                 Submit
               </Button>
             </HStack>
 
-            <Box as={Collapse} in={shouldShowMark} w='full' >
+            <Box as={Collapse} in={shouldShowMark} w="full">
               <Divider />
 
               {isMarking ? (
                 <>
                   <Text mt={4}>AI is working, please wait for a while...</Text>
-                  <SkeletonText mt='4' noOfLines={8} spacing='4' skeletonHeight='2' />
+                  <SkeletonText
+                    mt="4"
+                    noOfLines={8}
+                    spacing="4"
+                    skeletonHeight="2"
+                  />
                 </>
               ) : (
                 <>
-                  <HStack alignItems='center' my={4} w='full'>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={polishWriting}
-                    >
+                  <HStack alignItems="center" my={4} w="full">
+                    <Button variant="ghost" size="sm" onClick={polishWriting}>
                       Polish my writing
                     </Button>
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={generateSample}
-                    >
+                    <Button variant="ghost" size="sm" onClick={generateSample}>
                       Generate a sample
                     </Button>
                     <Spacer />
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={markEssay}
-                    >
+                    <Button variant="ghost" size="sm" onClick={markEssay}>
                       Need more suggestion? Remark the essay
                     </Button>
                   </HStack>
-                  {mark && mark.split("\n").map((line, index) => (
-                    <Fragment key={index}>
-                      {line}
-                      {index !== mark.split("\n").length - 1 && <br />}
-                    </Fragment>
-                  ))}
+                  {mark &&
+                    mark.split("\n").map((line, index) => (
+                      <Fragment key={index}>
+                        {line}
+                        {index !== mark.split("\n").length - 1 && <br />}
+                      </Fragment>
+                    ))}
                 </>
               )}
             </Box>
             <Box h={20} />
           </VStack>
         </>
-        ) : (
-        <Stack h='70vh'>
+      ) : (
+        <Stack h="70vh">
           <Spacer />
           <Center>
             <VStack>
-              <Spinner size='xl'/>
-              <Text fontSize='lg'>AI is generating writing topic for you</Text>
-              <Text fontSize='lg'>It may take a while, please wait...</Text>
+              <Spinner size="xl" />
+              <Text fontSize="lg">AI is generating writing topic for you</Text>
+              <Text fontSize="lg">It may take a while, please wait...</Text>
             </VStack>
           </Center>
           <Spacer />
         </Stack>
       )}
-      
+
       <AlertDialog
         isOpen={isOpenAlert}
         leastDestructiveRef={cancelRef}
@@ -481,7 +498,7 @@ Total words: ${count}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Submit?
             </AlertDialogHeader>
 
@@ -490,19 +507,19 @@ Total words: ${count}
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button 
-                ref={cancelRef} 
+              <Button
+                ref={cancelRef}
                 onClick={onCloseAlert}
-                rounded={'full'}
+                rounded={"full"}
                 px={6}
               >
                 Cancel
               </Button>
-              <Button 
-                colorScheme='red' 
-                rounded={'full'}
+              <Button
+                colorScheme="red"
+                rounded={"full"}
                 px={6}
-                onClick={submitButtonClickedHandler} 
+                onClick={submitButtonClickedHandler}
                 ml={3}
               >
                 Submit
@@ -519,28 +536,26 @@ Total words: ${count}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Exit?
             </AlertDialogHeader>
 
-            <AlertDialogBody>
-              Are you sure you want to exit?
-            </AlertDialogBody>
+            <AlertDialogBody>Are you sure you want to exit?</AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button 
-                ref={cancelRef} 
+              <Button
+                ref={cancelRef}
                 onClick={onCloseExitAlert}
-                rounded={'full'}
+                rounded={"full"}
                 px={6}
               >
                 Cancel
               </Button>
-              <Button 
-                colorScheme='red' 
-                rounded={'full'}
+              <Button
+                colorScheme="red"
+                rounded={"full"}
                 px={6}
-                onClick={onClose} 
+                onClick={onClose}
                 ml={3}
               >
                 Exit
@@ -550,13 +565,12 @@ Total words: ${count}
         </AlertDialogOverlay>
       </AlertDialog>
     </>
-  )
+  );
 }
 
-export default WritingBoard
+export default WritingBoard;
 
 const countWords = (str: string) => {
   const words = str.match(/\b\w+\b/g);
   return words ? words.length : 0;
-}
-
+};

@@ -77,6 +77,6 @@
     "userPoolGroups": false,
     "adminQueries": false,
     "authProviders": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://www.studywithai.pro/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://www.studywithai.pro/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://study.jinpearl.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://learn.jinpearl.com/\",\"https://study.jinpearl.com/\"]}"
   }
 }

@@ -1,57 +1,57 @@
 export enum APIName {
-  OpenAI = 'openai',
+  OpenAI = "openai",
 }
 
 export enum APIOperation {
-  WritingPrompt = 'writing-prompt',
-  WritingMark = 'writing-mark',
-  WritingPolish = 'writing-polish',
-  MathAnswer = 'math-answer',
-  MathQuestion = 'math-question',
-  MathDataset = 'math-dataset',
-  AskAnything = 'ask-anything',
-  StemQuestion = 'stem-question',
-  Chat = 'chat'
+  WritingPrompt = "writing-prompt",
+  WritingMark = "writing-mark",
+  WritingPolish = "writing-polish",
+  MathAnswer = "math-answer",
+  MathQuestion = "math-question",
+  MathDataset = "math-dataset",
+  AskAnything = "ask-anything",
+  StemQuestion = "stem-question",
+  Chat = "chat",
 }
 
 export enum QuestionSource {
-  ChatGPT3 = 'ChatGPT-3',
-  ChatGPT4 = 'ChatGPT-4',
-  Hendrycks = 'Hendrycks MATH',
-  GSM8K = 'GMS8K',
-  MathQA = 'MathQA',
-  Competition = 'Competition',
-  SavedQuestions = 'Saved Questions'
+  ChatGPT3 = "ChatGPT-3",
+  ChatGPT4 = "ChatGPT-4",
+  Hendrycks = "Hendrycks MATH",
+  GSM8K = "GMS8K",
+  MathQA = "MathQA",
+  Competition = "Competition",
+  SavedQuestions = "Saved Questions",
 }
 
 export enum QuestionRunMode {
-  Practice = 'practice',
-  Test = 'test',
-  Review = 'review',
+  Practice = "practice",
+  Test = "test",
+  Review = "review",
 }
 
 export enum QuestionType {
-  MultiChoice = 'multi-choice',
+  MultiChoice = "multi-choice",
 }
 
 export enum HendrycksConcept {
-  Algebra = 'Algebra',
-  Prealgebra = 'Prealgebra',
-  IntermediateAlgebra = 'Intermediate Algebra',
-  Geometry = 'Geometry',
-  NumberTheory = 'Number Theory',
-  Precalculus = 'Precalculus',
-  CountingProbability = 'Counting & Probability',
+  Algebra = "Algebra",
+  Prealgebra = "Prealgebra",
+  IntermediateAlgebra = "Intermediate Algebra",
+  Geometry = "Geometry",
+  NumberTheory = "Number Theory",
+  Precalculus = "Precalculus",
+  CountingProbability = "Counting & Probability",
 }
 
 export enum MathConcept {
-  Arithmetic = 'arithmetic',
-  Decimals = 'decimals',
-  Percentage = 'percentage',
-  Ratio = 'ratio',
-  Fractions = 'fractions',
+  Arithmetic = "arithmetic",
+  Decimals = "decimals",
+  Percentage = "percentage",
+  Ratio = "ratio",
+  Fractions = "fractions",
   // TimeJourney = 'time or journey',
-  Probability = 'probability',
+  Probability = "probability",
   // Statistics = 'statistics',
   // Algebra = 'algebra',
   // Measurement = 'measurement',
@@ -83,123 +83,123 @@ export enum MathConcept {
 }
 
 export enum StemConcept {
-  Science = 'science',
-  Astronomy = 'astronomy',
-  Biology = 'biology',
-  Chemistry = 'chemistry',
-  ComputerScience = 'computer science',
-  Electrical = 'electrical',
-  Mathematics = 'mathematics',
-  Medicine = 'medicine',
-  Physics = 'physics',
-  ConceptualPhysics = 'conceptual physics',
-  Statistics = 'statistics',
+  Science = "science",
+  Astronomy = "astronomy",
+  Biology = "biology",
+  Chemistry = "chemistry",
+  ComputerScience = "computer science",
+  Electrical = "electrical",
+  Mathematics = "mathematics",
+  Medicine = "medicine",
+  Physics = "physics",
+  ConceptualPhysics = "conceptual physics",
+  Statistics = "statistics",
 }
 
 export enum QuestionCategory {
-  Math = 'mathematics',
-  AdvancedMath = 'advanced mathematics',
-  Stem = 'stem'
+  Math = "mathematics",
+  AdvancedMath = "advanced mathematics",
+  Stem = "stem",
 }
 
 export enum QuestionLevel {
-  Year1 = 'Year-1',
-  Year2 = 'Year-2',
-  Year3 = 'Year-3',
-  Year4 = 'Year-4',
-  Year5 = 'Year-5',
-  Year6 = 'Year-6',
-  Year7 = 'Year-7',
-  Year8 = 'Year-8',
-  Year9 = 'Year-9',
-  Year10 = 'Year-10',
-  Year11 = 'Year-11',
-  Year12 = 'Year-12',
-  Level1 = 'Level 1',
-  Level2 = 'Level 2',
-  Level3 = 'Level 3',
-  Level4 = 'Level 4',
-  Level5 = 'Level 5',
+  Year1 = "Year-1",
+  Year2 = "Year-2",
+  Year3 = "Year-3",
+  Year4 = "Year-4",
+  Year5 = "Year-5",
+  Year6 = "Year-6",
+  Year7 = "Year-7",
+  Year8 = "Year-8",
+  Year9 = "Year-9",
+  Year10 = "Year-10",
+  Year11 = "Year-11",
+  Year12 = "Year-12",
+  Level1 = "Level 1",
+  Level2 = "Level 2",
+  Level3 = "Level 3",
+  Level4 = "Level 4",
+  Level5 = "Level 5",
   // Primary = 'primary school',
   // Middle = 'middle school',
   // High = 'high school'
 }
 
 export enum EssayTopic {
-  Society = 'society',
-  Culture = 'culture',
-  Science = 'science',
-  Technology = 'technology',
-  History = 'history',
-  Politics = 'politics'
+  Society = "society",
+  Culture = "culture",
+  Science = "science",
+  Technology = "technology",
+  History = "history",
+  Politics = "politics",
 }
 
 export enum EssayType {
-  Persuasive = 'persuasive',
+  Persuasive = "persuasive",
   // Expository = 'expository',
   // Descriptive = 'descriptive',
-  Narrative = 'narrative',
-  Custom = 'custom'
+  Narrative = "narrative",
+  Custom = "custom",
 }
 
 export type APIResponse = {
   statusCode: number;
   data?: any;
-  error?: string
+  error?: string;
 };
 
 export type QuestionSet = {
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  question: string,
-  options: string[],
-  answer: string,
-  selected: string,
-  workout: string,
-  isBad: boolean,
-  isTarget: boolean,
-  isMarked?: boolean | null
-}
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  question: string;
+  options: string[];
+  answer: string;
+  selected: string;
+  workout: string;
+  isBad: boolean;
+  isTarget: boolean;
+  isMarked?: boolean | null;
+};
 
 export type AQuAQuestion = {
-  question: string
-  rationale: string
-  options: string[]
-  correct: string
-}
+  question: string;
+  rationale: string;
+  options: string[];
+  correct: string;
+};
 
 export type MathQAQuestion = {
-  Problem: string
-  Rationale: string
-  options: string
-  correct: string
-  category: string
-}
+  Problem: string;
+  Rationale: string;
+  options: string;
+  correct: string;
+  category: string;
+};
 
 export type HendrycksQuestion = {
-  problem: string
-  level: string
-  type: string
-  solution: string
-}
+  problem: string;
+  level: string;
+  type: string;
+  solution: string;
+};
 
 export type GSM8KQuestion = {
-  question: string
-  answer: string
-}
+  question: string;
+  answer: string;
+};
 
 export type StemQuestion = {
-  concept: string,
-  question: string,
-  options: string[],
-  answer: string
-}
+  concept: string;
+  question: string;
+  options: string[];
+  answer: string;
+};
 
 export type CompetitionQuestion = {
-  problem: string
-  level: string
-  type: string
-  solution: string
-}
+  problem: string;
+  level: string;
+  type: string;
+  solution: string;
+};

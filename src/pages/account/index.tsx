@@ -1,176 +1,172 @@
-import { 
-  Box, 
-  Button, 
-  Center, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalFooter, 
-  ModalOverlay, 
-  Skeleton, 
-  Spacer, 
-  Spinner, 
-  Stack, 
-  useBoolean, 
-  useDisclosure 
-} from '@chakra-ui/react'
-import { API, DataStore, graphqlOperation } from 'aws-amplify'
-import { useContext, useEffect, useState } from 'react'
-import { GetUserQuery, LearnwithaiSubscribeMutation } from '@/types/API'
-import { learnwithaiSubscribe } from '@/graphql/mutations'
-import { GraphQLResult } from "@aws-amplify/api-graphql"
-import ProfileCard from '@/components/Account/ProfileCard'
-import { User } from '@/models'
-import PlanSubList from '@/components/Account/PlanSubList'
-import { PlanSub } from '@/components/Account/PlanSubItem'
-import Subscription from '@/components/Account/Subscription'
-import { getUser } from '@/graphql/queries'
-import Notification from '@/components/Account/Notification'
-import SharedComponents from '@/components/Common/SharedComponents'
-import Layout from '@/components/Common/Layout'
+import {
+  Box,
+  Button,
+  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
+  Skeleton,
+  Spacer,
+  Spinner,
+  Stack,
+  useBoolean,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { API, DataStore, graphqlOperation } from "aws-amplify";
+import { useContext, useEffect, useState } from "react";
+import { GetUserQuery, LearnwithaiSubscribeMutation } from "@/types/API";
+import { learnwithaiSubscribe } from "@/graphql/mutations";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import ProfileCard from "@/components/Account/ProfileCard";
+import { User } from "@/models";
+import PlanSubList from "@/components/Account/PlanSubList";
+import { PlanSub } from "@/components/Account/PlanSubItem";
+import Subscription from "@/components/Account/Subscription";
+import { getUser } from "@/graphql/queries";
+import Notification from "@/components/Account/Notification";
+import SharedComponents from "@/components/Common/SharedComponents";
+import Layout from "@/components/Common/Layout";
 
 export interface SubStatus {
-  personal: PlanSub,
-  professional: PlanSub,
-  enterprise: PlanSub
+  personal: PlanSub;
+  professional: PlanSub;
+  enterprise: PlanSub;
 }
 
 function Profile() {
-  const [ subStatus, setSubStatus ] = useState<SubStatus>();
-  const [ shouldRefresh, setShouldRefresh ] = useBoolean();
+  const [subStatus, setSubStatus] = useState<SubStatus>();
+  const [shouldRefresh, setShouldRefresh] = useBoolean();
   const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
 
-  const { 
-    isOpen: isOpenSubModal, 
-    onOpen: onOpenSubModal, 
-    onClose: onCloseSubModal
+  const {
+    isOpen: isOpenSubModal,
+    onOpen: onOpenSubModal,
+    onClose: onCloseSubModal,
   } = useDisclosure();
 
   useEffect(() => {
     const refreshUserStatus = async () => {
       if (!dataStoreUser) return;
-  
+
       getAndSetSubStatus(dataStoreUser.id);
-  
+
       try {
-        const response = await API.graphql(graphqlOperation(
-          getUser,
-          {id: dataStoreUser.id}
+        const response = (await API.graphql(
+          graphqlOperation(getUser, { id: dataStoreUser.id }),
         )) as GraphQLResult<GetUserQuery>;
-  
+
         const remoteUser = response.data?.getUser;
-  
+
         if (!remoteUser) return;
-  
+
         const currentUser = await DataStore.query(User, dataStoreUser.id);
-        const clonedUser = User.copyOf(currentUser!, updated => {
+        const clonedUser = User.copyOf(currentUser!, (updated) => {
           updated.membership = remoteUser.membership;
           updated.quota = remoteUser.quota;
         });
-  
+
         setDataStoreUser(clonedUser);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     refreshUserStatus();
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldRefresh]);
 
-  
-
   const getAndSetSubStatus = async (userId: string) => {
-    const response = await API.graphql(graphqlOperation(
-      learnwithaiSubscribe, {
-        operation: 'getPlanSubscriptions', 
-        subscriptionId: '',
-        userId: userId, 
-      }
+    const response = (await API.graphql(
+      graphqlOperation(learnwithaiSubscribe, {
+        operation: "getPlanSubscriptions",
+        subscriptionId: "",
+        userId: userId,
+      }),
     )) as GraphQLResult<LearnwithaiSubscribeMutation>;
 
     if (
-      !response.data || 
+      !response.data ||
       !response.data.learnwithaiSubscribe ||
       response.data.learnwithaiSubscribe.statusCode != 200
     ) {
-      console.error(`Failed to get subscription status. ${response.data?.learnwithaiSubscribe?.body}`);
+      console.error(
+        `Failed to get subscription status. ${response.data?.learnwithaiSubscribe?.body}`,
+      );
       return;
     }
 
     const subscriptions = JSON.parse(response.data.learnwithaiSubscribe.body!);
 
     setSubStatus(subscriptions);
-  }
+  };
 
   const refreshAndCloseModal = () => {
     setShouldRefresh.toggle();
     onCloseSubModal();
-  }
+  };
 
   return (
     <Layout>
       {dataStoreUser ? (
         <>
           <Stack
-            justify={'center'}
-            mx='auto'
+            justify={"center"}
+            mx="auto"
             pb={4}
-            w={{base: 'xs', sm: 'sm', md: 'lg'}}
+            w={{ base: "xs", sm: "sm", md: "lg" }}
             spacing={4}
           >
             <ProfileCard user={dataStoreUser} />
 
             <Notification user={dataStoreUser} />
-                
-            <Box cursor='pointer' onClick={onOpenSubModal} minH={100}>
+
+            <Box cursor="pointer" onClick={onOpenSubModal} minH={100}>
               {subStatus ? (
                 <PlanSubList subStatus={subStatus} />
               ) : (
-                <Stack
-                  rounded={'lg'}
-                  boxShadow={'lg'}
-                  w='full'
-                  p={4}
-                  pt={8}
-                >
-                  <Skeleton height='20px' />
-                  <Skeleton height='20px' />
+                <Stack rounded={"lg"} boxShadow={"lg"} w="full" p={4} pt={8}>
+                  <Skeleton height="20px" />
+                  <Skeleton height="20px" />
                 </Stack>
               )}
             </Box>
 
-            <Button 
-              boxShadow='md'
-              onClick={onOpenSubModal}
-            >
+            <Button boxShadow="md" onClick={onOpenSubModal}>
               Upgrade plan or unsubscribe
             </Button>
-
           </Stack>
-        </> ) : (
-        <Stack  h='70vh'>
+        </>
+      ) : (
+        <Stack h="70vh">
           <Spacer />
           <Center>
-            <Spinner size='xl'/>
+            <Spinner size="xl" />
           </Center>
           <Spacer />
         </Stack>
       )}
-      
+
       <Modal
-        isOpen={isOpenSubModal} 
+        isOpen={isOpenSubModal}
         onClose={onCloseSubModal}
-        scrollBehavior='inside'
-        size='full'
+        scrollBehavior="inside"
+        size="full"
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody mt={-6}>
-            {dataStoreUser && subStatus ? (<Subscription subStatus={subStatus} user={dataStoreUser} onClose={refreshAndCloseModal} />) : null}
+            {dataStoreUser && subStatus ? (
+              <Subscription
+                subStatus={subStatus}
+                user={dataStoreUser}
+                onClose={refreshAndCloseModal}
+              />
+            ) : null}
           </ModalBody>
           <ModalFooter>
             <Button onClick={onCloseSubModal}>Close</Button>
@@ -178,8 +174,7 @@ function Profile() {
         </ModalContent>
       </Modal>
     </Layout>
-  )
+  );
 }
 
-
-export default Profile
+export default Profile;

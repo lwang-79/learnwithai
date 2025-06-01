@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -9,9 +9,9 @@ import {
   useColorModeValue,
   List,
   Button,
-} from '@chakra-ui/react';
-import Link from 'next/link';
-import useStorage from '@/hooks/useStorage';
+} from "@chakra-ui/react";
+import Link from "next/link";
+import useStorage from "@/hooks/useStorage";
 
 export function PriceWrapper({ children }: { children: ReactNode }) {
   return (
@@ -19,9 +19,10 @@ export function PriceWrapper({ children }: { children: ReactNode }) {
       mb={4}
       shadow="base"
       borderWidth="1px"
-      alignSelf={{ base: 'center', lg: 'flex-start' }}
-      borderColor={useColorModeValue('gray.200', 'gray.500')}
-      borderRadius={'xl'}>
+      alignSelf={{ base: "center", lg: "flex-start" }}
+      borderColor={useColorModeValue("gray.200", "gray.500")}
+      borderRadius={"xl"}
+    >
       {children}
     </Box>
   );
@@ -30,19 +31,15 @@ export function PriceWrapper({ children }: { children: ReactNode }) {
 export default function ThreeTierPricing() {
   const { getItem } = useStorage();
 
-  const isAuthenticated = (
-    getItem('isAuthenticated', 'local') === 'true'
-  );
+  const isAuthenticated = getItem("isAuthenticated", "local") === "true";
 
-  const [ href, setHref ] = useState('/signup');
+  const [href, setHref] = useState("/signup");
 
   useEffect(() => {
-    const href = isAuthenticated ?
-      '/profile' :
-      '/login';
+    const href = isAuthenticated ? "/profile" : "/login";
 
     setHref(href);
-  },[isAuthenticated]);
+  }, [isAuthenticated]);
 
   return (
     <Box py={12}>
@@ -50,18 +47,17 @@ export default function ThreeTierPricing() {
         <Heading as="h1" fontSize="4xl">
           Plans that fit your need
         </Heading>
-        <Text fontSize="lg" color={'gray.500'}>
-          Start free. No credit card needed. Cancel at
-          anytime.
+        <Text fontSize="lg" color={"gray.500"}>
+          Start free. No credit card needed. Cancel at anytime.
         </Text>
       </VStack>
       <Stack
-        direction={{ base: 'column', md: 'row' }}
+        direction={{ base: "column", md: "row" }}
         textAlign="center"
         justify="center"
         spacing={{ base: 4, lg: 10 }}
-        py={10}>
-
+        py={10}
+      >
         <PriceWrapper>
           <Box py={4} px={12}>
             <Text fontWeight="500" fontSize="2xl">
@@ -80,9 +76,10 @@ export default function ThreeTierPricing() {
             </HStack>
           </Box>
           <VStack
-            bg={useColorModeValue('gray.50', 'gray.700')}
+            bg={useColorModeValue("gray.50", "gray.700")}
             py={4}
-            borderBottomRadius={'xl'}>
+            borderBottomRadius={"xl"}
+          >
             <List spacing={3} textAlign="start" px={12}>
               {/* <ListItem>
                 <ListIcon as={FaCheckCircle} color="green.500" />
@@ -106,12 +103,11 @@ export default function ThreeTierPricing() {
               </ListItem> */}
             </List>
             <Box w="80%" pt={7}>
-              <Link href='/signup'>
+              <Link href="/signup">
                 <Button w="full" colorScheme="red" variant="outline">
                   Start free
                 </Button>
               </Link>
-             
             </Box>
           </VStack>
         </PriceWrapper>
@@ -122,14 +118,15 @@ export default function ThreeTierPricing() {
               position="absolute"
               top="-16px"
               left="50%"
-              rounded='full'
-              style={{ transform: 'translate(-50%)' }}>
+              rounded="full"
+              style={{ transform: "translate(-50%)" }}
+            >
               <Text
                 textTransform="uppercase"
-                bg={useColorModeValue('red.300', 'red.700')}
+                bg={useColorModeValue("red.300", "red.700")}
                 px={3}
                 py={1}
-                color={useColorModeValue('gray.100', 'gray.300')}
+                color={useColorModeValue("gray.100", "gray.300")}
                 fontSize="sm"
                 fontWeight="600"
                 rounded="xl"
@@ -154,9 +151,10 @@ export default function ThreeTierPricing() {
               </HStack>
             </Box>
             <VStack
-              bg={useColorModeValue('gray.50', 'gray.700')}
+              bg={useColorModeValue("gray.50", "gray.700")}
               py={4}
-              borderBottomRadius={'xl'}>
+              borderBottomRadius={"xl"}
+            >
               <List spacing={3} textAlign="start" px={12}>
                 {/* <ListItem>
                   <ListIcon as={FaCheckCircle} color="green.500" />
@@ -208,9 +206,10 @@ export default function ThreeTierPricing() {
             </HStack>
           </Box>
           <VStack
-            bg={useColorModeValue('gray.50', 'gray.700')}
+            bg={useColorModeValue("gray.50", "gray.700")}
             py={4}
-            borderBottomRadius={'xl'}>
+            borderBottomRadius={"xl"}
+          >
             <List spacing={3} textAlign="start" px={12}>
               {/* <ListItem>
                 <ListIcon as={FaCheckCircle} color="green.500" />

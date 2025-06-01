@@ -10,9 +10,8 @@ import { generateTimeJourneyPrompt } from "./time_journey";
 
 export function generateChatMessages(
   level: QuestionLevel,
-  concept: MathConcept
-):ChatCompletionRequestMessage[] {
-
+  concept: MathConcept,
+): ChatCompletionRequestMessage[] {
   switch (concept) {
     case MathConcept.Arithmetic:
       return generateArithmeticPrompt(level);
@@ -29,12 +28,11 @@ export function generateChatMessages(
     case MathConcept.Probability:
       return generateProbabilityPrompt(level);
     default:
-      return [{role: 'system', content: 'You are a math teacher.'},]
+      return [{ role: "system", content: "You are a math teacher." }];
   }
 }
 
-export const template = 
-`
+export const template = `
 Use the desired template:
 Question: [Insert question text here]
 Workout: [Detailed steps to solve the question]
@@ -44,7 +42,7 @@ B: [Option B]
 C: [Option C]
 D: [Option D]
 Answer: [A, B, C, or D]
-`
+`;
 // `
 // Desired template:
 // Question: <>
@@ -68,22 +66,28 @@ export const mathTemplate = (
   options: string,
 ): ChatCompletionRequestMessage[] => {
   return [
-    { role: 'system', content: 'You are a math teacher.' },
-    { role: 'user', content: `
+    { role: "system", content: "You are a math teacher." },
+    {
+      role: "user",
+      content: `
 Generate a ${level} difficulty math ${concept} question with the following conditions:
 
 ${condition}
-` 
+`,
     },
-    { role: 'assistant', content: `Question: ${question}` },
-    { role: 'user', content: 'Solve the above question.' },
-    { role: 'assistant', content: `
+    { role: "assistant", content: `Question: ${question}` },
+    { role: "user", content: "Solve the above question." },
+    {
+      role: "assistant",
+      content: `
 Answer: ${answer}
 Workout: 
 ${workout}
-` 
+`,
     },
-    { role: 'user', content: `Use the above question, answer and workout to form a multi-choice question. Use the desired template:
+    {
+      role: "user",
+      content: `Use the above question, answer and workout to form a multi-choice question. Use the desired template:
 
 Question: [Insert question text here]
 Workout: [Explain the method to solve the question]
@@ -93,9 +97,11 @@ B: [Option B]
 C: [Option C]
 D: [Option D]
 Answer: [A, B, C, or D]
-`
+`,
     },
-    { role: 'assistant', content: `Question: ${question}
+    {
+      role: "assistant",
+      content: `Question: ${question}
 
 Workout: ${workout}
 
@@ -103,8 +109,11 @@ Options:
 ${options}
 
 Answer: C
-`
+`,
     },
-    { role: 'user', content: `Follow the above process to generate another ${level} ${concept} multi-choice math question with the same condition.` },
-  ]
-}
+    {
+      role: "user",
+      content: `Follow the above process to generate another ${level} ${concept} multi-choice math question with the same condition.`,
+    },
+  ];
+};

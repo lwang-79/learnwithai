@@ -1,6 +1,6 @@
-import { Essay } from "@/models"
-import { EssayType } from "@/types/types"
-import { 
+import { Essay } from "@/models";
+import { EssayType } from "@/types/types";
+import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
@@ -8,29 +8,29 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  HStack, 
+  HStack,
   Icon,
-  IconButton, 
-  Spacer, 
-  Text, 
-  useDisclosure, 
-  useToast 
-} from "@chakra-ui/react"
-import { DataStore } from "aws-amplify"
-import { useRef } from "react"
-import { MdClose } from "react-icons/md"
+  IconButton,
+  Spacer,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { DataStore } from "aws-amplify";
+import { useRef } from "react";
+import { MdClose } from "react-icons/md";
 
 interface EssayItem {
-  essay: Essay
-  refreshList: ()=>void
-  selectCallback: (essay: Essay) => void
+  essay: Essay;
+  refreshList: () => void;
+  selectCallback: (essay: Essay) => void;
 }
 
 function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
-  const { 
-    isOpen: isOpenAlert, 
-    onOpen: onOpenAlert, 
-    onClose: onCloseAlert
+  const {
+    isOpen: isOpenAlert,
+    onOpen: onOpenAlert,
+    onClose: onCloseAlert,
   } = useDisclosure();
 
   const cancelRef = useRef(null);
@@ -42,40 +42,48 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
     await DataStore.delete(essay);
     toast({
       description: `Essay has been deleted successfully`,
-      status: 'success',
+      status: "success",
       duration: 5000,
-      isClosable: true
+      isClosable: true,
     });
     refreshList();
-  }
+  };
 
   return (
     <>
-      <HStack align='flex-end' w='full' >
-        <Text whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>{essay.DateTime.slice(0,10)}</Text>
-        <Text whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>{essay.level}</Text>
-        <Text color='teal' whiteSpace='nowrap' onClick={()=>selectCallback(essay)}>
-          {
-            essay.type === EssayType.Narrative ? 'Creative Writing' :
-            essay.type === EssayType.Persuasive ? 'Persuasive Essay' :
-            'Custom Writing'
-          }
+      <HStack align="flex-end" w="full">
+        <Text whiteSpace="nowrap" onClick={() => selectCallback(essay)}>
+          {essay.DateTime.slice(0, 10)}
         </Text>
-        <Text 
-          fontSize='sm'
-          whiteSpace='nowrap' 
-          overflow='hidden' 
-          textOverflow='ellipsis'
-          onClick={()=>selectCallback(essay)}
+        <Text whiteSpace="nowrap" onClick={() => selectCallback(essay)}>
+          {essay.level}
+        </Text>
+        <Text
+          color="teal"
+          whiteSpace="nowrap"
+          onClick={() => selectCallback(essay)}
         >
-          {essay.text.slice(0,150)}
+          {essay.type === EssayType.Narrative
+            ? "Creative Writing"
+            : essay.type === EssayType.Persuasive
+              ? "Persuasive Essay"
+              : "Custom Writing"}
+        </Text>
+        <Text
+          fontSize="sm"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          onClick={() => selectCallback(essay)}
+        >
+          {essay.text.slice(0, 150)}
         </Text>
         <Spacer />
         <IconButton
-          rounded='full'
-          variant='ghost'
-          size='xs'
-          aria-label='Before'
+          rounded="full"
+          variant="ghost"
+          size="xs"
+          aria-label="Before"
           icon={<Icon as={MdClose} boxSize={4} />}
           onClick={onOpenAlert}
         />
@@ -87,7 +95,7 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete essay?
             </AlertDialogHeader>
 
@@ -97,18 +105,18 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
 
             <AlertDialogFooter>
               <Button
-                ref={cancelRef} 
+                ref={cancelRef}
                 onClick={onCloseAlert}
-                rounded={'full'}
+                rounded={"full"}
                 px={6}
               >
                 Cancel
               </Button>
-              <Button 
-                colorScheme='red' 
-                rounded={'full'}
+              <Button
+                colorScheme="red"
+                rounded={"full"}
                 px={6}
-                onClick={deleteButtonClickedHandler} 
+                onClick={deleteButtonClickedHandler}
                 ml={3}
               >
                 Delete
@@ -118,7 +126,7 @@ function EssayItem({ essay, refreshList, selectCallback }: EssayItem) {
         </AlertDialogOverlay>
       </AlertDialog>
     </>
-  )
+  );
 }
 
-export default EssayItem
+export default EssayItem;

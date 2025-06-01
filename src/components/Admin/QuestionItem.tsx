@@ -1,5 +1,5 @@
-import { BadQuestionSet } from "@/models"
-import { 
+import { BadQuestionSet } from "@/models";
+import {
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
@@ -9,26 +9,26 @@ import {
   Button,
   Card,
   CardBody,
-  HStack, 
-  Spacer, 
-  Tag, 
-  useDisclosure, 
-  useToast, 
-  VStack
-} from "@chakra-ui/react"
-import { DataStore } from "aws-amplify"
-import { useRef } from "react"
-import Latex from "react-latex"
+  HStack,
+  Spacer,
+  Tag,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import { DataStore } from "aws-amplify";
+import { useRef } from "react";
+import Latex from "react-latex";
 
 interface QuestionItemProps {
-  question: BadQuestionSet
+  question: BadQuestionSet;
 }
 
 function QuestionItem({ question }: QuestionItemProps) {
-  const { 
-    isOpen: isOpenAlert, 
-    onOpen: onOpenAlert, 
-    onClose: onCloseAlert
+  const {
+    isOpen: isOpenAlert,
+    onOpen: onOpenAlert,
+    onClose: onCloseAlert,
   } = useDisclosure();
 
   const cancelRef = useRef(null);
@@ -40,28 +40,28 @@ function QuestionItem({ question }: QuestionItemProps) {
     await DataStore.delete(question);
     toast({
       description: `Question has been deleted successfully`,
-      status: 'success',
+      status: "success",
       duration: 5000,
-      isClosable: true
+      isClosable: true,
     });
-  }
+  };
 
   return (
-    <Card w='full'>
+    <Card w="full">
       <CardBody>
-        <VStack align='flex-start'>
-          <HStack w='full'>
-            <Tag colorScheme='teal'>{question.source}</Tag>
-            <Tag colorScheme='teal'>{question.level}</Tag>
-            <Tag colorScheme='teal'>{question.concept}</Tag>
+        <VStack align="flex-start">
+          <HStack w="full">
+            <Tag colorScheme="teal">{question.source}</Tag>
+            <Tag colorScheme="teal">{question.level}</Tag>
+            <Tag colorScheme="teal">{question.concept}</Tag>
             <Spacer />
             <Button
-              size='sm'
-              colorScheme='red'
-              variant='ghost'
+              size="sm"
+              colorScheme="red"
+              variant="ghost"
               onClick={onOpenAlert}
-            > 
-              Delete 
+            >
+              Delete
             </Button>
           </HStack>
           <HStack>
@@ -69,19 +69,18 @@ function QuestionItem({ question }: QuestionItemProps) {
           </HStack>
           <HStack>
             {question.options?.map((option, index) => (
-              <HStack
-                key={`${option}-${index}`}
-                spacing={0}
-              >
+              <HStack key={`${option}-${index}`} spacing={0}>
                 <Tag
-                  rounded='full'
-                  colorScheme={String.fromCharCode(65 + index) === question.answer ? 'teal' : 'black'}
+                  rounded="full"
+                  colorScheme={
+                    String.fromCharCode(65 + index) === question.answer
+                      ? "teal"
+                      : "black"
+                  }
                 >
                   {String.fromCharCode(65 + index)}
                 </Tag>
-                <Latex>
-                  {`: ${option}`}
-                </Latex>
+                <Latex>{`: ${option}`}</Latex>
               </HStack>
             ))}
           </HStack>
@@ -92,7 +91,7 @@ function QuestionItem({ question }: QuestionItemProps) {
           >
             <AlertDialogOverlay>
               <AlertDialogContent>
-                <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
                   Delete question?
                 </AlertDialogHeader>
 
@@ -102,18 +101,18 @@ function QuestionItem({ question }: QuestionItemProps) {
 
                 <AlertDialogFooter>
                   <Button
-                    ref={cancelRef} 
+                    ref={cancelRef}
                     onClick={onCloseAlert}
-                    rounded={'full'}
+                    rounded={"full"}
                     px={6}
                   >
                     Cancel
                   </Button>
-                  <Button 
-                    colorScheme='red' 
-                    rounded={'full'}
+                  <Button
+                    colorScheme="red"
+                    rounded={"full"}
                     px={6}
-                    onClick={deleteButtonClickedHandler} 
+                    onClick={deleteButtonClickedHandler}
                     ml={3}
                   >
                     Delete
@@ -123,10 +122,9 @@ function QuestionItem({ question }: QuestionItemProps) {
             </AlertDialogOverlay>
           </AlertDialog>
         </VStack>
-
       </CardBody>
     </Card>
-  )
+  );
 }
 
-export default QuestionItem
+export default QuestionItem;

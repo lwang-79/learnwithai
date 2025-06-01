@@ -1,7 +1,13 @@
-import { AmplifyProjectInfo, AmplifyUserPoolGroupStackTemplate } from '@aws-amplify/cli-extensibility-helper';
+import {
+  AmplifyProjectInfo,
+  AmplifyUserPoolGroupStackTemplate,
+} from "@aws-amplify/cli-extensibility-helper";
 
-export function override(resources: AmplifyUserPoolGroupStackTemplate, amplifyProjectInfo: AmplifyProjectInfo) {
-  const authRole = resources.userPoolGroupRole['Admin'];
+export function override(
+  resources: AmplifyUserPoolGroupStackTemplate,
+  amplifyProjectInfo: AmplifyProjectInfo,
+) {
+  const authRole = resources.userPoolGroupRole["Admin"];
 
   const basePolicies = Array.isArray(authRole.policies)
     ? authRole.policies
@@ -23,7 +29,7 @@ export function override(resources: AmplifyUserPoolGroupStackTemplate, amplifyPr
             Resource: "*",
             Action: ["polly:SynthesizeSpeech"],
             Effect: "Allow",
-          }
+          },
         ],
       },
     },

@@ -1,7 +1,7 @@
 import { User } from "@/models";
 import { getLevel } from "./user";
 
-export const SEEDS = ['tree', 'sunflower', 'corn', 'daisy']
+export const SEEDS = ["tree", "sunflower", "corn", "daisy"];
 
 export const getSeed = (user: User): string => {
   if (!user.daily) return SEEDS[0];
@@ -20,9 +20,10 @@ export const getSeed = (user: User): string => {
 
   if (random < possibilities[0]) return SEEDS[0];
   else if (random < possibilities[0] + possibilities[1]) return SEEDS[1];
-  else if (random < possibilities[0] + possibilities[1] + possibilities[2]) return SEEDS[2];
+  else if (random < possibilities[0] + possibilities[1] + possibilities[2])
+    return SEEDS[2];
   else return SEEDS[3];
-}
+};
 
 export const getCollections = (collections: string) => {
   const arr = JSON.parse(collections);
@@ -35,7 +36,7 @@ export const getCollections = (collections: string) => {
   }
 
   return map;
-}
+};
 
 export const convertCollectionsToString = (map: Map<string, number>) => {
   const array = [];
@@ -43,6 +44,6 @@ export const convertCollectionsToString = (map: Map<string, number>) => {
   for (let [key, value] of map) {
     array.push(`{"${key}": ${value}}`);
   }
-  
-  return `[${array.join(',')}]`;
-}
+
+  return `[${array.join(",")}]`;
+};

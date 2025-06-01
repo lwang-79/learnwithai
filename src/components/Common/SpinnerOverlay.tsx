@@ -1,4 +1,4 @@
-import { Spinner, Text, VStack } from '@chakra-ui/react'
+import { Spinner, Text, VStack } from "@chakra-ui/react";
 
 function SpinnerOverlay() {
   return (
@@ -17,7 +17,7 @@ function SpinnerOverlay() {
       <Spinner color="white" size="xl" />
       <Text color="white">Loading please wait...</Text>
     </VStack>
-  )
+  );
 }
 
-export default SpinnerOverlay
+export default SpinnerOverlay;

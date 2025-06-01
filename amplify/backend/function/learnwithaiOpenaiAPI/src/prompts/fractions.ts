@@ -3,15 +3,15 @@ import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
 export function generateFractionsPrompt(
-  level: QuestionLevel
+  level: QuestionLevel,
 ): ChatCompletionRequestMessage[] {
-  const lowOperations = ['addition', 'subtraction'];
-  const highOperations = ['multiplication', 'division'];
+  const lowOperations = ["addition", "subtraction"];
+  const highOperations = ["multiplication", "division"];
 
   const randomIndex = Math.floor(Math.random() * 2);
   const random = Math.random();
 
-  let prompt = '';
+  let prompt = "";
   switch (level) {
     case QuestionLevel.Year1:
     case QuestionLevel.Year2:
@@ -20,37 +20,27 @@ export function generateFractionsPrompt(
       break;
     case QuestionLevel.Year4:
       if (random < 0.3) {
-        prompt = generalFractionsPrompt(
-          lowOperations[randomIndex], 10, -10, 1
-        );
+        prompt = generalFractionsPrompt(lowOperations[randomIndex], 10, -10, 1);
       } else if (random < 0.5) {
         prompt = lowFractionsPrompt();
       } else {
-        prompt = generalFractionsPrompt(
-          highOperations[randomIndex], 10, 0, 1
-        );
+        prompt = generalFractionsPrompt(highOperations[randomIndex], 10, 0, 1);
       }
       break;
     case QuestionLevel.Year5:
       if (random < 0.1) {
-        prompt = generalFractionsPrompt(
-          lowOperations[randomIndex], 10, -10, 1
-        );
+        prompt = generalFractionsPrompt(lowOperations[randomIndex], 10, -10, 1);
       } else if (random < 0.7) {
         prompt = lowFractionsPrompt();
       } else if (random < 0.8) {
         prompt = middleFractionsPrompt();
       } else {
-        prompt = generalFractionsPrompt(
-          highOperations[randomIndex], 10, 0, 1
-        );
+        prompt = generalFractionsPrompt(highOperations[randomIndex], 10, 0, 1);
       }
       break;
     case QuestionLevel.Year6:
       if (random < 0.1) {
-        prompt = generalFractionsPrompt(
-          lowOperations[randomIndex], 10, -10, 1
-        );
+        prompt = generalFractionsPrompt(lowOperations[randomIndex], 10, -10, 1);
       } else if (random < 0.3) {
         prompt = lowFractionsPrompt();
       } else if (random < 0.5) {
@@ -58,9 +48,7 @@ export function generateFractionsPrompt(
       } else if (random < 0.8) {
         prompt = highFractionsPrompt();
       } else {
-        prompt = generalFractionsPrompt(
-          highOperations[randomIndex], 10, 0, 1
-        );
+        prompt = generalFractionsPrompt(highOperations[randomIndex], 10, 0, 1);
       }
       break;
     default:
@@ -74,16 +62,16 @@ export function generateFractionsPrompt(
   }
 
   return [
-    { role: 'system', content: 'You are a math teacher.' },
-    { role: 'user', content: prompt }
-  ]
+    { role: "system", content: "You are a math teacher." },
+    { role: "user", content: prompt },
+  ];
 }
 
 function generalFractionsPrompt(
-  operation: string = 'addition',
+  operation: string = "addition",
   upper: number = 10,
   lower: number = 0,
-  workoutNumber: number = 1
+  workoutNumber: number = 1,
 ) {
   return `
   Give a ${operation} math multi-choice question with the following conditions.
@@ -91,7 +79,7 @@ function generalFractionsPrompt(
   2. There should be 4 options including the answer.
   3. Work out the question with at least ${workoutNumber} method.
   4. ${template}
-  `
+  `;
 }
 
 function lowFractionsPrompt() {
@@ -102,7 +90,7 @@ function lowFractionsPrompt() {
   3. There should be 4 options including the correct answer.
   4. Work out the question with at least 1 method.
   5. ${template}
-  `
+  `;
 }
 
 function middleFractionsPrompt() {
@@ -113,7 +101,7 @@ function middleFractionsPrompt() {
   3. There should be 4 options including the correct answer.
   4. Work out the question with at least 2 methods.
   5. ${template}
-  `
+  `;
 }
 
 function highFractionsPrompt() {
@@ -124,5 +112,5 @@ function highFractionsPrompt() {
   3. There should be 4 options including the correct answer.
   4. Work out the question with at least 2 methods.
   5. ${template}
-  `
+  `;
 }

@@ -1,22 +1,22 @@
 import { TestState } from "@/components/Math/QuestionRun";
 import { QuestionSet, Test, User } from "@/models";
 import { DataStore } from "aws-amplify";
-import { 
+import {
   APIName,
   APIOperation,
   AQuAQuestion,
-  CompetitionQuestion, 
-  GSM8KQuestion, 
-  HendrycksConcept, 
-  MathConcept, 
-  MathQAQuestion, 
-  QuestionCategory, 
-  QuestionLevel, 
+  CompetitionQuestion,
+  GSM8KQuestion,
+  HendrycksConcept,
+  MathConcept,
+  MathQAQuestion,
+  QuestionCategory,
+  QuestionLevel,
   QuestionSet as LocalQuestionSet,
   QuestionSource,
-  QuestionType, 
+  QuestionType,
   StemConcept,
-  StemQuestion
+  StemQuestion,
 } from "./types";
 import { APIPost } from "./utils";
 
@@ -24,7 +24,7 @@ export const saveTest = async (
   test: TestState,
   duration: number,
   questionSets: LocalQuestionSet[],
-  user: User
+  user: User,
 ) => {
   // if test exists grab the latest version
   // if new test verify the quota
@@ -36,21 +36,25 @@ export const saveTest = async (
   if (!latestTest) {
     const totalTestCount = (await DataStore.query(Test)).length;
     if (totalTestCount >= user.quota!.savedTests) {
-      return `You have reached the maximum SavedTests quota ${user.quota!.savedTests}. This test is not saved, please delete some tests or upgrade your plan.`
+      return `You have reached the maximum SavedTests quota ${user.quota!.savedTests}. This test is not saved, please delete some tests or upgrade your plan.`;
     }
   }
 
-  const origin: Test = latestTest?? await DataStore.save(new Test({
-    category: test.category,
-    dateTime: (new Date()).toISOString(),
-    duration: duration,
-    total: 0,
-    wrong: 0,
-    correct: 0,
-    source: test.source,
-    questionSets: test.questionSets,
-  }));
-  
+  const origin: Test =
+    latestTest ??
+    (await DataStore.save(
+      new Test({
+        category: test.category,
+        dateTime: new Date().toISOString(),
+        duration: duration,
+        total: 0,
+        wrong: 0,
+        correct: 0,
+        source: test.source,
+        questionSets: test.questionSets,
+      }),
+    ));
+
   let correct = 0;
   let wrong = 0;
 
@@ -62,7 +66,7 @@ export const saveTest = async (
     wrong += wrongCount;
   }
 
-  const updatedTest = Test.copyOf(origin, updated => {
+  const updatedTest = Test.copyOf(origin, (updated) => {
     updated.duration = duration;
     updated.total = correct + wrong;
     updated.wrong = wrong;
@@ -73,9 +77,9 @@ export const saveTest = async (
   try {
     await DataStore.save(updatedTest);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 export const addMyMathQuestion = async (
   user: User,
@@ -86,7 +90,7 @@ export const addMyMathQuestion = async (
   const savedQuestionCount = (await DataStore.query(QuestionSet)).length;
 
   if (savedQuestionCount >= user.quota!.savedQuestions) {
-    return `You have reached the maximum SavedQuestions quota ${user.quota!.savedQuestions}. This question is not added, please remove some questions or upgrade your plan.`
+    return `You have reached the maximum SavedQuestions quota ${user.quota!.savedQuestions}. This question is not added, please remove some questions or upgrade your plan.`;
   }
 
   if (testId && indexInTest) {
@@ -94,12 +98,13 @@ export const addMyMathQuestion = async (
 
     if (
       questionSets.length > 0 &&
-      questionSets.filter(q => q.testId === testId && q.indexInTest === indexInTest).length > 0
+      questionSets.filter(
+        (q) => q.testId === testId && q.indexInTest === indexInTest,
+      ).length > 0
     ) {
-      throw new Error('You have already saved this question.')
+      throw new Error("You have already saved this question.");
     }
   }
-
 
   const newQuestionSet = new QuestionSet({
     question: questionSet.question,
@@ -111,19 +116,18 @@ export const addMyMathQuestion = async (
     level: questionSet.level,
     concept: questionSet.concept,
     testId: testId,
-    indexInTest: indexInTest
+    indexInTest: indexInTest,
   });
 
   await DataStore.save(newQuestionSet);
-
-}
+};
 
 export const getQuestionsFromDataset = async (
   apiName: APIName,
-  dataset: QuestionSource, 
+  dataset: QuestionSource,
   num: number,
   level: QuestionLevel,
-  concept?: MathConcept|HendrycksConcept,
+  concept?: MathConcept | HendrycksConcept,
 ): Promise<LocalQuestionSet[]> => {
   const request = {
     body: {
@@ -131,11 +135,11 @@ export const getQuestionsFromDataset = async (
       dataset: dataset,
       questionCount: num,
       level: level,
-      concept: concept
-    }
+      concept: concept,
+    },
   };
 
-  const body = await APIPost(apiName, '/', request);
+  const body = await APIPost(apiName, "/", request);
 
   if (!body.data) {
     return [];
@@ -152,7 +156,7 @@ export const getQuestionsFromDataset = async (
   }
 
   return [];
-}
+};
 
 export const generateQuestionSet = async (
   apiName: APIName,
@@ -160,7 +164,7 @@ export const generateQuestionSet = async (
   category: QuestionCategory,
   type: QuestionType,
   level: QuestionLevel,
-  source: string
+  source: string,
 ): Promise<LocalQuestionSet | undefined> => {
   // let c = concepts[Math.floor(Math.random() * concepts.length)];
   const request = {
@@ -170,11 +174,11 @@ export const generateQuestionSet = async (
       type: type,
       level: level,
       concept: concept,
-      source: source
-    }
+      source: source,
+    },
   };
 
-  const body = await APIPost(apiName, '/', request);
+  const body = await APIPost(apiName, "/", request);
 
   if (!body.data) {
     return undefined;
@@ -183,34 +187,43 @@ export const generateQuestionSet = async (
   // console.log(body.data);
   const questionString = body.data as string;
   if (
-    !questionString.includes('Question:') ||
-    !questionString.includes('Workout:') ||
-    !questionString.includes('Options:') ||
-    !questionString.includes('Answer:')
-  ) throw new Error('Bad return.');
+    !questionString.includes("Question:") ||
+    !questionString.includes("Workout:") ||
+    !questionString.includes("Options:") ||
+    !questionString.includes("Answer:")
+  )
+    throw new Error("Bad return.");
 
   // get question
-  const question = questionString.split('Workout:')[0].replace('Question:','').trim();
+  const question = questionString
+    .split("Workout:")[0]
+    .replace("Question:", "")
+    .trim();
 
   // get workout
   let regex = /(?<=Workout:).*?(?=Options:)/s;
   let matches = questionString.match(regex);
 
-  if (!matches) throw new Error('No workout.');
+  if (!matches) throw new Error("No workout.");
   const workout = matches[0];
 
   // get answer
-  const answer = questionString.split('Options:')[1].split("Answer:")[1].trim()[0].toUpperCase();
+  const answer = questionString
+    .split("Options:")[1]
+    .split("Answer:")[1]
+    .trim()[0]
+    .toUpperCase();
 
-  if (!['A', 'B', 'C', 'D'].includes(answer)) throw new Error('Answer in wrong format');
+  if (!["A", "B", "C", "D"].includes(answer))
+    throw new Error("Answer in wrong format");
 
   // get options
   regex = /^\s*[A-D]:\s(.+)$/gm;
   matches = questionString.match(regex);
 
-  if (!matches) throw new Error('No options.');
+  if (!matches) throw new Error("No options.");
 
-  const options = matches.map(match => match.slice(3));
+  const options = matches.map((match) => match.slice(3));
 
   const questionSet: LocalQuestionSet = {
     type: QuestionType.MultiChoice,
@@ -220,15 +233,15 @@ export const generateQuestionSet = async (
     question: question,
     options: options,
     answer: answer,
-    selected: '',
+    selected: "",
     workout: workout,
     isBad: false,
     isTarget: false,
-    isMarked: false
+    isMarked: false,
   };
 
   return questionSet;
-}
+};
 
 export const getQuestionAnswer = async (
   apiName: APIName,
@@ -239,18 +252,18 @@ export const getQuestionAnswer = async (
     body: {
       operation: APIOperation.MathAnswer,
       question: question,
-      source: source
-    }
+      source: source,
+    },
   };
 
-  const body =await APIPost(apiName, '/', request);
+  const body = await APIPost(apiName, "/", request);
 
   if (!body.data) {
-    return '';
+    return "";
   }
 
   return body.data as string;
-}
+};
 
 const getThresholdValue = (num: number) => {
   let threshold = 10;
@@ -258,32 +271,32 @@ const getThresholdValue = (num: number) => {
     threshold *= 10;
   }
   return threshold;
-}
+};
 
 const getDecimalDigitLength = (num: number) => {
   const str = num.toString();
-  const decimalIndex = str.indexOf('.');
+  const decimalIndex = str.indexOf(".");
   if (decimalIndex === -1) {
     return 0; // Number has no decimal point
   }
   if (decimalIndex === str.length - 1) {
     return 0; // Number ends with decimal point
   }
-  return str.split('.')[1].length;
-}
+  return str.split(".")[1].length;
+};
 
 const replaceDigitsWithRandomOneByOne = (str: string) => {
   return str
-    .split('')
+    .split("")
     .map((char) => (/\d/.test(char) ? Math.floor(Math.random() * 9) + 1 : char))
-    .join('');
-}
+    .join("");
+};
 
 export const getStemQuestionsFromDataset = async (
   apiName: APIName,
   concepts: StemConcept[],
-  level: 'High School' | 'College', 
-  num: number
+  level: "High School" | "College",
+  num: number,
 ): Promise<LocalQuestionSet[]> => {
   const request = {
     body: {
@@ -291,10 +304,10 @@ export const getStemQuestionsFromDataset = async (
       concepts: concepts,
       level: level,
       questionCount: num,
-    }
+    },
   };
 
-  const body = await APIPost(apiName, '/', request);
+  const body = await APIPost(apiName, "/", request);
 
   if (!body.data) {
     return [];
@@ -310,37 +323,38 @@ export const getStemQuestionsFromDataset = async (
       type: QuestionType.MultiChoice,
       category: QuestionCategory.Stem,
       level: level,
-      selected: '',
-      workout: '',
+      selected: "",
+      workout: "",
       isBad: false,
       isTarget: false,
-      isMarked: false
-    }
+      isMarked: false,
+    };
     questionSets.push(questionSet);
   }
 
   return questionSets;
-}
+};
 
-const parseMathQAQuestions = (questions: MathQAQuestion[]): LocalQuestionSet[] => {
+const parseMathQAQuestions = (
+  questions: MathQAQuestion[],
+): LocalQuestionSet[] => {
   let questionSets: LocalQuestionSet[] = [];
 
   for (const q of questions) {
-
     let qOptions: string[] = [];
-    if (q.options[0]==='[') {
-      qOptions = JSON.parse(q.options.replace(/'/g, "\"")) as string[];
+    if (q.options[0] === "[") {
+      qOptions = JSON.parse(q.options.replace(/'/g, '"')) as string[];
     } else {
       const regex = /[a-e]\s\)(.+?)(?=[a-e]\s\)|$)/gm;
       const matches = q.options.match(regex);
-      if (!matches) throw Error(`Failed to parse the options: ${q.options}`)
-      qOptions = matches;// qOptions = q.options.split(',');
+      if (!matches) throw Error(`Failed to parse the options: ${q.options}`);
+      qOptions = matches; // qOptions = q.options.split(',');
     }
 
     const options = [];
 
     for (const option of qOptions) {
-      options.push(option.split(')')[1].replace(',','').trim());
+      options.push(option.split(")")[1].replace(",", "").trim());
     }
 
     questionSets.push({
@@ -351,22 +365,24 @@ const parseMathQAQuestions = (questions: MathQAQuestion[]): LocalQuestionSet[] =
       question: q.Problem,
       options: options,
       answer: q.correct.trim().toUpperCase(),
-      selected: '',
+      selected: "",
       workout: q.Rationale,
       isBad: false,
       isTarget: false,
-      isMarked: false
+      isMarked: false,
     });
-  } 
+  }
 
   return questionSets;
-}
+};
 
-const parseGSM8KQuestions = (questions: GSM8KQuestion[]): LocalQuestionSet[] => {
+const parseGSM8KQuestions = (
+  questions: GSM8KQuestion[],
+): LocalQuestionSet[] => {
   let questionSets: LocalQuestionSet[] = [];
 
   for (const q of questions) {
-    const answer = q.answer.split('####')[1].trim()
+    const answer = q.answer.split("####")[1].trim();
     const randomIndex = Math.floor(Math.random() * 5);
     const answerIndex = String.fromCharCode(randomIndex + 65);
     let options: string[] = [];
@@ -375,14 +391,14 @@ const parseGSM8KQuestions = (questions: GSM8KQuestion[]): LocalQuestionSet[] => 
       if (i === randomIndex) {
         options.push(answer);
       } else {
-        let option = '';
-        
+        let option = "";
+
         if (/\d/.test(answer)) {
           do {
             option = replaceDigitsWithRandomOneByOne(answer);
-          } while(options.includes(option));
+          } while (options.includes(option));
         }
-  
+
         options.push(option);
       }
     }
@@ -391,20 +407,20 @@ const parseGSM8KQuestions = (questions: GSM8KQuestion[]): LocalQuestionSet[] => 
       type: QuestionType.MultiChoice,
       category: QuestionCategory.Math,
       level: QuestionSource.GSM8K,
-      concept: '',
+      concept: "",
       question: q.question,
       options: options,
       answer: answerIndex,
-      selected: '',
+      selected: "",
       workout: q.answer,
       isBad: false,
       isTarget: false,
-      isMarked: false
+      isMarked: false,
     });
   }
 
   return questionSets;
-}
+};
 
 const parseAQuAQuestions = (questions: AQuAQuestion[]): LocalQuestionSet[] => {
   let questionSets: LocalQuestionSet[] = [];
@@ -413,30 +429,32 @@ const parseAQuAQuestions = (questions: AQuAQuestion[]): LocalQuestionSet[] => {
     const options = [];
 
     for (const option of q.options) {
-      options.push(option.split(')')[1].trim());
+      options.push(option.split(")")[1].trim());
     }
 
     questionSets.push({
       type: QuestionType.MultiChoice,
       category: QuestionCategory.Math,
-      level: '', //QuestionSource.AQuA,
-      concept: '',
+      level: "", //QuestionSource.AQuA,
+      concept: "",
       question: q.question,
       options: options,
       answer: q.correct,
-      selected: '',
+      selected: "",
       workout: q.rationale,
       isBad: false,
       isTarget: false,
-      isMarked: false
-    })
+      isMarked: false,
+    });
   }
 
   return questionSets;
-}
+};
 
-
-const parseCompetitionQuestions = (questions: CompetitionQuestion[], level: string): LocalQuestionSet[] => {
+const parseCompetitionQuestions = (
+  questions: CompetitionQuestion[],
+  level: string,
+): LocalQuestionSet[] => {
   let questionSets: LocalQuestionSet[] = [];
 
   for (const q of questions) {
@@ -454,18 +472,17 @@ const parseCompetitionQuestions = (questions: CompetitionQuestion[], level: stri
       if (i === randomIndex) {
         options.push(answer);
       } else {
-        let option = '';
+        let option = "";
 
         if (/\d/.test(answer)) {
           do {
             option = replaceDigitsWithRandomOneByOne(answer);
-          } while(options.includes(option));
+          } while (options.includes(option));
         }
 
         options.push(option);
       }
     }
-
 
     questionSets.push({
       type: QuestionType.MultiChoice,
@@ -475,13 +492,13 @@ const parseCompetitionQuestions = (questions: CompetitionQuestion[], level: stri
       question: q.problem,
       options: options,
       answer: answerIndex,
-      selected: '',
+      selected: "",
       workout: q.solution,
       isBad: false,
       isTarget: false,
-      isMarked: false
+      isMarked: false,
     });
   }
 
   return questionSets;
-}
+};
