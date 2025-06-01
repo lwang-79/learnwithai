@@ -3,7 +3,7 @@ backend:
   phases:
     build:
       commands:
-        - '# Execute Amplify CLI with the helper script'
+        - "# Execute Amplify CLI with the helper script"
         - amplifyPush --simple
 frontend:
   phases:
@@ -12,12 +12,11 @@ frontend:
         - npm ci
     build:
       commands:
-        # - echo "NEXT_PUBLIC_AWS_BRANCH=$USER_BRANCH" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: out
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths:
       - node_modules/**/*
