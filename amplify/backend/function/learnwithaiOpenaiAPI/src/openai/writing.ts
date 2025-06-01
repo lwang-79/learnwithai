@@ -6,8 +6,8 @@ import { chatCompletion } from "./chat";
 export const generateWritingPrompt = async (
   type: any,
   topic: any,
-  level: any
-):  Promise<APIResponse> => {
+  level: any,
+): Promise<APIResponse> => {
   if (
     type.trim().length === 0 ||
     topic.trim().length === 0 ||
@@ -15,11 +15,11 @@ export const generateWritingPrompt = async (
   ) {
     return {
       statusCode: 400,
-      error: 'Please enter a valid value'
-    }
+      error: "Please enter a valid value",
+    };
   }
 
-  let prompt = '';
+  let prompt = "";
   if (type == EssayType.Narrative) {
     prompt = generateNarrativePrompt(level);
   } else {
@@ -33,35 +33,36 @@ export const generateWritingPrompt = async (
     Desired format:
     Text: <>
     Prompt: <>
-    `;  
+    `;
   }
 
-
   const message: ChatCompletionRequestMessage[] = [
-    { role: 'system', content: 'You are an English writing teacher.' },
-    { role: 'user', content: prompt }
-  ]
+    { role: "system", content: "You are an English writing teacher." },
+    { role: "user", content: prompt },
+  ];
 
-  const functions = [{
-    name: 'generateWritingPrompts',
-    parameters: {
-      type: 'object',
-      properties: {
-        text: {
-          type: 'string',
-          description: 'The generated background material for the writing.'
+  const functions = [
+    {
+      name: "generateWritingPrompts",
+      parameters: {
+        type: "object",
+        properties: {
+          text: {
+            type: "string",
+            description: "The generated background material for the writing.",
+          },
+          prompt: {
+            type: "string",
+            description: "The generated writing prompt.",
+          },
         },
-        prompt: {
-          type: 'string',
-          description: 'The generated writing prompt.',
-        },
+        required: ["text", "prompt"],
       },
-      required: ['text', 'prompt']
-    }
-  }];
+    },
+  ];
 
   return await chatCompletion(message);
-}
+};
 
 export const generateWritingMark = async (
   level: any,
@@ -77,8 +78,8 @@ export const generateWritingMark = async (
   ) {
     return {
       statusCode: 400,
-      error: 'Please enter a valid value'
-    }
+      error: "Please enter a valid value",
+    };
   }
 
   const content = `
@@ -97,12 +98,12 @@ export const generateWritingMark = async (
   `;
 
   const message: ChatCompletionRequestMessage[] = [
-    { role: 'system', content: 'You are an English writing teacher.' },
-    { role: 'user', content: content }
+    { role: "system", content: "You are an English writing teacher." },
+    { role: "user", content: content },
   ];
 
   return await chatCompletion(message);
-}
+};
 
 export const polishWriting = async (
   level: any,
@@ -118,8 +119,8 @@ export const polishWriting = async (
   ) {
     return {
       statusCode: 400,
-      error: 'Please enter a valid value'
-    }
+      error: "Please enter a valid value",
+    };
   }
 
   const content = `
@@ -132,9 +133,9 @@ export const polishWriting = async (
   `;
 
   const message: ChatCompletionRequestMessage[] = [
-    { role: 'system', content: 'You are an English writing teacher.' },
-    { role: 'user', content: content }
+    { role: "system", content: "You are an English writing teacher." },
+    { role: "user", content: content },
   ];
 
   return await chatCompletion(message);
-}
+};

@@ -2,13 +2,12 @@ import { QuestionLevel } from "../types";
 import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
-
 export function generateRatioPrompt(
-  level: QuestionLevel
+  level: QuestionLevel,
 ): ChatCompletionRequestMessage[] {
   const random = Math.random();
 
-  let prompt = '';
+  let prompt = "";
   switch (level) {
     case QuestionLevel.Year1:
     case QuestionLevel.Year2:
@@ -21,7 +20,7 @@ export function generateRatioPrompt(
         prompt = lowRatioPrompt();
       } else {
         prompt = middleRatioPrompt();
-      } 
+      }
       break;
     case QuestionLevel.Year6:
       if (random < 0.2) {
@@ -38,9 +37,9 @@ export function generateRatioPrompt(
   }
 
   return [
-    { role: 'system', content: 'You are a math teacher.' },
-    { role: 'user', content: prompt }
-  ]
+    { role: "system", content: "You are a math teacher." },
+    { role: "user", content: prompt },
+  ];
 }
 
 function lowRatioPrompt() {
@@ -55,7 +54,7 @@ Then give a low level difficulty math ratio multi-choice question with the follo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else if (random < 0.66) {
     return `
 ${workoutProcess}
@@ -66,7 +65,7 @@ Then give a low level difficulty math ratio multi-choice question with the follo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else {
     return `
 ${workoutProcess}
@@ -77,7 +76,7 @@ Then give a low level difficulty math ratio multi-choice question with the follo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   }
 }
 
@@ -93,7 +92,7 @@ Then give a middle level difficulty math ratio multi-choice question with the fo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else if (random < 0.66) {
     return `
 ${workoutProcess}
@@ -104,7 +103,7 @@ Then give a middle level difficulty math ratio multi-choice question with the fo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else {
     return `
 ${workoutProcess}
@@ -115,10 +114,9 @@ Then give a middle level difficulty math ratio multi-choice question with the fo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   }
 }
-
 
 function highRatioPrompt() {
   const random = Math.random();
@@ -132,7 +130,7 @@ Then give a high level difficulty math ratio multi-choice question with the foll
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else if (random < 0.66) {
     return `
 ${example}
@@ -143,7 +141,7 @@ Then give a high level difficulty math ratio multi-choice question with the foll
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else {
     return `
 ${example}
@@ -154,7 +152,7 @@ Then give a high level difficulty math ratio multi-choice question with the foll
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   }
 }
 
@@ -167,7 +165,7 @@ The general process to solve a ratio question is as follows:
 where x is the number of boys.
 4. Solve the equation for the unknown variable. In the example above, we would cross-multiply and solve for x.
 5. Check your answer to make sure it makes sense. In the example above, we found that there are 14 boys. We should check that this makes sense in the context of the problem, and that it satisfies any other given conditions.
-`
+`;
 const example = `
 Here is an example question and workout:
 ###
@@ -183,4 +181,4 @@ Cross-multiplying, we get:
 x = 90
 So, the original mixture had 3x = 3 * 90 = 270 liters of liquid A and 5x = 5 * 90 = 450 liters of liquid B.
 ###
-`
+`;

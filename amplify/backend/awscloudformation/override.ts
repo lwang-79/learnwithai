@@ -1,12 +1,12 @@
-import { 
-  AmplifyProjectInfo, 
+import {
+  AmplifyProjectInfo,
   AmplifyUserPoolGroupStackTemplate,
-  AmplifyRootStackTemplate 
-} from '@aws-amplify/cli-extensibility-helper';
+  AmplifyRootStackTemplate,
+} from "@aws-amplify/cli-extensibility-helper";
 
 export function override(
-  resources: AmplifyRootStackTemplate, 
-  amplifyProjectInfo: AmplifyProjectInfo
+  resources: AmplifyRootStackTemplate,
+  amplifyProjectInfo: AmplifyProjectInfo,
 ) {
   const authRole = resources.authRole;
 
@@ -23,7 +23,7 @@ export function override(
         Statement: [
           {
             Resource: "arn:aws:lambda:*:*:function:learnwithaiOpenaiAPI*", //resource to permission, needs to be restricted for according to scope
-            Action: ['lambda:InvokeFunction'], //permissions
+            Action: ["lambda:InvokeFunction"], //permissions
             Effect: "Allow", //action allow or deny
           },
         ],

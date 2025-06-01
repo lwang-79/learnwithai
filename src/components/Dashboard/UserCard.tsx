@@ -1,15 +1,15 @@
-import { Statistic } from "@/models"
-import { 
-  Card, 
-  CardBody, 
-  Divider, 
-  HStack, 
+import { Statistic } from "@/models";
+import {
+  Card,
+  CardBody,
+  Divider,
+  HStack,
   Icon,
-  Link, 
-  Spacer, 
-  Tag, 
-  Text, 
-  VStack 
+  Link,
+  Spacer,
+  Tag,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -19,20 +19,20 @@ import { MdOutlineCalculate, MdOutlineDraw } from "react-icons/md";
 
 function UserCard() {
   const today = new Date();
-  const currentDay = today.toLocaleString('sv-SE').slice(0, 10);
-  const currentMonth = today.toLocaleString('sv-SE').slice(0, 7);
-  const currentYear = today.toLocaleString('sv-SE').slice(0, 4);
-  const [ daily, setDaily ] = useState<Statistic>();
-  const [ monthly, setMonthly ] = useState<Statistic>();
-  const [ yearly, setYearly ] = useState<Statistic>();
-  const [ mathLevel, setMathLevel ] = useState(0);
-  const [ writingLevel, setWritingLevel ] = useState(0);
+  const currentDay = today.toLocaleString("sv-SE").slice(0, 10);
+  const currentMonth = today.toLocaleString("sv-SE").slice(0, 7);
+  const currentYear = today.toLocaleString("sv-SE").slice(0, 4);
+  const [daily, setDaily] = useState<Statistic>();
+  const [monthly, setMonthly] = useState<Statistic>();
+  const [yearly, setYearly] = useState<Statistic>();
+  const [mathLevel, setMathLevel] = useState(0);
+  const [writingLevel, setWritingLevel] = useState(0);
   const { dataStoreUser } = useContext(SharedComponents);
   const user = dataStoreUser!;
 
   useEffect(() => {
     if (user.daily) {
-      const daily = user.daily.find(stat => stat.date === currentDay);
+      const daily = user.daily.find((stat) => stat.date === currentDay);
       setDaily(daily);
 
       const { mathLevel, writingLevel } = getLevel(user.daily);
@@ -41,45 +41,63 @@ function UserCard() {
     }
 
     if (user.monthly) {
-      const monthly = user.monthly.find(stat => stat.date === currentMonth);
+      const monthly = user.monthly.find((stat) => stat.date === currentMonth);
       setMonthly(monthly);
     }
 
     if (user.yearly) {
-      const yearly = user.yearly.find(stat => stat.date === currentYear);
+      const yearly = user.yearly.find((stat) => stat.date === currentYear);
       setYearly(yearly);
     }
-
-  }, [currentDay, currentMonth, currentYear, user.daily, user.monthly, user.yearly]);
+  }, [
+    currentDay,
+    currentMonth,
+    currentYear,
+    user.daily,
+    user.monthly,
+    user.yearly,
+  ]);
 
   return (
-    <Card w='full'>
-      <VStack align='flex-start' mb={4}>
-        <Text mx={6} mt={4}>Welcome {user.username}</Text>
+    <Card w="full">
+      <VStack align="flex-start" mb={4}>
+        <Text mx={6} mt={4}>
+          Welcome {user.username}
+        </Text>
         <Divider />
-        <VStack align='flex-start' px={6} w='full' spacing={1}>
-          <HStack w='full'>
-            <Icon as={MdOutlineCalculate} color='orange.500' />
+        <VStack align="flex-start" px={6} w="full" spacing={1}>
+          <HStack w="full">
+            <Icon as={MdOutlineCalculate} color="orange.500" />
             <Text>Math:</Text>
             <Spacer />
-            <Tag size='sm' colorScheme='teal' rounded='full'>Level-{mathLevel}</Tag>
+            <Tag size="sm" colorScheme="teal" rounded="full">
+              Level-{mathLevel}
+            </Tag>
           </HStack>
           {daily && daily.mathCorrect + daily.mathWrong > 0 ? (
-            <HStack w='full'>
-              <Text fontSize='sm'>Today: {daily.mathCorrect} / {daily.mathCorrect + daily.mathWrong}</Text>
+            <HStack w="full">
+              <Text fontSize="sm">
+                Today: {daily.mathCorrect} /{" "}
+                {daily.mathCorrect + daily.mathWrong}
+              </Text>
               <Spacer />
-              <Text fontSize='sm'>{(daily.mathCorrect / (daily.mathCorrect + daily.mathWrong) * 100).toFixed(0)}%</Text>
+              <Text fontSize="sm">
+                {(
+                  (daily.mathCorrect / (daily.mathCorrect + daily.mathWrong)) *
+                  100
+                ).toFixed(0)}
+                %
+              </Text>
             </HStack>
-            
           ) : (
             <HStack>
-              <Text fontSize='sm'>
-                You have not practiced any math questions today! 
-                <Link 
-                  as={NextLink} 
-                  href={'/math'} 
-                  color='teal' 
-                  _hover={{textDecoration: 'none'}}
+              <Text fontSize="sm">
+                You have not practiced any math questions today!
+                <Link
+                  as={NextLink}
+                  href={"/math"}
+                  color="teal"
+                  _hover={{ textDecoration: "none" }}
                 >
                   {` >> Start`}
                 </Link>
@@ -87,43 +105,64 @@ function UserCard() {
             </HStack>
           )}
 
-          {monthly && monthly.mathCorrect + monthly.mathWrong > 0 &&
-            <HStack w='full'>
-              <Text fontSize='sm'>This month: {monthly.mathCorrect} / {monthly.mathCorrect + monthly.mathWrong}</Text>
+          {monthly && monthly.mathCorrect + monthly.mathWrong > 0 && (
+            <HStack w="full">
+              <Text fontSize="sm">
+                This month: {monthly.mathCorrect} /{" "}
+                {monthly.mathCorrect + monthly.mathWrong}
+              </Text>
               <Spacer />
-              <Text fontSize='sm'>{(monthly.mathCorrect / (monthly.mathCorrect + monthly.mathWrong) * 100).toFixed(0)}%</Text>
+              <Text fontSize="sm">
+                {(
+                  (monthly.mathCorrect /
+                    (monthly.mathCorrect + monthly.mathWrong)) *
+                  100
+                ).toFixed(0)}
+                %
+              </Text>
             </HStack>
-            
-          }
+          )}
 
-          {yearly && yearly.mathCorrect + yearly.mathWrong > 0 &&
-            <HStack w='full'>
-              <Text fontSize='sm'>This year: {yearly.mathCorrect} / {yearly.mathCorrect + yearly.mathWrong}</Text>
+          {yearly && yearly.mathCorrect + yearly.mathWrong > 0 && (
+            <HStack w="full">
+              <Text fontSize="sm">
+                This year: {yearly.mathCorrect} /{" "}
+                {yearly.mathCorrect + yearly.mathWrong}
+              </Text>
               <Spacer />
-              <Text fontSize='sm'>{(yearly.mathCorrect / (yearly.mathCorrect + yearly.mathWrong) * 100).toFixed(0)}%</Text>
+              <Text fontSize="sm">
+                {(
+                  (yearly.mathCorrect /
+                    (yearly.mathCorrect + yearly.mathWrong)) *
+                  100
+                ).toFixed(0)}
+                %
+              </Text>
             </HStack>
-          }
+          )}
         </VStack>
         <Divider />
-        <VStack align='flex-start' px={6} w='full' spacing={1}>
-          <HStack w='full'>
-            <Icon as={MdOutlineDraw} color='orange.500' />
+        <VStack align="flex-start" px={6} w="full" spacing={1}>
+          <HStack w="full">
+            <Icon as={MdOutlineDraw} color="orange.500" />
             <Text>Writing:</Text>
             <Spacer />
-            <Tag size='sm' colorScheme='teal' rounded='full'>Level-{writingLevel}</Tag>
+            <Tag size="sm" colorScheme="teal" rounded="full">
+              Level-{writingLevel}
+            </Tag>
           </HStack>
 
           {daily && daily.writing > 0 ? (
-            <Text fontSize='sm'>Today: {daily.writing}</Text>
+            <Text fontSize="sm">Today: {daily.writing}</Text>
           ) : (
             <HStack>
-              <Text fontSize='sm'>
-                You have not practiced writing today! 
-                <Link 
-                  as={NextLink} 
-                  href={'/writing'} 
-                  color='teal' 
-                  _hover={{textDecoration: 'none'}}
+              <Text fontSize="sm">
+                You have not practiced writing today!
+                <Link
+                  as={NextLink}
+                  href={"/writing"}
+                  color="teal"
+                  _hover={{ textDecoration: "none" }}
                 >
                   {` >> Start`}
                 </Link>
@@ -131,19 +170,17 @@ function UserCard() {
             </HStack>
           )}
 
-          {monthly && monthly.writing > 0 &&
-            <Text fontSize='sm'>This month: {monthly.writing}</Text>
-          }
+          {monthly && monthly.writing > 0 && (
+            <Text fontSize="sm">This month: {monthly.writing}</Text>
+          )}
 
-          {yearly && yearly.writing > 0 &&
-            <Text fontSize='sm'>This year: {yearly.writing}</Text>
-          }
+          {yearly && yearly.writing > 0 && (
+            <Text fontSize="sm">This year: {yearly.writing}</Text>
+          )}
         </VStack>
-
-        
       </VStack>
     </Card>
-  )
+  );
 }
 
-export default UserCard
+export default UserCard;

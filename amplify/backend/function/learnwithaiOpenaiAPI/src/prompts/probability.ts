@@ -2,11 +2,9 @@ import { QuestionLevel } from "../types";
 import { ChatCompletionRequestMessage } from "openai";
 import { mathTemplate } from "./math";
 
-
 export function generateProbabilityPrompt(
-  level: QuestionLevel
+  level: QuestionLevel,
 ): ChatCompletionRequestMessage[] {
-
   const random = Math.random();
 
   switch (level) {
@@ -18,7 +16,7 @@ export function generateProbabilityPrompt(
         return lowSingleEventPrompt();
       } else {
         return lowTwoEventsPrompt();
-      }      
+      }
     case QuestionLevel.Year5:
       if (random < 0.5) {
         return lowSingleEventPrompt();
@@ -68,9 +66,17 @@ function lowSingleEventPrompt() {
   B: 1 / 6
   C: 3 / 5
   D: 1 / 4
-  `
+  `;
 
-  return mathTemplate('low-level', 'probability', condition, question, answer, workout, options);
+  return mathTemplate(
+    "low-level",
+    "probability",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
 }
 
 function lowTwoEventsPrompt() {
@@ -104,9 +110,17 @@ Probability = (1/2) x (1/2) = 1/4
   B: 1/3
   C: 1/4
   D: 1/5
-  `
+  `;
 
-  return mathTemplate('low-level', 'two events probability', condition, question, answer, workout, options);
+  return mathTemplate(
+    "low-level",
+    "two events probability",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
 }
 
 function middleTwoEventsPrompt() {
@@ -141,9 +155,17 @@ function middleTwoEventsPrompt() {
   B: 1/8
   C: 1/6
   D: 1/5
-  `
+  `;
 
-  return mathTemplate('middle-level', 'conditional probability', condition, question, answer, workout, options);
+  return mathTemplate(
+    "middle-level",
+    "conditional probability",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
 }
 
 function highThreeEventsPrompt() {
@@ -182,7 +204,15 @@ function highThreeEventsPrompt() {
   B: 25.80%
   C: 30.30%
   D: 67.45%
-  `
+  `;
 
-  return mathTemplate('high-level', 'probability', condition, question, answer, workout, options);
+  return mathTemplate(
+    "high-level",
+    "probability",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
 }

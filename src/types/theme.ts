@@ -1,70 +1,74 @@
 // 1. import `extendTheme` function
-import { extendTheme, StyleFunctionProps, type ThemeConfig } from '@chakra-ui/react'
-import { mode } from '@chakra-ui/theme-tools'
+import {
+  extendTheme,
+  StyleFunctionProps,
+  type ThemeConfig,
+} from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 
 // 2. Add your color mode config
 const config: ThemeConfig = {
-  initialColorMode: 'light',
+  initialColorMode: "light",
   useSystemColorMode: true,
-}
+};
 
 // 3. extend the theme
-const theme = extendTheme({ 
+const theme = extendTheme({
   config,
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
-        fontFamily: 'body',
-        color: mode('gray.600', 'whiteAlpha.700')(props),
-        bg: mode('gray.50', 'gray.800')(props),
-        lineHeight: 'base',
+        fontFamily: "body",
+        color: mode("gray.600", "whiteAlpha.700")(props),
+        bg: mode("gray.50", "gray.800")(props),
+        lineHeight: "base",
       },
     }),
   },
   fonts: {
-    heading: 'Roboto Mono, Open Sans, sans-serif',
-    body: 'Roboto Mono, Open Sans, sans-serif',
+    heading: "Roboto Mono, Open Sans, sans-serif",
+    body: "Roboto Mono, Open Sans, sans-serif",
   },
   components: {
     Button: {
       baseStyle: {
-        fontWeight:'regular',
-        rounded: 'full',
+        fontWeight: "regular",
+        rounded: "full",
       },
       defaultProps: {
-        colorScheme: 'teal',
-        variant: 'outline'
+        colorScheme: "teal",
+        variant: "outline",
       },
     },
     Checkbox: {
       defaultProps: {
-        colorScheme: 'teal'
-      }
+        colorScheme: "teal",
+      },
     },
     Radio: {
       defaultProps: {
-        colorScheme: 'teal'
-      }
+        colorScheme: "teal",
+      },
     },
     CloseButton: {
       baseStyle: {
-        rounded: 'full',
+        rounded: "full",
       },
       defaultProps: {
-        colorScheme: 'teal'
+        colorScheme: "teal",
       },
     },
     Input: {
       defaultProps: {
-        focusBorderColor: 'teal.500',
+        focusBorderColor: "teal.500",
       },
     },
     Textarea: {
       defaultProps: {
-        focusBorderColor: 'teal.300',
+        focusBorderColor: "teal.300",
       },
     },
   },
-})
+});
 
-export default theme
+export default theme;

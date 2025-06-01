@@ -1,4 +1,4 @@
-import { MathConcept, QuestionCategory, QuestionLevel } from "../types"
+import { MathConcept, QuestionCategory, QuestionLevel } from "../types";
 
 // export const getMessageByConcept = (
 //   concept: MathConcept,
@@ -56,8 +56,8 @@ import { MathConcept, QuestionCategory, QuestionLevel } from "../types"
 
 // const adjustLevel = (l: string, c: MathConcept) => {
 //   if ([
-//     MathConcept.Addition, 
-//     MathConcept.Subtraction, 
+//     MathConcept.Addition,
+//     MathConcept.Subtraction,
 //     MathConcept.Multiplication,
 //     MathConcept.Division,
 //     MathConcept.Arithmetic
@@ -91,7 +91,7 @@ B: <option>
 C: <option>
 D: <option>
 Answer: <A, B, C or D>
-`
+`;
 
 const generalPrompt = `
 2. Work out the answer in 3 different ways.
@@ -108,7 +108,7 @@ B: <option>
 C: <option>
 D: <option>
 Answer: <A, B, C or D>
-`
+`;
 
 const problemSolving = `
 2. Work out the answer in 3 different ways.
@@ -125,7 +125,7 @@ B: <option>
 C: <option>
 D: <option>
 Answer: <A, B, C or D>
-`
+`;
 const arithmeticQuestion = `
 The returned string should include a question, a workout detail, 
 four answer options tagged with (A, B, C, D)
@@ -144,7 +144,7 @@ B: <option>
 C: <option>
 D: <option>
 Answer: <A, B, C or D>
-`
+`;
 
 const essayPrompt = `
 Evaluate a student's essay
@@ -156,7 +156,7 @@ Essay prompt:
 []
 Student's Essay:
 []
-`
-// The set includes a question, a workout detail, 
-// four options tagged with (A, B, C, D) for the answer 
-// and the answer tag (A, B, C or D). 
+`;
+// The set includes a question, a workout detail,
+// four options tagged with (A, B, C, D) for the answer
+// and the answer tag (A, B, C or D).

@@ -2,30 +2,35 @@ import { QuestionLevel } from "../types";
 import { ChatCompletionRequestMessage } from "openai";
 import { mathTemplate, template } from "./math";
 
-
 export function generateArithmeticPrompt(
-  level: QuestionLevel
+  level: QuestionLevel,
 ): ChatCompletionRequestMessage[] {
-  const lowOperations = ['addition', 'subtraction'];
-  const highOperations = ['multiplication', 'division'];
+  const lowOperations = ["addition", "subtraction"];
+  const highOperations = ["multiplication", "division"];
 
   const randomIndex = Math.floor(Math.random() * 2);
   const random = Math.random();
 
-  let prompt = '';
+  let prompt = "";
   switch (level) {
     case QuestionLevel.Year1:
       prompt = generalArithmeticPrompt(lowOperations[randomIndex]);
       break;
     case QuestionLevel.Year2:
       prompt = generalArithmeticPrompt(
-        lowOperations[randomIndex], 'integer', 100, 0
+        lowOperations[randomIndex],
+        "integer",
+        100,
+        0,
       );
       break;
     case QuestionLevel.Year3:
       if (random < 0.7) {
         prompt = generalArithmeticPrompt(
-          lowOperations[randomIndex], 'integer', 100, 0
+          lowOperations[randomIndex],
+          "integer",
+          100,
+          0,
         );
       } else {
         return lowMultiplicationPrompt();
@@ -34,20 +39,32 @@ export function generateArithmeticPrompt(
     case QuestionLevel.Year4:
       if (random < 0.2) {
         prompt = generalArithmeticPrompt(
-          lowOperations[randomIndex], 'integer', 1000, 100, 2
+          lowOperations[randomIndex],
+          "integer",
+          1000,
+          100,
+          2,
         );
       } else if (random < 0.5) {
         return middleMultiplicationPrompt();
       } else {
         prompt = generalArithmeticPrompt(
-          highOperations[randomIndex], 'integer', 100, 0, 2
+          highOperations[randomIndex],
+          "integer",
+          100,
+          0,
+          2,
         );
       }
       break;
     case QuestionLevel.Year5:
       if (random < 0.1) {
         prompt = generalArithmeticPrompt(
-          lowOperations[randomIndex], 'integer', 1000, 100, 2
+          lowOperations[randomIndex],
+          "integer",
+          1000,
+          100,
+          2,
         );
       } else if (random < 0.7) {
         return middleMultiplicationPrompt();
@@ -55,14 +72,22 @@ export function generateArithmeticPrompt(
         return highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(
-          highOperations[randomIndex], 'integer', 100, 0, 2
+          highOperations[randomIndex],
+          "integer",
+          100,
+          0,
+          2,
         );
       }
       break;
     case QuestionLevel.Year6:
       if (random < 0.1) {
         prompt = generalArithmeticPrompt(
-          lowOperations[randomIndex], 'integer', 1000, 100, 2
+          lowOperations[randomIndex],
+          "integer",
+          1000,
+          100,
+          2,
         );
       } else if (random < 0.5) {
         return middleMultiplicationPrompt();
@@ -70,7 +95,11 @@ export function generateArithmeticPrompt(
         return highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(
-          highOperations[randomIndex], 'integer', 100, 0, 2
+          highOperations[randomIndex],
+          "integer",
+          100,
+          0,
+          2,
         );
       }
       break;
@@ -81,23 +110,27 @@ export function generateArithmeticPrompt(
         return highArithmeticPrompt();
       } else {
         prompt = generalArithmeticPrompt(
-          highOperations[randomIndex], 'integer', 100, 0, 2
+          highOperations[randomIndex],
+          "integer",
+          100,
+          0,
+          2,
         );
       }
   }
 
   return [
-    { role: 'system', content: 'You are a math teacher.' },
-    { role: 'user', content: prompt }
-  ]
+    { role: "system", content: "You are a math teacher." },
+    { role: "user", content: prompt },
+  ];
 }
 
 function generalArithmeticPrompt(
-  operation: string = 'addition',
-  operandType: string = 'integer',
+  operation: string = "addition",
+  operandType: string = "integer",
   upper: number = 10,
   lower: number = 0,
-  workoutNumber: number = 1
+  workoutNumber: number = 1,
 ) {
   return `
   Generate a ${operation} math multi-choice question with the following conditions.
@@ -105,7 +138,7 @@ function generalArithmeticPrompt(
   2. Ensure there are 4 options provided, including the correct answer.
   3. Work out the question with at least ${workoutNumber} method.
   4. ${template}
-  `
+  `;
 }
 
 function lowMultiplicationPrompt() {
@@ -135,9 +168,17 @@ function lowMultiplicationPrompt() {
   B: 18 cookies
   C: 20 cookies
   D: 23 cookies
-  `
+  `;
 
-  return mathTemplate('low-level', 'multiplication', condition, question, answer, workout, options);
+  return mathTemplate(
+    "low-level",
+    "multiplication",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
   // return `
   // Generate a low level difficulty math multiplication multi-choice question with the following conditions.
   // 1. Choose two positive integers less than 10. The product of these two numbers is less than 20.
@@ -171,9 +212,17 @@ function middleMultiplicationPrompt() {
   B: 700 litres
   C: 600 litres
   D: 1000 litres
-  `
+  `;
 
-  return mathTemplate('middle-level', 'multiplication', condition, question, answer, workout, options);
+  return mathTemplate(
+    "middle-level",
+    "multiplication",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
   // return `
   // Give a middle level difficulty math multiplication multi-choice question with the following conditions.
   // 1. Make a short story with these numbers, such as "An ice cream shop is testing some new flavours of ice cream. They invent 30 new flavours for customers to try and discard the 15 least popular new flavours. The shop makes 40 litres of each of the remaining flavours. How many litres of ice cream did the shop make?"
@@ -218,9 +267,17 @@ function highArithmeticPrompt() {
   B: 125 Fahrenheit
   C: 130 Fahrenheit
   D: 135 Fahrenheit
-  `
+  `;
 
-  return mathTemplate('high-level', 'multiplication or division', condition, question, answer, workout, options);
+  return mathTemplate(
+    "high-level",
+    "multiplication or division",
+    condition,
+    question,
+    answer,
+    workout,
+    options,
+  );
   // return `
   // Give a high level difficulty math multiplication multi-choice question with the following conditions.
   // 1. Make a short story with these numbers, such as "Bianca's mum just took roast lamb out of the oven and set it aside to rest. The core temperature right now is 170 Fahrenheit and will drop 10 Fahrenheit every 5 minutes. If it rests for 20 minutes, what will the final core temperature be?"
@@ -229,4 +286,3 @@ function highArithmeticPrompt() {
   // 4. ${template}
   // `
 }
-

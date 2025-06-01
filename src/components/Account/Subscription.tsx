@@ -1,88 +1,88 @@
-import { 
-  AlertDialog, 
-  AlertDialogBody, 
-  AlertDialogContent, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogOverlay, 
-  Box, 
-  Button, 
-  Flex, 
-  Heading, 
-  HStack, 
-  List, 
-  ListIcon, 
-  ListItem, 
-  Modal, 
-  ModalBody, 
-  ModalCloseButton, 
-  ModalContent, 
-  ModalHeader, 
-  ModalOverlay, 
-  Progress, 
-  Stack, 
-  Text, 
-  useColorModeValue, 
-  useDisclosure, 
-  useToast, 
-  VStack 
-} from '@chakra-ui/react';
-import { 
-  PayPalScriptProvider,
-} from '@paypal/react-paypal-js'
-import { API, graphqlOperation } from 'aws-amplify';
-import { useEffect, useRef, useState } from 'react';
-import PayPalButtonWrapper from './PayPalButtonWrapper';
-import { PriceWrapper } from '@/components/Common/Pricing';
-import { GraphQLResult } from "@aws-amplify/api-graphql"
-import { LearnwithaiSubscribeMutation } from '@/types/API';
-import { User } from '@/models';
-import { learnwithaiSubscribe } from '@/graphql/mutations';
-import { SubStatus } from '@/pages/account';
-import { Quota } from '@/types/quota';
-import Support from '@/components/Common/Support';
-import { MdCancel, MdCheckCircle } from 'react-icons/md';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  List,
+  ListIcon,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Progress,
+  Stack,
+  Text,
+  useColorModeValue,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { API, graphqlOperation } from "aws-amplify";
+import { useEffect, useRef, useState } from "react";
+import PayPalButtonWrapper from "./PayPalButtonWrapper";
+import { PriceWrapper } from "@/components/Common/Pricing";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { LearnwithaiSubscribeMutation } from "@/types/API";
+import { User } from "@/models";
+import { learnwithaiSubscribe } from "@/graphql/mutations";
+import { SubStatus } from "@/pages/account";
+import { Quota } from "@/types/quota";
+import Support from "@/components/Common/Support";
+import { MdCancel, MdCheckCircle } from "react-icons/md";
 
 interface SubscriptionProps {
-  subStatus: SubStatus
-  user: User
-  onClose: () => void
+  subStatus: SubStatus;
+  user: User;
+  onClose: () => void;
 }
 
-function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
-  const [ planId, setPlanId ] = useState<string[]>();
-  const [ selectedPlan, setSelectedPlan ] = useState<'personal'|'professional'|'enterprise'>();
-  const [ isInProgress, setIsInProgress ] = useState(false);
+function Subscription({ subStatus, user, onClose }: SubscriptionProps) {
+  const [planId, setPlanId] = useState<string[]>();
+  const [selectedPlan, setSelectedPlan] = useState<
+    "personal" | "professional" | "enterprise"
+  >();
+  const [isInProgress, setIsInProgress] = useState(false);
   const toast = useToast();
   const cancelRef = useRef(null);
 
-  const { 
-    isOpen: isOpenAlert, 
-    onOpen: onOpenAlert, 
-    onClose: onCloseAlert 
+  const {
+    isOpen: isOpenAlert,
+    onOpen: onOpenAlert,
+    onClose: onCloseAlert,
   } = useDisclosure();
 
-  const { 
-    isOpen: isOpenSupportModal, 
-    onOpen: onOpenSupportModal, 
-    onClose: onCloseSupportModal
+  const {
+    isOpen: isOpenSupportModal,
+    onOpen: onOpenSupportModal,
+    onClose: onCloseSupportModal,
   } = useDisclosure();
 
   useEffect(() => {
-    let planId = ['', '', ''];
-    if (user.membership!.paypalSubscriptions.personal.length > 0){
+    let planId = ["", "", ""];
+    if (user.membership!.paypalSubscriptions.personal.length > 0) {
       planId[0] = process.env.NEXT_PUBLIC_PERSONAL_RESUME_PLAN_ID!;
     } else {
       planId[0] = process.env.NEXT_PUBLIC_PERSONAL_PLAN_ID!;
     }
 
-    if (user.membership!.paypalSubscriptions.professional.length > 0){
+    if (user.membership!.paypalSubscriptions.professional.length > 0) {
       planId[1] = process.env.NEXT_PUBLIC_PROFESSIONAL_RESUME_PLAN_ID!;
     } else {
       planId[1] = process.env.NEXT_PUBLIC_PROFESSIONAL_PLAN_ID!;
     }
 
-    if (user.membership!.paypalSubscriptions.enterprise.length > 0){
+    if (user.membership!.paypalSubscriptions.enterprise.length > 0) {
       planId[2] = process.env.NEXT_PUBLIC_ENTERPRISE_RESUME_PLAN_ID!;
     } else {
       planId[2] = process.env.NEXT_PUBLIC_ENTERPRISE_PLAN_ID!;
@@ -91,23 +91,25 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
     setPlanId(planId);
   }, [subStatus, user]);
 
-  const unsubscribe = async (planName: 'personal'|'professional'|'enterprise') => {
+  const unsubscribe = async (
+    planName: "personal" | "professional" | "enterprise",
+  ) => {
     setIsInProgress(true);
 
-    const response = await API.graphql(graphqlOperation(
-      learnwithaiSubscribe, { 
-        operation: 'cancel', 
-        userId: user.id, 
-        subscriptionId: subStatus[planName].id
-      }
+    const response = (await API.graphql(
+      graphqlOperation(learnwithaiSubscribe, {
+        operation: "cancel",
+        userId: user.id,
+        subscriptionId: subStatus[planName].id,
+      }),
     )) as GraphQLResult<LearnwithaiSubscribeMutation>;
 
     if (response.data?.learnwithaiSubscribe?.statusCode == 200) {
       toast({
         description: `${response.data.learnwithaiSubscribe.body} You can manage your subscription from the profile or Paypal console.`,
-        status: 'success',
+        status: "success",
         duration: 10000,
-        isClosable: true
+        isClosable: true,
       });
 
       setSelectedPlan(undefined);
@@ -117,25 +119,25 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
     } else {
       toast({
         description: `Something wrong, please try again later. You can manage your subscription from the profile or Paypal console.`,
-        status: 'error',
+        status: "error",
         duration: 30000,
-        isClosable: true
+        isClosable: true,
       });
 
       console.error(response.data?.learnwithaiSubscribe?.body);
     }
-  }
+  };
 
   return (
     <PayPalScriptProvider
       options={{
-        'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
-        components: 'buttons',
-        intent: 'subscription',
-        vault: true
+        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+        components: "buttons",
+        intent: "subscription",
+        vault: true,
       }}
     >
-      <Flex direction='column'>
+      <Flex direction="column">
         <Box mt={20}>
           <VStack spacing={2} textAlign="center">
             <Heading as="h1" fontSize="4xl">
@@ -143,13 +145,14 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
             </Heading>
           </VStack>
           <Stack
-            direction={{ base: 'column', md: 'row' }}
+            direction={{ base: "column", md: "row" }}
             textAlign="center"
             justify="center"
             spacing={{ base: 4, lg: 10 }}
-            py={10}>
+            py={10}
+          >
             <PriceWrapper>
-              <Box py={4} px={12} id='personal-plan'>
+              <Box py={4} px={12} id="personal-plan">
                 <Text fontWeight="500" fontSize="2xl">
                   Personal
                 </Text>
@@ -169,9 +172,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                 </Text>
               </Box>
               <VStack
-                bg={useColorModeValue('gray.50', 'gray.700')}
+                bg={useColorModeValue("gray.50", "gray.700")}
                 py={4}
-                borderBottomRadius={'xl'}>
+                borderBottomRadius={"xl"}
+              >
                 <List spacing={3} textAlign="start" px={12}>
                   <ListItem>
                     <ListIcon as={MdCheckCircle} color="green.500" />
@@ -206,17 +210,17 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     Report notification
                   </ListItem>
                 </List>
-                <Flex w='full' justify='center'>
-                  <Box w='80%'>
-                    {!planId ? null : (subStatus.personal.status == 'ACTIVE' ? (
+                <Flex w="full" justify="center">
+                  <Box w="80%">
+                    {!planId ? null : subStatus.personal.status == "ACTIVE" ? (
                       <VStack pt={7} pb={10} spacing={4}>
                         <Text>You are on this plan</Text>
-                        <Button 
-                          w="full" 
-                          colorScheme="red" 
-                          variant="solid" 
-                          onClick={()=>{
-                            setSelectedPlan('personal');
+                        <Button
+                          w="full"
+                          colorScheme="red"
+                          variant="solid"
+                          onClick={() => {
+                            setSelectedPlan("personal");
                             onOpenAlert();
                           }}
                         >
@@ -225,15 +229,20 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                       </VStack>
                     ) : (
                       <Box pt={6}>
-                        <PayPalButtonWrapper type='subscription' planId={planId[0]} userId={user.id} onFinished={onClose} />
+                        <PayPalButtonWrapper
+                          type="subscription"
+                          planId={planId[0]}
+                          userId={user.id}
+                          onFinished={onClose}
+                        />
                       </Box>
-                    ))}
+                    )}
                   </Box>
                 </Flex>
               </VStack>
             </PriceWrapper>
             <PriceWrapper>
-              <Box py={4} px={12} id='professional-plan'>
+              <Box py={4} px={12} id="professional-plan">
                 <Text fontWeight="500" fontSize="2xl">
                   Professional
                 </Text>
@@ -253,9 +262,10 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                 </Text>
               </Box>
               <VStack
-                bg={useColorModeValue('gray.50', 'gray.700')}
+                bg={useColorModeValue("gray.50", "gray.700")}
                 py={4}
-                borderBottomRadius={'xl'}>
+                borderBottomRadius={"xl"}
+              >
                 <List spacing={3} textAlign="start" px={12}>
                   <ListItem>
                     <ListIcon as={MdCheckCircle} color="green.500" />
@@ -290,17 +300,18 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                     Report notification
                   </ListItem>
                 </List>
-                <Flex w='full' justify='center' >
+                <Flex w="full" justify="center">
                   <Box w="80%">
-                    {!planId ? (null) : (subStatus.professional.status == 'ACTIVE' ? (
+                    {!planId ? null : subStatus.professional.status ==
+                      "ACTIVE" ? (
                       <VStack pt={7} pb={10} spacing={4}>
                         <Text>You are on this plan</Text>
-                        <Button 
-                          w="full" 
-                          colorScheme="red" 
-                          variant="solid" 
-                          onClick={()=>{
-                            setSelectedPlan('professional');
+                        <Button
+                          w="full"
+                          colorScheme="red"
+                          variant="solid"
+                          onClick={() => {
+                            setSelectedPlan("professional");
                             onOpenAlert();
                           }}
                         >
@@ -309,9 +320,14 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
                       </VStack>
                     ) : (
                       <Box pt={6}>
-                        <PayPalButtonWrapper type='subscription' planId={planId[1]} userId={user.id} onFinished={onClose} />
+                        <PayPalButtonWrapper
+                          type="subscription"
+                          planId={planId[1]}
+                          userId={user.id}
+                          onFinished={onClose}
+                        />
                       </Box>
-                    ))}
+                    )}
                   </Box>
                 </Flex>
               </VStack>
@@ -399,58 +415,50 @@ function Subscription ({ subStatus, user, onClose }: SubscriptionProps) {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Unsubscribe {selectedPlan} plan
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure? You can still use the free plan but some features will be not available.
+              Are you sure? You can still use the free plan but some features
+              will be not available.
             </AlertDialogBody>
-            {isInProgress ? (
-              <Progress isIndeterminate size='xs' />
-            ) : null}
+            {isInProgress ? <Progress isIndeterminate size="xs" /> : null}
             <AlertDialogFooter>
-              <Button 
-                ref={cancelRef} 
+              <Button
+                ref={cancelRef}
                 onClick={onCloseAlert}
-                rounded={'full'}
+                rounded={"full"}
                 px={6}
               >
                 Cancel
               </Button>
-              <Button 
-                colorScheme='red' 
-                rounded={'full'}
+              <Button
+                colorScheme="red"
+                rounded={"full"}
                 px={6}
-                onClick={()=>unsubscribe(selectedPlan!)} 
+                onClick={() => unsubscribe(selectedPlan!)}
                 ml={3}
               >
                 Unsubscribe
               </Button>
-              
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
 
-      <Modal
-        isOpen={isOpenSupportModal}
-        onClose={onCloseSupportModal}
-      >
+      <Modal isOpen={isOpenSupportModal} onClose={onCloseSupportModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign='center'>
-            Please leave a message
-          </ModalHeader>
+          <ModalHeader textAlign="center">Please leave a message</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Support onClose={onCloseSupportModal} />
           </ModalBody>
         </ModalContent>
       </Modal>
-
     </PayPalScriptProvider>
-  )
+  );
 }
 
-export default Subscription
+export default Subscription;

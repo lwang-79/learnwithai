@@ -2,7 +2,7 @@ import { MathConcept, QuestionLevel } from "./types";
 
 export const getConcepts = (level: QuestionLevel): MathConcept[] => {
   switch (level) {
-    case QuestionLevel.Year1: 
+    case QuestionLevel.Year1:
       return Year1Concepts;
     case QuestionLevel.Year2:
       return Year2Concepts;
@@ -13,7 +13,7 @@ export const getConcepts = (level: QuestionLevel): MathConcept[] => {
     case QuestionLevel.Year5:
       return Year5Concepts;
     case QuestionLevel.Year6:
-      return Year6Concepts
+      return Year6Concepts;
     // case QuestionLevel.Primary:
     // case QuestionLevel.Year7:
     // case QuestionLevel.Year8:
@@ -24,34 +24,21 @@ export const getConcepts = (level: QuestionLevel): MathConcept[] => {
     // case QuestionLevel.Year12:
     // case QuestionLevel.High:
     default:
-      return []
+      return [];
   }
-}
+};
 
-const Year1Concepts = [
-  MathConcept.Arithmetic,
-]
+const Year1Concepts = [MathConcept.Arithmetic];
 
-const Year2Concepts = [
-  ...Year1Concepts,
-]
+const Year2Concepts = [...Year1Concepts];
 
-const Year3Concepts = [
-  ...Year2Concepts,
-]
+const Year3Concepts = [...Year2Concepts];
 
-const Year4Concepts = [
-  MathConcept.Decimals,
-  MathConcept.Arithmetic,
-]
+const Year4Concepts = [MathConcept.Decimals, MathConcept.Arithmetic];
 
-const Year5Concepts = [
-  ...Year4Concepts,
-]
+const Year5Concepts = [...Year4Concepts];
 
-const Year6Concepts = [
-  ...Year4Concepts
-]
+const Year6Concepts = [...Year4Concepts];
 
 // const PrimarySchool = [
 //   ...Year6Concepts,

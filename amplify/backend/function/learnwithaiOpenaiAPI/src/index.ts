@@ -1,25 +1,33 @@
 import { getStemQuestions } from "./openai/stem";
 import { askAnything } from "./openai/anything";
-import { generateMathAnswer, generateMathQuestion, getDatasetQuestions } from "./openai/math";
-import { generateWritingMark, generateWritingPrompt, polishWriting } from "./openai/writing";
+import {
+  generateMathAnswer,
+  generateMathQuestion,
+  getDatasetQuestions,
+} from "./openai/math";
+import {
+  generateWritingMark,
+  generateWritingPrompt,
+  polishWriting,
+} from "./openai/writing";
 import { APIOperation, APIResponse, QuestionSource } from "./types";
 import { chatCompletion } from "openai/chat";
 
-let model = 'gpt-3.5-turbo';
-
+let model = "gpt-3.5-turbo";
 
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   // const req = JSON.parse(event.body);
   const req = event;
-  const operation = req.operation || '';
-  model = req.source === QuestionSource.ChatGPT4 ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
+  const operation = req.operation || "";
+  model =
+    req.source === QuestionSource.ChatGPT4 ? "gpt-4-turbo" : "gpt-3.5-turbo";
   if (Object.values(APIOperation).indexOf(operation) < 0) {
     return {
       statusCode: 400,
       body: {
         statusCode: 400,
-        error: 'Please enter a valid value'
+        error: "Please enter a valid value",
       },
     };
   }
@@ -28,93 +36,91 @@ exports.handler = async (event) => {
 
   switch (operation) {
     case APIOperation.AskAnything:
-      body = await askAnything(req.prompt || '');
+      body = await askAnything(req.prompt || "");
       break;
 
     case APIOperation.Chat:
       body = await chatCompletion(
-        req.messages || '', 
-        req.function || '',
+        req.messages || "",
+        req.function || "",
         req.temperature || 1,
-        req.max_tokens || 1000
+        req.max_tokens || 1000,
       );
       break;
 
     case APIOperation.WritingPrompt:
       body = await generateWritingPrompt(
-        req.type || '',
-        req.topic || '',
-        req.level || ''
+        req.type || "",
+        req.topic || "",
+        req.level || "",
       );
       break;
-    
+
     case APIOperation.WritingMark:
       body = await generateWritingMark(
-        req.level || '',
-        req.type || '',
-        req.prompt || '',
-        req.essay || ''
+        req.level || "",
+        req.type || "",
+        req.prompt || "",
+        req.essay || "",
       );
       break;
 
     case APIOperation.WritingPolish:
       body = await polishWriting(
-        req.level || '',
-        req.type || '',
-        req.prompt || '',
-        req.essay || ''
+        req.level || "",
+        req.type || "",
+        req.prompt || "",
+        req.essay || "",
       );
       break;
-        
+
     case APIOperation.MathDataset:
       body = await getDatasetQuestions(
-        req.dataset || '',
-        req.questionCount || '',
-        req.level || '',
-        req.concept || ''
+        req.dataset || "",
+        req.questionCount || "",
+        req.level || "",
+        req.concept || "",
       );
       break;
 
     case APIOperation.MathQuestion:
       body = await generateMathQuestion(
-        req.category || '',
-        req.type || '',
-        req.level || '',
-        req.concept || ''
+        req.category || "",
+        req.type || "",
+        req.level || "",
+        req.concept || "",
       );
       break;
 
     case APIOperation.MathAnswer:
-      body = await generateMathAnswer(
-        req.question || ''
-      );
+      body = await generateMathAnswer(req.question || "");
       break;
 
     case APIOperation.StemQuestion:
       body = await getStemQuestions(
         req.concepts || [],
-        req.level || '',
-        req.questionCount || ''
+        req.level || "",
+        req.questionCount || "",
       );
       break;
 
     default:
-      body = { 
+      body = {
         statusCode: 400,
-        error: "Invalid operation"
-      }
+        error: "Invalid operation",
+      };
   }
 
   if (body.statusCode !== 200) {
     console.error(body.error);
   }
 
-  console.log(body)
+  console.log(body);
 
   return {
     statusCode: body.statusCode,
     body: JSON.stringify(body),
   };
-}
+};
 
 export const getModel = () => model;

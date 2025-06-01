@@ -2,13 +2,12 @@ import { QuestionLevel } from "../types";
 import { ChatCompletionRequestMessage } from "openai";
 import { template } from "./math";
 
-
 export function generatePercentagePrompt(
-  level: QuestionLevel
+  level: QuestionLevel,
 ): ChatCompletionRequestMessage[] {
   const random = Math.random();
 
-  let prompt = '';
+  let prompt = "";
   switch (level) {
     case QuestionLevel.Year1:
     case QuestionLevel.Year2:
@@ -44,9 +43,9 @@ export function generatePercentagePrompt(
   }
 
   return [
-    { role: 'system', content: 'You are a math teacher.' },
-    { role: 'user', content: prompt }
-  ]
+    { role: "system", content: "You are a math teacher." },
+    { role: "user", content: prompt },
+  ];
 }
 
 function lowPercentagePrompt() {
@@ -57,7 +56,7 @@ Give low level difficulty math percentage multi-choice question with the followi
 3. There should be 4 options including the answer.
 4. Make sure the correct answer is in the options.
 5. ${template}
-`
+`;
 }
 
 function middlePercentagePrompt() {
@@ -71,7 +70,7 @@ Give an middle level difficulty math percentage multi-choice question with the f
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else if (random < 0.66) {
     return `
 Give an middle level difficulty math percentage multi-choice question with the following conditions.
@@ -81,7 +80,7 @@ Give an middle level difficulty math percentage multi-choice question with the f
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else {
     return `
 Give an middle level difficulty math percentage multi-choice question with the following conditions.
@@ -91,10 +90,9 @@ Give an middle level difficulty math percentage multi-choice question with the f
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   }
 }
-
 
 function highPercentagePrompt() {
   const random = Math.random();
@@ -108,7 +106,7 @@ Give a middle level difficulty math percentage multi-choice question with the fo
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else if (random < 0.66) {
     return `
 Give an middle level difficulty math percentage multi-choice question with the following conditions.
@@ -118,7 +116,7 @@ Give an middle level difficulty math percentage multi-choice question with the f
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   } else {
     return `
 Give an middle level difficulty math percentage multi-choice question with the following conditions.
@@ -128,7 +126,6 @@ Give an middle level difficulty math percentage multi-choice question with the f
 4. There should be 4 options including the answer.
 5. Make sure the correct answer is in the options.
 6. ${template}
-`
+`;
   }
-  
 }

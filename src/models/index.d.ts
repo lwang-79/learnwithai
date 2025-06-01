@@ -1,4 +1,9 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+import {
+  ModelInit,
+  MutableModel,
+  __modelMeta__,
+  ManagedIdentifier,
+} from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
@@ -6,53 +11,61 @@ export enum NotificationType {
   MONTHLY = "Monthly",
   WEEKLY = "Weekly",
   DAILY = "Daily",
-  INSTANT = "Instant"
+  INSTANT = "Instant",
 }
 
 export enum RankingType {
   MATH_CORRECT_NUMBER_BY_DAY = "MathCorrectNumberByDay",
   MATH_CORRECT_NUMBER_BY_MONTH = "MathCorrectNumberByMonth",
   WRITING_NUMBER_BY_DAY = "WritingNumberByDay",
-  WRITING_NUMBER_BY_MONTH = "WritingNumberByMonth"
+  WRITING_NUMBER_BY_MONTH = "WritingNumberByMonth",
 }
 
 export enum ShoppingItemCategory {
   REWARD = "Reward",
   PET = "Pet",
-  SEED = "Seed"
+  SEED = "Seed",
 }
 
 type EagerMembership = {
   readonly current: number;
   readonly previous: number;
   readonly paypalSubscriptions: Subscriptions;
-}
+};
 
 type LazyMembership = {
   readonly current: number;
   readonly previous: number;
   readonly paypalSubscriptions: Subscriptions;
-}
+};
 
-export declare type Membership = LazyLoading extends LazyLoadingDisabled ? EagerMembership : LazyMembership
+export declare type Membership = LazyLoading extends LazyLoadingDisabled
+  ? EagerMembership
+  : LazyMembership;
 
-export declare const Membership: (new (init: ModelInit<Membership>) => Membership)
+export declare const Membership: new (
+  init: ModelInit<Membership>,
+) => Membership;
 
 type EagerSubscriptions = {
   readonly personal: (string | null)[];
   readonly professional: (string | null)[];
   readonly enterprise: (string | null)[];
-}
+};
 
 type LazySubscriptions = {
   readonly personal: (string | null)[];
   readonly professional: (string | null)[];
   readonly enterprise: (string | null)[];
-}
+};
 
-export declare type Subscriptions = LazyLoading extends LazyLoadingDisabled ? EagerSubscriptions : LazySubscriptions
+export declare type Subscriptions = LazyLoading extends LazyLoadingDisabled
+  ? EagerSubscriptions
+  : LazySubscriptions;
 
-export declare const Subscriptions: (new (init: ModelInit<Subscriptions>) => Subscriptions)
+export declare const Subscriptions: new (
+  init: ModelInit<Subscriptions>,
+) => Subscriptions;
 
 type EagerQuota = {
   readonly mathPerDay: number;
@@ -62,7 +75,7 @@ type EagerQuota = {
   readonly savedTests: number;
   readonly savedEssays: number;
   readonly classroomRound: number;
-}
+};
 
 type LazyQuota = {
   readonly mathPerDay: number;
@@ -72,11 +85,13 @@ type LazyQuota = {
   readonly savedTests: number;
   readonly savedEssays: number;
   readonly classroomRound: number;
-}
+};
 
-export declare type Quota = LazyLoading extends LazyLoadingDisabled ? EagerQuota : LazyQuota
+export declare type Quota = LazyLoading extends LazyLoadingDisabled
+  ? EagerQuota
+  : LazyQuota;
 
-export declare const Quota: (new (init: ModelInit<Quota>) => Quota)
+export declare const Quota: new (init: ModelInit<Quota>) => Quota;
 
 type EagerStatistic = {
   readonly date: string;
@@ -89,7 +104,7 @@ type EagerStatistic = {
   readonly readingRequest: number;
   readonly writing: number;
   readonly writingRequest: number;
-}
+};
 
 type LazyStatistic = {
   readonly date: string;
@@ -102,11 +117,13 @@ type LazyStatistic = {
   readonly readingRequest: number;
   readonly writing: number;
   readonly writingRequest: number;
-}
+};
 
-export declare type Statistic = LazyLoading extends LazyLoadingDisabled ? EagerStatistic : LazyStatistic
+export declare type Statistic = LazyLoading extends LazyLoadingDisabled
+  ? EagerStatistic
+  : LazyStatistic;
 
-export declare const Statistic: (new (init: ModelInit<Statistic>) => Statistic)
+export declare const Statistic: new (init: ModelInit<Statistic>) => Statistic;
 
 type EagerGameData = {
   readonly startDate: string;
@@ -115,7 +132,7 @@ type EagerGameData = {
   readonly seed: string;
   readonly collections: string;
   readonly coins?: number | null;
-}
+};
 
 type LazyGameData = {
   readonly startDate: string;
@@ -124,25 +141,31 @@ type LazyGameData = {
   readonly seed: string;
   readonly collections: string;
   readonly coins?: number | null;
-}
+};
 
-export declare type GameData = LazyLoading extends LazyLoadingDisabled ? EagerGameData : LazyGameData
+export declare type GameData = LazyLoading extends LazyLoadingDisabled
+  ? EagerGameData
+  : LazyGameData;
 
-export declare const GameData: (new (init: ModelInit<GameData>) => GameData)
+export declare const GameData: new (init: ModelInit<GameData>) => GameData;
 
 type EagerNotification = {
   readonly emails: (string | null)[];
   readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
-}
+};
 
 type LazyNotification = {
   readonly emails: (string | null)[];
   readonly types: (NotificationType | null)[] | keyof typeof NotificationType;
-}
+};
 
-export declare type Notification = LazyLoading extends LazyLoadingDisabled ? EagerNotification : LazyNotification
+export declare type Notification = LazyLoading extends LazyLoadingDisabled
+  ? EagerNotification
+  : LazyNotification;
 
-export declare const Notification: (new (init: ModelInit<Notification>) => Notification)
+export declare const Notification: new (
+  init: ModelInit<Notification>,
+) => Notification;
 
 type EagerOptionStates = {
   readonly mathMode?: string | null;
@@ -157,7 +180,7 @@ type EagerOptionStates = {
   readonly stemNumber?: number | null;
   readonly stemLevel?: string | null;
   readonly stemConcepts?: (string | null)[] | null;
-}
+};
 
 type LazyOptionStates = {
   readonly mathMode?: string | null;
@@ -172,11 +195,15 @@ type LazyOptionStates = {
   readonly stemNumber?: number | null;
   readonly stemLevel?: string | null;
   readonly stemConcepts?: (string | null)[] | null;
-}
+};
 
-export declare type OptionStates = LazyLoading extends LazyLoadingDisabled ? EagerOptionStates : LazyOptionStates
+export declare type OptionStates = LazyLoading extends LazyLoadingDisabled
+  ? EagerOptionStates
+  : LazyOptionStates;
 
-export declare const OptionStates: (new (init: ModelInit<OptionStates>) => OptionStates)
+export declare const OptionStates: new (
+  init: ModelInit<OptionStates>,
+) => OptionStates;
 
 type EagerLocalQuestionSet = {
   readonly type: string;
@@ -191,7 +218,7 @@ type EagerLocalQuestionSet = {
   readonly isBad: boolean;
   readonly isTarget: boolean;
   readonly isMarked?: boolean | null;
-}
+};
 
 type LazyLocalQuestionSet = {
   readonly type: string;
@@ -206,30 +233,38 @@ type LazyLocalQuestionSet = {
   readonly isBad: boolean;
   readonly isTarget: boolean;
   readonly isMarked?: boolean | null;
-}
+};
 
-export declare type LocalQuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerLocalQuestionSet : LazyLocalQuestionSet
+export declare type LocalQuestionSet = LazyLoading extends LazyLoadingDisabled
+  ? EagerLocalQuestionSet
+  : LazyLocalQuestionSet;
 
-export declare const LocalQuestionSet: (new (init: ModelInit<LocalQuestionSet>) => LocalQuestionSet)
+export declare const LocalQuestionSet: new (
+  init: ModelInit<LocalQuestionSet>,
+) => LocalQuestionSet;
 
 type EagerLambdaResponse = {
   readonly statusCode: number;
   readonly body: string;
-}
+};
 
 type LazyLambdaResponse = {
   readonly statusCode: number;
   readonly body: string;
-}
+};
 
-export declare type LambdaResponse = LazyLoading extends LazyLoadingDisabled ? EagerLambdaResponse : LazyLambdaResponse
+export declare type LambdaResponse = LazyLoading extends LazyLoadingDisabled
+  ? EagerLambdaResponse
+  : LazyLambdaResponse;
 
-export declare const LambdaResponse: (new (init: ModelInit<LambdaResponse>) => LambdaResponse)
+export declare const LambdaResponse: new (
+  init: ModelInit<LambdaResponse>,
+) => LambdaResponse;
 
 type EagerUser = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<User, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly sub: string;
@@ -249,12 +284,12 @@ type EagerUser = {
   readonly badges?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyUser = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<User, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly sub: string;
@@ -274,18 +309,23 @@ type LazyUser = {
   readonly badges?: string[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
+export declare type User = LazyLoading extends LazyLoadingDisabled
+  ? EagerUser
+  : LazyUser;
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
-  copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
-}
+  copyOf(
+    source: User,
+    mutator: (draft: MutableModel<User>) => MutableModel<User> | void,
+  ): User;
+};
 
 type EagerQuestionSet = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<QuestionSet, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<QuestionSet, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly question: string;
@@ -301,12 +341,12 @@ type EagerQuestionSet = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyQuestionSet = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<QuestionSet, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<QuestionSet, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly question: string;
@@ -322,18 +362,27 @@ type LazyQuestionSet = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type QuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerQuestionSet : LazyQuestionSet
+export declare type QuestionSet = LazyLoading extends LazyLoadingDisabled
+  ? EagerQuestionSet
+  : LazyQuestionSet;
 
-export declare const QuestionSet: (new (init: ModelInit<QuestionSet>) => QuestionSet) & {
-  copyOf(source: QuestionSet, mutator: (draft: MutableModel<QuestionSet>) => MutableModel<QuestionSet> | void): QuestionSet;
-}
+export declare const QuestionSet: (new (
+  init: ModelInit<QuestionSet>,
+) => QuestionSet) & {
+  copyOf(
+    source: QuestionSet,
+    mutator: (
+      draft: MutableModel<QuestionSet>,
+    ) => MutableModel<QuestionSet> | void,
+  ): QuestionSet;
+};
 
 type EagerBadQuestionSet = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BadQuestionSet, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<BadQuestionSet, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly source: string;
@@ -347,12 +396,12 @@ type EagerBadQuestionSet = {
   readonly concept: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyBadQuestionSet = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BadQuestionSet, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<BadQuestionSet, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly source: string;
@@ -366,18 +415,27 @@ type LazyBadQuestionSet = {
   readonly concept: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type BadQuestionSet = LazyLoading extends LazyLoadingDisabled ? EagerBadQuestionSet : LazyBadQuestionSet
+export declare type BadQuestionSet = LazyLoading extends LazyLoadingDisabled
+  ? EagerBadQuestionSet
+  : LazyBadQuestionSet;
 
-export declare const BadQuestionSet: (new (init: ModelInit<BadQuestionSet>) => BadQuestionSet) & {
-  copyOf(source: BadQuestionSet, mutator: (draft: MutableModel<BadQuestionSet>) => MutableModel<BadQuestionSet> | void): BadQuestionSet;
-}
+export declare const BadQuestionSet: (new (
+  init: ModelInit<BadQuestionSet>,
+) => BadQuestionSet) & {
+  copyOf(
+    source: BadQuestionSet,
+    mutator: (
+      draft: MutableModel<BadQuestionSet>,
+    ) => MutableModel<BadQuestionSet> | void,
+  ): BadQuestionSet;
+};
 
 type EagerTest = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Test, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Test, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly category: string;
@@ -391,12 +449,12 @@ type EagerTest = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyTest = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Test, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Test, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly category: string;
@@ -410,18 +468,23 @@ type LazyTest = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Test = LazyLoading extends LazyLoadingDisabled ? EagerTest : LazyTest
+export declare type Test = LazyLoading extends LazyLoadingDisabled
+  ? EagerTest
+  : LazyTest;
 
 export declare const Test: (new (init: ModelInit<Test>) => Test) & {
-  copyOf(source: Test, mutator: (draft: MutableModel<Test>) => MutableModel<Test> | void): Test;
-}
+  copyOf(
+    source: Test,
+    mutator: (draft: MutableModel<Test>) => MutableModel<Test> | void,
+  ): Test;
+};
 
 type EagerEssay = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Essay, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Essay, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly type: string;
@@ -433,12 +496,12 @@ type EagerEssay = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyEssay = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Essay, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Essay, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly type: string;
@@ -450,18 +513,23 @@ type LazyEssay = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Essay = LazyLoading extends LazyLoadingDisabled ? EagerEssay : LazyEssay
+export declare type Essay = LazyLoading extends LazyLoadingDisabled
+  ? EagerEssay
+  : LazyEssay;
 
 export declare const Essay: (new (init: ModelInit<Essay>) => Essay) & {
-  copyOf(source: Essay, mutator: (draft: MutableModel<Essay>) => MutableModel<Essay> | void): Essay;
-}
+  copyOf(
+    source: Essay,
+    mutator: (draft: MutableModel<Essay>) => MutableModel<Essay> | void,
+  ): Essay;
+};
 
 type EagerRankingItem = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RankingItem, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<RankingItem, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly date: string;
@@ -470,12 +538,12 @@ type EagerRankingItem = {
   readonly values: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyRankingItem = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RankingItem, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<RankingItem, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly date: string;
@@ -484,18 +552,27 @@ type LazyRankingItem = {
   readonly values: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type RankingItem = LazyLoading extends LazyLoadingDisabled ? EagerRankingItem : LazyRankingItem
+export declare type RankingItem = LazyLoading extends LazyLoadingDisabled
+  ? EagerRankingItem
+  : LazyRankingItem;
 
-export declare const RankingItem: (new (init: ModelInit<RankingItem>) => RankingItem) & {
-  copyOf(source: RankingItem, mutator: (draft: MutableModel<RankingItem>) => MutableModel<RankingItem> | void): RankingItem;
-}
+export declare const RankingItem: (new (
+  init: ModelInit<RankingItem>,
+) => RankingItem) & {
+  copyOf(
+    source: RankingItem,
+    mutator: (
+      draft: MutableModel<RankingItem>,
+    ) => MutableModel<RankingItem> | void,
+  ): RankingItem;
+};
 
 type EagerBadge = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Badge, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Badge, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
@@ -507,12 +584,12 @@ type EagerBadge = {
   readonly isVisible: boolean;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyBadge = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Badge, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Badge, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
@@ -524,18 +601,23 @@ type LazyBadge = {
   readonly isVisible: boolean;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Badge = LazyLoading extends LazyLoadingDisabled ? EagerBadge : LazyBadge
+export declare type Badge = LazyLoading extends LazyLoadingDisabled
+  ? EagerBadge
+  : LazyBadge;
 
 export declare const Badge: (new (init: ModelInit<Badge>) => Badge) & {
-  copyOf(source: Badge, mutator: (draft: MutableModel<Badge>) => MutableModel<Badge> | void): Badge;
-}
+  copyOf(
+    source: Badge,
+    mutator: (draft: MutableModel<Badge>) => MutableModel<Badge> | void,
+  ): Badge;
+};
 
 type EagerSystemMessage = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<SystemMessage, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<SystemMessage, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly content: string;
@@ -543,12 +625,12 @@ type EagerSystemMessage = {
   readonly externalLink?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazySystemMessage = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<SystemMessage, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<SystemMessage, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly content: string;
@@ -556,18 +638,27 @@ type LazySystemMessage = {
   readonly externalLink?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type SystemMessage = LazyLoading extends LazyLoadingDisabled ? EagerSystemMessage : LazySystemMessage
+export declare type SystemMessage = LazyLoading extends LazyLoadingDisabled
+  ? EagerSystemMessage
+  : LazySystemMessage;
 
-export declare const SystemMessage: (new (init: ModelInit<SystemMessage>) => SystemMessage) & {
-  copyOf(source: SystemMessage, mutator: (draft: MutableModel<SystemMessage>) => MutableModel<SystemMessage> | void): SystemMessage;
-}
+export declare const SystemMessage: (new (
+  init: ModelInit<SystemMessage>,
+) => SystemMessage) & {
+  copyOf(
+    source: SystemMessage,
+    mutator: (
+      draft: MutableModel<SystemMessage>,
+    ) => MutableModel<SystemMessage> | void,
+  ): SystemMessage;
+};
 
 type EagerShoppingItem = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ShoppingItem, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<ShoppingItem, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
@@ -577,12 +668,12 @@ type EagerShoppingItem = {
   readonly category: ShoppingItemCategory | keyof typeof ShoppingItemCategory;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyShoppingItem = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ShoppingItem, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<ShoppingItem, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
@@ -592,10 +683,19 @@ type LazyShoppingItem = {
   readonly category: ShoppingItemCategory | keyof typeof ShoppingItemCategory;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type ShoppingItem = LazyLoading extends LazyLoadingDisabled ? EagerShoppingItem : LazyShoppingItem
+export declare type ShoppingItem = LazyLoading extends LazyLoadingDisabled
+  ? EagerShoppingItem
+  : LazyShoppingItem;
 
-export declare const ShoppingItem: (new (init: ModelInit<ShoppingItem>) => ShoppingItem) & {
-  copyOf(source: ShoppingItem, mutator: (draft: MutableModel<ShoppingItem>) => MutableModel<ShoppingItem> | void): ShoppingItem;
-}
+export declare const ShoppingItem: (new (
+  init: ModelInit<ShoppingItem>,
+) => ShoppingItem) & {
+  copyOf(
+    source: ShoppingItem,
+    mutator: (
+      draft: MutableModel<ShoppingItem>,
+    ) => MutableModel<ShoppingItem> | void,
+  ): ShoppingItem;
+};

@@ -1,28 +1,34 @@
-import { User } from "@/models"
-import { 
+import { User } from "@/models";
+import {
   Box,
-  Button, 
-  Card, 
-  CardBody, 
-  HStack, 
+  Button,
+  Card,
+  CardBody,
+  HStack,
   Icon,
-  IconButton, 
-  Image, 
-  Progress, 
+  IconButton,
+  Image,
+  Progress,
   Spacer,
-  Text, 
-} from "@chakra-ui/react"
-import { DataStore } from "aws-amplify"
+  Text,
+} from "@chakra-ui/react";
+import { DataStore } from "aws-amplify";
 import { useContext, useEffect, useState } from "react";
-import { convertCollectionsToString, getCollections, getSeed } from "@/types/game";
+import {
+  convertCollectionsToString,
+  getCollections,
+  getSeed,
+} from "@/types/game";
 import SharedComponents from "../Common/SharedComponents";
 import { PlantWatering } from "../Common/Icons";
 
 function GameCard() {
   const upgradeScore = 100;
-  const [ currentScore, setCurrentScore ] = useState<number>(0);
-  const [ imageWidth, setImageWidth ] = useState(0);
-  const [ collections, setCollections ] = useState<Map<string, number>>(new Map());
+  const [currentScore, setCurrentScore] = useState<number>(0);
+  const [imageWidth, setImageWidth] = useState(0);
+  const [collections, setCollections] = useState<Map<string, number>>(
+    new Map(),
+  );
   const { dataStoreUser, setDataStoreUser } = useContext(SharedComponents);
   const user = dataStoreUser!;
 
@@ -52,18 +58,20 @@ function GameCard() {
     const seed = getSeed(user);
     const currentUser = await DataStore.query(User, user.id);
     setDataStoreUser(
-      await DataStore.save(User.copyOf(currentUser!, (updated) => {
-        updated.gameData = {
-          ...currentUser?.gameData,
-          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
-          level: 0,
-          score: 0,
-          seed: seed,
-          collections: '[]',
-        }
-      }))
+      await DataStore.save(
+        User.copyOf(currentUser!, (updated) => {
+          updated.gameData = {
+            ...currentUser?.gameData,
+            startDate: new Date().toLocaleString("sv-SE").slice(0, 10),
+            level: 0,
+            score: 0,
+            seed: seed,
+            collections: "[]",
+          };
+        }),
+      ),
     );
-  }
+  };
 
   const upgradeButtonClickedHandler = async () => {
     if (!user.gameData) return;
@@ -72,58 +80,55 @@ function GameCard() {
 
     const currentUser = await DataStore.query(User, user.id);
     if (!currentUser) return;
-    
-    const updatedUser = await DataStore.save(User.copyOf(currentUser, (updated) => {
-      if (!updated.gameData) {
-        return;
-      }
 
-      if (updated.gameData.level === 4) {
-        const map = getCollections(updated.gameData.collections);
+    const updatedUser = await DataStore.save(
+      User.copyOf(currentUser, (updated) => {
+        if (!updated.gameData) {
+          return;
+        }
 
-        if (map.has(updated.gameData.seed)) {
-          map.set(updated.gameData.seed, map.get(updated.gameData.seed) + 1);
+        if (updated.gameData.level === 4) {
+          const map = getCollections(updated.gameData.collections);
+
+          if (map.has(updated.gameData.seed)) {
+            map.set(updated.gameData.seed, map.get(updated.gameData.seed) + 1);
+          } else {
+            map.set(updated.gameData.seed, 1);
+          }
+
+          setCollections(map);
+          const collectionsString = convertCollectionsToString(map);
+
+          updated.gameData = {
+            ...updated.gameData,
+            startDate: new Date().toLocaleString("sv-SE").slice(0, 10),
+            level: 0,
+            score: updated.gameData.score - upgradeScore,
+            seed: getSeed(updated),
+            collections: collectionsString,
+          };
         } else {
-          map.set(updated.gameData.seed, 1);
+          updated.gameData = {
+            ...updated.gameData,
+            startDate: new Date().toLocaleString("sv-SE").slice(0, 10),
+            level: updated.gameData.level + 1,
+            score: updated.gameData.score - upgradeScore,
+          };
         }
-
-        setCollections(map);
-        const collectionsString = convertCollectionsToString(map);
-
-        updated.gameData = {
-          ...updated.gameData,
-          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
-          level: 0,
-          score: updated.gameData.score - upgradeScore,
-          seed: getSeed(updated),
-          collections: collectionsString
-        }
-
-      } else {
-        updated.gameData = {
-          ...updated.gameData,
-          startDate: new Date().toLocaleString('sv-SE').slice(0, 10),
-          level: updated.gameData.level + 1,
-          score: updated.gameData.score - upgradeScore
-        }
-      }
-    }));
+      }),
+    );
     setDataStoreUser(updatedUser);
-  }
+  };
 
   const imageLoadHandler = (event: any) => {
     setImageWidth(event.target.width);
-  }
+  };
 
   return (
-    <Card w='full'>
+    <Card w="full">
       <CardBody>
         {!user.gameData ? (
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={plantButtonClickedHandler}
-          >
+          <Button variant="ghost" size="sm" onClick={plantButtonClickedHandler}>
             Plant
           </Button>
         ) : (
@@ -131,52 +136,46 @@ function GameCard() {
             <HStack>
               <HStack spacing={4}>
                 {[...collections.entries()].map(([key, value]) => (
-                  <HStack key={`${key}-${value}`} align='flex-end'>
-                    <Image
-                      src={`game/${key}-4.png`}
-                      h='30px'
-                      alt='plant'
-                    />
-                    <Text fontSize='xs'>{value}</Text>
+                  <HStack key={`${key}-${value}`} align="flex-end">
+                    <Image src={`game/${key}-4.png`} h="30px" alt="plant" />
+                    <Text fontSize="xs">{value}</Text>
                   </HStack>
                 ))}
               </HStack>
               <Spacer />
               <IconButton
-                variant='ghost'
-                size='sm'
-                aria-label='Previous Month'
+                variant="ghost"
+                size="sm"
+                aria-label="Previous Month"
                 isDisabled={currentScore < upgradeScore}
                 icon={<Icon as={PlantWatering} boxSize={6} />}
                 onClick={upgradeButtonClickedHandler}
               />
             </HStack>
-            <HStack px={3} h='150px' w='full' position='relative'>
+            <HStack px={3} h="150px" w="full" position="relative">
               <Image
                 src={`game/${user.gameData.seed}-${user.gameData.level}.png`}
-                h='150px'
-                alt='plant'
-                position='absolute'
+                h="150px"
+                alt="plant"
+                position="absolute"
                 left={`${120 - imageWidth / 2}px`}
                 onLoad={imageLoadHandler}
               />
-              <Box className='watering-progress' right='-47px'>
+              <Box className="watering-progress" right="-47px">
                 <Progress
                   value={currentScore}
-                  width='120px'
-                  height='8px'
+                  width="120px"
+                  height="8px"
                   max={upgradeScore}
-                  colorScheme='teal'
+                  colorScheme="teal"
                 />
               </Box>
             </HStack>
           </>
         )}
-        
       </CardBody>
-      
     </Card>
-  )
+  );
 }
 
-export default GameCard
+export default GameCard;

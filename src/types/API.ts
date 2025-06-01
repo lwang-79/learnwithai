@@ -3,78 +3,78 @@
 //  This file was automatically generated and should not be edited.
 
 export type LambdaResponse = {
-  __typename: "LambdaResponse",
-  statusCode: number,
-  body: string,
+  __typename: "LambdaResponse";
+  statusCode: number;
+  body: string;
 };
 
 export type CreateUserInput = {
-  id?: string | null,
-  sub: string,
-  username: string,
-  email: string,
-  picture: string,
-  quota?: QuotaInput | null,
-  membership?: MembershipInput | null,
-  payerId?: string | null,
-  markedQuestions?: Array< string > | null,
-  daily?: Array< StatisticInput > | null,
-  monthly?: Array< StatisticInput > | null,
-  yearly?: Array< StatisticInput > | null,
-  gameData?: GameDataInput | null,
-  notification?: NotificationInput | null,
-  owner?: string | null,
-  badges?: Array< string > | null,
-  _version?: number | null,
+  id?: string | null;
+  sub: string;
+  username: string;
+  email: string;
+  picture: string;
+  quota?: QuotaInput | null;
+  membership?: MembershipInput | null;
+  payerId?: string | null;
+  markedQuestions?: Array<string> | null;
+  daily?: Array<StatisticInput> | null;
+  monthly?: Array<StatisticInput> | null;
+  yearly?: Array<StatisticInput> | null;
+  gameData?: GameDataInput | null;
+  notification?: NotificationInput | null;
+  owner?: string | null;
+  badges?: Array<string> | null;
+  _version?: number | null;
 };
 
 export type QuotaInput = {
-  mathPerDay: number,
-  readingPerDay: number,
-  writingPerDay: number,
-  savedQuestions: number,
-  savedTests: number,
-  savedEssays: number,
-  classroomRound: number,
+  mathPerDay: number;
+  readingPerDay: number;
+  writingPerDay: number;
+  savedQuestions: number;
+  savedTests: number;
+  savedEssays: number;
+  classroomRound: number;
 };
 
 export type MembershipInput = {
-  current: number,
-  previous: number,
-  paypalSubscriptions: SubscriptionsInput,
+  current: number;
+  previous: number;
+  paypalSubscriptions: SubscriptionsInput;
 };
 
 export type SubscriptionsInput = {
-  personal: Array< string | null >,
-  professional: Array< string | null >,
-  enterprise: Array< string | null >,
+  personal: Array<string | null>;
+  professional: Array<string | null>;
+  enterprise: Array<string | null>;
 };
 
 export type StatisticInput = {
-  date: string,
-  mathCorrect: number,
-  mathWrong: number,
-  mathExam: number,
-  mathRequest: number,
-  readingCorrect: number,
-  readingWrong: number,
-  readingRequest: number,
-  writing: number,
-  writingRequest: number,
+  date: string;
+  mathCorrect: number;
+  mathWrong: number;
+  mathExam: number;
+  mathRequest: number;
+  readingCorrect: number;
+  readingWrong: number;
+  readingRequest: number;
+  writing: number;
+  writingRequest: number;
 };
 
 export type GameDataInput = {
-  startDate: string,
-  level: number,
-  score: number,
-  seed: string,
-  collections: string,
-  coins?: number | null,
+  startDate: string;
+  level: number;
+  score: number;
+  seed: string;
+  collections: string;
+  coins?: number | null;
 };
 
 export type NotificationInput = {
-  emails: Array< string | null >,
-  types: Array< NotificationType | null >,
+  emails: Array<string | null>;
+  types: Array<NotificationType | null>;
 };
 
 export enum NotificationType {
@@ -84,36 +84,35 @@ export enum NotificationType {
   Instant = "Instant",
 }
 
-
 export type ModelUserConditionInput = {
-  sub?: ModelIDInput | null,
-  username?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  picture?: ModelStringInput | null,
-  payerId?: ModelStringInput | null,
-  markedQuestions?: ModelIDInput | null,
-  owner?: ModelStringInput | null,
-  badges?: ModelIDInput | null,
-  and?: Array< ModelUserConditionInput | null > | null,
-  or?: Array< ModelUserConditionInput | null > | null,
-  not?: ModelUserConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  sub?: ModelIDInput | null;
+  username?: ModelStringInput | null;
+  email?: ModelStringInput | null;
+  picture?: ModelStringInput | null;
+  payerId?: ModelStringInput | null;
+  markedQuestions?: ModelIDInput | null;
+  owner?: ModelStringInput | null;
+  badges?: ModelIDInput | null;
+  and?: Array<ModelUserConditionInput | null> | null;
+  or?: Array<ModelUserConditionInput | null> | null;
+  not?: ModelUserConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
+  size?: ModelSizeInput | null;
 };
 
 export enum ModelAttributeTypes {
@@ -129,467 +128,466 @@ export enum ModelAttributeTypes {
   _null = "_null",
 }
 
-
 export type ModelSizeInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
+  ne?: number | null;
+  eq?: number | null;
+  le?: number | null;
+  lt?: number | null;
+  ge?: number | null;
+  gt?: number | null;
+  between?: Array<number | null> | null;
 };
 
 export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
+  size?: ModelSizeInput | null;
 };
 
 export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+  ne?: boolean | null;
+  eq?: boolean | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
 };
 
 export type User = {
-  __typename: "User",
-  id: string,
-  sub: string,
-  username: string,
-  email: string,
-  picture: string,
-  quota?: Quota | null,
-  membership?: Membership | null,
-  payerId?: string | null,
-  markedQuestions?: Array< string > | null,
-  daily?:  Array<Statistic > | null,
-  monthly?:  Array<Statistic > | null,
-  yearly?:  Array<Statistic > | null,
-  gameData?: GameData | null,
-  notification?: Notification | null,
-  owner?: string | null,
-  badges?: Array< string > | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "User";
+  id: string;
+  sub: string;
+  username: string;
+  email: string;
+  picture: string;
+  quota?: Quota | null;
+  membership?: Membership | null;
+  payerId?: string | null;
+  markedQuestions?: Array<string> | null;
+  daily?: Array<Statistic> | null;
+  monthly?: Array<Statistic> | null;
+  yearly?: Array<Statistic> | null;
+  gameData?: GameData | null;
+  notification?: Notification | null;
+  owner?: string | null;
+  badges?: Array<string> | null;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type Quota = {
-  __typename: "Quota",
-  mathPerDay: number,
-  readingPerDay: number,
-  writingPerDay: number,
-  savedQuestions: number,
-  savedTests: number,
-  savedEssays: number,
-  classroomRound: number,
+  __typename: "Quota";
+  mathPerDay: number;
+  readingPerDay: number;
+  writingPerDay: number;
+  savedQuestions: number;
+  savedTests: number;
+  savedEssays: number;
+  classroomRound: number;
 };
 
 export type Membership = {
-  __typename: "Membership",
-  current: number,
-  previous: number,
-  paypalSubscriptions: Subscriptions,
+  __typename: "Membership";
+  current: number;
+  previous: number;
+  paypalSubscriptions: Subscriptions;
 };
 
 export type Subscriptions = {
-  __typename: "Subscriptions",
-  personal: Array< string | null >,
-  professional: Array< string | null >,
-  enterprise: Array< string | null >,
+  __typename: "Subscriptions";
+  personal: Array<string | null>;
+  professional: Array<string | null>;
+  enterprise: Array<string | null>;
 };
 
 export type Statistic = {
-  __typename: "Statistic",
-  date: string,
-  mathCorrect: number,
-  mathWrong: number,
-  mathExam: number,
-  mathRequest: number,
-  readingCorrect: number,
-  readingWrong: number,
-  readingRequest: number,
-  writing: number,
-  writingRequest: number,
+  __typename: "Statistic";
+  date: string;
+  mathCorrect: number;
+  mathWrong: number;
+  mathExam: number;
+  mathRequest: number;
+  readingCorrect: number;
+  readingWrong: number;
+  readingRequest: number;
+  writing: number;
+  writingRequest: number;
 };
 
 export type GameData = {
-  __typename: "GameData",
-  startDate: string,
-  level: number,
-  score: number,
-  seed: string,
-  collections: string,
-  coins?: number | null,
+  __typename: "GameData";
+  startDate: string;
+  level: number;
+  score: number;
+  seed: string;
+  collections: string;
+  coins?: number | null;
 };
 
 export type Notification = {
-  __typename: "Notification",
-  emails: Array< string | null >,
-  types: Array< NotificationType | null >,
+  __typename: "Notification";
+  emails: Array<string | null>;
+  types: Array<NotificationType | null>;
 };
 
 export type UpdateUserInput = {
-  id: string,
-  sub?: string | null,
-  username?: string | null,
-  email?: string | null,
-  picture?: string | null,
-  quota?: QuotaInput | null,
-  membership?: MembershipInput | null,
-  payerId?: string | null,
-  markedQuestions?: Array< string > | null,
-  daily?: Array< StatisticInput > | null,
-  monthly?: Array< StatisticInput > | null,
-  yearly?: Array< StatisticInput > | null,
-  gameData?: GameDataInput | null,
-  notification?: NotificationInput | null,
-  owner?: string | null,
-  badges?: Array< string > | null,
-  _version?: number | null,
+  id: string;
+  sub?: string | null;
+  username?: string | null;
+  email?: string | null;
+  picture?: string | null;
+  quota?: QuotaInput | null;
+  membership?: MembershipInput | null;
+  payerId?: string | null;
+  markedQuestions?: Array<string> | null;
+  daily?: Array<StatisticInput> | null;
+  monthly?: Array<StatisticInput> | null;
+  yearly?: Array<StatisticInput> | null;
+  gameData?: GameDataInput | null;
+  notification?: NotificationInput | null;
+  owner?: string | null;
+  badges?: Array<string> | null;
+  _version?: number | null;
 };
 
 export type DeleteUserInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateQuestionSetInput = {
-  id?: string | null,
-  question: string,
-  options?: Array< string > | null,
-  answer: string,
-  workout?: string | null,
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  testId?: string | null,
-  indexInTest?: number | null,
-  owner?: string | null,
-  _version?: number | null,
+  id?: string | null;
+  question: string;
+  options?: Array<string> | null;
+  answer: string;
+  workout?: string | null;
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  testId?: string | null;
+  indexInTest?: number | null;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type ModelQuestionSetConditionInput = {
-  question?: ModelStringInput | null,
-  options?: ModelStringInput | null,
-  answer?: ModelStringInput | null,
-  workout?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  category?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  concept?: ModelStringInput | null,
-  testId?: ModelIDInput | null,
-  indexInTest?: ModelIntInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelQuestionSetConditionInput | null > | null,
-  or?: Array< ModelQuestionSetConditionInput | null > | null,
-  not?: ModelQuestionSetConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  question?: ModelStringInput | null;
+  options?: ModelStringInput | null;
+  answer?: ModelStringInput | null;
+  workout?: ModelStringInput | null;
+  type?: ModelStringInput | null;
+  category?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  concept?: ModelStringInput | null;
+  testId?: ModelIDInput | null;
+  indexInTest?: ModelIntInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelQuestionSetConditionInput | null> | null;
+  or?: Array<ModelQuestionSetConditionInput | null> | null;
+  not?: ModelQuestionSetConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+  ne?: number | null;
+  eq?: number | null;
+  le?: number | null;
+  lt?: number | null;
+  ge?: number | null;
+  gt?: number | null;
+  between?: Array<number | null> | null;
+  attributeExists?: boolean | null;
+  attributeType?: ModelAttributeTypes | null;
 };
 
 export type QuestionSet = {
-  __typename: "QuestionSet",
-  id: string,
-  question: string,
-  options?: Array< string > | null,
-  answer: string,
-  workout?: string | null,
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  testId?: string | null,
-  indexInTest?: number | null,
-  owner?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "QuestionSet";
+  id: string;
+  question: string;
+  options?: Array<string> | null;
+  answer: string;
+  workout?: string | null;
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  testId?: string | null;
+  indexInTest?: number | null;
+  owner?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateQuestionSetInput = {
-  id: string,
-  question?: string | null,
-  options?: Array< string > | null,
-  answer?: string | null,
-  workout?: string | null,
-  type?: string | null,
-  category?: string | null,
-  level?: string | null,
-  concept?: string | null,
-  testId?: string | null,
-  indexInTest?: number | null,
-  owner?: string | null,
-  _version?: number | null,
+  id: string;
+  question?: string | null;
+  options?: Array<string> | null;
+  answer?: string | null;
+  workout?: string | null;
+  type?: string | null;
+  category?: string | null;
+  level?: string | null;
+  concept?: string | null;
+  testId?: string | null;
+  indexInTest?: number | null;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type DeleteQuestionSetInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateBadQuestionSetInput = {
-  id?: string | null,
-  source: string,
-  question: string,
-  options?: Array< string > | null,
-  answer: string,
-  workout?: string | null,
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  _version?: number | null,
+  id?: string | null;
+  source: string;
+  question: string;
+  options?: Array<string> | null;
+  answer: string;
+  workout?: string | null;
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  _version?: number | null;
 };
 
 export type ModelBadQuestionSetConditionInput = {
-  source?: ModelStringInput | null,
-  question?: ModelStringInput | null,
-  options?: ModelStringInput | null,
-  answer?: ModelStringInput | null,
-  workout?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  category?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  concept?: ModelStringInput | null,
-  and?: Array< ModelBadQuestionSetConditionInput | null > | null,
-  or?: Array< ModelBadQuestionSetConditionInput | null > | null,
-  not?: ModelBadQuestionSetConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  source?: ModelStringInput | null;
+  question?: ModelStringInput | null;
+  options?: ModelStringInput | null;
+  answer?: ModelStringInput | null;
+  workout?: ModelStringInput | null;
+  type?: ModelStringInput | null;
+  category?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  concept?: ModelStringInput | null;
+  and?: Array<ModelBadQuestionSetConditionInput | null> | null;
+  or?: Array<ModelBadQuestionSetConditionInput | null> | null;
+  not?: ModelBadQuestionSetConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type BadQuestionSet = {
-  __typename: "BadQuestionSet",
-  id: string,
-  source: string,
-  question: string,
-  options?: Array< string > | null,
-  answer: string,
-  workout?: string | null,
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-  owner?: string | null,
+  __typename: "BadQuestionSet";
+  id: string;
+  source: string;
+  question: string;
+  options?: Array<string> | null;
+  answer: string;
+  workout?: string | null;
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
+  owner?: string | null;
 };
 
 export type UpdateBadQuestionSetInput = {
-  id: string,
-  source?: string | null,
-  question?: string | null,
-  options?: Array< string > | null,
-  answer?: string | null,
-  workout?: string | null,
-  type?: string | null,
-  category?: string | null,
-  level?: string | null,
-  concept?: string | null,
-  _version?: number | null,
+  id: string;
+  source?: string | null;
+  question?: string | null;
+  options?: Array<string> | null;
+  answer?: string | null;
+  workout?: string | null;
+  type?: string | null;
+  category?: string | null;
+  level?: string | null;
+  concept?: string | null;
+  _version?: number | null;
 };
 
 export type DeleteBadQuestionSetInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateTestInput = {
-  id?: string | null,
-  category: string,
-  dateTime: string,
-  duration?: number | null,
-  total: number,
-  wrong: number,
-  correct: number,
-  source?: string | null,
-  questionSets: Array< LocalQuestionSetInput >,
-  owner?: string | null,
-  _version?: number | null,
+  id?: string | null;
+  category: string;
+  dateTime: string;
+  duration?: number | null;
+  total: number;
+  wrong: number;
+  correct: number;
+  source?: string | null;
+  questionSets: Array<LocalQuestionSetInput>;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type LocalQuestionSetInput = {
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  question: string,
-  options: Array< string >,
-  answer: string,
-  selected: string,
-  workout: string,
-  isBad: boolean,
-  isTarget: boolean,
-  isMarked?: boolean | null,
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  question: string;
+  options: Array<string>;
+  answer: string;
+  selected: string;
+  workout: string;
+  isBad: boolean;
+  isTarget: boolean;
+  isMarked?: boolean | null;
 };
 
 export type ModelTestConditionInput = {
-  category?: ModelStringInput | null,
-  dateTime?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  total?: ModelIntInput | null,
-  wrong?: ModelIntInput | null,
-  correct?: ModelIntInput | null,
-  source?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelTestConditionInput | null > | null,
-  or?: Array< ModelTestConditionInput | null > | null,
-  not?: ModelTestConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  category?: ModelStringInput | null;
+  dateTime?: ModelStringInput | null;
+  duration?: ModelIntInput | null;
+  total?: ModelIntInput | null;
+  wrong?: ModelIntInput | null;
+  correct?: ModelIntInput | null;
+  source?: ModelStringInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelTestConditionInput | null> | null;
+  or?: Array<ModelTestConditionInput | null> | null;
+  not?: ModelTestConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type Test = {
-  __typename: "Test",
-  id: string,
-  category: string,
-  dateTime: string,
-  duration?: number | null,
-  total: number,
-  wrong: number,
-  correct: number,
-  source?: string | null,
-  questionSets:  Array<LocalQuestionSet >,
-  owner?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "Test";
+  id: string;
+  category: string;
+  dateTime: string;
+  duration?: number | null;
+  total: number;
+  wrong: number;
+  correct: number;
+  source?: string | null;
+  questionSets: Array<LocalQuestionSet>;
+  owner?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type LocalQuestionSet = {
-  __typename: "LocalQuestionSet",
-  type: string,
-  category: string,
-  level: string,
-  concept: string,
-  question: string,
-  options: Array< string >,
-  answer: string,
-  selected: string,
-  workout: string,
-  isBad: boolean,
-  isTarget: boolean,
-  isMarked?: boolean | null,
+  __typename: "LocalQuestionSet";
+  type: string;
+  category: string;
+  level: string;
+  concept: string;
+  question: string;
+  options: Array<string>;
+  answer: string;
+  selected: string;
+  workout: string;
+  isBad: boolean;
+  isTarget: boolean;
+  isMarked?: boolean | null;
 };
 
 export type UpdateTestInput = {
-  id: string,
-  category?: string | null,
-  dateTime?: string | null,
-  duration?: number | null,
-  total?: number | null,
-  wrong?: number | null,
-  correct?: number | null,
-  source?: string | null,
-  questionSets?: Array< LocalQuestionSetInput > | null,
-  owner?: string | null,
-  _version?: number | null,
+  id: string;
+  category?: string | null;
+  dateTime?: string | null;
+  duration?: number | null;
+  total?: number | null;
+  wrong?: number | null;
+  correct?: number | null;
+  source?: string | null;
+  questionSets?: Array<LocalQuestionSetInput> | null;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type DeleteTestInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateEssayInput = {
-  id?: string | null,
-  type: string,
-  level: string,
-  topic: string,
-  prompt: string,
-  text: string,
-  DateTime: string,
-  owner?: string | null,
-  _version?: number | null,
+  id?: string | null;
+  type: string;
+  level: string;
+  topic: string;
+  prompt: string;
+  text: string;
+  DateTime: string;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type ModelEssayConditionInput = {
-  type?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  topic?: ModelStringInput | null,
-  prompt?: ModelStringInput | null,
-  text?: ModelStringInput | null,
-  DateTime?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelEssayConditionInput | null > | null,
-  or?: Array< ModelEssayConditionInput | null > | null,
-  not?: ModelEssayConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  type?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  topic?: ModelStringInput | null;
+  prompt?: ModelStringInput | null;
+  text?: ModelStringInput | null;
+  DateTime?: ModelStringInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelEssayConditionInput | null> | null;
+  or?: Array<ModelEssayConditionInput | null> | null;
+  not?: ModelEssayConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type Essay = {
-  __typename: "Essay",
-  id: string,
-  type: string,
-  level: string,
-  topic: string,
-  prompt: string,
-  text: string,
-  DateTime: string,
-  owner?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "Essay";
+  id: string;
+  type: string;
+  level: string;
+  topic: string;
+  prompt: string;
+  text: string;
+  DateTime: string;
+  owner?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateEssayInput = {
-  id: string,
-  type?: string | null,
-  level?: string | null,
-  topic?: string | null,
-  prompt?: string | null,
-  text?: string | null,
-  DateTime?: string | null,
-  owner?: string | null,
-  _version?: number | null,
+  id: string;
+  type?: string | null;
+  level?: string | null;
+  topic?: string | null;
+  prompt?: string | null;
+  text?: string | null;
+  DateTime?: string | null;
+  owner?: string | null;
+  _version?: number | null;
 };
 
 export type DeleteEssayInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateRankingItemInput = {
-  id?: string | null,
-  date: string,
-  type: RankingType,
-  names: Array< string >,
-  values: Array< string >,
-  _version?: number | null,
+  id?: string | null;
+  date: string;
+  type: RankingType;
+  names: Array<string>;
+  values: Array<string>;
+  _version?: number | null;
 };
 
 export enum RankingType {
@@ -599,163 +597,162 @@ export enum RankingType {
   WritingNumberByMonth = "WritingNumberByMonth",
 }
 
-
 export type ModelRankingItemConditionInput = {
-  date?: ModelStringInput | null,
-  type?: ModelRankingTypeInput | null,
-  names?: ModelStringInput | null,
-  values?: ModelStringInput | null,
-  and?: Array< ModelRankingItemConditionInput | null > | null,
-  or?: Array< ModelRankingItemConditionInput | null > | null,
-  not?: ModelRankingItemConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  date?: ModelStringInput | null;
+  type?: ModelRankingTypeInput | null;
+  names?: ModelStringInput | null;
+  values?: ModelStringInput | null;
+  and?: Array<ModelRankingItemConditionInput | null> | null;
+  or?: Array<ModelRankingItemConditionInput | null> | null;
+  not?: ModelRankingItemConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelRankingTypeInput = {
-  eq?: RankingType | null,
-  ne?: RankingType | null,
+  eq?: RankingType | null;
+  ne?: RankingType | null;
 };
 
 export type RankingItem = {
-  __typename: "RankingItem",
-  id: string,
-  date: string,
-  type: RankingType,
-  names: Array< string >,
-  values: Array< string >,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "RankingItem";
+  id: string;
+  date: string;
+  type: RankingType;
+  names: Array<string>;
+  values: Array<string>;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateRankingItemInput = {
-  id: string,
-  date?: string | null,
-  type?: RankingType | null,
-  names?: Array< string > | null,
-  values?: Array< string > | null,
-  _version?: number | null,
+  id: string;
+  date?: string | null;
+  type?: RankingType | null;
+  names?: Array<string> | null;
+  values?: Array<string> | null;
+  _version?: number | null;
 };
 
 export type DeleteRankingItemInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateBadgeInput = {
-  id?: string | null,
-  name: string,
-  startDate: string,
-  endDate: string,
-  criteria: string,
-  description: string,
-  image: string,
-  isVisible: boolean,
-  _version?: number | null,
+  id?: string | null;
+  name: string;
+  startDate: string;
+  endDate: string;
+  criteria: string;
+  description: string;
+  image: string;
+  isVisible: boolean;
+  _version?: number | null;
 };
 
 export type ModelBadgeConditionInput = {
-  name?: ModelStringInput | null,
-  startDate?: ModelStringInput | null,
-  endDate?: ModelStringInput | null,
-  criteria?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  isVisible?: ModelBooleanInput | null,
-  and?: Array< ModelBadgeConditionInput | null > | null,
-  or?: Array< ModelBadgeConditionInput | null > | null,
-  not?: ModelBadgeConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  name?: ModelStringInput | null;
+  startDate?: ModelStringInput | null;
+  endDate?: ModelStringInput | null;
+  criteria?: ModelStringInput | null;
+  description?: ModelStringInput | null;
+  image?: ModelStringInput | null;
+  isVisible?: ModelBooleanInput | null;
+  and?: Array<ModelBadgeConditionInput | null> | null;
+  or?: Array<ModelBadgeConditionInput | null> | null;
+  not?: ModelBadgeConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type Badge = {
-  __typename: "Badge",
-  id: string,
-  name: string,
-  startDate: string,
-  endDate: string,
-  criteria: string,
-  description: string,
-  image: string,
-  isVisible: boolean,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "Badge";
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  criteria: string;
+  description: string;
+  image: string;
+  isVisible: boolean;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateBadgeInput = {
-  id: string,
-  name?: string | null,
-  startDate?: string | null,
-  endDate?: string | null,
-  criteria?: string | null,
-  description?: string | null,
-  image?: string | null,
-  isVisible?: boolean | null,
-  _version?: number | null,
+  id: string;
+  name?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  criteria?: string | null;
+  description?: string | null;
+  image?: string | null;
+  isVisible?: boolean | null;
+  _version?: number | null;
 };
 
 export type DeleteBadgeInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateSystemMessageInput = {
-  id?: string | null,
-  content: string,
-  internalLink?: string | null,
-  externalLink?: string | null,
-  _version?: number | null,
+  id?: string | null;
+  content: string;
+  internalLink?: string | null;
+  externalLink?: string | null;
+  _version?: number | null;
 };
 
 export type ModelSystemMessageConditionInput = {
-  content?: ModelStringInput | null,
-  internalLink?: ModelStringInput | null,
-  externalLink?: ModelStringInput | null,
-  and?: Array< ModelSystemMessageConditionInput | null > | null,
-  or?: Array< ModelSystemMessageConditionInput | null > | null,
-  not?: ModelSystemMessageConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  content?: ModelStringInput | null;
+  internalLink?: ModelStringInput | null;
+  externalLink?: ModelStringInput | null;
+  and?: Array<ModelSystemMessageConditionInput | null> | null;
+  or?: Array<ModelSystemMessageConditionInput | null> | null;
+  not?: ModelSystemMessageConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type SystemMessage = {
-  __typename: "SystemMessage",
-  id: string,
-  content: string,
-  internalLink?: string | null,
-  externalLink?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "SystemMessage";
+  id: string;
+  content: string;
+  internalLink?: string | null;
+  externalLink?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateSystemMessageInput = {
-  id: string,
-  content?: string | null,
-  internalLink?: string | null,
-  externalLink?: string | null,
-  _version?: number | null,
+  id: string;
+  content?: string | null;
+  internalLink?: string | null;
+  externalLink?: string | null;
+  _version?: number | null;
 };
 
 export type DeleteSystemMessageInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type CreateShoppingItemInput = {
-  id?: string | null,
-  name: string,
-  price: number,
-  description: string,
-  image?: string | null,
-  category: ShoppingItemCategory,
-  _version?: number | null,
+  id?: string | null;
+  name: string;
+  price: number;
+  description: string;
+  image?: string | null;
+  category: ShoppingItemCategory;
+  _version?: number | null;
 };
 
 export enum ShoppingItemCategory {
@@ -764,75 +761,74 @@ export enum ShoppingItemCategory {
   Seed = "Seed",
 }
 
-
 export type ModelShoppingItemConditionInput = {
-  name?: ModelStringInput | null,
-  price?: ModelIntInput | null,
-  description?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  category?: ModelShoppingItemCategoryInput | null,
-  and?: Array< ModelShoppingItemConditionInput | null > | null,
-  or?: Array< ModelShoppingItemConditionInput | null > | null,
-  not?: ModelShoppingItemConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
+  name?: ModelStringInput | null;
+  price?: ModelIntInput | null;
+  description?: ModelStringInput | null;
+  image?: ModelStringInput | null;
+  category?: ModelShoppingItemCategoryInput | null;
+  and?: Array<ModelShoppingItemConditionInput | null> | null;
+  or?: Array<ModelShoppingItemConditionInput | null> | null;
+  not?: ModelShoppingItemConditionInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelShoppingItemCategoryInput = {
-  eq?: ShoppingItemCategory | null,
-  ne?: ShoppingItemCategory | null,
+  eq?: ShoppingItemCategory | null;
+  ne?: ShoppingItemCategory | null;
 };
 
 export type ShoppingItem = {
-  __typename: "ShoppingItem",
-  id: string,
-  name: string,
-  price: number,
-  description: string,
-  image?: string | null,
-  category: ShoppingItemCategory,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
+  __typename: "ShoppingItem";
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  image?: string | null;
+  category: ShoppingItemCategory;
+  createdAt: string;
+  updatedAt: string;
+  _version: number;
+  _deleted?: boolean | null;
+  _lastChangedAt: number;
 };
 
 export type UpdateShoppingItemInput = {
-  id: string,
-  name?: string | null,
-  price?: number | null,
-  description?: string | null,
-  image?: string | null,
-  category?: ShoppingItemCategory | null,
-  _version?: number | null,
+  id: string;
+  name?: string | null;
+  price?: number | null;
+  description?: string | null;
+  image?: string | null;
+  category?: ShoppingItemCategory | null;
+  _version?: number | null;
 };
 
 export type DeleteShoppingItemInput = {
-  id: string,
-  _version?: number | null,
+  id: string;
+  _version?: number | null;
 };
 
 export type ModelUserFilterInput = {
-  id?: ModelIDInput | null,
-  sub?: ModelIDInput | null,
-  username?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  picture?: ModelStringInput | null,
-  payerId?: ModelStringInput | null,
-  markedQuestions?: ModelIDInput | null,
-  owner?: ModelStringInput | null,
-  badges?: ModelIDInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  sub?: ModelIDInput | null;
+  username?: ModelStringInput | null;
+  email?: ModelStringInput | null;
+  picture?: ModelStringInput | null;
+  payerId?: ModelStringInput | null;
+  markedQuestions?: ModelIDInput | null;
+  owner?: ModelStringInput | null;
+  badges?: ModelIDInput | null;
+  and?: Array<ModelUserFilterInput | null> | null;
+  or?: Array<ModelUserFilterInput | null> | null;
+  not?: ModelUserFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelUserConnection";
+  items: Array<User | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export enum ModelSortDirection {
@@ -840,3451 +836,3450 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
-
 export type ModelQuestionSetFilterInput = {
-  id?: ModelIDInput | null,
-  question?: ModelStringInput | null,
-  options?: ModelStringInput | null,
-  answer?: ModelStringInput | null,
-  workout?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  category?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  concept?: ModelStringInput | null,
-  testId?: ModelIDInput | null,
-  indexInTest?: ModelIntInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelQuestionSetFilterInput | null > | null,
-  or?: Array< ModelQuestionSetFilterInput | null > | null,
-  not?: ModelQuestionSetFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  question?: ModelStringInput | null;
+  options?: ModelStringInput | null;
+  answer?: ModelStringInput | null;
+  workout?: ModelStringInput | null;
+  type?: ModelStringInput | null;
+  category?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  concept?: ModelStringInput | null;
+  testId?: ModelIDInput | null;
+  indexInTest?: ModelIntInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelQuestionSetFilterInput | null> | null;
+  or?: Array<ModelQuestionSetFilterInput | null> | null;
+  not?: ModelQuestionSetFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelQuestionSetConnection = {
-  __typename: "ModelQuestionSetConnection",
-  items:  Array<QuestionSet | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelQuestionSetConnection";
+  items: Array<QuestionSet | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelBadQuestionSetFilterInput = {
-  id?: ModelIDInput | null,
-  source?: ModelStringInput | null,
-  question?: ModelStringInput | null,
-  options?: ModelStringInput | null,
-  answer?: ModelStringInput | null,
-  workout?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  category?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  concept?: ModelStringInput | null,
-  and?: Array< ModelBadQuestionSetFilterInput | null > | null,
-  or?: Array< ModelBadQuestionSetFilterInput | null > | null,
-  not?: ModelBadQuestionSetFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  source?: ModelStringInput | null;
+  question?: ModelStringInput | null;
+  options?: ModelStringInput | null;
+  answer?: ModelStringInput | null;
+  workout?: ModelStringInput | null;
+  type?: ModelStringInput | null;
+  category?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  concept?: ModelStringInput | null;
+  and?: Array<ModelBadQuestionSetFilterInput | null> | null;
+  or?: Array<ModelBadQuestionSetFilterInput | null> | null;
+  not?: ModelBadQuestionSetFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelBadQuestionSetConnection = {
-  __typename: "ModelBadQuestionSetConnection",
-  items:  Array<BadQuestionSet | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelBadQuestionSetConnection";
+  items: Array<BadQuestionSet | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelTestFilterInput = {
-  id?: ModelIDInput | null,
-  category?: ModelStringInput | null,
-  dateTime?: ModelStringInput | null,
-  duration?: ModelIntInput | null,
-  total?: ModelIntInput | null,
-  wrong?: ModelIntInput | null,
-  correct?: ModelIntInput | null,
-  source?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelTestFilterInput | null > | null,
-  or?: Array< ModelTestFilterInput | null > | null,
-  not?: ModelTestFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  category?: ModelStringInput | null;
+  dateTime?: ModelStringInput | null;
+  duration?: ModelIntInput | null;
+  total?: ModelIntInput | null;
+  wrong?: ModelIntInput | null;
+  correct?: ModelIntInput | null;
+  source?: ModelStringInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelTestFilterInput | null> | null;
+  or?: Array<ModelTestFilterInput | null> | null;
+  not?: ModelTestFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelTestConnection = {
-  __typename: "ModelTestConnection",
-  items:  Array<Test | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelTestConnection";
+  items: Array<Test | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelEssayFilterInput = {
-  id?: ModelIDInput | null,
-  type?: ModelStringInput | null,
-  level?: ModelStringInput | null,
-  topic?: ModelStringInput | null,
-  prompt?: ModelStringInput | null,
-  text?: ModelStringInput | null,
-  DateTime?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelEssayFilterInput | null > | null,
-  or?: Array< ModelEssayFilterInput | null > | null,
-  not?: ModelEssayFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  type?: ModelStringInput | null;
+  level?: ModelStringInput | null;
+  topic?: ModelStringInput | null;
+  prompt?: ModelStringInput | null;
+  text?: ModelStringInput | null;
+  DateTime?: ModelStringInput | null;
+  owner?: ModelStringInput | null;
+  and?: Array<ModelEssayFilterInput | null> | null;
+  or?: Array<ModelEssayFilterInput | null> | null;
+  not?: ModelEssayFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelEssayConnection = {
-  __typename: "ModelEssayConnection",
-  items:  Array<Essay | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelEssayConnection";
+  items: Array<Essay | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelRankingItemFilterInput = {
-  id?: ModelIDInput | null,
-  date?: ModelStringInput | null,
-  type?: ModelRankingTypeInput | null,
-  names?: ModelStringInput | null,
-  values?: ModelStringInput | null,
-  and?: Array< ModelRankingItemFilterInput | null > | null,
-  or?: Array< ModelRankingItemFilterInput | null > | null,
-  not?: ModelRankingItemFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  date?: ModelStringInput | null;
+  type?: ModelRankingTypeInput | null;
+  names?: ModelStringInput | null;
+  values?: ModelStringInput | null;
+  and?: Array<ModelRankingItemFilterInput | null> | null;
+  or?: Array<ModelRankingItemFilterInput | null> | null;
+  not?: ModelRankingItemFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelRankingItemConnection = {
-  __typename: "ModelRankingItemConnection",
-  items:  Array<RankingItem | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelRankingItemConnection";
+  items: Array<RankingItem | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
 };
 
 export type ModelBadgeFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  startDate?: ModelStringInput | null,
-  endDate?: ModelStringInput | null,
-  criteria?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  isVisible?: ModelBooleanInput | null,
-  and?: Array< ModelBadgeFilterInput | null > | null,
-  or?: Array< ModelBadgeFilterInput | null > | null,
-  not?: ModelBadgeFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  name?: ModelStringInput | null;
+  startDate?: ModelStringInput | null;
+  endDate?: ModelStringInput | null;
+  criteria?: ModelStringInput | null;
+  description?: ModelStringInput | null;
+  image?: ModelStringInput | null;
+  isVisible?: ModelBooleanInput | null;
+  and?: Array<ModelBadgeFilterInput | null> | null;
+  or?: Array<ModelBadgeFilterInput | null> | null;
+  not?: ModelBadgeFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelBadgeConnection = {
-  __typename: "ModelBadgeConnection",
-  items:  Array<Badge | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelBadgeConnection";
+  items: Array<Badge | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelSystemMessageFilterInput = {
-  id?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  internalLink?: ModelStringInput | null,
-  externalLink?: ModelStringInput | null,
-  and?: Array< ModelSystemMessageFilterInput | null > | null,
-  or?: Array< ModelSystemMessageFilterInput | null > | null,
-  not?: ModelSystemMessageFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  content?: ModelStringInput | null;
+  internalLink?: ModelStringInput | null;
+  externalLink?: ModelStringInput | null;
+  and?: Array<ModelSystemMessageFilterInput | null> | null;
+  or?: Array<ModelSystemMessageFilterInput | null> | null;
+  not?: ModelSystemMessageFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSystemMessageConnection = {
-  __typename: "ModelSystemMessageConnection",
-  items:  Array<SystemMessage | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelSystemMessageConnection";
+  items: Array<SystemMessage | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelShoppingItemFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  price?: ModelIntInput | null,
-  description?: ModelStringInput | null,
-  image?: ModelStringInput | null,
-  category?: ModelShoppingItemCategoryInput | null,
-  and?: Array< ModelShoppingItemFilterInput | null > | null,
-  or?: Array< ModelShoppingItemFilterInput | null > | null,
-  not?: ModelShoppingItemFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelIDInput | null;
+  name?: ModelStringInput | null;
+  price?: ModelIntInput | null;
+  description?: ModelStringInput | null;
+  image?: ModelStringInput | null;
+  category?: ModelShoppingItemCategoryInput | null;
+  and?: Array<ModelShoppingItemFilterInput | null> | null;
+  or?: Array<ModelShoppingItemFilterInput | null> | null;
+  not?: ModelShoppingItemFilterInput | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelShoppingItemConnection = {
-  __typename: "ModelShoppingItemConnection",
-  items:  Array<ShoppingItem | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+  __typename: "ModelShoppingItemConnection";
+  items: Array<ShoppingItem | null>;
+  nextToken?: string | null;
+  startedAt?: number | null;
 };
 
 export type ModelSubscriptionUserFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  sub?: ModelSubscriptionIDInput | null,
-  username?: ModelSubscriptionStringInput | null,
-  email?: ModelSubscriptionStringInput | null,
-  picture?: ModelSubscriptionStringInput | null,
-  payerId?: ModelSubscriptionStringInput | null,
-  markedQuestions?: ModelSubscriptionIDInput | null,
-  badges?: ModelSubscriptionIDInput | null,
-  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
-  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  sub?: ModelSubscriptionIDInput | null;
+  username?: ModelSubscriptionStringInput | null;
+  email?: ModelSubscriptionStringInput | null;
+  picture?: ModelSubscriptionStringInput | null;
+  payerId?: ModelSubscriptionStringInput | null;
+  markedQuestions?: ModelSubscriptionIDInput | null;
+  badges?: ModelSubscriptionIDInput | null;
+  and?: Array<ModelSubscriptionUserFilterInput | null> | null;
+  or?: Array<ModelSubscriptionUserFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  in?: Array<string | null> | null;
+  notIn?: Array<string | null> | null;
 };
 
 export type ModelSubscriptionStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
+  in?: Array<string | null> | null;
+  notIn?: Array<string | null> | null;
 };
 
 export type ModelSubscriptionQuestionSetFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  question?: ModelSubscriptionStringInput | null,
-  options?: ModelSubscriptionStringInput | null,
-  answer?: ModelSubscriptionStringInput | null,
-  workout?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  category?: ModelSubscriptionStringInput | null,
-  level?: ModelSubscriptionStringInput | null,
-  concept?: ModelSubscriptionStringInput | null,
-  testId?: ModelSubscriptionIDInput | null,
-  indexInTest?: ModelSubscriptionIntInput | null,
-  and?: Array< ModelSubscriptionQuestionSetFilterInput | null > | null,
-  or?: Array< ModelSubscriptionQuestionSetFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  question?: ModelSubscriptionStringInput | null;
+  options?: ModelSubscriptionStringInput | null;
+  answer?: ModelSubscriptionStringInput | null;
+  workout?: ModelSubscriptionStringInput | null;
+  type?: ModelSubscriptionStringInput | null;
+  category?: ModelSubscriptionStringInput | null;
+  level?: ModelSubscriptionStringInput | null;
+  concept?: ModelSubscriptionStringInput | null;
+  testId?: ModelSubscriptionIDInput | null;
+  indexInTest?: ModelSubscriptionIntInput | null;
+  and?: Array<ModelSubscriptionQuestionSetFilterInput | null> | null;
+  or?: Array<ModelSubscriptionQuestionSetFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
+  ne?: number | null;
+  eq?: number | null;
+  le?: number | null;
+  lt?: number | null;
+  ge?: number | null;
+  gt?: number | null;
+  between?: Array<number | null> | null;
+  in?: Array<number | null> | null;
+  notIn?: Array<number | null> | null;
 };
 
 export type ModelSubscriptionBadQuestionSetFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  source?: ModelSubscriptionStringInput | null,
-  question?: ModelSubscriptionStringInput | null,
-  options?: ModelSubscriptionStringInput | null,
-  answer?: ModelSubscriptionStringInput | null,
-  workout?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  category?: ModelSubscriptionStringInput | null,
-  level?: ModelSubscriptionStringInput | null,
-  concept?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionBadQuestionSetFilterInput | null > | null,
-  or?: Array< ModelSubscriptionBadQuestionSetFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  source?: ModelSubscriptionStringInput | null;
+  question?: ModelSubscriptionStringInput | null;
+  options?: ModelSubscriptionStringInput | null;
+  answer?: ModelSubscriptionStringInput | null;
+  workout?: ModelSubscriptionStringInput | null;
+  type?: ModelSubscriptionStringInput | null;
+  category?: ModelSubscriptionStringInput | null;
+  level?: ModelSubscriptionStringInput | null;
+  concept?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionBadQuestionSetFilterInput | null> | null;
+  or?: Array<ModelSubscriptionBadQuestionSetFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionTestFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  category?: ModelSubscriptionStringInput | null,
-  dateTime?: ModelSubscriptionStringInput | null,
-  duration?: ModelSubscriptionIntInput | null,
-  total?: ModelSubscriptionIntInput | null,
-  wrong?: ModelSubscriptionIntInput | null,
-  correct?: ModelSubscriptionIntInput | null,
-  source?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionTestFilterInput | null > | null,
-  or?: Array< ModelSubscriptionTestFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  category?: ModelSubscriptionStringInput | null;
+  dateTime?: ModelSubscriptionStringInput | null;
+  duration?: ModelSubscriptionIntInput | null;
+  total?: ModelSubscriptionIntInput | null;
+  wrong?: ModelSubscriptionIntInput | null;
+  correct?: ModelSubscriptionIntInput | null;
+  source?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionTestFilterInput | null> | null;
+  or?: Array<ModelSubscriptionTestFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionEssayFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  level?: ModelSubscriptionStringInput | null,
-  topic?: ModelSubscriptionStringInput | null,
-  prompt?: ModelSubscriptionStringInput | null,
-  text?: ModelSubscriptionStringInput | null,
-  DateTime?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionEssayFilterInput | null > | null,
-  or?: Array< ModelSubscriptionEssayFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  type?: ModelSubscriptionStringInput | null;
+  level?: ModelSubscriptionStringInput | null;
+  topic?: ModelSubscriptionStringInput | null;
+  prompt?: ModelSubscriptionStringInput | null;
+  text?: ModelSubscriptionStringInput | null;
+  DateTime?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionEssayFilterInput | null> | null;
+  or?: Array<ModelSubscriptionEssayFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionRankingItemFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  date?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  names?: ModelSubscriptionStringInput | null,
-  values?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
-  or?: Array< ModelSubscriptionRankingItemFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  date?: ModelSubscriptionStringInput | null;
+  type?: ModelSubscriptionStringInput | null;
+  names?: ModelSubscriptionStringInput | null;
+  values?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionRankingItemFilterInput | null> | null;
+  or?: Array<ModelSubscriptionRankingItemFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionBadgeFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  startDate?: ModelSubscriptionStringInput | null,
-  endDate?: ModelSubscriptionStringInput | null,
-  criteria?: ModelSubscriptionStringInput | null,
-  description?: ModelSubscriptionStringInput | null,
-  image?: ModelSubscriptionStringInput | null,
-  isVisible?: ModelSubscriptionBooleanInput | null,
-  and?: Array< ModelSubscriptionBadgeFilterInput | null > | null,
-  or?: Array< ModelSubscriptionBadgeFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  name?: ModelSubscriptionStringInput | null;
+  startDate?: ModelSubscriptionStringInput | null;
+  endDate?: ModelSubscriptionStringInput | null;
+  criteria?: ModelSubscriptionStringInput | null;
+  description?: ModelSubscriptionStringInput | null;
+  image?: ModelSubscriptionStringInput | null;
+  isVisible?: ModelSubscriptionBooleanInput | null;
+  and?: Array<ModelSubscriptionBadgeFilterInput | null> | null;
+  or?: Array<ModelSubscriptionBadgeFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
+  ne?: boolean | null;
+  eq?: boolean | null;
 };
 
 export type ModelSubscriptionSystemMessageFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  content?: ModelSubscriptionStringInput | null,
-  internalLink?: ModelSubscriptionStringInput | null,
-  externalLink?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
-  or?: Array< ModelSubscriptionSystemMessageFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  content?: ModelSubscriptionStringInput | null;
+  internalLink?: ModelSubscriptionStringInput | null;
+  externalLink?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionSystemMessageFilterInput | null> | null;
+  or?: Array<ModelSubscriptionSystemMessageFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type ModelSubscriptionShoppingItemFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  price?: ModelSubscriptionIntInput | null,
-  description?: ModelSubscriptionStringInput | null,
-  image?: ModelSubscriptionStringInput | null,
-  category?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
-  or?: Array< ModelSubscriptionShoppingItemFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null;
+  name?: ModelSubscriptionStringInput | null;
+  price?: ModelSubscriptionIntInput | null;
+  description?: ModelSubscriptionStringInput | null;
+  image?: ModelSubscriptionStringInput | null;
+  category?: ModelSubscriptionStringInput | null;
+  and?: Array<ModelSubscriptionShoppingItemFilterInput | null> | null;
+  or?: Array<ModelSubscriptionShoppingItemFilterInput | null> | null;
+  _deleted?: ModelBooleanInput | null;
 };
 
 export type LearnwithaiSubscribeMutationVariables = {
-  operation: string,
-  userId: string,
-  subscriptionId: string,
+  operation: string;
+  userId: string;
+  subscriptionId: string;
 };
 
 export type LearnwithaiSubscribeMutation = {
-  learnwithaiSubscribe?:  {
-    __typename: "LambdaResponse",
-    statusCode: number,
-    body: string,
-  } | null,
+  learnwithaiSubscribe?: {
+    __typename: "LambdaResponse";
+    statusCode: number;
+    body: string;
+  } | null;
 };
 
 export type CreateUserMutationVariables = {
-  input: CreateUserInput,
-  condition?: ModelUserConditionInput | null,
+  input: CreateUserInput;
+  condition?: ModelUserConditionInput | null;
 };
 
 export type CreateUserMutation = {
-  createUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateUserMutationVariables = {
-  input: UpdateUserInput,
-  condition?: ModelUserConditionInput | null,
+  input: UpdateUserInput;
+  condition?: ModelUserConditionInput | null;
 };
 
 export type UpdateUserMutation = {
-  updateUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteUserMutationVariables = {
-  input: DeleteUserInput,
-  condition?: ModelUserConditionInput | null,
+  input: DeleteUserInput;
+  condition?: ModelUserConditionInput | null;
 };
 
 export type DeleteUserMutation = {
-  deleteUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateQuestionSetMutationVariables = {
-  input: CreateQuestionSetInput,
-  condition?: ModelQuestionSetConditionInput | null,
+  input: CreateQuestionSetInput;
+  condition?: ModelQuestionSetConditionInput | null;
 };
 
 export type CreateQuestionSetMutation = {
-  createQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateQuestionSetMutationVariables = {
-  input: UpdateQuestionSetInput,
-  condition?: ModelQuestionSetConditionInput | null,
+  input: UpdateQuestionSetInput;
+  condition?: ModelQuestionSetConditionInput | null;
 };
 
 export type UpdateQuestionSetMutation = {
-  updateQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteQuestionSetMutationVariables = {
-  input: DeleteQuestionSetInput,
-  condition?: ModelQuestionSetConditionInput | null,
+  input: DeleteQuestionSetInput;
+  condition?: ModelQuestionSetConditionInput | null;
 };
 
 export type DeleteQuestionSetMutation = {
-  deleteQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateBadQuestionSetMutationVariables = {
-  input: CreateBadQuestionSetInput,
-  condition?: ModelBadQuestionSetConditionInput | null,
+  input: CreateBadQuestionSetInput;
+  condition?: ModelBadQuestionSetConditionInput | null;
 };
 
 export type CreateBadQuestionSetMutation = {
-  createBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  createBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type UpdateBadQuestionSetMutationVariables = {
-  input: UpdateBadQuestionSetInput,
-  condition?: ModelBadQuestionSetConditionInput | null,
+  input: UpdateBadQuestionSetInput;
+  condition?: ModelBadQuestionSetConditionInput | null;
 };
 
 export type UpdateBadQuestionSetMutation = {
-  updateBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  updateBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type DeleteBadQuestionSetMutationVariables = {
-  input: DeleteBadQuestionSetInput,
-  condition?: ModelBadQuestionSetConditionInput | null,
+  input: DeleteBadQuestionSetInput;
+  condition?: ModelBadQuestionSetConditionInput | null;
 };
 
 export type DeleteBadQuestionSetMutation = {
-  deleteBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  deleteBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type CreateTestMutationVariables = {
-  input: CreateTestInput,
-  condition?: ModelTestConditionInput | null,
+  input: CreateTestInput;
+  condition?: ModelTestConditionInput | null;
 };
 
 export type CreateTestMutation = {
-  createTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateTestMutationVariables = {
-  input: UpdateTestInput,
-  condition?: ModelTestConditionInput | null,
+  input: UpdateTestInput;
+  condition?: ModelTestConditionInput | null;
 };
 
 export type UpdateTestMutation = {
-  updateTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteTestMutationVariables = {
-  input: DeleteTestInput,
-  condition?: ModelTestConditionInput | null,
+  input: DeleteTestInput;
+  condition?: ModelTestConditionInput | null;
 };
 
 export type DeleteTestMutation = {
-  deleteTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateEssayMutationVariables = {
-  input: CreateEssayInput,
-  condition?: ModelEssayConditionInput | null,
+  input: CreateEssayInput;
+  condition?: ModelEssayConditionInput | null;
 };
 
 export type CreateEssayMutation = {
-  createEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateEssayMutationVariables = {
-  input: UpdateEssayInput,
-  condition?: ModelEssayConditionInput | null,
+  input: UpdateEssayInput;
+  condition?: ModelEssayConditionInput | null;
 };
 
 export type UpdateEssayMutation = {
-  updateEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteEssayMutationVariables = {
-  input: DeleteEssayInput,
-  condition?: ModelEssayConditionInput | null,
+  input: DeleteEssayInput;
+  condition?: ModelEssayConditionInput | null;
 };
 
 export type DeleteEssayMutation = {
-  deleteEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateRankingItemMutationVariables = {
-  input: CreateRankingItemInput,
-  condition?: ModelRankingItemConditionInput | null,
+  input: CreateRankingItemInput;
+  condition?: ModelRankingItemConditionInput | null;
 };
 
 export type CreateRankingItemMutation = {
-  createRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateRankingItemMutationVariables = {
-  input: UpdateRankingItemInput,
-  condition?: ModelRankingItemConditionInput | null,
+  input: UpdateRankingItemInput;
+  condition?: ModelRankingItemConditionInput | null;
 };
 
 export type UpdateRankingItemMutation = {
-  updateRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteRankingItemMutationVariables = {
-  input: DeleteRankingItemInput,
-  condition?: ModelRankingItemConditionInput | null,
+  input: DeleteRankingItemInput;
+  condition?: ModelRankingItemConditionInput | null;
 };
 
 export type DeleteRankingItemMutation = {
-  deleteRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateBadgeMutationVariables = {
-  input: CreateBadgeInput,
-  condition?: ModelBadgeConditionInput | null,
+  input: CreateBadgeInput;
+  condition?: ModelBadgeConditionInput | null;
 };
 
 export type CreateBadgeMutation = {
-  createBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateBadgeMutationVariables = {
-  input: UpdateBadgeInput,
-  condition?: ModelBadgeConditionInput | null,
+  input: UpdateBadgeInput;
+  condition?: ModelBadgeConditionInput | null;
 };
 
 export type UpdateBadgeMutation = {
-  updateBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteBadgeMutationVariables = {
-  input: DeleteBadgeInput,
-  condition?: ModelBadgeConditionInput | null,
+  input: DeleteBadgeInput;
+  condition?: ModelBadgeConditionInput | null;
 };
 
 export type DeleteBadgeMutation = {
-  deleteBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateSystemMessageMutationVariables = {
-  input: CreateSystemMessageInput,
-  condition?: ModelSystemMessageConditionInput | null,
+  input: CreateSystemMessageInput;
+  condition?: ModelSystemMessageConditionInput | null;
 };
 
 export type CreateSystemMessageMutation = {
-  createSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateSystemMessageMutationVariables = {
-  input: UpdateSystemMessageInput,
-  condition?: ModelSystemMessageConditionInput | null,
+  input: UpdateSystemMessageInput;
+  condition?: ModelSystemMessageConditionInput | null;
 };
 
 export type UpdateSystemMessageMutation = {
-  updateSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteSystemMessageMutationVariables = {
-  input: DeleteSystemMessageInput,
-  condition?: ModelSystemMessageConditionInput | null,
+  input: DeleteSystemMessageInput;
+  condition?: ModelSystemMessageConditionInput | null;
 };
 
 export type DeleteSystemMessageMutation = {
-  deleteSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type CreateShoppingItemMutationVariables = {
-  input: CreateShoppingItemInput,
-  condition?: ModelShoppingItemConditionInput | null,
+  input: CreateShoppingItemInput;
+  condition?: ModelShoppingItemConditionInput | null;
 };
 
 export type CreateShoppingItemMutation = {
-  createShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  createShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type UpdateShoppingItemMutationVariables = {
-  input: UpdateShoppingItemInput,
-  condition?: ModelShoppingItemConditionInput | null,
+  input: UpdateShoppingItemInput;
+  condition?: ModelShoppingItemConditionInput | null;
 };
 
 export type UpdateShoppingItemMutation = {
-  updateShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  updateShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type DeleteShoppingItemMutationVariables = {
-  input: DeleteShoppingItemInput,
-  condition?: ModelShoppingItemConditionInput | null,
+  input: DeleteShoppingItemInput;
+  condition?: ModelShoppingItemConditionInput | null;
 };
 
 export type DeleteShoppingItemMutation = {
-  deleteShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  deleteShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type GetUserQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetUserQuery = {
-  getUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListUsersQueryVariables = {
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListUsersQuery = {
-  listUsers?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string,
-      sub: string,
-      username: string,
-      email: string,
-      picture: string,
-      quota?:  {
-        __typename: "Quota",
-        mathPerDay: number,
-        readingPerDay: number,
-        writingPerDay: number,
-        savedQuestions: number,
-        savedTests: number,
-        savedEssays: number,
-        classroomRound: number,
-      } | null,
-      membership?:  {
-        __typename: "Membership",
-        current: number,
-        previous: number,
-        paypalSubscriptions:  {
-          __typename: "Subscriptions",
-          personal: Array< string | null >,
-          professional: Array< string | null >,
-          enterprise: Array< string | null >,
-        },
-      } | null,
-      payerId?: string | null,
-      markedQuestions?: Array< string > | null,
-      daily?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      monthly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      yearly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      gameData?:  {
-        __typename: "GameData",
-        startDate: string,
-        level: number,
-        score: number,
-        seed: string,
-        collections: string,
-        coins?: number | null,
-      } | null,
-      notification?:  {
-        __typename: "Notification",
-        emails: Array< string | null >,
-        types: Array< NotificationType | null >,
-      } | null,
-      owner?: string | null,
-      badges?: Array< string > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listUsers?: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      id: string;
+      sub: string;
+      username: string;
+      email: string;
+      picture: string;
+      quota?: {
+        __typename: "Quota";
+        mathPerDay: number;
+        readingPerDay: number;
+        writingPerDay: number;
+        savedQuestions: number;
+        savedTests: number;
+        savedEssays: number;
+        classroomRound: number;
+      } | null;
+      membership?: {
+        __typename: "Membership";
+        current: number;
+        previous: number;
+        paypalSubscriptions: {
+          __typename: "Subscriptions";
+          personal: Array<string | null>;
+          professional: Array<string | null>;
+          enterprise: Array<string | null>;
+        };
+      } | null;
+      payerId?: string | null;
+      markedQuestions?: Array<string> | null;
+      daily?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      monthly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      yearly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      gameData?: {
+        __typename: "GameData";
+        startDate: string;
+        level: number;
+        score: number;
+        seed: string;
+        collections: string;
+        coins?: number | null;
+      } | null;
+      notification?: {
+        __typename: "Notification";
+        emails: Array<string | null>;
+        types: Array<NotificationType | null>;
+      } | null;
+      owner?: string | null;
+      badges?: Array<string> | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncUsersQueryVariables = {
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncUsersQuery = {
-  syncUsers?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string,
-      sub: string,
-      username: string,
-      email: string,
-      picture: string,
-      quota?:  {
-        __typename: "Quota",
-        mathPerDay: number,
-        readingPerDay: number,
-        writingPerDay: number,
-        savedQuestions: number,
-        savedTests: number,
-        savedEssays: number,
-        classroomRound: number,
-      } | null,
-      membership?:  {
-        __typename: "Membership",
-        current: number,
-        previous: number,
-        paypalSubscriptions:  {
-          __typename: "Subscriptions",
-          personal: Array< string | null >,
-          professional: Array< string | null >,
-          enterprise: Array< string | null >,
-        },
-      } | null,
-      payerId?: string | null,
-      markedQuestions?: Array< string > | null,
-      daily?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      monthly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      yearly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      gameData?:  {
-        __typename: "GameData",
-        startDate: string,
-        level: number,
-        score: number,
-        seed: string,
-        collections: string,
-        coins?: number | null,
-      } | null,
-      notification?:  {
-        __typename: "Notification",
-        emails: Array< string | null >,
-        types: Array< NotificationType | null >,
-      } | null,
-      owner?: string | null,
-      badges?: Array< string > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncUsers?: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      id: string;
+      sub: string;
+      username: string;
+      email: string;
+      picture: string;
+      quota?: {
+        __typename: "Quota";
+        mathPerDay: number;
+        readingPerDay: number;
+        writingPerDay: number;
+        savedQuestions: number;
+        savedTests: number;
+        savedEssays: number;
+        classroomRound: number;
+      } | null;
+      membership?: {
+        __typename: "Membership";
+        current: number;
+        previous: number;
+        paypalSubscriptions: {
+          __typename: "Subscriptions";
+          personal: Array<string | null>;
+          professional: Array<string | null>;
+          enterprise: Array<string | null>;
+        };
+      } | null;
+      payerId?: string | null;
+      markedQuestions?: Array<string> | null;
+      daily?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      monthly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      yearly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      gameData?: {
+        __typename: "GameData";
+        startDate: string;
+        level: number;
+        score: number;
+        seed: string;
+        collections: string;
+        coins?: number | null;
+      } | null;
+      notification?: {
+        __typename: "Notification";
+        emails: Array<string | null>;
+        types: Array<NotificationType | null>;
+      } | null;
+      owner?: string | null;
+      badges?: Array<string> | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type UserBySubQueryVariables = {
-  sub: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  sub: string;
+  sortDirection?: ModelSortDirection | null;
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type UserBySubQuery = {
-  userBySub?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string,
-      sub: string,
-      username: string,
-      email: string,
-      picture: string,
-      quota?:  {
-        __typename: "Quota",
-        mathPerDay: number,
-        readingPerDay: number,
-        writingPerDay: number,
-        savedQuestions: number,
-        savedTests: number,
-        savedEssays: number,
-        classroomRound: number,
-      } | null,
-      membership?:  {
-        __typename: "Membership",
-        current: number,
-        previous: number,
-        paypalSubscriptions:  {
-          __typename: "Subscriptions",
-          personal: Array< string | null >,
-          professional: Array< string | null >,
-          enterprise: Array< string | null >,
-        },
-      } | null,
-      payerId?: string | null,
-      markedQuestions?: Array< string > | null,
-      daily?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      monthly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      yearly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      gameData?:  {
-        __typename: "GameData",
-        startDate: string,
-        level: number,
-        score: number,
-        seed: string,
-        collections: string,
-        coins?: number | null,
-      } | null,
-      notification?:  {
-        __typename: "Notification",
-        emails: Array< string | null >,
-        types: Array< NotificationType | null >,
-      } | null,
-      owner?: string | null,
-      badges?: Array< string > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  userBySub?: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      id: string;
+      sub: string;
+      username: string;
+      email: string;
+      picture: string;
+      quota?: {
+        __typename: "Quota";
+        mathPerDay: number;
+        readingPerDay: number;
+        writingPerDay: number;
+        savedQuestions: number;
+        savedTests: number;
+        savedEssays: number;
+        classroomRound: number;
+      } | null;
+      membership?: {
+        __typename: "Membership";
+        current: number;
+        previous: number;
+        paypalSubscriptions: {
+          __typename: "Subscriptions";
+          personal: Array<string | null>;
+          professional: Array<string | null>;
+          enterprise: Array<string | null>;
+        };
+      } | null;
+      payerId?: string | null;
+      markedQuestions?: Array<string> | null;
+      daily?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      monthly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      yearly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      gameData?: {
+        __typename: "GameData";
+        startDate: string;
+        level: number;
+        score: number;
+        seed: string;
+        collections: string;
+        coins?: number | null;
+      } | null;
+      notification?: {
+        __typename: "Notification";
+        emails: Array<string | null>;
+        types: Array<NotificationType | null>;
+      } | null;
+      owner?: string | null;
+      badges?: Array<string> | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type UserByPayerIdQueryVariables = {
-  payerId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  payerId: string;
+  sortDirection?: ModelSortDirection | null;
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type UserByPayerIdQuery = {
-  userByPayerId?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string,
-      sub: string,
-      username: string,
-      email: string,
-      picture: string,
-      quota?:  {
-        __typename: "Quota",
-        mathPerDay: number,
-        readingPerDay: number,
-        writingPerDay: number,
-        savedQuestions: number,
-        savedTests: number,
-        savedEssays: number,
-        classroomRound: number,
-      } | null,
-      membership?:  {
-        __typename: "Membership",
-        current: number,
-        previous: number,
-        paypalSubscriptions:  {
-          __typename: "Subscriptions",
-          personal: Array< string | null >,
-          professional: Array< string | null >,
-          enterprise: Array< string | null >,
-        },
-      } | null,
-      payerId?: string | null,
-      markedQuestions?: Array< string > | null,
-      daily?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      monthly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      yearly?:  Array< {
-        __typename: "Statistic",
-        date: string,
-        mathCorrect: number,
-        mathWrong: number,
-        mathExam: number,
-        mathRequest: number,
-        readingCorrect: number,
-        readingWrong: number,
-        readingRequest: number,
-        writing: number,
-        writingRequest: number,
-      } > | null,
-      gameData?:  {
-        __typename: "GameData",
-        startDate: string,
-        level: number,
-        score: number,
-        seed: string,
-        collections: string,
-        coins?: number | null,
-      } | null,
-      notification?:  {
-        __typename: "Notification",
-        emails: Array< string | null >,
-        types: Array< NotificationType | null >,
-      } | null,
-      owner?: string | null,
-      badges?: Array< string > | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  userByPayerId?: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      id: string;
+      sub: string;
+      username: string;
+      email: string;
+      picture: string;
+      quota?: {
+        __typename: "Quota";
+        mathPerDay: number;
+        readingPerDay: number;
+        writingPerDay: number;
+        savedQuestions: number;
+        savedTests: number;
+        savedEssays: number;
+        classroomRound: number;
+      } | null;
+      membership?: {
+        __typename: "Membership";
+        current: number;
+        previous: number;
+        paypalSubscriptions: {
+          __typename: "Subscriptions";
+          personal: Array<string | null>;
+          professional: Array<string | null>;
+          enterprise: Array<string | null>;
+        };
+      } | null;
+      payerId?: string | null;
+      markedQuestions?: Array<string> | null;
+      daily?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      monthly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      yearly?: Array<{
+        __typename: "Statistic";
+        date: string;
+        mathCorrect: number;
+        mathWrong: number;
+        mathExam: number;
+        mathRequest: number;
+        readingCorrect: number;
+        readingWrong: number;
+        readingRequest: number;
+        writing: number;
+        writingRequest: number;
+      }> | null;
+      gameData?: {
+        __typename: "GameData";
+        startDate: string;
+        level: number;
+        score: number;
+        seed: string;
+        collections: string;
+        coins?: number | null;
+      } | null;
+      notification?: {
+        __typename: "Notification";
+        emails: Array<string | null>;
+        types: Array<NotificationType | null>;
+      } | null;
+      owner?: string | null;
+      badges?: Array<string> | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetQuestionSetQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetQuestionSetQuery = {
-  getQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListQuestionSetsQueryVariables = {
-  filter?: ModelQuestionSetFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelQuestionSetFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListQuestionSetsQuery = {
-  listQuestionSets?:  {
-    __typename: "ModelQuestionSetConnection",
-    items:  Array< {
-      __typename: "QuestionSet",
-      id: string,
-      question: string,
-      options?: Array< string > | null,
-      answer: string,
-      workout?: string | null,
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      testId?: string | null,
-      indexInTest?: number | null,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listQuestionSets?: {
+    __typename: "ModelQuestionSetConnection";
+    items: Array<{
+      __typename: "QuestionSet";
+      id: string;
+      question: string;
+      options?: Array<string> | null;
+      answer: string;
+      workout?: string | null;
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      testId?: string | null;
+      indexInTest?: number | null;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncQuestionSetsQueryVariables = {
-  filter?: ModelQuestionSetFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelQuestionSetFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncQuestionSetsQuery = {
-  syncQuestionSets?:  {
-    __typename: "ModelQuestionSetConnection",
-    items:  Array< {
-      __typename: "QuestionSet",
-      id: string,
-      question: string,
-      options?: Array< string > | null,
-      answer: string,
-      workout?: string | null,
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      testId?: string | null,
-      indexInTest?: number | null,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncQuestionSets?: {
+    __typename: "ModelQuestionSetConnection";
+    items: Array<{
+      __typename: "QuestionSet";
+      id: string;
+      question: string;
+      options?: Array<string> | null;
+      answer: string;
+      workout?: string | null;
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      testId?: string | null;
+      indexInTest?: number | null;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetBadQuestionSetQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetBadQuestionSetQuery = {
-  getBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  getBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type ListBadQuestionSetsQueryVariables = {
-  filter?: ModelBadQuestionSetFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelBadQuestionSetFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListBadQuestionSetsQuery = {
-  listBadQuestionSets?:  {
-    __typename: "ModelBadQuestionSetConnection",
-    items:  Array< {
-      __typename: "BadQuestionSet",
-      id: string,
-      source: string,
-      question: string,
-      options?: Array< string > | null,
-      answer: string,
-      workout?: string | null,
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listBadQuestionSets?: {
+    __typename: "ModelBadQuestionSetConnection";
+    items: Array<{
+      __typename: "BadQuestionSet";
+      id: string;
+      source: string;
+      question: string;
+      options?: Array<string> | null;
+      answer: string;
+      workout?: string | null;
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      owner?: string | null;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncBadQuestionSetsQueryVariables = {
-  filter?: ModelBadQuestionSetFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelBadQuestionSetFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncBadQuestionSetsQuery = {
-  syncBadQuestionSets?:  {
-    __typename: "ModelBadQuestionSetConnection",
-    items:  Array< {
-      __typename: "BadQuestionSet",
-      id: string,
-      source: string,
-      question: string,
-      options?: Array< string > | null,
-      answer: string,
-      workout?: string | null,
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncBadQuestionSets?: {
+    __typename: "ModelBadQuestionSetConnection";
+    items: Array<{
+      __typename: "BadQuestionSet";
+      id: string;
+      source: string;
+      question: string;
+      options?: Array<string> | null;
+      answer: string;
+      workout?: string | null;
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+      owner?: string | null;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetTestQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetTestQuery = {
-  getTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListTestsQueryVariables = {
-  filter?: ModelTestFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelTestFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListTestsQuery = {
-  listTests?:  {
-    __typename: "ModelTestConnection",
-    items:  Array< {
-      __typename: "Test",
-      id: string,
-      category: string,
-      dateTime: string,
-      duration?: number | null,
-      total: number,
-      wrong: number,
-      correct: number,
-      source?: string | null,
-      questionSets:  Array< {
-        __typename: "LocalQuestionSet",
-        type: string,
-        category: string,
-        level: string,
-        concept: string,
-        question: string,
-        options: Array< string >,
-        answer: string,
-        selected: string,
-        workout: string,
-        isBad: boolean,
-        isTarget: boolean,
-        isMarked?: boolean | null,
-      } >,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listTests?: {
+    __typename: "ModelTestConnection";
+    items: Array<{
+      __typename: "Test";
+      id: string;
+      category: string;
+      dateTime: string;
+      duration?: number | null;
+      total: number;
+      wrong: number;
+      correct: number;
+      source?: string | null;
+      questionSets: Array<{
+        __typename: "LocalQuestionSet";
+        type: string;
+        category: string;
+        level: string;
+        concept: string;
+        question: string;
+        options: Array<string>;
+        answer: string;
+        selected: string;
+        workout: string;
+        isBad: boolean;
+        isTarget: boolean;
+        isMarked?: boolean | null;
+      }>;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncTestsQueryVariables = {
-  filter?: ModelTestFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelTestFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncTestsQuery = {
-  syncTests?:  {
-    __typename: "ModelTestConnection",
-    items:  Array< {
-      __typename: "Test",
-      id: string,
-      category: string,
-      dateTime: string,
-      duration?: number | null,
-      total: number,
-      wrong: number,
-      correct: number,
-      source?: string | null,
-      questionSets:  Array< {
-        __typename: "LocalQuestionSet",
-        type: string,
-        category: string,
-        level: string,
-        concept: string,
-        question: string,
-        options: Array< string >,
-        answer: string,
-        selected: string,
-        workout: string,
-        isBad: boolean,
-        isTarget: boolean,
-        isMarked?: boolean | null,
-      } >,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncTests?: {
+    __typename: "ModelTestConnection";
+    items: Array<{
+      __typename: "Test";
+      id: string;
+      category: string;
+      dateTime: string;
+      duration?: number | null;
+      total: number;
+      wrong: number;
+      correct: number;
+      source?: string | null;
+      questionSets: Array<{
+        __typename: "LocalQuestionSet";
+        type: string;
+        category: string;
+        level: string;
+        concept: string;
+        question: string;
+        options: Array<string>;
+        answer: string;
+        selected: string;
+        workout: string;
+        isBad: boolean;
+        isTarget: boolean;
+        isMarked?: boolean | null;
+      }>;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetEssayQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetEssayQuery = {
-  getEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListEssaysQueryVariables = {
-  filter?: ModelEssayFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelEssayFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListEssaysQuery = {
-  listEssays?:  {
-    __typename: "ModelEssayConnection",
-    items:  Array< {
-      __typename: "Essay",
-      id: string,
-      type: string,
-      level: string,
-      topic: string,
-      prompt: string,
-      text: string,
-      DateTime: string,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listEssays?: {
+    __typename: "ModelEssayConnection";
+    items: Array<{
+      __typename: "Essay";
+      id: string;
+      type: string;
+      level: string;
+      topic: string;
+      prompt: string;
+      text: string;
+      DateTime: string;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncEssaysQueryVariables = {
-  filter?: ModelEssayFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelEssayFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncEssaysQuery = {
-  syncEssays?:  {
-    __typename: "ModelEssayConnection",
-    items:  Array< {
-      __typename: "Essay",
-      id: string,
-      type: string,
-      level: string,
-      topic: string,
-      prompt: string,
-      text: string,
-      DateTime: string,
-      owner?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncEssays?: {
+    __typename: "ModelEssayConnection";
+    items: Array<{
+      __typename: "Essay";
+      id: string;
+      type: string;
+      level: string;
+      topic: string;
+      prompt: string;
+      text: string;
+      DateTime: string;
+      owner?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetRankingItemQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetRankingItemQuery = {
-  getRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListRankingItemsQueryVariables = {
-  filter?: ModelRankingItemFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelRankingItemFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListRankingItemsQuery = {
-  listRankingItems?:  {
-    __typename: "ModelRankingItemConnection",
-    items:  Array< {
-      __typename: "RankingItem",
-      id: string,
-      date: string,
-      type: RankingType,
-      names: Array< string >,
-      values: Array< string >,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listRankingItems?: {
+    __typename: "ModelRankingItemConnection";
+    items: Array<{
+      __typename: "RankingItem";
+      id: string;
+      date: string;
+      type: RankingType;
+      names: Array<string>;
+      values: Array<string>;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncRankingItemsQueryVariables = {
-  filter?: ModelRankingItemFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelRankingItemFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncRankingItemsQuery = {
-  syncRankingItems?:  {
-    __typename: "ModelRankingItemConnection",
-    items:  Array< {
-      __typename: "RankingItem",
-      id: string,
-      date: string,
-      type: RankingType,
-      names: Array< string >,
-      values: Array< string >,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncRankingItems?: {
+    __typename: "ModelRankingItemConnection";
+    items: Array<{
+      __typename: "RankingItem";
+      id: string;
+      date: string;
+      type: RankingType;
+      names: Array<string>;
+      values: Array<string>;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type RankingItemsByDateAndTypeQueryVariables = {
-  date: string,
-  type?: ModelStringKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelRankingItemFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  date: string;
+  type?: ModelStringKeyConditionInput | null;
+  sortDirection?: ModelSortDirection | null;
+  filter?: ModelRankingItemFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type RankingItemsByDateAndTypeQuery = {
-  rankingItemsByDateAndType?:  {
-    __typename: "ModelRankingItemConnection",
-    items:  Array< {
-      __typename: "RankingItem",
-      id: string,
-      date: string,
-      type: RankingType,
-      names: Array< string >,
-      values: Array< string >,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  rankingItemsByDateAndType?: {
+    __typename: "ModelRankingItemConnection";
+    items: Array<{
+      __typename: "RankingItem";
+      id: string;
+      date: string;
+      type: RankingType;
+      names: Array<string>;
+      values: Array<string>;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetBadgeQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetBadgeQuery = {
-  getBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListBadgesQueryVariables = {
-  filter?: ModelBadgeFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelBadgeFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListBadgesQuery = {
-  listBadges?:  {
-    __typename: "ModelBadgeConnection",
-    items:  Array< {
-      __typename: "Badge",
-      id: string,
-      name: string,
-      startDate: string,
-      endDate: string,
-      criteria: string,
-      description: string,
-      image: string,
-      isVisible: boolean,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listBadges?: {
+    __typename: "ModelBadgeConnection";
+    items: Array<{
+      __typename: "Badge";
+      id: string;
+      name: string;
+      startDate: string;
+      endDate: string;
+      criteria: string;
+      description: string;
+      image: string;
+      isVisible: boolean;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncBadgesQueryVariables = {
-  filter?: ModelBadgeFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelBadgeFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncBadgesQuery = {
-  syncBadges?:  {
-    __typename: "ModelBadgeConnection",
-    items:  Array< {
-      __typename: "Badge",
-      id: string,
-      name: string,
-      startDate: string,
-      endDate: string,
-      criteria: string,
-      description: string,
-      image: string,
-      isVisible: boolean,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncBadges?: {
+    __typename: "ModelBadgeConnection";
+    items: Array<{
+      __typename: "Badge";
+      id: string;
+      name: string;
+      startDate: string;
+      endDate: string;
+      criteria: string;
+      description: string;
+      image: string;
+      isVisible: boolean;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetSystemMessageQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetSystemMessageQuery = {
-  getSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListSystemMessagesQueryVariables = {
-  filter?: ModelSystemMessageFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelSystemMessageFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListSystemMessagesQuery = {
-  listSystemMessages?:  {
-    __typename: "ModelSystemMessageConnection",
-    items:  Array< {
-      __typename: "SystemMessage",
-      id: string,
-      content: string,
-      internalLink?: string | null,
-      externalLink?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listSystemMessages?: {
+    __typename: "ModelSystemMessageConnection";
+    items: Array<{
+      __typename: "SystemMessage";
+      id: string;
+      content: string;
+      internalLink?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncSystemMessagesQueryVariables = {
-  filter?: ModelSystemMessageFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelSystemMessageFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncSystemMessagesQuery = {
-  syncSystemMessages?:  {
-    __typename: "ModelSystemMessageConnection",
-    items:  Array< {
-      __typename: "SystemMessage",
-      id: string,
-      content: string,
-      internalLink?: string | null,
-      externalLink?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncSystemMessages?: {
+    __typename: "ModelSystemMessageConnection";
+    items: Array<{
+      __typename: "SystemMessage";
+      id: string;
+      content: string;
+      internalLink?: string | null;
+      externalLink?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type GetShoppingItemQueryVariables = {
-  id: string,
+  id: string;
 };
 
 export type GetShoppingItemQuery = {
-  getShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  getShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type ListShoppingItemsQueryVariables = {
-  filter?: ModelShoppingItemFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+  filter?: ModelShoppingItemFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
 };
 
 export type ListShoppingItemsQuery = {
-  listShoppingItems?:  {
-    __typename: "ModelShoppingItemConnection",
-    items:  Array< {
-      __typename: "ShoppingItem",
-      id: string,
-      name: string,
-      price: number,
-      description: string,
-      image?: string | null,
-      category: ShoppingItemCategory,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  listShoppingItems?: {
+    __typename: "ModelShoppingItemConnection";
+    items: Array<{
+      __typename: "ShoppingItem";
+      id: string;
+      name: string;
+      price: number;
+      description: string;
+      image?: string | null;
+      category: ShoppingItemCategory;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type SyncShoppingItemsQueryVariables = {
-  filter?: ModelShoppingItemFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+  filter?: ModelShoppingItemFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+  lastSync?: number | null;
 };
 
 export type SyncShoppingItemsQuery = {
-  syncShoppingItems?:  {
-    __typename: "ModelShoppingItemConnection",
-    items:  Array< {
-      __typename: "ShoppingItem",
-      id: string,
-      name: string,
-      price: number,
-      description: string,
-      image?: string | null,
-      category: ShoppingItemCategory,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
+  syncShoppingItems?: {
+    __typename: "ModelShoppingItemConnection";
+    items: Array<{
+      __typename: "ShoppingItem";
+      id: string;
+      name: string;
+      price: number;
+      description: string;
+      image?: string | null;
+      category: ShoppingItemCategory;
+      createdAt: string;
+      updatedAt: string;
+      _version: number;
+      _deleted?: boolean | null;
+      _lastChangedAt: number;
+    } | null>;
+    nextToken?: string | null;
+    startedAt?: number | null;
+  } | null;
 };
 
 export type OnCreateUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionUserFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnCreateUserSubscription = {
-  onCreateUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionUserFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnUpdateUserSubscription = {
-  onUpdateUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionUserFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnDeleteUserSubscription = {
-  onDeleteUser?:  {
-    __typename: "User",
-    id: string,
-    sub: string,
-    username: string,
-    email: string,
-    picture: string,
-    quota?:  {
-      __typename: "Quota",
-      mathPerDay: number,
-      readingPerDay: number,
-      writingPerDay: number,
-      savedQuestions: number,
-      savedTests: number,
-      savedEssays: number,
-      classroomRound: number,
-    } | null,
-    membership?:  {
-      __typename: "Membership",
-      current: number,
-      previous: number,
-      paypalSubscriptions:  {
-        __typename: "Subscriptions",
-        personal: Array< string | null >,
-        professional: Array< string | null >,
-        enterprise: Array< string | null >,
-      },
-    } | null,
-    payerId?: string | null,
-    markedQuestions?: Array< string > | null,
-    daily?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    monthly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    yearly?:  Array< {
-      __typename: "Statistic",
-      date: string,
-      mathCorrect: number,
-      mathWrong: number,
-      mathExam: number,
-      mathRequest: number,
-      readingCorrect: number,
-      readingWrong: number,
-      readingRequest: number,
-      writing: number,
-      writingRequest: number,
-    } > | null,
-    gameData?:  {
-      __typename: "GameData",
-      startDate: string,
-      level: number,
-      score: number,
-      seed: string,
-      collections: string,
-      coins?: number | null,
-    } | null,
-    notification?:  {
-      __typename: "Notification",
-      emails: Array< string | null >,
-      types: Array< NotificationType | null >,
-    } | null,
-    owner?: string | null,
-    badges?: Array< string > | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteUser?: {
+    __typename: "User";
+    id: string;
+    sub: string;
+    username: string;
+    email: string;
+    picture: string;
+    quota?: {
+      __typename: "Quota";
+      mathPerDay: number;
+      readingPerDay: number;
+      writingPerDay: number;
+      savedQuestions: number;
+      savedTests: number;
+      savedEssays: number;
+      classroomRound: number;
+    } | null;
+    membership?: {
+      __typename: "Membership";
+      current: number;
+      previous: number;
+      paypalSubscriptions: {
+        __typename: "Subscriptions";
+        personal: Array<string | null>;
+        professional: Array<string | null>;
+        enterprise: Array<string | null>;
+      };
+    } | null;
+    payerId?: string | null;
+    markedQuestions?: Array<string> | null;
+    daily?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    monthly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    yearly?: Array<{
+      __typename: "Statistic";
+      date: string;
+      mathCorrect: number;
+      mathWrong: number;
+      mathExam: number;
+      mathRequest: number;
+      readingCorrect: number;
+      readingWrong: number;
+      readingRequest: number;
+      writing: number;
+      writingRequest: number;
+    }> | null;
+    gameData?: {
+      __typename: "GameData";
+      startDate: string;
+      level: number;
+      score: number;
+      seed: string;
+      collections: string;
+      coins?: number | null;
+    } | null;
+    notification?: {
+      __typename: "Notification";
+      emails: Array<string | null>;
+      types: Array<NotificationType | null>;
+    } | null;
+    owner?: string | null;
+    badges?: Array<string> | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionQuestionSetFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionQuestionSetFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnCreateQuestionSetSubscription = {
-  onCreateQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionQuestionSetFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionQuestionSetFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnUpdateQuestionSetSubscription = {
-  onUpdateQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionQuestionSetFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionQuestionSetFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnDeleteQuestionSetSubscription = {
-  onDeleteQuestionSet?:  {
-    __typename: "QuestionSet",
-    id: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    testId?: string | null,
-    indexInTest?: number | null,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteQuestionSet?: {
+    __typename: "QuestionSet";
+    id: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    testId?: string | null;
+    indexInTest?: number | null;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateBadQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null;
 };
 
 export type OnCreateBadQuestionSetSubscription = {
-  onCreateBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onCreateBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnUpdateBadQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null;
 };
 
 export type OnUpdateBadQuestionSetSubscription = {
-  onUpdateBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onUpdateBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnDeleteBadQuestionSetSubscriptionVariables = {
-  filter?: ModelSubscriptionBadQuestionSetFilterInput | null,
+  filter?: ModelSubscriptionBadQuestionSetFilterInput | null;
 };
 
 export type OnDeleteBadQuestionSetSubscription = {
-  onDeleteBadQuestionSet?:  {
-    __typename: "BadQuestionSet",
-    id: string,
-    source: string,
-    question: string,
-    options?: Array< string > | null,
-    answer: string,
-    workout?: string | null,
-    type: string,
-    category: string,
-    level: string,
-    concept: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    owner?: string | null,
-  } | null,
+  onDeleteBadQuestionSet?: {
+    __typename: "BadQuestionSet";
+    id: string;
+    source: string;
+    question: string;
+    options?: Array<string> | null;
+    answer: string;
+    workout?: string | null;
+    type: string;
+    category: string;
+    level: string;
+    concept: string;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+    owner?: string | null;
+  } | null;
 };
 
 export type OnCreateTestSubscriptionVariables = {
-  filter?: ModelSubscriptionTestFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionTestFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnCreateTestSubscription = {
-  onCreateTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateTestSubscriptionVariables = {
-  filter?: ModelSubscriptionTestFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionTestFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnUpdateTestSubscription = {
-  onUpdateTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteTestSubscriptionVariables = {
-  filter?: ModelSubscriptionTestFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionTestFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnDeleteTestSubscription = {
-  onDeleteTest?:  {
-    __typename: "Test",
-    id: string,
-    category: string,
-    dateTime: string,
-    duration?: number | null,
-    total: number,
-    wrong: number,
-    correct: number,
-    source?: string | null,
-    questionSets:  Array< {
-      __typename: "LocalQuestionSet",
-      type: string,
-      category: string,
-      level: string,
-      concept: string,
-      question: string,
-      options: Array< string >,
-      answer: string,
-      selected: string,
-      workout: string,
-      isBad: boolean,
-      isTarget: boolean,
-      isMarked?: boolean | null,
-    } >,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteTest?: {
+    __typename: "Test";
+    id: string;
+    category: string;
+    dateTime: string;
+    duration?: number | null;
+    total: number;
+    wrong: number;
+    correct: number;
+    source?: string | null;
+    questionSets: Array<{
+      __typename: "LocalQuestionSet";
+      type: string;
+      category: string;
+      level: string;
+      concept: string;
+      question: string;
+      options: Array<string>;
+      answer: string;
+      selected: string;
+      workout: string;
+      isBad: boolean;
+      isTarget: boolean;
+      isMarked?: boolean | null;
+    }>;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateEssaySubscriptionVariables = {
-  filter?: ModelSubscriptionEssayFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionEssayFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnCreateEssaySubscription = {
-  onCreateEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateEssaySubscriptionVariables = {
-  filter?: ModelSubscriptionEssayFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionEssayFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnUpdateEssaySubscription = {
-  onUpdateEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteEssaySubscriptionVariables = {
-  filter?: ModelSubscriptionEssayFilterInput | null,
-  owner?: string | null,
+  filter?: ModelSubscriptionEssayFilterInput | null;
+  owner?: string | null;
 };
 
 export type OnDeleteEssaySubscription = {
-  onDeleteEssay?:  {
-    __typename: "Essay",
-    id: string,
-    type: string,
-    level: string,
-    topic: string,
-    prompt: string,
-    text: string,
-    DateTime: string,
-    owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteEssay?: {
+    __typename: "Essay";
+    id: string;
+    type: string;
+    level: string;
+    topic: string;
+    prompt: string;
+    text: string;
+    DateTime: string;
+    owner?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateRankingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionRankingItemFilterInput | null,
+  filter?: ModelSubscriptionRankingItemFilterInput | null;
 };
 
 export type OnCreateRankingItemSubscription = {
-  onCreateRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateRankingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionRankingItemFilterInput | null,
+  filter?: ModelSubscriptionRankingItemFilterInput | null;
 };
 
 export type OnUpdateRankingItemSubscription = {
-  onUpdateRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteRankingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionRankingItemFilterInput | null,
+  filter?: ModelSubscriptionRankingItemFilterInput | null;
 };
 
 export type OnDeleteRankingItemSubscription = {
-  onDeleteRankingItem?:  {
-    __typename: "RankingItem",
-    id: string,
-    date: string,
-    type: RankingType,
-    names: Array< string >,
-    values: Array< string >,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteRankingItem?: {
+    __typename: "RankingItem";
+    id: string;
+    date: string;
+    type: RankingType;
+    names: Array<string>;
+    values: Array<string>;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateBadgeSubscriptionVariables = {
-  filter?: ModelSubscriptionBadgeFilterInput | null,
+  filter?: ModelSubscriptionBadgeFilterInput | null;
 };
 
 export type OnCreateBadgeSubscription = {
-  onCreateBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateBadgeSubscriptionVariables = {
-  filter?: ModelSubscriptionBadgeFilterInput | null,
+  filter?: ModelSubscriptionBadgeFilterInput | null;
 };
 
 export type OnUpdateBadgeSubscription = {
-  onUpdateBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteBadgeSubscriptionVariables = {
-  filter?: ModelSubscriptionBadgeFilterInput | null,
+  filter?: ModelSubscriptionBadgeFilterInput | null;
 };
 
 export type OnDeleteBadgeSubscription = {
-  onDeleteBadge?:  {
-    __typename: "Badge",
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    criteria: string,
-    description: string,
-    image: string,
-    isVisible: boolean,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteBadge?: {
+    __typename: "Badge";
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    criteria: string;
+    description: string;
+    image: string;
+    isVisible: boolean;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateSystemMessageSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+  filter?: ModelSubscriptionSystemMessageFilterInput | null;
 };
 
 export type OnCreateSystemMessageSubscription = {
-  onCreateSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateSystemMessageSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+  filter?: ModelSubscriptionSystemMessageFilterInput | null;
 };
 
 export type OnUpdateSystemMessageSubscription = {
-  onUpdateSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteSystemMessageSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemMessageFilterInput | null,
+  filter?: ModelSubscriptionSystemMessageFilterInput | null;
 };
 
 export type OnDeleteSystemMessageSubscription = {
-  onDeleteSystemMessage?:  {
-    __typename: "SystemMessage",
-    id: string,
-    content: string,
-    internalLink?: string | null,
-    externalLink?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteSystemMessage?: {
+    __typename: "SystemMessage";
+    id: string;
+    content: string;
+    internalLink?: string | null;
+    externalLink?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnCreateShoppingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+  filter?: ModelSubscriptionShoppingItemFilterInput | null;
 };
 
 export type OnCreateShoppingItemSubscription = {
-  onCreateShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onCreateShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnUpdateShoppingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+  filter?: ModelSubscriptionShoppingItemFilterInput | null;
 };
 
 export type OnUpdateShoppingItemSubscription = {
-  onUpdateShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onUpdateShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
 
 export type OnDeleteShoppingItemSubscriptionVariables = {
-  filter?: ModelSubscriptionShoppingItemFilterInput | null,
+  filter?: ModelSubscriptionShoppingItemFilterInput | null;
 };
 
 export type OnDeleteShoppingItemSubscription = {
-  onDeleteShoppingItem?:  {
-    __typename: "ShoppingItem",
-    id: string,
-    name: string,
-    price: number,
-    description: string,
-    image?: string | null,
-    category: ShoppingItemCategory,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
+  onDeleteShoppingItem?: {
+    __typename: "ShoppingItem";
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image?: string | null;
+    category: ShoppingItemCategory;
+    createdAt: string;
+    updatedAt: string;
+    _version: number;
+    _deleted?: boolean | null;
+    _lastChangedAt: number;
+  } | null;
 };
